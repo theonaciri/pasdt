@@ -40,7 +40,7 @@
         var renderers = $.extend($.pivotUtilities.renderers,
             $.pivotUtilities.plotly_renderers);
 
-        $.getJSON("/data/dump.json", function(mps) {
+        $.getJSON("data/dump.json", function(mps) {
             $("#output").pivotUI(mps,
                 {
                 	rows: ["cardId"],
