@@ -9,6 +9,13 @@ router.get('/', function(req, res, next) {
  	res.render('index', { title: 'Express' });
 });
 
+/* GET home page. */
+router.get('/log/:id', function(req, res, next) {
+	//index(req, res, next);
+	dataController.getLogById(req, res);
+ 	//res.render('index', { title: 'Express' });
+});
+
 
 function index(req, res, next) {
 	//mysqlConnect.getConnection(connectionCb);

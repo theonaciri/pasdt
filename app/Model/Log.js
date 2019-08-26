@@ -8,6 +8,7 @@ var Log = function(log){
     this.created_at = new Date();
 };
 Log.getLogById = function (logId, result) {
+    console.log('LOG TO SEARCH: ', logId);
     sql.query("SELECT * from log where id = ? ", logId, function (err, res) {             
         if (err) {
             console.log("error: ", err);

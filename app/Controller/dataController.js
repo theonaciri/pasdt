@@ -14,11 +14,12 @@ exports.list_all_logs = function(req, res) {
   });
 };
 
-exports.read_a_log = function(req, res) {
-	console.log(' req ', req, ' res ', res);
-  Log.getLogById(req.params.logId, function(err, log) {
+exports.getLogById = function(req, res) {
+	//console.log(' req ', req.params.id);
+  Log.getLogById(req.params.id, function(err, log) {
     if (err)
       res.send(err);
+  	console.log('log ! ', log);
     res.json(log);
   });
 };
