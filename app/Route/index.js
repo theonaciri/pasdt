@@ -1,20 +1,20 @@
 var express = require('express');
 var router = express.Router();
+var dataController = require('../Controller/dataController');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	index(req, res, next);
-  res.render('index', { title: 'Express' });
+	//index(req, res, next);
+	dataController.index();
+ 	res.render('index', { title: 'Express' });
 });
 
 
 function index(req, res, next) {
-	const mysqlConnect = require('../src/tools/mysqlConnect');
-	mysqlConnect.getConnection(console.log);
+	//mysqlConnect.getConnection(connectionCb);
 	const csv = require('csv-parser')
 	const fs = require('fs')
 	const results = [];
-	console.log('yoman');
 	fs.createReadStream('data/dump.csv')
 	  .pipe(csv({ separator: '\t' }))
 	  .on('data', (data) => results.push(data))
@@ -32,7 +32,13 @@ function index(req, res, next) {
 }
 
 function deepParse(item, index, arr) {
-	if (index < 10)
-	console.log('item: ', item);
+	if (index < 2)
+		console.log('item: ', arr[index], item);
+
+}
+
+
+function connectionCb() {
+
 }
 module.exports = router;
