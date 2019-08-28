@@ -22,7 +22,7 @@ parasails.registerPage('welcome', {
   //  ╚╗╔╝║╠╦╝ ║ ║ ║╠═╣║    ╠═╝╠═╣║ ╦║╣ ╚═╗
   //   ╚╝ ╩╩╚═ ╩ ╚═╝╩ ╩╩═╝  ╩  ╩ ╩╚═╝╚═╝╚═╝
   // Configure deep-linking (aka client-side routing)
-  virtualPagesRegExp: /^\/welcome\/?([^\/]+)?\/?/,
+  virtualPagesRegExp: /^\/welcome|table\/?([^\/]+)?\/?/,
   afterNavigate: async function(virtualPageSlug){
     // `virtualPageSlug` is determined by the regular expression above, which
     // corresponds with `:unused?` in the server-side route for this page.
