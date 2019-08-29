@@ -3348,6 +3348,11 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
   integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
 
+kingtable@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/kingtable/-/kingtable-2.0.0.tgz#564c783ba4e3c5f6cd2416ae6094275acb7dc805"
+  integrity sha512-ii9x18tzFrkLnOMvHiPxbh3j8iQG7piqZuxJmPiTxyi2Uyvksv1KoWW+OE+1XAAdK4m0r5yGDQ6nVAw+XgLNPQ==
+
 klaw@^1.0.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/klaw/-/klaw-1.3.1.tgz#4088433b46b3b1ba259d78785d8e96f73ba02439"
