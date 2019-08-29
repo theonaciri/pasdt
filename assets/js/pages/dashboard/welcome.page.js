@@ -15,7 +15,8 @@ parasails.registerPage('welcome', {
     _.extend(this, SAILS_LOCALS);
   },
   mounted: async function() {
-    //…
+
+    this._initTable();
   },
 
   //  ╦  ╦╦╦═╗╔╦╗╦ ╦╔═╗╦    ╔═╗╔═╗╔═╗╔═╗╔═╗
@@ -40,6 +41,25 @@ parasails.registerPage('welcome', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
+    _initTable() {
+      console.log('init');
+      var table = new KingTable({
+        element:  document.getElementById("main-table"),
+        url: "/data/dump.json",
+        sortBy: "id",
+        columns: {
+          options: {
+            secret: 1
+          }
+        }
+      });
+
+      table.render();
+      table.on("fetch:done", function(e) {
+        console.warn('yo man', e);
+      });
+      console.log('table', table);
+    },
     clickOpenExampleModalButton: async function() {
       this.goto('/welcome/hello');
       // Or, without deep links, instead do:
