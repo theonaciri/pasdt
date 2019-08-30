@@ -1,8 +1,9 @@
 <div id="welcome">
   <div class="container">
     <h1>Tableau de logs</h1>
-    <hr/>
-    <table id="main-table" class="display">
+    <hr/>    
+  </div>
+  <table id="main-table" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>id</th>
@@ -28,8 +29,6 @@
             </tr>
         </tfoot>
 </table>
-    
-  </div>
   <router-view></router-view>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
