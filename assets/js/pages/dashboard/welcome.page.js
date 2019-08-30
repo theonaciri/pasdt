@@ -49,27 +49,28 @@ parasails.registerPage('welcome', {
           var title = $(this).text();
           $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         } );
+
         var table = $('#main-table').DataTable({
+          // dropdown
           initComplete: function () {
-            this.api().columns([1, 3, 4]).every( function () {
+            this.api().columns([1,  4]).every( function () {
               var column = this;
-              var select = $('<select><option value=""></option></select>')
+              var select = $('<select class="individual-search"><option value=""></option></select>')
               .appendTo( $(column.footer()).empty() )
               .on( 'change', function () {
-                var val = $.fn.dataTable.util.escapeRegex(
-                  $(this).val()
-                  );
-
-                column
-                .search( val ? '^'+val+'$' : '', true, false )
-                .draw();
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                console.warn('a', '^'+val+'$', 'b', val);
+                console.warn('this', this);
+                console.warn('column ', column);
+                column.search( val ? '^'+val+'$' : '', true, false ).draw();
               } );
 
               column.data().unique().sort().each( function ( d, j ) {
-                select.append( '<option value="'+d+'">'+d+'</option>' )
+                select.append( '<option value="'+d.replace(/["']/g,  "")+'">'+d+'</option>' )
               } );
             } );
           },
+
           language: {
             processing:     "Traitement en cours...",
             search:         "Rechercher&nbsp;:",
@@ -107,7 +108,7 @@ parasails.registerPage('welcome', {
           {"data": "updated_at"},
         ]
       });
-    table.columns([0, 2, 5, 6]).every( function () {
+    table.columns([0, 2, 3, 5, 6]).every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change clear', function () {
       console.log('this ', this, ' that ', that);
