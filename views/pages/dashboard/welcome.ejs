@@ -2,7 +2,32 @@
   <div class="container">
     <h1>Tableau de logs</h1>
     <hr/>
-    <div id="main-table"></div>
+    <table id="main-table" class="display">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>cardId</th>
+                <th>msgId</th>
+                <th>msg</th>
+                <th>eventType</th>
+                <!--<th>options</th>-->
+                <th>created_at</th>
+                <th>updated_at</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>id</th>
+                <th>cardId</th>
+                <th>msgId</th>
+                <th>msg</th>
+                <th>eventType</th>
+                <!--<th>options</th>-->
+                <th>created_at</th>
+                <th>updated_at</th>
+            </tr>
+        </tfoot>
+</table>
     
   </div>
   <router-view></router-view>
