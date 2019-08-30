@@ -50,6 +50,26 @@ parasails.registerPage('welcome', {
           $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         } );
         var table = $('#main-table').DataTable({
+          initComplete: function () {
+            this.api().columns([1, 3, 4]).every( function () {
+              var column = this;
+              var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                  );
+
+                column
+                .search( val ? '^'+val+'$' : '', true, false )
+                .draw();
+              } );
+
+              column.data().unique().sort().each( function ( d, j ) {
+                select.append( '<option value="'+d+'">'+d+'</option>' )
+              } );
+            } );
+          },
           language: {
             processing:     "Traitement en cours...",
             search:         "Rechercher&nbsp;:",
@@ -82,23 +102,29 @@ parasails.registerPage('welcome', {
           {"data": "msgId"},
           {"data": "msg"},
           {"data": "eventType"},
-              //{"data": "options"},
-              {"data": "created_at"},
-              {"data": "updated_at"},
-              ]
-            });
-      table.columns().every( function () {
-        var that = this;
-        
-        $( 'input', this.footer() ).on( 'keyup change clear', function () {
-          if ( that.search() !== this.value ) {
+          //{"data": "options"},
+          {"data": "created_at"},
+          {"data": "updated_at"},
+        ]
+      });
+    table.columns([0, 2, 5, 6]).every( function () {
+      var that = this;
+      $( 'input', this.footer() ).on( 'keyup change clear', function () {
+      console.log('this ', this, ' that ', that);
+        if ( that.search() !== this.value ) {
+          if ([0].includes(that.selector.cols)) {
             that
-            .search( this.value )
+            .search(`^${this.value}$`, true, false )
             .draw();
+          } else {
+            that
+          .search(this.value)
+          .draw();
           }
-        } );
+        }
       } );
-      } );
+    } );
+    });
       /*
       var table = new KingTable({
         element:  document.getElementById("main-table"),
