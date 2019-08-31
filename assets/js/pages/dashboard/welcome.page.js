@@ -53,7 +53,7 @@ parasails.registerPage('welcome', {
         var table = $('#main-table').DataTable({
           // dropdown
           initComplete: function () {
-            this.api().columns([1,  4]).every( function () {
+            this.api().columns([1, /*3,*/  4]).every( function () {
               var column = this;
               var select = $('<select class="individual-search"><option value=""></option></select>')
               .appendTo( $(column.footer()).empty() )
@@ -104,11 +104,11 @@ parasails.registerPage('welcome', {
           {"data": "msg"},
           {"data": "eventType"},
           //{"data": "options"},
-          {"data": "created_at"},
-          {"data": "updated_at"},
+          {"data": "created_at"}/*,
+          {"data": "updated_at"},*/
         ]
       });
-    table.columns([0, 2, 3, 5, 6]).every( function () {
+    table.columns([0, 2, 3, 5]).every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change clear', function () {
       console.log('this ', this, ' that ', that);
@@ -143,6 +143,13 @@ parasails.registerPage('welcome', {
       });
       console.log('table', table);
       */
+
+      
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+       $('#min, #max').change(function () {
+                table.draw();
+            });
     },
     clickOpenExampleModalButton: async function() {
       this.goto('/welcome/hello');
