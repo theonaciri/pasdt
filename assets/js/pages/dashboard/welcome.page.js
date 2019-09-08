@@ -47,13 +47,14 @@ parasails.registerPage('welcome', {
         // Setup - add a text input to each footer cell
         $('#main-table tfoot th').each( function () {
           var title = $(this).text();
-          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+          $(this).html( '<input type="text" placeholder="Rechercher '+title+'" />' );
         } );
 
         var table = $('#main-table').DataTable({
           // dropdown
           initComplete: function () {
-            this.api().columns([1, /*3,*/  4]).every( function () {
+            // Dropdown
+            this.api().columns([1, 2]).every( function () {
               var column = this;
               var select = $('<select class="individual-search"><option value=""></option></select>')
               .appendTo( $(column.footer()).empty() )
@@ -73,7 +74,7 @@ parasails.registerPage('welcome', {
 
           language: {
             processing:     "Traitement en cours...",
-            search:         "Rechercher&nbsp;:",
+            search:         "Rechercher&nbsp;partout&nbsp;:",
             lengthMenu:     "Afficher _MENU_ &eacute;l&eacute;ments",
             info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
             infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
@@ -97,23 +98,26 @@ parasails.registerPage('welcome', {
             "url": "/data/dump.json",
             "dataSrc": ""
           },
+          "order": [[ 0, "desc" ]],
           "columns": [
-          {"data": "id"},
+         // {"data": "id"},
+
+          {"data": "created_at"},
           {"data": "cardId"},
-          {"data": "msgId"},
-          {"data": "msg"},
+          //{"data": "msgId"},
           {"data": "eventType"},
+          {"data": "msg"}
           //{"data": "options"},
-          {"data": "created_at"}/*,
-          {"data": "updated_at"},*/
+          //{"data": "updated_at"},
         ]
       });
-    table.columns([0, 2, 3, 5]).every( function () {
+        // Search bar
+    table.columns([0, 3]).every( function () {
       var that = this;
       $( 'input', this.footer() ).on( 'keyup change clear', function () {
       console.log('this ', this, ' that ', that);
         if ( that.search() !== this.value ) {
-          if ([0].includes(that.selector.cols)) {
+          if (false && [1].includes(that.selector.cols)) {
             that
             .search(`^${this.value}$`, true, false )
             .draw();
@@ -125,6 +129,48 @@ parasails.registerPage('welcome', {
         }
       } );
     } );
+
+var filteredData = table
+    .column( 3 )
+    .data()
+    .filter( function ( value, index ) {
+      console.warn('testing for ', value, index);
+        return value != '["DAY"]' ? true : false;
+    } );
+console.log('F', filteredData);
+
+$.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+      
+  $("#datepicker_from").datepicker({
+    dateFormat: "yy-mm-dd",
+    showOn: "button",
+    buttonImage: "images/Calendar.png",
+    buttonImageOnly: false,
+    "onSelect": function(date) {
+      minDateFilter = new Date(date).getTime();
+      table.draw();
+    }
+  }).keyup(function() {
+    minDateFilter = new Date(this.value).getTime();
+    table.draw();
+  });
+
+  $("#datepicker_to").datepicker({
+    dateFormat: "yy-mm-dd",
+    showOn: "button",
+    buttonImage: "images/Calendar.png",
+    buttonImageOnly: false,
+    "onSelect": function(date) {
+      maxDateFilter = new Date(date).getTime();
+      table.draw();
+    }
+  }).keyup(function() {
+    maxDateFilter = new Date(this.value).getTime();
+    table.draw();
+  });
+
+    initNopingButtons(table);
+
     });
       /*
       var table = new KingTable({
@@ -144,12 +190,7 @@ parasails.registerPage('welcome', {
       console.log('table', table);
       */
 
-      
-            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-       $('#min, #max').change(function () {
-                table.draw();
-            });
+
     },
     clickOpenExampleModalButton: async function() {
       this.goto('/welcome/hello');

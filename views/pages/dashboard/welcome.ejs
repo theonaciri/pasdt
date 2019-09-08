@@ -1,46 +1,43 @@
 <div id="welcome">
-  <div class="container">
-    <h1>Tableau de logs</h1>
-    <hr/>
-  </div>
- <table border="0" cellspacing="5" cellpadding="5">
-        <tbody>
-            <tr>
-                <td>Minimum Date:</td>
-                <td><input name="min" id="min" type="text"></td>
-            </tr>
-            <tr>
-                <td>Maximum Date:</td>
-                <td><input name="max" id="max" type="text"></td>
-            </tr>
-        </tbody>
-    </table>
+<div style="padding: 0 15px">
+<p id="date_filter">
+
+    <div class="input-group mb-3">
+        <span id="date-label-from" class="date-label">De:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
+        <span id="date-label-to" class="date-label">&nbsp;à :&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
+        &nbsp;
+        <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off" id="noday">
+          Cacher les logs ACK et DAY
+        </button>
+    </div>
+</p>
   <table id="main-table" class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th>id</th>
-                <th>cardId</th>
-                <th>msgId</th>
-                <th>msg</th>
-                <th>eventType</th>
+                <!--<th>id</th> -->
+                <!-- <th>ID de msg</th> -->
+                <th>Date</th>
+                <th>ID de la carte</th>
+                <th>Type d'événement</th>
+                <th>Message</th>
                 <!--<th>options</th>-->
-                <th>created_at</th>
-                <th>updated_at</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>id</th>
-                <th>cardId</th>
-                <th>msgId</th>
-                <th>msg</th>
-                <th>eventType</th>
+               <!-- <th>id</th>-->
+               <!-- 
+                <th>Id de msg</th> -->
+                <th>Date</th>
+                <th>ID de la carte</th>
+                <th>Type d'événement</th>
+                <th>Message</th>
                 <!--<th>options</th>-->
-                <th>created_at</th>
-                <th>updated_at</th>
             </tr>
         </tfoot>
 </table>
+</div>  
   <router-view></router-view>
 </div>
+
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
