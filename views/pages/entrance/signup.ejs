@@ -1,49 +1,48 @@
 <div id="signup" v-cloak>
   <div class="container" v-if="!cloudSuccess">
-    <h1 class="text-center">Create an account</h1>
+    <h1 class="text-center">Créer un compte collaborateur</h1>
     <div class="signup-form">
-      <p class="text-center">Let's get started! Becoming a member is free and only takes a few minutes.</p>
+      <p class="text-center">Veuillez remplir ces champs. Le nouvel utilisateur aura accès avec ses propres login/mot de passe aux logs PASDT. Tous les champs s'addressent au COLLABORATEUR, et non pas vos informations. Vous pouvez créer autant de comptes collaborateurs que vous aurez besoin. Pour retirer l'accès à un compte utilisateur veuillez <a href="/support">contacter le support</a>.</p>
       <hr/>
       <ajax-form action="signup" :syncing.sync="syncing" :cloud-error.sync="cloudError" @submitted="submittedForm()" :handle-parsing="handleParsingForm">
         <div class="form-group">
-          <label for="full-name">Full name</label>
+          <label for="full-name">Nom complet</label>
           <input class="form-control" id="full-name" type="text"  :class="[formErrors.fullName ? 'is-invalid' : '']" v-model.trim="formData.fullName" placeholder="Sturgis P. Sturgeon" autocomplete="name" focus-first>
-          <div class="invalid-feedback" v-if="formErrors.fullName">Please enter your full name.</div>
+          <div class="invalid-feedback" v-if="formErrors.fullName">Veuillez entrer le nom complet du collaborateur.</div>
         </div>
         <div class="form-group">
-          <label for="email-address">Email address</label>
+          <label for="email-address">Adresse mail</label>
           <input class="form-control" id="email-address" type="email"  :class="[formErrors.emailAddress ? 'is-invalid' : '']" v-model.trim="formData.emailAddress" placeholder="sturgeon@example.com" autocomplete="email">
-          <div class="invalid-feedback" v-if="formErrors.emailAddress">Please enter a valid email address.</div>
+          <div class="invalid-feedback" v-if="formErrors.emailAddress">Veuillez entrer une adresse email correcte.</div>
         </div>
         <div class="form-group">
-          <label for="password">Choose a password</label>
+          <label for="password">Choisissez un mot de passe (il pourra le changer plus tard)</label>
           <input class="form-control" id="password" type="password"  :class="[formErrors.password ? 'is-invalid' : '']" v-model.trim="formData.password" placeholder="••••••••" autocomplete="new-password">
-          <div class="invalid-feedback" v-if="formErrors.password">Please enter a password.</div>
+          <div class="invalid-feedback" v-if="formErrors.password">Veuillez entrer un mot de passe.</div>
         </div>
         <div class="form-group">
-          <label for="confirm-password">Confirm password</label>
+          <label for="confirm-password">Confirmez le mot passe</label>
           <input class="form-control" id="confirm-password" type="password"  :class="[formErrors.confirmPassword ? 'is-invalid' : '']" v-model.trim="formData.confirmPassword" placeholder="••••••••" autocomplete="new-password">
-          <div class="invalid-feedback" v-if="formErrors.confirmPassword">Your password and confirmation do not match.</div>
+          <div class="invalid-feedback" v-if="formErrors.confirmPassword">Les deux mots de passe sont différents.</div>
         </div>
         <div class="form-group form-check">
           <input class="form-check-input" id="terms-agreement" type="checkbox" v-model="formData.agreed">
-          <label for="terms-agreement" class="form-check-label" :class="[formErrors.agreed ? 'text-danger' : '']">I have read &amp; agree to the <a target="_blank" href="/terms">terms of service</a>.</label>
+          <label for="terms-agreement" class="form-check-label" :class="[formErrors.agreed ? 'text-danger' : '']">J'ai lu &amp; et accepte les <a target="_blank" href="/terms">termes de service</a>.</label>
         </div>
-        <p class="text-danger" v-if="cloudError==='emailAlreadyInUse'"><small>It looks like there's already an account with your email address. If you forgot your password, you can recover it <a href="password/forgot">here</a>.</small></p>
-        <p class="text-danger" v-else-if="cloudError"><small>An error occured while processing your request. Please check your information and try again, or <a href="/support">contact support</a> if the error persists.</small></p>
+        <p class="text-danger" v-if="cloudError==='emailAlreadyInUse'"><small>Il y a déjà un compte avec cette adresse email. Si vous avez oublié son mot de passe, vous pouvez le récupérer en cliquant <a href="password/forgot">here</a>.</small></p>
+        <p class="text-danger" v-else-if="cloudError"><small>Une erreur est apparue en envoyant votre requête. Veuillez vérifier vos informations et réessayer, ou <a href="/support">contacter le support</a> si l'erreur persiste.</small></p>
         <div class="form-group">
-          <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block">Create account</ajax-button>
+          <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block">Créer le compte collaborateur</ajax-button>
         </div>
       </ajax-form>
-      <p class="text-center">Have an account? <a href="/login">Sign in</a></p>
     </div>
   </div>
   <div class="container" v-if="cloudSuccess">
-    <h1 class="text-center">Check your email!</h1>
+    <h1 class="text-center">Vérifiez la boite email fournie!</h1>
     <div class="success-message">
       <hr/>
-      <p>Your account is nearly ready. All you have to do is click the link we sent to <strong>{{formData.emailAddress}}</strong>.</p>
-      <p>(You can still access your dashboard now, but some features will be unvavailable until we've verified your email address.)</p>
+      <p>Le compte est déjà opérationnel. Tout ce que votre collaborateur a à faire est de cliquer sur le lien donné à cette adresse: <strong>{{formData.emailAddress}}</strong>.</p>
+      <p>(La connexion est déjà possible mais certaines fonctionnalités demandent une validation d'email.)</p>
       <p><a class="btn btn-outline-info" href="/">Go to dashboard</a></p>
     </div>
   </div>
