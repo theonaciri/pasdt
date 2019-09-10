@@ -14,7 +14,8 @@ module.exports.routes = {
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
   'GET /':                   { action: 'view-homepage-or-redirect' },
-  'GET /welcome/:unused?':   { action: 'dashboard/view-welcome' },
+  'GET /welcome/:unused?':   { action: 'dashboard/view-welcome', locals: {page: 'welcome'} },
+  'GET /graphs':             { action: 'dashboard/graphs', locals: {page: 'graphs'} },
 
   'GET /faq':                { action:   'view-faq' },
   'GET /legal/terms':        { action:   'legal/view-terms' },

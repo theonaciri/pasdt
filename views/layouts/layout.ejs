@@ -49,9 +49,19 @@
     <div id="page-wrap">
       <header id="page-header" class="navbar navbar-expand-sm navbar-dark bg-dark flex-column flex-md-row justify-content-between">
         <a class="navbar-brand mr-0" href="/"><img class="logo" alt="NEW_APP_NAME logo" src="/images/pasdt.png"/></a>
-         <% if(me) { %>
+        <% if(me) { %>
+          <% if(typeof page != 'undefined' && page == "welcome") {%>
+          <a href="/welcome" style="color: rgba(255, 255, 255)">Tableau de logs</a>
+          <% } else { %>
           <a href="/welcome" style="color: rgba(255, 255, 255, 0.5)">Tableau de logs</a>
-           <% } %>
+          <% } %>
+
+          <% if(typeof page != 'undefined' && page == "graphs") {%>
+          <a href="/graphs" style="color: rgba(255, 255, 255)">Graphes historiques</a>
+          <% } else { %>
+          <a href="/graphs" style="color: rgba(255, 255, 255, 0.5)">Graphes historiques</a>
+          <% } %>
+        <% } %>
         <div class="navbar-nav flex-row">
           <!-- LOGGED-IN NAVIGATION -->
           <% if(me) { %>
@@ -144,6 +154,7 @@
     <script src="/dependencies/vue-router.js"></script>
     <script src="/dependencies/bootstrap-4/bootstrap-4.bundle.js"></script>
     <script src="/dependencies/cloud.js"></script>
+    <script src="/dependencies/d3.v5.min.js"></script>
     <script src="/dependencies/dajquery-ui/jquery-ui.js"></script>
     <script src="/dependencies/dajquery-ui/jquery-ui0datepicker-fr.js"></script>
     <script src="/dependencies/datatables/jquery.dataTables.min.js"></script>
@@ -163,6 +174,7 @@
     <script src="/js/pages/account/edit-password.page.js"></script>
     <script src="/js/pages/account/edit-profile.page.js"></script>
     <script src="/js/pages/contact.page.js"></script>
+    <script src="/js/pages/dashboard/graphs.page.js"></script>
     <script src="/js/pages/dashboard/welcome.page.js"></script>
     <script src="/js/pages/entrance/confirmed-email.page.js"></script>
     <script src="/js/pages/entrance/forgot-password.page.js"></script>
