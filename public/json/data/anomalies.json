@@ -1,0 +1,26 @@
+[
+	{
+		"code": 1,
+		"ano": "Passage à + de 90°C",
+		"action": "",
+		"color": "blue"
+	},
+	{
+		"code": 2,
+		"ano": "Passage à + de 120°C",
+		"action": "Isolation BT + HT",
+		"color": "red"
+	},
+	{
+		"code": 3,
+		"ano": "Dégagement gazeux",
+		"action": "",
+		"color": "yellow"
+	},
+	{
+		"code": 4,
+		"ano": "Pression - seuil critique",
+		"action": "",
+		"color": "orange"
+	}
+]

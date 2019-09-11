@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
+        "analysis": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js --profile --json > stats.json",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "npm run development -- --watch",
         "watch-poll": "npm run watch -- --watch-poll",
@@ -17,6 +18,7 @@
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
+        "laravel-mix-bundle-analyzer": "^1.0.2",
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
         "resolve-url-loader": "2.3.1",
@@ -24,5 +26,20 @@
         "sass-loader": "7.*",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "datatables.net": "^1.10.19",
+        "datatables.net-bs4": "^1.10.19",
+        "datatables.net-buttons-bs4": "^1.5.6",
+        "datatables.net-colreorder-bs4": "^1.5.1",
+        "datatables.net-dt": "^1.10.19",
+        "datatables.net-fixedheader-bs4": "^3.1.5",
+        "datatables.net-keytable-bs4": "^2.5.0",
+        "datatables.net-responsive-bs4": "^2.2.3",
+        "datatables.net-rowgroup-bs4": "^1.1.0",
+        "datatables.net-scroller-bs4": "^2.0.0",
+        "jszip": "^3.2.2",
+        "pdfmake": "^0.1.59",
+        "webpack-jquery-ui": "^2.0.1"
     }
 }

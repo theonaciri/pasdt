@@ -10644,3 +10644,23 @@ a.text-dark:focus {
   }
 }
 
+#app {
+  padding-bottom: 75px;
+}
+
+#app #main-table_paginate > ul > li > a {
+  border: 1px solid #dee2e6;
+}
+
+#app #main-table {
+  max-width: 100%;
+}
+
+#app .individual-search {
+  max-width: 30vw;
+}
+
+#app .ui-datepicker-trigger img {
+  height: 20px;
+}
+
