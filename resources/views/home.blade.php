@@ -27,10 +27,7 @@
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Graphes</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -46,7 +43,7 @@
                                 </button>
                             </div>
                         </p>
-                        <table id="main-table" class="table table-striped table-bordered">
+                        <table id="main-table" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -67,7 +64,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">b...</div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">c...</div>
             </div>
         </div>
     </div>

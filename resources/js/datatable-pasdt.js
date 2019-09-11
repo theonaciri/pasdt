@@ -15,6 +15,22 @@ require( 'datatables.net-scroller-bs4' );
 */
 require('./widgets/dateinterval.plugin.js');
 require('./widgets/noping.plugin.js');
+//var rowColor = require('./widgets/created-row-color.plugin.js');
+var arrayToSearch = [
+  {name: 'temperature 1',   value: '1', class: 'dt-grey'},
+  {name: 'temperature 2',   value: '2', class: 'dt-red'},
+  {name: 'defaut pression', value: '3', class: 'dt-blue'},
+  {name: 'defaut gaz',      value: '4', class: 'dt-green'},
+  {name: 'defaut pression * defaut temperature 1',      value: '5', class: 'dt-black'},
+  {name: 'defaut temperature 2 * defaut temperature 1', value: '6', class: 'dt-black'},
+  {name: '',                value: '7', class: 'dt-black'}
+];
+
+String.prototype.capFirstLetter = function () {
+    return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
+        .toUpperCase() + this.slice(1) : this;
+}
+
 function _initTable() {
   console.log('init');
   $(document).ready(function() {
@@ -44,7 +60,16 @@ function _initTable() {
           });
         });
       },
-
+      createdRow: function rowColor( row, data, dataIndex) {
+        //console.log('testing ', data.msg.toLowerCase().indexOf("temperature 1")> 0);
+        if (typeof data.msg != 'undefined') {
+          var foundValue = arrayToSearch.filter(obj=>data.msg.toLowerCase().indexOf(obj.name) > 0);
+          //console.log('found', foundValue);
+          if (foundValue.length) {
+            $(row).addClass(foundValue[foundValue.length -1].class);
+          }
+        }
+      },
       language: {
         processing: "Traitement en cours...",
         search: "Rechercher&nbsp;partout&nbsp;:",
@@ -88,7 +113,9 @@ function _initTable() {
           "data": "eventType"
         },
         {
-          "data": "msg"
+          "data": "msg", render: function(data, type, row) {
+            return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+          }
         }
         /*{"data": "options"},*/
         /*{"data": "updated_at"},*/

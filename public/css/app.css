@@ -10670,3 +10670,23 @@ a.text-dark:focus {
   height: 20px;
 }
 
+.dt-grey {
+  background-color: #604a7b33;
+}
+
+.dt-red {
+  background-color: #ff000033;
+}
+
+.dt-blue {
+  background-color: #4bacc633;
+}
+
+.dt-green {
+  background-color: #00b05033;
+}
+
+.dt-black {
+  background-color: #2223;
+}
+
