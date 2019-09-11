@@ -1,0 +1,14 @@
+[
+	{
+		"cardId": "003106224",
+		"code": "USINR",
+		"GPS": "48.8584° N, 2.2945° E",
+		"nom": "Usine Rouen"
+	}
+	{
+		"cardId": "005606224",
+		"code": "OTRUSINE",
+		"GPS": "48.8584° N, 2.2945° E",
+		"nom": "Usine OTR"
+	}
+]

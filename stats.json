@@ -1,0 +1,60 @@
+ DONE  Compiled successfully in 6483ms11:55:23
+
+Webpack Bundle Analyzer is started at http://127.0.0.1:8888
+Use Ctrl+C to close it
+{
+  "errors": [],
+  "warnings": [],
+  "outputPath": "/home/naciri_t/projects/pasdt/public",
+  "assetsByChunkName": {
+    "/js/app": [
+      "/js/app.js",
+      "/css/app.css"
+    ]
+  },
+  "assets": [
+    {
+      "name": "/css/app.css",
+      "size": 177234,
+      "chunks": [
+        "/js/app"
+      ],
+      "chunkNames": [
+        "/js/app"
+      ],
+      "emitted": true
+    },
+    {
+      "name": "/js/app.js",
+      "size": 356310,
+      "chunks": [
+        "/js/app"
+      ],
+      "chunkNames": [
+        "/js/app"
+      ],
+      "emitted": true
+    }
+  ],
+  "filteredAssets": 0,
+  "namedChunkGroups": {
+    "/js/app": {
+      "chunks": [
+        "/js/app"
+      ],
+      "assets": [
+        "/js/app.js",
+        "/css/app.css"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "logging": {
+    "webpack.buildChunkGraph.visitModules": {
+      "entries": [],
+      "filteredEntries": 2,
+      "debug": false
+    }
+  }
+}
