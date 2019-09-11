@@ -10644,6 +10644,12 @@ a.text-dark:focus {
   }
 }
 
+.btn-dark {
+  color: #fff;
+  background-color: #343a40;
+  border-color: #343a40;
+}
+
 #app {
   padding-bottom: 75px;
 }

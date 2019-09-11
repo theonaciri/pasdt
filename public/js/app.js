@@ -55011,19 +55011,24 @@ try {
 
 //var dt = require( 'datatables.net' );
 __webpack_require__(/*! datatables.net-bs4 */ "./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js");
-/*require( 'jszip' );
+/*
+require( 'jszip' );
 require( 'pdfmake' );
-require( 'datatables.net-buttons-bs4' )();
-require( 'datatables.net-buttons/js/buttons.html5.js' )();
-require( 'datatables.net-buttons/js/buttons.print.js' )();
-require( 'datatables.net-colreorder-bs4' )();
-require( 'datatables.net-fixedheader-bs4' )();
-require( 'datatables.net-keytable-bs4' )();
-require( 'datatables.net-responsive-bs4' )();
-require( 'datatables.net-rowgroup-bs4' )();
-require( 'datatables.net-scroller-bs4' )();
+require( 'datatables.net-buttons-bs4' );
+require( 'datatables.net-buttons/js/buttons.html5.js' );
+require( 'datatables.net-buttons/js/buttons.print.js' );
+require( 'datatables.net-colreorder-bs4' );
+require( 'datatables.net-fixedheader-bs4' );
+require( 'datatables.net-keytable-bs4' );
+require( 'datatables.net-responsive-bs4' );
+require( 'datatables.net-rowgroup-bs4' );
+require( 'datatables.net-scroller-bs4' );
 */
 
+
+__webpack_require__(/*! ./widgets/dateinterval.plugin.js */ "./resources/js/widgets/dateinterval.plugin.js");
+
+__webpack_require__(/*! ./widgets/noping.plugin.js */ "./resources/js/widgets/noping.plugin.js");
 
 function _initTable() {
   console.log('init');
@@ -55141,10 +55146,80 @@ function _initTable() {
       maxDateFilter = new Date(this.value).getTime();
       table.draw();
     });
+    initNopingButtons(table);
   });
 }
 
 _initTable();
+
+/***/ }),
+
+/***/ "./resources/js/widgets/dateinterval.plugin.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/widgets/dateinterval.plugin.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Date range filter
+minDateFilter = "";
+maxDateFilter = "";
+$.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
+  if (typeof aData._date == 'undefined') {
+    aData._date = new Date(aData[0]).getTime();
+  }
+
+  if (minDateFilter && !isNaN(minDateFilter)) {
+    if (aData._date < minDateFilter) {
+      return false;
+    }
+  }
+
+  if (maxDateFilter && !isNaN(maxDateFilter)) {
+    if (aData._date > maxDateFilter) {
+      return false;
+    }
+  }
+
+  return true;
+});
+
+/***/ }),
+
+/***/ "./resources/js/widgets/noping.plugin.js":
+/*!***********************************************!*\
+  !*** ./resources/js/widgets/noping.plugin.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function initNopingButtons(table) {
+  //timeout for whatever reason datatables is not initialised
+  setTimeout(function () {
+    ext_search(table, $("#noday"), false);
+    $("#noday").click(function (e, a, b) {
+      ext_search(table, $(e.currentTarget), true);
+    });
+  }, 10);
+}
+
+function ext_search(table, $target, toggle) {
+  var togglevalue = localStorage.getItem('noping') == "true";
+  togglevalue = toggle ? !togglevalue : !!togglevalue;
+  localStorage.setItem('noping', togglevalue);
+  $target.toggleClass('btn-dark', togglevalue);
+  $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    if (togglevalue) {
+      return data[3] != '["DAY"]' && data[3] != '["ACK"]';
+    } else {
+      return true;
+    }
+  });
+  table.draw();
+  $.fn.dataTable.ext.search.pop();
+}
+
+window.initNopingButtons = initNopingButtons;
 
 /***/ }),
 
