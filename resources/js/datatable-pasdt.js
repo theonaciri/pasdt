@@ -103,7 +103,9 @@ function _initTable() {
         /* {"data": "id"},*/
 
         {
-          "data": "created_at"
+          "data": "created_at", render: function(data, type, row) {
+            return data;//new Date(data).toLocaleString("fr-FR")
+          }
         },
         {
           "data": "cardId"
@@ -140,15 +142,6 @@ function _initTable() {
       });
     });
 
-    var filteredData = table
-      .column(3)
-      .data()
-      .filter(function(value, index) {
-        console.warn('testing for ', value, index);
-        return value != '["DAY"]' ? true : false;
-      });
-    console.log('F', filteredData);
-
     $.datepicker.setDefaults($.datepicker.regional["fr"]);
 
     $("#datepicker_from").datepicker({
@@ -178,7 +171,17 @@ function _initTable() {
       maxDateFilter = new Date(this.value).getTime();
       table.draw();
     });
+
   initNopingButtons(table);
+      var filteredData = table
+      .column(3)
+      .data()
+      .filter(function(value, index) {
+        console.warn('testing for ', value, index);
+        return value != 'Day' ? true : false;
+      });
+    console.log('F', filteredData);
+
   });
 
 }

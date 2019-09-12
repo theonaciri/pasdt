@@ -55132,7 +55132,10 @@ function _initTable() {
       "columns": [
       /* {"data": "id"},*/
       {
-        "data": "created_at"
+        "data": "created_at",
+        render: function render(data, type, row) {
+          return data; //new Date(data).toLocaleString("fr-FR")
+        }
       }, {
         "data": "cardId"
       },
@@ -55164,11 +55167,6 @@ function _initTable() {
         }
       });
     });
-    var filteredData = table.column(3).data().filter(function (value, index) {
-      console.warn('testing for ', value, index);
-      return value != '["DAY"]' ? true : false;
-    });
-    console.log('F', filteredData);
     $.datepicker.setDefaults($.datepicker.regional["fr"]);
     $("#datepicker_from").datepicker({
       dateFormat: "yy-mm-dd",
@@ -55197,6 +55195,11 @@ function _initTable() {
       table.draw();
     });
     initNopingButtons(table);
+    var filteredData = table.column(3).data().filter(function (value, index) {
+      console.warn('testing for ', value, index);
+      return value != 'Day' ? true : false;
+    });
+    console.log('F', filteredData);
   });
 }
 
@@ -55245,22 +55248,21 @@ $.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
 
 function initNopingButtons(table) {
   //timeout for whatever reason datatables is not initialised
-  setTimeout(function () {
-    ext_search(table, $("#noday"), false);
-    $("#noday").click(function (e, a, b) {
-      ext_search(table, $(e.currentTarget), true);
-    });
-  }, 10);
+  //setTimeout(function(){ 	ext_search(table, $("#noday"), false);
+  $("#noday").click(function (e, a, b) {
+    ext_search(table, $(e.currentTarget), true);
+  }); //}, 10);
 }
 
 function ext_search(table, $target, toggle) {
   var togglevalue = localStorage.getItem('noping') == "true";
   togglevalue = toggle ? !togglevalue : !!togglevalue;
+  console.log('toogle', togglevalue);
   localStorage.setItem('noping', togglevalue);
   $target.toggleClass('btn-dark', togglevalue);
   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
     if (togglevalue) {
-      return data[3] != '["DAY"]' && data[3] != '["ACK"]';
+      return data[3] != 'Day' && data[3] != 'Ack';
     } else {
       return true;
     }
