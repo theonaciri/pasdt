@@ -1,11 +1,12 @@
 //var dt = require( 'datatables.net' );
 require( 'datatables.net-bs4' );
 require( 'jszip' );
-var pdfFonts = require( 'pdfmake/build/vfs_fonts.js' );
 var pdfmake = require( 'pdfmake' );
-require( 'datatables.net-buttons-bs4' );
-require( 'datatables.net-buttons/js/buttons.html5.js' );
-require( 'datatables.net-buttons/js/buttons.print.js' );
+var pdfFonts = require( 'pdfmake/build/vfs_fonts.js' );
+require( 'Buttons/js/buttons.bootstrap4' );
+require( 'Buttons/js/buttons.html5' );
+require( 'Buttons/js/buttons.print' );
+require( 'Buttons/js/buttons.flash' );
 /*
 require( 'datatables.net-colreorder-bs4' );
 require( 'datatables.net-fixedheader-bs4' );
@@ -48,15 +49,18 @@ function _initTable() {
           'copyHtml5',
           {
             extend: 'excel',
-            text: 'Save current page',
+            text: 'Export excel',
+            className: 'exportExcel',
+            filename: 'Export excel',
             exportOptions: {
-                modifier: {
-                    page: 'current'
-                }
+              modifier: {
+                page: 'all'
+              }
             }
-          },
+          }, 
           'csvHtml5',
-          'pdfHtml5'
+          'pdfHtml5',
+          'print'
       ],
       initComplete: function() {
         /* Dropdown */
