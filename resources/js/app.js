@@ -8,6 +8,8 @@ require('./bootstrap');
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 require('./datatable-pasdt');
+require('./datatable-png');
+//require('./graphs-pasdt');
 //window.Vue = require('vue');
 
 /**
@@ -38,3 +40,4 @@ $('#myTab a').on('click', function (e) {
   e.preventDefault()
   $(this).tab('show')
 })*/
+

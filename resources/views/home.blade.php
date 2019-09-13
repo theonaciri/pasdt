@@ -27,7 +27,7 @@
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Graphes</a>
+                    <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -39,7 +39,7 @@
                                 <span id="date-label-to" class="date-label">&nbsp;à :&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
                                 &nbsp;
                                 <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off" id="noday">
-                                  Cacher les logs ACK et DAY
+                                  Cacher les logs Ack, Day & Test
                                 </button>
                             </div>
                         </p>
@@ -63,9 +63,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">b...</div>
+                <div class="tab-pane fade" id="graphs" role="tabpanel" aria-labelledby="graphs-tab">
+                    <button type="button" id="visib" class="btn btn-secondary" style="display: none; position: absolute; top: 300px; right: 0">
+                      Transformateur 12 declenchement * defaut temperature 2<br>
+                      Carte n° 005606224<br>
+                      Le 20/06/2019 à 09:40:31
+                    </button>
+                    <img id="imgid" src="images/screendata.png" />
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

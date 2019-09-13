@@ -10662,6 +10662,10 @@ a.text-dark:focus {
   max-width: 100%;
 }
 
+#app #main-table input[type=text] {
+  width: 100%;
+}
+
 #app .individual-search {
   max-width: 30vw;
 }
@@ -10669,6 +10673,12 @@ a.text-dark:focus {
 #app .ui-datepicker-trigger img {
   height: 20px;
 }
+
+.cursor {
+  cursor: pointer;
+}
+
+/* TABLE */
 
 .dt-grey {
   background-color: #604a7b33;
@@ -10688,5 +10698,19 @@ a.text-dark:focus {
 
 .dt-black {
   background-color: #2223;
+}
+
+/* GRAPHS */
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-family: sans-serif;
+  font-size: 11px;
 }
 

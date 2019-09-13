@@ -1,10 +1,15 @@
 function initNopingButtons(table) {
 	//timeout for whatever reason datatables is not initialised
-	//setTimeout(function(){ 	ext_search(table, $("#noday"), false);
-		$("#noday").click(function(e, a, b) {
+		$("#noday").click(function(e) {
 			ext_search(table, $(e.currentTarget), true);
 		});
-	//}, 10);
+		/*$('body').click(function(e) {
+			if (e.target.id === "noday") return ;
+			ext_search(table, $("#noday"), false);
+		})*/
+		setTimeout(function(){
+			ext_search(table, $("#noday"), false);
+		}, 100);
 }
 
 function ext_search(table, $target, toggle) {
@@ -16,7 +21,7 @@ function ext_search(table, $target, toggle) {
 	$.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
         	if (togglevalue) {
-            	return data[3] != 'Day' && data[3] != 'Ack';
+            	return data[3] != 'Day' && data[3] != 'Ack' && data[3] != 'Test';
         	} else {
         		return true;
         	}
@@ -25,5 +30,6 @@ function ext_search(table, $target, toggle) {
     table.draw();
     $.fn.dataTable.ext.search.pop();
 }
+
 
 window.initNopingButtons = initNopingButtons;

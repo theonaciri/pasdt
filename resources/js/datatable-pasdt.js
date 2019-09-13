@@ -1,11 +1,12 @@
 //var dt = require( 'datatables.net' );
 require( 'datatables.net-bs4' );
-/*
 require( 'jszip' );
-require( 'pdfmake' );
+var pdfFonts = require( 'pdfmake/build/vfs_fonts.js' );
+var pdfmake = require( 'pdfmake' );
 require( 'datatables.net-buttons-bs4' );
 require( 'datatables.net-buttons/js/buttons.html5.js' );
 require( 'datatables.net-buttons/js/buttons.print.js' );
+/*
 require( 'datatables.net-colreorder-bs4' );
 require( 'datatables.net-fixedheader-bs4' );
 require( 'datatables.net-keytable-bs4' );
@@ -25,7 +26,8 @@ var arrayToSearch = [
   {name: 'defaut temperature 2 * defaut temperature 1', value: '6', class: 'dt-black'},
   {name: '',                value: '7', class: 'dt-black'}
 ];
-
+var table;
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
@@ -40,7 +42,14 @@ function _initTable() {
       $(this).html('<input type="text" placeholder="Rechercher ' + title + '" />');
     });
 
-    var table = $('#main-table').DataTable({
+    table = $('#main-table').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5',
+          'pdfHtml5'
+      ],
       initComplete: function() {
         /* Dropdown */
         this.api().columns([1, 2]).every(function() {
