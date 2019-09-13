@@ -10,6 +10,21 @@
 
 
 
+
+
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+  duration = this.value;
+  duration_s = this.value;
+}
+
+/*
 function daysDifference(d0, d1) {
   var diff = new Date(new Date(+d1).setHours(12) - new Date(+d0).setHours(12));
   return diff;
@@ -34,8 +49,7 @@ function formatDate(date){
   		duration_s = duration / 1000 * 4 ; // ?
   		console.log('duration', new Date(duration).toLocaleString('fr-FR'));
       }
-    });
-
+    });*/
   var historyLength  = 243,
     now = new Date(Date.now() - duration_s),
     count = 0,
@@ -113,7 +127,7 @@ function formatDate(date){
         now = new Date();
         x.domain([now - (historyLength  - 2) * duration_s, now - duration_s]);
         y.domain([0, d3.max(scrollData)]);
-
+        console.log('x', new Date(now - (historyLength  - 2) * duration_s), ' to ', new Date(now - duration_s));
         // push the accumulated count onto the back, and reset the count
         scrollData.push(Math.min(30, count));
         console.log('count', Math.min(30, count));
