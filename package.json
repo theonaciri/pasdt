@@ -28,6 +28,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "bootstrap-slider": "^10.6.2",
+        "d3": "^5.12.0",
         "d3-3": "^0.0.0",
         "datatables.net": "^1.10.19",
         "datatables.net-bs4": "^1.10.19",

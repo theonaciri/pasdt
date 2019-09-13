@@ -46,7 +46,15 @@ function _initTable() {
       dom: 'Bfrtip',
       buttons: [
           'copyHtml5',
-          'excelHtml5',
+          {
+            extend: 'excel',
+            text: 'Save current page',
+            exportOptions: {
+                modifier: {
+                    page: 'current'
+                }
+            }
+          },
           'csvHtml5',
           'pdfHtml5'
       ],
