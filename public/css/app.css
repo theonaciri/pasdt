@@ -10714,3 +10714,8 @@ a.text-dark:focus {
   font-size: 11px;
 }
 
+.line {
+  fill: none;
+  stroke: #000;
+}
+
