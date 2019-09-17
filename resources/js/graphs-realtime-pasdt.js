@@ -127,7 +127,7 @@ function formatDate(date){
         now = new Date();
         x.domain([now - (historyLength  - 2) * duration_s, now - duration_s]);
         y.domain([0, d3.max(scrollData)]);
-        console.log('x', new Date(now - (historyLength  - 2) * duration_s), ' to ', new Date(now - duration_s));
+        //console.log('x', new Date(now - (historyLength  - 2) * duration_s), ' to ', new Date(now - duration_s));
         // push the accumulated count onto the back, and reset the count
         scrollData.push(Math.min(30, count));
         console.log('count', Math.min(30, count));
