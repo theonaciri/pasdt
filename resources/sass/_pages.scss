@@ -98,3 +98,8 @@
   background: #4CAF50;
   cursor: pointer;
 }
+
+
+#symbol > .path:last-child {
+	display: none;
+}

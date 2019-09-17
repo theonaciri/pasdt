@@ -10753,3 +10753,7 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
+#symbol > .path:last-child {
+  display: none;
+}
+

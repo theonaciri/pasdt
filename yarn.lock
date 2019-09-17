@@ -6237,6 +6237,11 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
+plotly.js-dist@^1.49.4:
+  version "1.49.4"
+  resolved "https://registry.yarnpkg.com/plotly.js-dist/-/plotly.js-dist-1.49.4.tgz#ea42917ea953905877d34e44a7e85be677566148"
+  integrity sha512-41x5C0p+CcyfZcPGYk78qg2G+q0p3Keo21ypM3oCATGOTHcJle+jFjz2d206DsZ5KCXMsYz4yzjebCbz6n7lIQ==
+
 png-js@>=0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/png-js/-/png-js-0.1.1.tgz#1cc7c212303acabe74263ec3ac78009580242d93"
