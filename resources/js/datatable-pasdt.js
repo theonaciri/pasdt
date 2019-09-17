@@ -1,12 +1,3 @@
-//var dt = require( 'datatables.net' );
-require( 'datatables.net-bs4' );
-require( 'jszip' );
-var pdfmake = require( 'pdfmake' );
-var pdfFonts = require( 'pdfmake/build/vfs_fonts.js' );
-require( 'Buttons/js/buttons.bootstrap4' );
-require( 'Buttons/js/buttons.html5' );
-require( 'Buttons/js/buttons.print' );
-require( 'Buttons/js/buttons.flash' );
 /*
 require( 'datatables.net-colreorder-bs4' );
 require( 'datatables.net-fixedheader-bs4' );
@@ -15,11 +6,14 @@ require( 'datatables.net-responsive-bs4' );
 require( 'datatables.net-rowgroup-bs4' );
 require( 'datatables.net-scroller-bs4' );
 */
-require('./widgets/dateinterval.plugin.js');
-require('./widgets/noping.plugin.js');
 
-var Graphs = require('./graphs-pasdt');
 //var rowColor = require('./widgets/created-row-color.plugin.js');
+
+define(['datatables.net-bs4', './graphs-pasdt', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
+  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
+  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
+  './widgets/noping.plugin.js'],
+  function(datatables, Graphs, jszip, pdfmake, pdfFonts) {
 var arrayToSearch = [
   {name: 'temperature 1',   value: '1', class: 'dt-grey'},
   {name: 'temperature 2',   value: '2', class: 'dt-red'},
@@ -170,8 +164,9 @@ function _initTable() {
 
     $('#graphs-tab').click( function () {
       graphdata = table.rows({ 'search': 'applied' }).data();
-      Graphs.reinitGraph(graphdata);
-      console.log('DATA', graphdata);
+      
+      console.log(graphdata);
+      Graphs.loadGraph(graphdata);
     });
     $.datepicker.setDefaults($.datepicker.regional["fr"]);
 
@@ -219,3 +214,5 @@ function _initTable() {
 
 
 _initTable();
+
+});
