@@ -17,6 +17,8 @@ require( 'datatables.net-scroller-bs4' );
 */
 require('./widgets/dateinterval.plugin.js');
 require('./widgets/noping.plugin.js');
+
+var Graphs = require('./graphs-pasdt');
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 var arrayToSearch = [
   {name: 'temperature 1',   value: '1', class: 'dt-grey'},
@@ -28,6 +30,8 @@ var arrayToSearch = [
   {name: '',                value: '7', class: 'dt-black'}
 ];
 var table;
+var graphdata;
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
@@ -163,6 +167,12 @@ function _initTable() {
       });
     });
 
+
+    $('#graphs-tab').click( function () {
+      graphdata = table.rows({ 'search': 'applied' }).data();
+      Graphs.reinitGraph(graphdata);
+      console.log('DATA', graphdata);
+    });
     $.datepicker.setDefaults($.datepicker.regional["fr"]);
 
     $("#datepicker_from").datepicker({
