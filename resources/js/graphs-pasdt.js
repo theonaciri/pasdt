@@ -1,72 +1,128 @@
-define(["plotly.js-dist"], function(Plotly) {
-	var graphDiv, graph, data;
+define(["d3"], function(d3) {
+	// set the dimensions and margins of the graph
+	var margin = {top: 10, right: 30, bottom: 30, left: 60},
+	width = 460 - margin.left - margin.right,
+	height = 400 - margin.top - margin.bottom;
 
-  	function unpack(rows, key) {
-	  return rows.map(function(row) { return row[key]; });
+	var init = false;
+	// append the svg object to the body of the page
+	var svg = d3.select("#my_dataviz")
+	.append("svg")
+	.attr("width", width + margin.left + margin.right)
+	.attr("height", height + margin.top + margin.bottom)
+	.append("g")
+	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	
+	function initGraph(data) {
+		init = true;
+		  // Add X axis
+		var x = d3.scaleLinear()
+		  .domain(d3.extent(data, function(d) { 
+		    return new Date(d.updated_at).toLocaleString("fr-FR"); 
+		  }))
+		  .range([ 0, width ]);
+		  svg.append("g")
+		  .attr("transform", "translate(0," + height + ")")
+		  .call(d3.axisBottom(x));
+
+		  // Add Y axis
+		  var y = d3.scaleLinear()
+		  .domain([0, d3.max(data, function(d) { return +d.eventType; })])
+		  .range([ height, 0]);
+		  svg.append("g")
+		  .call(d3.axisLeft(y));
+
+		  // Add dots
+		  svg.append('g')
+		  .selectAll("dot")
+		  .data(data)
+		  .enter()
+		  .append("circle")
+		  //.attr("class", function (d) { return "dot " + d.Species } )
+		  .attr("cx", function (d) { return x(d.updated_at); } )
+		  .attr("cy", function (d) { return y(d.eventType); } )
+		  .attr("r", 5)
+		  .style("fill", function (d) { return "#21908dff" } )
 	}
-   
 
-	function reinitGraph(graphdata) {
-		console.log('REINITN', graphdata);
-		if (typeof graphDiv === 'undefined') {
-			initGraph(graphdata);
-		} else {
-			console.log('else');
-			//adjustValue1(83);
-			adjustValues(graphdata);
+	function loadGraph(data) {
+
+
+		console.log('yaaa');
+		  if (!init) {
+		  	initGraph(data);
+		  }
+		 
 		}
+
+	function empty() {
+		var x = d3.scaleLinear()
+		  .domain([4, 8])
+		  .range([ 0, width ]);
+		  svg.append("g")
+		  .attr("transform", "translate(0," + height + ")")
+		  .call(d3.axisBottom(x));
+
+		  // Add Y axis
+		  var y = d3.scaleLinear()
+		  .domain([0, 9])
+		  .range([ height, 0]);
+		  svg.append("g")
+		  .call(d3.axisLeft(y));
+
+		  // Color scale: give me a specie name, I return a color
+		  var color = d3.scaleOrdinal()
+		  .domain(["setosa", "versicolor", "virginica" ])
+		  .range([ "#440154ff", "#21908dff", "#fde725ff"])
+
+
+		  // Highlight the specie that is hovered
+		  var highlight = function(d){
+
+		  	selected_specie = d.Species
+
+		  	d3.selectAll(".dot")
+		  	.transition()
+		  	.duration(200)
+		  	.style("fill", "lightgrey")
+		  	.attr("r", 3)
+
+		  	d3.selectAll("." + selected_specie)
+		  	.transition()
+		  	.duration(200)
+		  	.style("fill", color(selected_specie))
+		  	.attr("r", 7)
+		  }
+
+		  // Highlight the specie that is hovered
+		  var doNotHighlight = function(){
+		  	d3.selectAll(".dot")
+		  	.transition()
+		  	.duration(200)
+		  	.style("fill", "lightgrey")
+		  	.attr("r", 5 )
+		  }
+
+		  // Add dots
+		  svg.append('g')
+		  .selectAll("dot")
+		  .data(data)
+		  .enter()
+		  .append("circle")
+		  .attr("class", function (d) { return "dot " + d.Species } )
+		  .attr("cx", function (d) { return x(d.Sepal_Length); } )
+		  .attr("cy", function (d) { return y(d.Petal_Length); } )
+		  .attr("r", 5)
+		  .style("fill", function (d) { return color(d.Species) } )
+		  .on("mouseover", highlight)
+		  .on("mouseleave", doNotHighlight )
 	}
 
-	function initGraph(graphdata) {
-		graphDiv = document.getElementById('tester');
-
-		 var data = [{
-			type: 'scatter',
-			mode: 'markers',
-			x: unpack(graphdata, 'updated_at'),
-			y: unpack(graphdata, 'id'),
-			text: unpack(graphdata, 'cardId')/*,
-			marker: {
-				size: unpack(graphdata, 'eventType'),
-				sizemode: "area",
-				sizeref: 2
-			}/*,
-			transforms: [{
-				type: 'filter',
-				target: unpack(graphdata, 'year'),
-				operation: '=',
-				value: '2007'
-			}, {
-				type: 'groupby',
-				groups: unpack(graphdata, 'cardId'),
-				styles: [
-				  {target: 'Asia', value: {marker: {color: 'red'}}},
-				  {target: 'Europe', value: {marker: {color: 'blue'}}},
-				  {target: 'Americas', value: {marker: {color: 'orange'}}},
-				  {target: 'Africa', value: {marker: {color: 'green'}}},
-				  {target: 'Oceania', value: {marker: {color: 'purple'}}}
-				]}
-			]*/
-    	}];
-		Plotly.newPlot(graphDiv, data);
+	return {
+		color: "blue",
+		size: "large",
+		loadGraph: loadGraph
 	}
-
-
-	function adjustValue1(value) {
-	    data[0]['y'][0] = value;
-	    Plotly.redraw(graphDiv);
-	}
-
-	function adjustValues(graphdata) {
-		data[0].y = [60];
-	    Plotly.redraw(graphDiv);
-    	//Plotly.restyle('PlotlyTest', 'y', [[value]]);
-	}
-
-    return {
-        color: "blue",
-        size: "large",
-        reinitGraph: reinitGraph
-    }
 });
 

@@ -67,6 +67,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="graphs" role="tabpanel" aria-labelledby="graphs-tab">
+                    <div id="my_dataviz"></div>
                     <div id="tester" style="width:600px;height:250px;"></div>
                     <button type="button" id="visib" class="btn btn-secondary" style="display: none; position: absolute; top: 300px; right: 0">
                       Transformateur 12 declenchement * defaut temperature 2<br>
