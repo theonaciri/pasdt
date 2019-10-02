@@ -10,6 +10,7 @@ require('webpack-jquery-ui/css');
 require('./datatable-pasdt');
 require('./datatable-png');
 require('./graphs-realtime-pasdt');
+require('./graphs-realtime-plotly-pasdt');
 //window.Vue = require('vue');
 
 /**

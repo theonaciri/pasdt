@@ -1,4 +1,5 @@
 (function() {
+  return ;
   var d3 = require('d3');
   var today = new Date();
   var yesterday = new Date();

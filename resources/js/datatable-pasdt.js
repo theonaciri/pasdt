@@ -120,7 +120,6 @@ function _initTable() {
       ],
       "columns": [
         /* {"data": "id"},*/
-
         {
           "data": "created_at", render: function(data, type, row) {
             return data;//new Date(data).toLocaleString("fr-FR")
@@ -137,22 +136,35 @@ function _initTable() {
           "data": "msg", render: function(data, type, row) {
             return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
           }
+        },
+        {
+          "data": "options", render: function(data, type, row) {
+            try {
+              var obj = JSON.parse(data);
+              if (typeof obj === 'object' && obj.hasOwnProperty("maxtemp")) {
+                return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
+              }
+              return '--';
+            } catch (e) {
+              console.warn(e);
+              return '--';
+            }
+          }
         }
         /*{"data": "options"},*/
         /*{"data": "updated_at"},*/
       ]
     });
     /* Search bar */
-    table.columns([0, 3]).every(function() {
+    table.columns([0, 3, 4]).every(function() {
       var that = this;
       $('input', this.footer()).on('keyup change clear', function() {
-        console.log('this ', this, ' that ', that);
         if (that.search() !== this.value) {
           if (false && [1].includes(that.selector.cols)) {
             that
               .search(`^${this.value}$`, true, false)
               .draw();
-          } else {
+          } else {  
             that
               .search(this.value)
               .draw();
