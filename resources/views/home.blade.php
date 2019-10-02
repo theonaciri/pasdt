@@ -53,6 +53,7 @@
                                     <th>ID de la carte</th>
                                     <th>Type d'événement</th>
                                     <th>Message</th>
+                                    <th>Température</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -61,13 +62,15 @@
                                     <th>ID de la carte</th>
                                     <th>Type d'événement</th>
                                     <th>Message</th>
+                                    <th>Température</th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="graphs" role="tabpanel" aria-labelledby="graphs-tab">
-                    <div id="my_dataviz"></div>
+                    <div id="my_dataviz" width="960" height="500"></div>
+                    <!--
                     <div id="tester" style="width:600px;height:250px;"></div>
                     <button type="button" id="visib" class="btn btn-secondary" style="display: none; position: absolute; top: 300px; right: 0">
                       Transformateur 12 declenchement * defaut temperature 2<br>
@@ -75,6 +78,7 @@
                       Le 20/06/2019 à 09:40:31
                     </button>
                     <img id="imgid" src="images/screendata.png" />
+                -->
                 </div>
                 <div class="tab-pane fade" id="realtime-graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
                     <h1>Path Transitions</h1>
@@ -89,7 +93,7 @@
   <input type="range" min="100" max="100000" value="500" class="slider" id="myRange">
 </div>
 <div id="demo">Value: </div>
-<div class="graph"></div>
+<div id="graphlive"></div>
                 </div>
             </div>
         </div>
