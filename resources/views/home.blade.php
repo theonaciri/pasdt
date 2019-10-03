@@ -17,11 +17,11 @@
         </div>
     </div>
 </div>
-</div>
 @endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
+            <!--
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
@@ -32,14 +32,16 @@
                 <li class="nav-item">
                     <a class="nav-link" id="realtime-graphs-tab" data-toggle="tab" href="#realtime-graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes temps-réel</a>
                 </li>
+            
             </ul>
+        -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
                         <p id="date_filter">
                             <div class="input-group mb-3">
-                                <span id="date-label-from" class="date-label">De:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
-                                <span id="date-label-to" class="date-label">&nbsp;à :&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
+                                <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
+                                <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
                                 &nbsp;
                                 <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off" id="noday">
                                   Cacher les logs Ack, Day & Test

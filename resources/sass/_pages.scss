@@ -1,5 +1,7 @@
 #app {
-  padding-bottom: 75px;
+  .py-4 {
+    padding-top: .5rem !important;
+  }
 	#main-table_paginate > ul > li > a {
 		border: 1px solid #dee2e6;
 	}
@@ -39,6 +41,41 @@
 
 .dt-black {
 	background-color: #2223;
+}
+#date-label-from, #date-label-to {
+  padding: 5px;
+}
+.dt-buttons.btn-group {
+  padding-left: 160px;
+ @include media-breakpoint-down(xl) {
+    padding-left: 80px;
+  }
+ @include media-breakpoint-down(md) {
+    float: right;
+    padding-bottom: 10px;
+    padding-left: 0;
+  }
+  margin-top: -8px;
+  display: inline-block;
+  button:not(:first-child) {
+    margin-left: -4px;
+  }
+}
+#main-table_filter {  
+    display: inline-block;
+    float: right;
+  }
+#main-table_info {  
+    display: inline-block;
+  }
+#main-table_paginate {  
+    display: inline-block;
+    float: right;
+  }
+#main-table_length {
+  display: inline-block;
+  padding-right: 10px;
+  float: left;
 }
 
 

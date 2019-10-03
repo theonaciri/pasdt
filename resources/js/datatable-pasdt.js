@@ -42,9 +42,14 @@ function _initTable() {
     });
 
     table = $('#main-table').DataTable({
-      dom: 'Bfrtip',
+      dom: 'Blfrtip',
+      lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
+      pageLength: 10,
       buttons: [
-          'copyHtml5',
+          {
+            extend: 'copyHtml5',
+            text: 'Copier',
+          },
           {
             extend: 'excel',
             text: 'Export excel',
@@ -58,7 +63,10 @@ function _initTable() {
           }, 
           'csvHtml5',
           'pdfHtml5',
-          'print'
+          {
+            extend: 'print',
+            text: 'Imprimer',
+          }
       ],
       initComplete: function() {
         /* Dropdown */
@@ -68,9 +76,6 @@ function _initTable() {
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $.fn.dataTable.util.escapeRegex($(this).val());
-              console.warn('a', '^' + val + '$', 'b', val);
-              console.warn('this', this);
-              console.warn('column ', column);
               column.search(val ? '^' + val + '$' : '', true, false).draw();
             });
 
@@ -100,6 +105,14 @@ function _initTable() {
         loadingRecords: "Chargement en cours...",
         zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
         emptyTable: "Aucune donnée disponible dans le tableau",
+        buttons: {
+          copyTitle: 'Ajouté au presse-papiers',
+          copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+          copySuccess: {
+              _: '%d lignes copiées',
+              1: '1 ligne copiée'
+          }
+        },
         paginate: {
           first: "Premier",
           previous: "Pr&eacute;c&eacute;dent",

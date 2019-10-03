@@ -69,12 +69,12 @@
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Accueil</a>
-                    @else
-                        <a href="{{ route('login') }}">Connexion</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Demande d'accès</a>
+                            <a href="{{ route('register') }}">Créer un nouvel accès</a>
                         @endif
+                    @else
+                        <a href="{{ route('login') }}">Connexion</a>
                     @endauth
                 </div>
             @endif
