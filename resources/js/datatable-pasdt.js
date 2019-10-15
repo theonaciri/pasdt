@@ -223,15 +223,15 @@ function _initTable() {
       table.draw();
     });
 
-  initNopingButtons(table);
-      var filteredData = table
-      .column(3)
-      .data()
-      .filter(function(value, index) {
-        console.warn('testing for ', value, index);
-        return value != 'Day' ? true : false;
-      });
-    console.log('F', filteredData);
+    initNopingButtons(table);
+    var filteredData = table
+    .column(3)
+    .data()
+    .filter(function(value, index) {
+      console.warn('testing for ', value, index);
+      return value != 'Day' ? true : false;
+    });
+  console.log('F', filteredData);
 
   });
 
