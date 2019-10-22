@@ -70,7 +70,7 @@
                     @auth
                         <a href="{{ url('/home') }}">Accueil</a>
 
-                        @if (Route::has('register'))
+                        @if (false && Route::has('register'))
                             <a href="{{ route('register') }}">Créer un nouvel accès</a>
                         @endif
                     @else

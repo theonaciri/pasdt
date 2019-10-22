@@ -46,7 +46,7 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
                             </li>
                         @else
-                            @if (Route::has('register'))
+                            @if (false && Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __("Créer un nouvel accès") }}</a>
                                 </li>
