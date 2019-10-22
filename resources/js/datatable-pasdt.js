@@ -9,7 +9,7 @@ require( 'datatables.net-scroller-bs4' );
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 
-define(['datatables.net-bs4', './graphs-pasdt', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
+define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
@@ -191,6 +191,12 @@ function _initTable() {
       graphdata = table.rows({ 'search': 'applied' }).data();
       
       console.log(graphdata);
+      Graphs.loadGraph(graphdata);
+    });
+
+    $('#realtime-graphs-tab').click( function () {
+      graphdata = table.rows().data();
+      
       Graphs.loadGraph(graphdata);
     });
     $.datepicker.setDefaults($.datepicker.regional["fr"]);
