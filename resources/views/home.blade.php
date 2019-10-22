@@ -29,7 +29,7 @@
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="realtime-graphs-tab" data-toggle="tab" href="#realtime-graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes temps-réel</a>
+                    <a class="nav-link" id="realtime-graphs-tab" data-toggle="tab" href="#realtime-graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes de températures</a>
                 </li>
             
             </ul>
