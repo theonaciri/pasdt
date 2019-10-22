@@ -5,17 +5,30 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 		console.log(moment().format('LLLL'));
 		console.log('datasrc', dataSrc);
 		var datasets = [];
-		var data = [];
 		for (var i = dataSrc.length - 1; i >= 0; i--) {
 			if (dataSrc[i].options.includes("maxtemp")) {
 				var op = JSON.parse(dataSrc[i].options);
 				if (op.maxtemp > -90 && op.maxtemp != 0) {
-					if (!Array.isArray(datasets[dataSrc[i].cardId])) {
-						console.log('creating', dataSrc[i].cardId);
-						datasets[dataSrc[i].cardId] = new Array();
+					var dataset = datasets.find(function(e) {return e.label === dataSrc[i].cardId});
+					console.log('dataset', dataset);
+					if (!dataset) {
+						datasets.push({
+							type: 'line',
+							data: [{
+								x: new moment(dataSrc[i].created_at),
+								y: op.maxtemp
+							}],
+							label: dataSrc[i].cardId,
+							fillColor: "rgba(0,0,0,0)",
+                    		strokeColor: "rgba(220,220,220,1)",
+                    		pointColor: "rgba(200,122,20,1)"
+						});
+					} else {
+						dataset.data.push({
+							x: new moment(dataSrc[i].created_at),
+							y: op.maxtemp
+						});
 					}
-					console.log('aa', datasets[dataSrc[i].cardId]);
-					datasets[dataSrc[i].cardId].push({x: new moment(dataSrc[i].created_at), y: op.maxtemp});
 				}
 			}
 		}
@@ -24,21 +37,17 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 		var minDataValue = Number.POSITIVE_INFINITY;
 		var maxDataValue = Number.NEGATIVE_INFINITY;
 		var tmp;
-		for (var i=data.length-1; i>=0; i--) {
-		    tmp = data[i].y;
+		for (var i=datasets.length-1; i>=0; i--) {
+		    tmp = Math.max.apply(Math, datasets[i].data.map(function(o) { return o.y; }));
 		    if (tmp < minDataValue) minDataValue = tmp;
 		    if (tmp > maxDataValue) maxDataValue = tmp;
 		}
+		    console.log('tmp', minDataValue, maxDataValue);
 
 		var ctx = document.getElementById('myChart');
 		var myChart = new Chart(ctx, {
-			type: 'line',
 			data: {
-				datasets: [{
-					data: data,
-					borderColor: "#3e95cd",
-					fill: false
-				}]
+				datasets: datasets
 			},
 			options: {
 				scales: {
