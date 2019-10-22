@@ -2,15 +2,12 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 	moment.locale('fr');
 	window.mom = moment;
 	function loadGraph(dataSrc) {
-		console.log(moment().format('LLLL'));
-		console.log('datasrc', dataSrc);
 		var datasets = [];
 		for (var i = dataSrc.length - 1; i >= 0; i--) {
 			if (dataSrc[i].options.includes("maxtemp")) {
 				var op = JSON.parse(dataSrc[i].options);
 				if (op.maxtemp > -90 && op.maxtemp != 0) {
 					var dataset = datasets.find(function(e) {return e.label === dataSrc[i].cardId});
-					console.log('dataset', dataset);
 					if (!dataset) {
 						datasets.push({
 							type: 'line',
@@ -32,8 +29,6 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 				}
 			}
 		}
-		console.log('datasets', datasets);
-
 		var minDataValue = Number.POSITIVE_INFINITY;
 		var maxDataValue = Number.NEGATIVE_INFINITY;
 		var tmp;
@@ -42,7 +37,6 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 		    if (tmp < minDataValue) minDataValue = tmp;
 		    if (tmp > maxDataValue) maxDataValue = tmp;
 		}
-		    console.log('tmp', minDataValue, maxDataValue);
 
 		var ctx = document.getElementById('myChart');
 		var chartInstance = new Chart(ctx, {
