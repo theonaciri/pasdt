@@ -19,9 +19,9 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 								y: op.maxtemp
 							}],
 							label: dataSrc[i].cardId,
-							fillColor: "rgba(0,0,0,0)",
-                    		strokeColor: "rgba(220,220,220,1)",
-                    		pointColor: "rgba(200,122,20,1)"
+							fillColor: dynamicColors(),
+                    		strokeColor: dynamicColors(),
+                    		pointColor: dynamicColors()
 						});
 					} else {
 						dataset.data.push({
@@ -45,7 +45,7 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 		    console.log('tmp', minDataValue, maxDataValue);
 
 		var ctx = document.getElementById('myChart');
-		var myChart = new Chart(ctx, {
+		var chartInstance = new Chart(ctx, {
 			data: {
 				datasets: datasets
 			},
@@ -64,10 +64,16 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 		                    }
 		                }
 		            }]
-				},
-				legend: false
+				}
 			}
 		});
+	}
+
+	function dynamicColors() {
+	    var r = Math.floor(Math.random() * 255);
+	    var g = Math.floor(Math.random() * 255);
+	    var b = Math.floor(Math.random() * 255);
+	    return "rgba(" + r + "," + g + "," + b + ", 0.5)";
 	}
 	return {loadGraph: loadGraph};
 });
