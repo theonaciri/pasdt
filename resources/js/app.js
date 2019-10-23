@@ -9,6 +9,7 @@ require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 require('./datatable-pasdt');
 require('./datatable-png');
+require('./admin');
 //require('./graphs-chartjs.js');
 //require('./graphs-realtime-pasdt');
 //require('./graphs-realtime-plotly-pasdt');
@@ -42,4 +43,3 @@ $('#myTab a').on('click', function (e) {
   e.preventDefault()
   $(this).tab('show')
 })*/
-

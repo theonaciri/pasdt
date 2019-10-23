@@ -14,6 +14,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/b
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
   function(datatables, Graphs, jszip, pdfmake, pdfFonts) {
+    if (window.location.pathname !== "/home") return ;
 var arrayToSearch = [
   {name: 'temperature 1',   value: '1', class: 'dt-grey'},
   {name: 'temperature 2',   value: '2', class: 'dt-red'},
