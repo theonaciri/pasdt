@@ -22,3 +22,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin', 'AdminController@index')->name('admin');
 
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
+Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');

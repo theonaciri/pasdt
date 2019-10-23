@@ -70,10 +70,10 @@
                     @auth
                         <a href="{{ url('/home') }}">Accueil</a>
 
-                        @if (Route::has('register'))
+                        @if (Route::has('register') && Auth::user()->is_admin_company)
                             <a href="{{ route('register') }}">Créer un nouvel accès</a>
                         @endif
-                        @if (Route::has('admin'))
+                        @if (Route::has('admin') && Auth::user()->company_id != 0)
                             <a href="{{ route('admin') }}">Panneau d'administration</a>
                         @endif
                         @if (!Route::has('admin'))
