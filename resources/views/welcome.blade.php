@@ -70,8 +70,14 @@
                     @auth
                         <a href="{{ url('/home') }}">Accueil</a>
 
-                        @if (false && Route::has('register'))
+                        @if (Route::has('register'))
                             <a href="{{ route('register') }}">Créer un nouvel accès</a>
+                        @endif
+                        @if (Route::has('admin'))
+                            <a href="{{ route('admin') }}">Panneau d'administration</a>
+                        @endif
+                        @if (!Route::has('admin'))
+                        <span>NO ROUTE</span>
                         @endif
                     @else
                         <a href="{{ route('login') }}">Connexion</a>

@@ -166,3 +166,18 @@
 #graphlive {
   width: 80vw;
 }
+
+
+/* ADMIN */
+#adminTable {
+  width: 100%;
+  td {
+    border: 1px solid #333;
+    padding: .5rem;
+  }
+  thead, tfoot {
+    border: 1px solid #333;
+    background-color: #333;
+    color: #fff;
+  }
+}

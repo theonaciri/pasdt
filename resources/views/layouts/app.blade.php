@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'PASDT') }}</title>
 
     <!-- Scripts -->
-    @if (Route::currentRouteName() == 'home')
+    @if (Route::currentRouteName() == 'home' || Route::currentRouteName() == 'admin')
     <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
     <!-- Fonts -->
@@ -46,9 +46,14 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
                             </li>
                         @else
-                            @if (false && Route::has('register'))
+                            @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __("Créer un nouvel accès") }}</a>
+                                </li>
+                            @endif
+                            @if (Route::has('admin'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin') }}">{{ __("Panneau d'administration") }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
