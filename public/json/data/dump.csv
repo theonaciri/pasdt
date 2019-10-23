@@ -1,4 +1,11 @@
 id	cardId	msg	eventType	options	created_at	updated_at
+775	005606224	["DAY"]	3	{"conf": {"pin": "----", "mode": 3, "phone": ["0033680684603", "0033768980032", "0033620428440", "*"], "groupe": "01", "jumper": 3, "slaveid": ["12", "*", "*", "*"]}, "firm": "T108", "stat1": [2, 0, 0, 0, 1, 0, 0, 1, 1], "maxtemp": 0}	2019-10-23 14:07:12	2019-10-23 14:07:12
+774	006006224	["ACK"]	1	{"tic": "7E57", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:53:00	2019-10-23 11:53:00
+773	006006224	["TRANSFORMATEUR", "2", "DECLENCHEMENT", "* DEFAUT TEMPERATURE 1 * DEFAUT TEMPERATURE 2 * DEFAUT PRESSION"]	2	{"tic": "664A", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:52:51	2019-10-23 11:52:51
+772	006006224	["ACK"]	1	{"tic": "24DE", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:49:53	2019-10-23 11:49:53
+771	006006224	["TRANSFORMATEUR", "2", "DECLENCHEMENT", "* DEFAUT TEMPERATURE 1 * DEFAUT TEMPERATURE 2"]	2	{"tic": "A1C3", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:49:44	2019-10-23 11:49:44
+770	006006224	["ACK"]	1	{"tic": "8A77", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:46:47	2019-10-23 11:46:47
+769	006006224	["TRANSFORMATEUR", "2", "ALARME", "* DEFAUT TEMPERATURE 1"]	2	{"tic": "7520", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:46:38	2019-10-23 11:46:38
 768	006006224	["ACK"]	1	{"tic": "6E3C", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 11:43:41	2019-10-23 11:43:41
 767	006006224	["ACK"]	1	{"tic": "C763", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 10:46:25	2019-10-23 10:46:25
 766	006006224	["TRANSFORMATEUR", "2", "DECLENCHEMENT", "* DEFAUT TEMPERATURE 2"]	2	{"tic": "2024", "transfo": {"num": 2, "uid": "006006224", "firm": "T108", "type": "1"}}	2019-10-23 10:46:16	2019-10-23 10:46:16

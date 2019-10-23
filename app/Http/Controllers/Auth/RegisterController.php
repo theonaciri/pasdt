@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -38,6 +39,11 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+            $this->creator_company = Auth::User()->company_id;
+            return $next($request);
+        });
     }
 
     /**
@@ -67,6 +73,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'company_id' => $this->creator_company,
+            'is_admin_company' => false
         ]);
     }
 }
