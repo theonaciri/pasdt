@@ -41,7 +41,7 @@ class AdminController extends Controller
         $this->users = User::where('id', '!=', auth()->id())
                             ->where('company_id', Auth::user()->company_id)
                             ->get();
-        return view('auth/admin', ["self"=>$user, "company"=>$company, "users"=>$this->users]);
+        return view('auth/admin', ["company"=>$company, "users"=>$this->users]);
         /*} else {
             return view('home');
         }*/

@@ -48,6 +48,8 @@
                             </div>
                         </div>
 
+                        <input id="admin" type="hidden" name="admin" value="{{ $self->company_id }}" required autocomplete="admin">
+
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
 

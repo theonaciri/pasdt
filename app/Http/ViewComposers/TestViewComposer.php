@@ -12,6 +12,6 @@ class TestViewComposer {
     	if (Auth::User()) {
 	        $company = \App\Company::where('id', Auth::User()->company_id)->first();
     	}
-        $view->with("_company", $company);
+        $view->with("_company", $company)->with("self", Auth::User());
     }
 }

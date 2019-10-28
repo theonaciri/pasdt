@@ -11,7 +11,7 @@
                     <table id="adminTable">
                         <thead>
                             <tr>
-                                <td>Id</td>
+                                <th>Id</th>
                                 <th>Nom</th>
                                 <th>Mail</th>
                                 <th>Créé le</th>
