@@ -11,6 +11,7 @@ define(["jquery", "./bootstrap"], function($) {
 		var n = $p.siblings('.name').html();
 		if (confirm('Supprimer le compte de ' +  n + ' ?')) {
 			console.log('should delete', id);
+			location.href='/user/delete/' + id;
 		}
 	});
 
