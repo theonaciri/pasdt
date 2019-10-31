@@ -46,4 +46,20 @@ class AdminController extends Controller
             return view('home');
         }*/
     }
+
+    public function deleteUser(\App\User $usertoDelete) {
+        $user = Auth::user();
+        if ($user->company_id == 0) {
+            dd('dead');
+            return redirect()->route('home', []);
+        }
+        dd($usertoDelete->id);
+        dd($usertoDelete);
+        if ($user->is_admin_company && $user->company_id == $usertoDelete->company_id) {
+            $usertoDelete->delete();
+        } else {
+            return redirect()->route('home', []);
+        }
+        return redirect()->route('admin', []);
+    }
 }
