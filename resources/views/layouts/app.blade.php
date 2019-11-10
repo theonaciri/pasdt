@@ -20,12 +20,19 @@
     <!-- Styles -->
     <link href="{{ asset('css/datatables-bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        @if($_company->colors)
+        body {
+            background-color: {{ $_company->colors }} 
+        }
+    @endif
+    </style>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     @if (!empty($_company))
                         @if (!empty($_company->logo))
                             <img src="images/companylogos/{{ $_company->logo }}" height="39" />

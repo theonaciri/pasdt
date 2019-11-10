@@ -54,7 +54,7 @@
 <!-- IMG UPLOAD -->
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __("Modifier le logo de ") }} {{ $company->name }} </div>
                 <div class="card-body">
@@ -87,7 +87,46 @@
                                     <input type="file" name="image" class="form-control">
                                 </div>
                                 <div class="col-md-6">
-                                    <button type="submit" class="btn btn-success">Upload</button>
+                                    <button type="submit" class="btn btn-success">Mettre à jour le logo</button>
+                                </div>
+                            </div>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">{{ __("Modifier les couleurs de ") }} {{ $company->name }} </div>
+                <div class="card-body">
+                    <h3>Couleurs actuelles :</h3>
+                    <br>
+                    @if($self->is_admin_company)
+                        @if ($message = Session::get('colorsuccess'))
+                        <div class="alert alert-success alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
+                        @endif
+                        @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <strong>Whoops!</strong> Il y a eu un problème avec votre image.
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+                        <form action="{{ route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="color" name="colors" id="colors" class="form-control" value="{{ $company->colors }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-success">Modifier les couleurs</button>
                                 </div>
                             </div>
                         </form>
@@ -99,6 +138,17 @@
 </div>
 
 
+
+<br>
+
+<!-- Colors -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            
+        </div>
+    </div>
+</div>
 
 
 
