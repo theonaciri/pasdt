@@ -23,4 +23,9 @@ define(["jquery", "./bootstrap"], function($) {
 		//$('#name').val($p.siblings('.name').html());
 
 	});
+
+
+	$('#colors').on('change', function(e) {
+		$('body').css('background-color', $(this).val());
+	})
 });	
