@@ -1,11 +1,12 @@
 /node_modules
 /public/hot
 /public/storage
-/public/app.js
-/public/app.css
+/public/js/app.js
+/public/css/app.css
 /public/images/companylogos
 /storage/*.key
 /vendor
+.todo
 .env
 .env.backup
 .phpunit.result.cache
