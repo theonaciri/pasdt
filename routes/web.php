@@ -26,3 +26,5 @@ Route::get('/user/delete/{id}', 'AdminController@deleteUser')->name('deleteUser'
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
 Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
+
+

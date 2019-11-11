@@ -1,0 +1,55 @@
+pasdt gère le panneau administrateur et attribue les accès utilisateur et les n° cartes boitiers
+
+un client/entreprise :
+
+PASDT créé l'entreprise avec 30 jours d'essai avec le compte gérant avec un mot de passe prédéfini qu'il doit changer à la première connexion
+puis abonnement à l'année
+Date de début d'activation du compte client/company/consultation
+à la connexion alerte à partir de 10 jours avant, tous les jours
+Bloquer l'accès si pas paiement. Proposer une page de paiement
+
+
+PASDT lui créé illimité accès utilisateur
+PASDT sait déjà quelles cartes sont attribuées au client.
+à la création du compte client, PASDT lui rattache ses cartes.
+
+En fonction de la formule le client peut rattacher x cartes
+
+
+
+
+
+3 formules prix de base + prix d'une carte [1 à 5] [6 à 25] [illimité] 
+30€ + [15] [8] [2]
+
+
+
+
+
+
+PANNEAU SUPER ADMINISTRATEUR PASDT
+
+
+Gérer les abonnements
+intervales debut/fin
+Historiques pas paiement
+
+[payer direct sur la plateforme]
+
+logs de connexion
+logs de requettes
+
+Exporter dans des feuilles excel les noms des entreprises, dates de validité, logs, paiements au format excel
+
+
+
+
+TABLEAU 
+CLIC sur carte :
+pré-rempli le filtre de recherche
+CLIC sur icone de la carte
+ouvre une petite fenêtre avec geoloc ( + itineraire en fonction de l'adresse de l'entreprise)
+historique des alertes
+
+CLIC SUR UNIQUEMENT TEMPERATURES
+pré-rempli le filtre temperatures avec "°C"
