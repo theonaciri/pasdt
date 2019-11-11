@@ -28,3 +28,4 @@ Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('imag
 Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
 
 
+Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
