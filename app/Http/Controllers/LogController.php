@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
+use App\Log;
 use Illuminate\Http\Request;
 
 class LogController extends Controller
@@ -21,16 +22,22 @@ class LogController extends Controller
             abort(403, 'Action non authorisée.');
         }
         $this->user = User::whereApiToken($token)->first();
+        if (empty($this->user)) {
+            abort(403, "Echec de l'authentification.");
+        }
     }
 
     /**
-     * Show the application dashboard.
+     * Store logs.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function storeData()
+    public function storeData(Request $request)
     {
-        return response()->json($this->user);
+        $log = $request->json()->all();
+        $newlog = new Log();
+        $newlog->fill($log);
+        $newlog->save();
+        return response()->json('{"ok": "ok"}');
     }
 
     public function salut() {

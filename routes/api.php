@@ -30,10 +30,3 @@ Route::middleware('auth:api')->get('/store-log', function (Request $request) {
 */
 //Route::middleware('auth:api')->post('/store-data', 'LogController@storeData')->name('store.log.post');
 Route::post('/store-data', 'LogController@storeData')->name('store.log.post');
-
-
-Route::get('/salut', function() {
-	return 'ok';
-});
-
-Route::get('/ok', 'LogController@salut');
