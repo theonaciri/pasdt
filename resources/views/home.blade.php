@@ -43,7 +43,7 @@
                                 <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
                                 &nbsp;
                                 <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off" id="noday">
-                                  Cacher les logs Ack, Day & Test
+                                  Uniquement les anomalies
                                 </button>
                             </div>
                         </p>

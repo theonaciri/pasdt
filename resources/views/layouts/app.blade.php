@@ -21,7 +21,7 @@
     <link href="{{ asset('css/datatables-bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
-        @if($_company->colors)
+        @if(isset($_company->colors))
         body {
             background-color: {{ $_company->colors }} 
         }
