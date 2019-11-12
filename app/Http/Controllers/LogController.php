@@ -6,7 +6,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use App\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class LogController extends Controller
 {
@@ -46,7 +45,7 @@ class LogController extends Controller
 
     protected function authAPI(Request $request) {
         $token = $request->header('Api-Key');
-        Log::info('AUTH APIKEY ' . $token);
+        \Illuminate\Support\Facades\Log::info('AUTH APIKEY ' . $token);
         if (env('API_TOKEN', false) !== $token) {
             abort(403, 'Action non authorisée.');
         }
