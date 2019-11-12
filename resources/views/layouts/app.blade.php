@@ -73,6 +73,11 @@
                                     <a class="nav-link" href="{{ route('admin') }}">{{ __("Panneau d'administration") }}</a>
                                 </li>
                             @endif
+                            @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Gestion des abonnements") }}</a>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
