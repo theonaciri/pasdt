@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use App\Log;
 use Illuminate\Http\Request;
-use \IlluminateSupportFacadesLog as MonoLog;
+use Illuminate\Support\Facades\Log as MonoLog;
 
 class LogController extends Controller
 {
