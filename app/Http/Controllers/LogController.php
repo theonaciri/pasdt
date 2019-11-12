@@ -45,6 +45,7 @@ class LogController extends Controller
 
     protected function authAPI(Request $request) {
         $token = $request->header('Api-Key');
+        Log::info('AUTH APIKEY ' . $token);
         if (env('API_TOKEN', false) !== $token) {
             abort(403, 'Action non authorisée.');
         }
