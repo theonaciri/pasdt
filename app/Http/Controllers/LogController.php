@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
-use App\Log;
+use App\Log as PasdtLog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log as MonoLog;
 
 class LogController extends Controller
 {
@@ -27,7 +26,7 @@ class LogController extends Controller
 
     public function getAllData(Request $request) {
         $this->middleware('auth');
-        return response()->json(Log::all());
+        return response()->json(PasdtLog::all());
     }
 
     /**
@@ -38,7 +37,7 @@ class LogController extends Controller
     {
         $this->authAPI($request);
         $log = $request->json()->all();
-        $newlog = new Log();
+        $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
         return response()->json('{"ok": "ok"}');
@@ -46,7 +45,7 @@ class LogController extends Controller
 
     protected function authAPI(Request $request) {
         $token = $request->header('Api-Key');
-        MonoLog::info('AUTH APIKEY ' . $token);
+        Log::info('AUTH APIKEY ' . $token);
         if (env('API_TOKEN', false) !== $token) {
             abort(403, 'Action non authorisée.');
         }
