@@ -21,7 +21,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application admin dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -42,6 +42,27 @@ class AdminController extends Controller
                             ->where('company_id', Auth::user()->company_id)
                             ->get();
         return view('auth/admin', ["company"=>$company, "users"=>$this->users]);
+        /*} else {
+            return view('home');
+        }*/
+    }
+
+    /**
+     * Show the application Su dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function su_admin()
+    {
+        $user = Auth::user();
+        //if (Gate::allows('company-admin')) {
+        //if (Auth::user()->is_admin_company) {
+            // The current user can edit settings
+        if ($user->su_admin !== 1) {
+            return view('home');
+        }
+        $companies = \App\Company::all();
+        return view('auth/su_admin', ["companies"=>$companies]);
         /*} else {
             return view('home');
         }*/

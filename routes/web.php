@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
+Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin');
+
 Route::get('/user/delete/{id}', 'AdminController@deleteUser')->name('deleteUser');
 
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
