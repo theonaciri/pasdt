@@ -38,8 +38,8 @@ class LogController extends Controller
     {
         $this->authAPI($request);
         $log = $request->json()->all();
-        $log->msg = json_encode($log->msg);
-        $log->options = json_encode($log->options);
+        $log["msg"] = json_encode($log["msg"]);
+        $log["options"] = json_encode($log["options"]);
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
