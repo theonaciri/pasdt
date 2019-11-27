@@ -38,6 +38,8 @@ class LogController extends Controller
     {
         $this->authAPI($request);
         $log = $request->json()->all();
+        $log["msg"] = json_encode($log["msg"]);
+        $log["options"] = json_encode($log["options"]);
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
@@ -47,6 +49,8 @@ class LogController extends Controller
     protected function authAPI(Request $request) {
         $token = $request->header('Api-Key');
         Log::info('AUTH APIKEY ' . $token);
+        Log::info('IP ' . $request->ip());
+        Log::info('CONTENT ' . $request->getContent());
         if (env('API_TOKEN', false) !== $token) {
             abort(403, 'Action non authorisée.');
         }
