@@ -31,3 +31,6 @@ Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('comp
 
 
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
+
+
+Route::get('/subscription', 'SubscriptionController@index')->name('update-payment-method');
