@@ -126,8 +126,8 @@ function _initTable() {
         }
       },
       "ajax": {
-        //"url": "/json/data/dump.json",
-        "url": "/logs",
+        "url": "/json/data/dump.json",
+        //"url": "/logs",
         "dataSrc": ""
       },
       "order": [
