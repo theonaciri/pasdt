@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'PASDT') }}</title>
 
     <!-- Scripts -->
-    @if (Route::currentRouteName() == 'home' || Route::currentRouteName() == 'admin')
+    @if (Route::currentRouteName() == 'home' || Route::currentRouteName() == 'client')
     <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
     <!-- Fonts -->
