@@ -16,14 +16,14 @@
                                 <th>Mail</th>
                                 <th>Créé le</th>
                                 <th>Modifié le</th>
-                                @if ($self->is_admin_company)
+                                @if ($self->is_client_company)
                                 <th>Actions</th>
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                            @if($user->is_admin_company)
+                            @if($user->is_client_company)
                                 <tr class="highlight">
                             @else
                                 <tr>
@@ -33,7 +33,7 @@
                                 <td class="email">{{$user->email}}</td>
                                 <td class="created_at">{{$user->created_at}}</td>
                                 <td class="updated_at">{{$user->updated_at}}</td>
-                                @if ($self->is_admin_company)
+                                @if ($self->is_client_company)
                                 <td class="button">
                                     <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>
                                     <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
@@ -51,6 +51,88 @@
 
 <br>
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">{{ __("Liste des modules de votre groupe") }} </div>
+                <div class="card-body">
+                    <table id="adminTable">
+                        <thead>
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Nom</th>
+                                <th>Abonnement</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($modules as $module)
+                            @if($module->telit_status == "active")
+                                <tr class="highlight">
+                            @else
+                                <tr>
+                            @endif
+                                <td class="id">{{$module->card_number}}</td>
+                                <td class="name">{{$module->name}}</td>
+                                <td class="email">{{$module->telit_ratePlan}}</td>
+                                <td class="button">
+                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal_{{$module->id}}">JSON</button>
+                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">{{ __("Votre abonnement") }} </div>
+                <div class="card-body">
+                    <h4>{{ __("Actif") }}</h4>
+                    <table id="adminTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Status</th>
+                                <th>Abonnement</th>
+                                <th>Créé le</th>
+                                <th>Fini le</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($subscriptions as $sub)
+                                <tr>
+                                <td class="id">{{$sub->id}}</td>
+                                <td class="name">{{$sub->name}}</td>
+                                <td class="email">{{$sub->stripe_status}}</td>
+                                <td class="email">{{$sub->stripe_plan}}</td>
+                                <td class="email">{{$sub->created_at}}</td>
+                                <td class="email">{{$sub->ends_at}}</td>
+                                <td class="button">
+                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#subModal_{{$sub->id}}">Facture</button>
+                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
 <!-- IMG UPLOAD -->
 <div class="container">
     <div class="row justify-content-center">
@@ -62,7 +144,7 @@
 
                     <img src="images/companylogos/{{ $company->logo }}">
                     <br>
-                    @if($self->is_admin_company)
+                    @if($self->is_client_company)
                         @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
                             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -101,7 +183,7 @@
                 <div class="card-body">
                     <h3>Couleurs actuelles :</h3>
                     <br>
-                    @if($self->is_admin_company)
+                    @if($self->is_client_company)
                         @if ($message = Session::get('colorsuccess'))
                         <div class="alert alert-success alert-block">
                             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -151,16 +233,54 @@
 </div>
 
 
-
-
-
+@foreach ($modules as $module)
 
 <!-- Modal -->
-<div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="jsonModal_{{$module->id}}" tabindex="-1" role="dialog" aria-labelledby="ModalJSONLabel_{{$module->id}}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editer le compte</h5>
+                <h5 class="modal-title" id="ModalJSONLabel_{{$module->id}}">JSON</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <pre>
+{{$module->telit_json}}
+            </pre>
+        </div>
+    </div>
+</div>
+@endforeach
+
+
+@foreach ($subscriptions as $sub)
+
+<!-- Modal -->
+<div class="modal fade" id="subModal_{{$sub->id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubLabel_{{$sub->id}}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalSubLabel_{{$sub->id}}">JSON</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <pre>
+{{$sub}}
+            </pre>
+        </div>
+    </div>
+</div>
+@endforeach
+
+
+<!-- Modal -->
+<div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Editer le compte</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
