@@ -10,10 +10,11 @@ require( 'datatables.net-scroller-bs4' );
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 
 define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
+  './load-data',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
-  function(datatables, Graphs, jszip, pdfmake, pdfFonts) {
+  function(datatables, Graphs, jszip, pdfmake, pdfFonts, data) {
     if (window.location.pathname !== "/home") return ;
 var arrayToSearch = [
   {name: 'temperature 1',   value: '1', class: 'dt-grey'},
@@ -24,8 +25,7 @@ var arrayToSearch = [
   {name: 'defaut temperature 2 * defaut temperature 1', value: '6', class: 'dt-black'},
   {name: '',                value: '7', class: 'dt-black'}
 ];
-var table;
-var graphdata;
+var table, graphdata, active_module;
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 String.prototype.capFirstLetter = function () {
@@ -81,7 +81,7 @@ function _initTable() {
             });
 
           column.data().unique().sort().each(function(d, j) {
-            select.append('<option value="' + d.replace(/["']/g, "") + '">' + d + '</option>')
+            select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
           });
         });
       },
@@ -126,8 +126,8 @@ function _initTable() {
         }
       },
       "ajax": {
-        "url": "/json/data/dump.json",
-        //"url": "/logs",
+        //"url": "/json/data/dump.json",
+        "url": "/logs",
         "dataSrc": ""
       },
       "order": [
@@ -188,6 +188,8 @@ function _initTable() {
       });
     });
 
+    dataTablesEvents();
+
 
     $('#graphs-tab').click( function () {
       graphdata = table.rows({ 'search': 'applied' }).data();
@@ -244,6 +246,29 @@ function _initTable() {
   });
 
 }
+
+function dataTablesEvents() {
+  $('#main-table').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+        $.getJSON("/module/"+data.module_id, function(module_data) {
+          active_module = module_data;
+          $('#moduleModal').modal("show");
+        })
+    } );
+
+  $('#moduleModal').on('show.bs.modal', function (e) {
+    console.warn('md', active_module);
+    var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
+    for (const prop in active_module) {
+
+      table += `<tr><td>${prop}</td><td>` + 
+      (typeof active_module[prop] == 'object' ? console.log(active_module[prop]) && `<pre>${JSON.parse(active_module[prop])}</pre>`: active_module[prop])
+      + '</td></tr>';
+    }
+    $(this).find('.modal-body').html( table + "</table>");
+  })
+}
+
 
 
 _initTable();
