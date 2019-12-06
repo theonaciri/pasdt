@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
+use App\Module;
 use App\Log as PasdtLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class LogController extends Controller
 {
@@ -27,7 +30,15 @@ class LogController extends Controller
 
     public function getAllData(Request $request) {
         $this->middleware('auth');
-        return response()->json(PasdtLog::all());
+        $user = Auth::user();
+        $logs = DB::table('logs')
+            ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
+            ->where('modules.company_id' , '=', $user->company_id)
+            ->select('logs.id', 'cardId', 'msg', 'eventType', 'options', 'logs.created_at', 'logs.updated_at',
+                     'modules.id as module_id', 'modules.name as module_name')
+            ->get();
+
+        return response()->json($logs);
     }
 
     /**
