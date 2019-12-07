@@ -11,10 +11,11 @@ require( 'datatables.net-scroller-bs4' );
 
 define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
   './load-data',
+  'flat',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
-  function(datatables, Graphs, jszip, pdfmake, pdfFonts, data) {
+  function(datatables, Graphs, jszip, pdfmake, pdfFonts, data, flatten) {
     if (window.location.pathname !== "/home") return ;
 var arrayToSearch = [
   {name: 'temperature 1',   value: '1', class: 'dt-grey'},
@@ -257,18 +258,23 @@ function dataTablesEvents() {
     } );
 
   $('#moduleModal').on('show.bs.modal', function (e) {
-    console.warn('md', active_module);
     var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
-    for (const prop in active_module) {
-
-      table += `<tr><td>${prop}</td><td>` + 
-      (typeof active_module[prop] == 'object' ? console.log(active_module[prop]) && `<pre>${JSON.parse(active_module[prop])}</pre>`: active_module[prop])
-      + '</td></tr>';
+    var f = flatten(active_module);
+    for (p in f) {
+      table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
     }
-    $(this).find('.modal-body').html( table + "</table>");
+    console.warn(active_module);
+    console.warn(`<iframe width="600" height="450" frameborder="0" style="border:0"
+src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+    $(this).find('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
+src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+    $(this).find('.modal-pre').html( table + "</table>");
   })
 }
 
+function formatAdress(a) {
+  return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+}
 
 
 _initTable();

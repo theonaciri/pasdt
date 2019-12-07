@@ -29,7 +29,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
         //if (Gate::allows('company-admin')) {
-        //if (Auth::user()->is_admin_company) {
+        //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->company_id == 0) {
             return view('home');
@@ -56,7 +56,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
         //if (Gate::allows('company-admin')) {
-        //if (Auth::user()->is_admin_company) {
+        //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
             return view('home');
@@ -76,7 +76,7 @@ class AdminController extends Controller
         }
         dd($usertoDelete->id);
         dd($usertoDelete);
-        if ($user->is_admin_company && $user->company_id == $usertoDelete->company_id) {
+        if ($user->is_client_company && $user->company_id == $usertoDelete->company_id) {
             $usertoDelete->delete();
         } else {
             return redirect()->route('home', []);

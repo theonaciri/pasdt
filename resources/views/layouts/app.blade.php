@@ -63,14 +63,14 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
                             </li>
                         @else
-                            @if (Route::has('register') && Auth::user()->is_admin_company)
+                            @if (Route::has('register') && Auth::user()->is_client_company)
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __("Créer un nouvel accès") }}</a>
                                 </li>
                             @endif
-                            @if (Route::has('admin') && Auth::user()->company_id != 0)
+                            @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin') }}">{{ __("Panneau d'administration") }}</a>
+                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Panneau d'administration") }}</a>
                                 </li>
                             @endif
                             @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
