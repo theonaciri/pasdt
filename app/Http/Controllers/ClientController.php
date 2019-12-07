@@ -58,7 +58,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         //if (Gate::allows('company-admin')) {
-        //if (Auth::user()->is_admin_company) {
+        //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
             return view('home');

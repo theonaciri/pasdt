@@ -78,7 +78,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'company_id' => $this->creator_company,
-            'is_admin_company' => false,
+            'is_client_company' => false,
             'api_token' => Str::random(60)
         ]);
     }
