@@ -57,6 +57,7 @@
             <div class="card">
                 <div class="card-header">{{ __("Liste des modules de votre groupe") }} </div>
                 <div class="card-body">
+                    <p>Pour ajouter la surveillance d'un module, contactez notre équipe.</p>
                     <table id="adminTable">
                         <thead>
                             <tr>
