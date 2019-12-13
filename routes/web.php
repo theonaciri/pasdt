@@ -36,4 +36,6 @@ Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get')
 Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json');
 
 
+Route::get('/checkout', 'ClientController@checkout')->name('checkout');
+Route::post('/add-sub', 'ClientController@addSub')->name('addSub');
 Route::get('/subscription', 'SubscriptionController@index')->name('update-payment-method');

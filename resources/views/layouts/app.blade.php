@@ -11,8 +11,15 @@
 
     <!-- Scripts -->
     @if (Route::currentRouteName() == 'home' || Route::currentRouteName() == 'client')
-    <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
+    @if (Route::currentRouteName() == 'checkout')
+        <script src="https://js.stripe.com/v3/"></script>
+        <!--  <link rel="stylesheet" href="StripeElements.css"> -->
+        <script src="{{ asset('js/checkout.js') }}" defer></script>
+        
+    @endif
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
