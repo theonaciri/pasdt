@@ -69,6 +69,62 @@ class ClientController extends Controller
             return view('home');
         }*/
     }
+    /**
+     * Show the application Su dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function checkout()
+    {
+        $user = Auth::user();
+        //if (Gate::allows('company-admin')) {
+        //if (Auth::user()->is_client_company) {
+            // The current user can edit settings
+        if ($user->su_admin !== 1) {
+            return view('home');
+        }
+        $companies = \App\Company::all();
+        return view('auth/checkout', ["companies"=>$companies]);
+        /*} else {
+            return view('home');
+        }*/
+
+    }    
+    /**
+     * Show the application Su dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function addSub(Request $req)
+    {
+        $user = Auth::user();
+        \Stripe\Stripe::setApiKey(env("STRIPE_SECRET"));
+        //if (Gate::allows('company-admin')) {
+        //if (Auth::user()->is_client_company) {
+            // The current user can edit settings
+        if ($user->su_admin !== 1) {
+            return view('home');
+        }
+        $companies = \App\Company::all();
+        $customer = \Stripe\Customer::create([
+          "payment_method" => $req->input('payment_method'),
+          "email" => $req->input('email'),
+          "invoice_settings" => [
+            "default_payment_method" => $req->input('payment_method')
+          ]
+        ]);
+
+        $subscription = \Stripe\Subscription::create([
+          "customer" => $customer->id,
+          "items" => [
+            [
+              "plan" => "plan_CBb6IXqvTLXp3f",
+            ],
+          ],
+          "expand" => ['latest_invoice.payment_intent']
+        ]);
+        return response()->json($subscription);
+    }
 
     public function deleteUser(\App\User $usertoDelete) {
         $user = Auth::user();
