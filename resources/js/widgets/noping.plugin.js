@@ -28,6 +28,8 @@ function ext_search(table, $target, toggle) {
         }
     );
     table.draw();
+    $('#main-table').find('.th-message').html(togglevalue ? 'Anomalies' : 'Message');
+    $('#main-table').find('.th-input-message input').attr('placeholder', togglevalue ? 'Rechercher Anomalie' : 'Rechercher Message');
     $.fn.dataTable.ext.search.pop();
 }
 
