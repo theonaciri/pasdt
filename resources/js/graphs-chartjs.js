@@ -4,7 +4,7 @@ define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlo
 	function loadGraph(dataSrc) {
 		var datasets = [];
 		for (var i = dataSrc.length - 1; i >= 0; i--) {
-			if (dataSrc[i].options.includes("maxtemp")) {
+			if (dataSrc[i].options != null && dataSrc[i].options.includes("maxtemp")) {
 				var op = JSON.parse(dataSrc[i].options);
 				if (op.maxtemp > -90 && op.maxtemp != 0) {
 					var dataset = datasets.find(function(e) {return e.label === dataSrc[i].cardId});

@@ -82,13 +82,18 @@ function _initTable() {
             });
 
           column.data().unique().sort().each(function(d, j) {
-            select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
+            if (d != null && typeof d != 'undefined') {
+              select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
+            }
           });
         });
       },
       createdRow: function rowColor( row, data, dataIndex) {
         //console.log('testing ', data.msg.toLowerCase().indexOf("temperature 1")> 0);
-        if (typeof data.msg != 'undefined') {
+        if (data == null) {
+          return '--';
+        }
+        if (typeof data.msg != 'undefined' && data.msg != null) {
           var foundValue = arrayToSearch.filter(obj=>data.msg.toLowerCase().indexOf(obj.name) > 0);
           //console.log('found', foundValue);
           if (foundValue.length) {
@@ -146,10 +151,13 @@ function _initTable() {
         },
         /*{"data": "msgId"},*/
         {
-          "data": "eventType"
+          "data": "customer"
         },
-        {
+        { 
           "data": "msg", render: function(data, type, row) {
+            if (data == null) {
+              return '--';
+            }
             return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
           }
         },
@@ -251,10 +259,12 @@ function _initTable() {
 function dataTablesEvents() {
   $('#main-table').on('click', 'tr', function () {
         var data = table.row( this ).data();
-        $.getJSON("/module/"+data.module_id, function(module_data) {
-          active_module = module_data;
-          $('#moduleModal').modal("show");
-        })
+        if (data && data.module_id) {
+          $.getJSON("/module/"+data.module_id, function(module_data) {
+            active_module = module_data;
+            $('#moduleModal').modal("show");
+          })
+        }
     } );
 
   $('#moduleModal').on('show.bs.modal', function (e) {

@@ -51,8 +51,8 @@
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>ID de la carte</th>
-                                    <th>Type d'événement</th>
+                                    <th>ID du module</th>
+                                    <th>Client</th>
                                     <th>Message</th>
                                     <th>Température</th>
                                 </tr>
@@ -60,8 +60,8 @@
                             <tfoot>
                                 <tr>
                                     <th>Date</th>
-                                    <th>ID de la carte</th>
-                                    <th>Type d'événement</th>
+                                    <th>ID du module</th>
+                                    <th>Client</th>
                                     <th>Message</th>
                                     <th>Température</th>
                                 </tr>

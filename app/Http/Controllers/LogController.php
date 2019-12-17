@@ -31,12 +31,21 @@ class LogController extends Controller
     public function getAllData(Request $request) {
         $this->middleware('auth');
         $user = Auth::user();
-        $logs = DB::table('logs')
-            ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
-            ->where('modules.company_id' , '=', $user->company_id)
-            ->select('logs.id', 'cardId', 'msg', 'eventType', 'options', 'logs.created_at', 'logs.updated_at',
-                     'modules.id as module_id', 'modules.name as module_name')
-            ->get();
+
+        if ($user->su_admin) {
+          $logs = $logs = DB::table('logs')
+                ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
+                ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
+                         'modules.id as module_id', 'modules.name as module_name')
+                ->get();
+        } else {
+            $logs = DB::table('logs')
+                ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
+                ->where('modules.company_id' , '=', $user->company_id)
+                ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
+                         'modules.id as module_id', 'modules.name as module_name')
+                ->get();
+        }
 
         return response()->json($logs);
     }
