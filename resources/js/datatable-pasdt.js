@@ -91,7 +91,7 @@ function _initTable() {
       createdRow: function rowColor( row, data, dataIndex) {
         //console.log('testing ', data.msg.toLowerCase().indexOf("temperature 1")> 0);
         if (data == null) {
-          return '--';
+          return;
         }
         if (typeof data.msg != 'undefined' && data.msg != null) {
           var foundValue = arrayToSearch.filter(obj=>data.msg.toLowerCase().indexOf(obj.name) > 0);
@@ -156,7 +156,7 @@ function _initTable() {
         { 
           "data": "msg", render: function(data, type, row) {
             if (data == null) {
-              return '--';
+              return '';
             }
             return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
           }

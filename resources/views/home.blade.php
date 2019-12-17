@@ -51,18 +51,18 @@
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>ID du module</th>
+                                    <th>N°PASDT & sim ID</th>
                                     <th>Client</th>
-                                    <th>Message</th>
+                                    <th class="th-message">Message</th>
                                     <th>Température</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>Date</th>
-                                    <th>ID du module</th>
+                                    <th>N°PASDT & sim ID</th>
                                     <th>Client</th>
-                                    <th>Message</th>
+                                    <th class="th-input-message">Message</th>
                                     <th>Température</th>
                                 </tr>
                             </tfoot>
