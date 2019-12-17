@@ -98,11 +98,12 @@
             <div class="card">
                 <div class="card-header">{{ __("Votre abonnement") }} </div>
                 <div class="card-body">
-                    @if (false)
+                    @if (true)
                         <h4>{{ __("Actif") }}</h4>
                     @else
                         <a class="" href="checkout">Ajouter un abonnement</a>
                     @endif
+                    @if (false)
                     <table id="adminTable">
                         <thead>
                             <tr>
@@ -131,6 +132,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @endif
                 </div>
             </div>
         </div>
