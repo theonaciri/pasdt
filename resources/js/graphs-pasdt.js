@@ -117,7 +117,7 @@ define(["d3", "jquery"], function(d3, $) {
 		lineData.push({date:new Date(2019, 3, 18), nps:81});
 		*/
 		for (var i = data.length - 1; i >= 0; i--) {
-			lineData.push({date: new Date(data[i].updated_at), nps: data[i].eventType});
+			lineData.push({date: new Date(data[i].updated_at), nps: 1 /*eventtype*/});
 		}
 
 
