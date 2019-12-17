@@ -41621,7 +41621,7 @@ function success(subscription) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\naciri_t\projects\pasdt\resources\js\checkout.js */"./resources/js/checkout.js");
+module.exports = __webpack_require__(/*! /home/naciri_t/projects/pasdt/resources/js/checkout.js */"./resources/js/checkout.js");
 
 
 /***/ })

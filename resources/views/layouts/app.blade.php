@@ -80,9 +80,9 @@
                                     <a class="nav-link" href="{{ route('client') }}">{{ __("Panneau d'administration") }}</a>
                                 </li>
                             @endif
-                            @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
+                            @if (false && Route::has('su_admin') && Auth::user()->su_admin === 1)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Gestion des abonnements") }}</a>
+                                    <a class="nav-link" href="{{ route('checkout') }}">{{ __("Gestion des abonnements") }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
