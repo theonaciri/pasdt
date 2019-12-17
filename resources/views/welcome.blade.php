@@ -73,10 +73,10 @@
                         @if (Route::has('register') && Auth::user()->is_client_company)
                             <a href="{{ route('register') }}">Créer un nouvel accès</a>
                         @endif
-                        @if (Route::has('admin') && Auth::user()->company_id != 0)
-                            <a href="{{ route('admin') }}">Panneau d'administration</a>
+                        @if (Route::has('client') && Auth::user()->company_id != 0)
+                            <a href="{{ route('client') }}">Panneau d'administration</a>
                         @endif
-                        @if (!Route::has('admin'))
+                        @if (!Route::has('client'))
                         <span>NO ROUTE</span>
                         @endif
                     @else
