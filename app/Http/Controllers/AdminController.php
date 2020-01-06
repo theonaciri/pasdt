@@ -62,10 +62,8 @@ class AdminController extends Controller
             return view('home');
         }
         $companies = \App\Company::all();
+
         return view('auth/su_admin', ["companies"=>$companies]);
-        /*} else {
-            return view('home');
-        }*/
     }
 
     public function deleteUser(\App\User $usertoDelete) {

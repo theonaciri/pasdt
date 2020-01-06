@@ -39,6 +39,9 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
+                @if ($su_applied) 
+                    <a href="{{ url('home')}}" alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"><-</a>
+                @endif
                 <a class="navbar-brand" href="{{ url('/home') }}">
                     @if (!empty($_company))
                         @if (!empty($_company->logo))
@@ -72,17 +75,22 @@
                         @else
                             @if (Route::has('register') && Auth::user()->is_client_company)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __("Créer un nouvel accès") }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __("Nouvel accès") }}</a>
                                 </li>
                             @endif
                             @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Panneau d'administration") }}</a>
+                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Panneau de configuration") }}</a>
                                 </li>
                             @endif
-                            @if (false && Route::has('su_admin') && Auth::user()->su_admin === 1)
+                            @if (Route::has('checkout') && Auth::user()->is_client_company === 1)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('checkout') }}">{{ __("Gestion des abonnements") }}</a>
+                                    <a class="nav-link" href="{{ route('checkout') }}">{{ __("Abonnement") }}</a>
+                                </li>
+                            @endif
+                            @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Entreprises") }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
