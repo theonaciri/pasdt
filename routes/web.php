@@ -26,15 +26,16 @@ Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUs
 
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
-Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
 
+Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
+Route::get('/company/{id}/users', 'CompanyController@getUsers')->name('company.users.get');
 
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
 Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get');
 Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json');
 
-
 Route::get('/checkout', 'ClientController@checkout')->name('checkout');
+Route::get('/checkout', 'ClientController@checkout')->name('company_create');
 Route::post('/add-sub', 'ClientController@addSub')->name('addSub');
 Route::get('/subscription', 'SubscriptionController@index')->name('update-payment-method');

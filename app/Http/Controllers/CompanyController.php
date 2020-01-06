@@ -3,9 +3,20 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;  
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class CompanyController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
    /**
     * Display a listing of the resource.
     *
@@ -17,6 +28,22 @@ class CompanyController extends Controller
        return view('admin');
     }
     
+    /**
+    * Returns JSON users of a company.
+    *
+    * @return \Illuminate\Http\Response
+    */
+
+    public function getUsers(Request $req)
+    {
+        $user = Auth::user();
+        if (($user->company_id == $req->company_id && $user->is_client_company) || $user->su_admin) {
+            $users = User::where('company_id', $req->company_id)->get();
+            return response()->json($users);
+        } else {
+            abort(403, "Vous n'avez pas les droits d'accès aux utilisateurs de cette entreprise.");
+        }
+    }
     /**
     * Display a listing of the resource.
     *

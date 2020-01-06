@@ -10,14 +10,12 @@
     <title>{{ config('app.name', 'PASDT') }}</title>
 
     <!-- Scripts -->
-    @if (Route::currentRouteName() == 'home' || Route::currentRouteName() == 'client')
-        <script src="{{ asset('js/app.js') }}" defer></script>
-    @endif
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
         <script src="{{ asset('js/checkout.js') }}" defer></script>
-        
+    @else
+        <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 
     <!-- Fonts -->
