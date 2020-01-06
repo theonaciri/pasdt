@@ -22,7 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/client', 'ClientController@index')->name('client');
 
 Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin');
-
 Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUser');
 
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
