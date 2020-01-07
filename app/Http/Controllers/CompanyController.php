@@ -34,11 +34,11 @@ class CompanyController extends Controller
     * @return \Illuminate\Http\Response
     */
 
-    public function getUsers(Request $req)
+    public function getUsers($company_id)
     {
         $user = Auth::user();
-        if (($user->company_id == $req->company_id && $user->is_client_company) || $user->su_admin) {
-            $users = User::where('company_id', $req->company_id)->get();
+        if (($user->company_id == $company_id && $user->is_client_company) || $user->su_admin) {
+            $users = User::where('company_id', $company_id)->get();
             return response()->json($users);
         } else {
             abort(403, "Vous n'avez pas les droits d'accès aux utilisateurs de cette entreprise.");
