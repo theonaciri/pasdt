@@ -24,6 +24,23 @@ class ModuleController extends Controller
     }
 
     /**
+    * Creates a Module
+    * Connexion web
+    * @return JSON
+    */
+
+    public function postModule(Request $request) {
+        $user = Auth::user();
+        if ($user->company_id == $request->companyid || $user->su_admin) {
+            $module = new Module;
+            $module->
+            Module::insert
+        }
+
+        return response()->json($modules);
+    }
+
+    /**
     * Get Modules
     * Connexion web
     */
