@@ -31,11 +31,11 @@ define(["jquery", "./bootstrap"], function($) {
 
 
 	$('.companybtn').click(function(e) {
-		console.warn('clicked');
-		var id = $(this).attr('id');
+		var id = $(this).attr('data-id');
+		console.warn('clicked', id);
 		$.getJSON("/company/"+id+"/users", function(users) {
 			console.warn('res', users);
             $('#companyUsersModal').modal("show");
-          })
-        });
+        })
+    });
 });	
