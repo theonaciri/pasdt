@@ -184,7 +184,7 @@
                     <input type="hidden" name="companyid" id="companyid" val="" />
                     <button type="submit" class="btn btn-primary">Envoyer</button>
                     <div class="form-loader" hidden>
-                      <img src="/images/loader.svg">
+                        <img src="/images/loader.svg">
                     </div>
                     <div class="form-message"></div>
                 </form>
