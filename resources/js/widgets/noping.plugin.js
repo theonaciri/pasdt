@@ -34,4 +34,4 @@ function ext_search(table, $target, toggle) {
 }
 
 
-window.initNopingButtons = initNopingButtons;	
+window.initNopingButtons = initNopingButtons;

@@ -275,9 +275,9 @@ function dataTablesEvents() {
     }
     console.warn(active_module);
     console.warn(`<iframe width="600" height="450" frameborder="0" style="border:0"
-src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.telit_locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
     $(this).find('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.telit_locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
     $(this).find('.modal-pre').html( table + "</table>");
   })
 }

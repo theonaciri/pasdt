@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;  
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Module;
 
 class CompanyController extends Controller
 {
@@ -42,6 +43,23 @@ class CompanyController extends Controller
             return response()->json($users);
         } else {
             abort(403, "Vous n'avez pas les droits d'accès aux utilisateurs de cette entreprise.");
+        }
+    }   
+
+    /**
+    * Returns JSON modules of a company.
+    *
+    * @return \Illuminate\Http\Response
+    */
+
+    public function getModules($company_id)
+    {
+        $user = Auth::user();
+        if (($user->company_id == $company_id && $user->is_client_company) || $user->su_admin) {
+            $modules = Module::where('company_id', $company_id)->get();
+            return response()->json($modules);
+        } else {
+            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
         }
     }
     /**

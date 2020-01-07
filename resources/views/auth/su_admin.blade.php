@@ -14,6 +14,7 @@
                             <tr>
                                 <th>Nom</th>
                                 <th>Liste d'utilisateurs</th>
+                                <th>Liste de modules</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,6 +27,9 @@
                                 <td class="name">{{$company->name}}</td>
                                 <td class="button">
                                     <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#company-user-modal">M</button>
+                                </td>
+                                <td class="button">
+                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companymodulesbtn" data-toggle="modal" data-target="#company-modules-modal">M</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -134,72 +138,94 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Editer le compte</h5>
+                <h5 class="modal-title">Liste d'utilisateurs de </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
-                <div class="modal-body">
-
-                    <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nom') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                            @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse e-mail') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Nouveau mot de passe') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                            @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmation du mot de passe') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" class="btn btn-primary">Sauvegarder les changements</button>
-                </div>
-            </form>
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="companyModulesModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Liste des modules de </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="addmodule container">
+                <br>
+                <h4>Ajouter un module</h4>
+                <form id="addModule" action="/module" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nom du module</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nom du module">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Données brutes JSON Telit</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
+                        <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
+                    </div>
+                    <input type="hidden" name="companyid" id="companyid" val="" />
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                    <div class="form-loader" hidden>
+                      <img src="/images/loader.svg">
+                    </div>
+                    <div class="form-message"></div>
+                </form>
+            </div>
+            <hr>
+            <table id="moduleTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Numéro de carte</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Detail telit-->
+<div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="moduleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moduleModalLabel">Module Telit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-map"></div>
+        <div class="modal-pre"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
 </div>
 
     
