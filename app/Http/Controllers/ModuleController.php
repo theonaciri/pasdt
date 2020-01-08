@@ -31,13 +31,28 @@ class ModuleController extends Controller
 
     public function postModule(Request $request) {
         $user = Auth::user();
-        if ($user->company_id == $request->companyid || $user->su_admin) {
-            $module = new Module;
-            $module->
-            Module::insert
+        $module = new Module;
+        $module->name = $request->name;
+        if (!empty($request->company_id) && ($user->company_id == $request->companyid || $user->su_admin)) {
+            $module->company_id = $request->company_id;
         }
+        $module->card_number = $request->pasdt_card_number;
+        $module->telit_json = $request->telit_json;
+        $module->save();
 
-        return response()->json($modules);
+        return response()->json($module);
+    }
+
+    /**
+    * Deteles a Module
+    * Connexion web
+    * @return JSON
+    */
+
+    public function deleteModule(Module $module) {
+        $user = Auth::user();
+        $module->delete();
+        return response()->json($module);
     }
 
     /**

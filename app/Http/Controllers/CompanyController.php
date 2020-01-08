@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Module;
+use App\Company;
 
 class CompanyController extends Controller
 {
@@ -35,10 +36,15 @@ class CompanyController extends Controller
     * @return \Illuminate\Http\Response
     */
 
+
+    protected function is_user_allowed($user, $company_id) {
+        return ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
+    }
+
     public function getUsers($company_id)
     {
         $user = Auth::user();
-        if (($user->company_id == $company_id && $user->is_client_company) || $user->su_admin) {
+        if ($this->is_user_allowed($user, $company_id)) {
             $users = User::where('company_id', $company_id)->get();
             return response()->json($users);
         } else {
@@ -55,13 +61,50 @@ class CompanyController extends Controller
     public function getModules($company_id)
     {
         $user = Auth::user();
-        if (($user->company_id == $company_id && $user->is_client_company) || $user->su_admin) {
+        if ($this->is_user_allowed($user, $company_id)) {
             $modules = Module::where('company_id', $company_id)->get();
             return response()->json($modules);
         } else {
             abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
         }
     }
+
+    /**
+    * Unlinks a module of a company.
+    *
+    * @return \Illuminate\Http\Response
+    */
+
+    public function unlinkModule(Request $req, Company $company, Module $module)
+    {
+        $user = Auth::user();
+        if ($this->is_user_allowed($user, $company->id)) {
+            $module->company_id = NULL;
+            $module->save();
+            return response()->json($module);
+        } else {
+            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+        }
+    }
+
+    /**
+    * Links a module of a company.
+    *
+    * @return \Illuminate\Http\Response
+    */
+
+    public function linkModule(Request $req, Company $company, Module $module)
+    {
+        $user = Auth::user();
+        if ($this->is_user_allowed($user, $company->id)) {
+            $module->company_id = $company->id;
+            $module->save();
+            return response()->json($module);
+        } else {
+            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+        }
+    }
+
     /**
     * Display a listing of the resource.
     *

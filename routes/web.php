@@ -30,10 +30,15 @@ Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('imag
 Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
 Route::get('/company/{id}/users', 'CompanyController@getUsers')->name('company.users.get');
 Route::get('/company/{id}/modules', 'CompanyController@getModules')->name('company.modules.get');
+Route::get('/company/{company}/module/{module}', 'CompanyController@linkModule')->name('company.modules.link');
+Route::delete('/company/{company}/module/{module}', 'CompanyController@unlinkModule')->name('company.modules.unlink');
+
 
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
+
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
-Route::get('/module', 'ModuleController@postModule')->name('module.post');
+Route::post('/module', 'ModuleController@postModule')->name('module.post');
+Route::delete('/module', 'ModuleController@deleteModule')->name('module.delete');
 Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get');
 Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json');
 

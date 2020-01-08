@@ -53,11 +53,11 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
     });
 
 	$('.companymodulesbtn').click(function(e) {
-		var id = $(this).attr('data-id');
-		console.warn('clicked', id);
+		var company_id = $(this).data('id');
+		console.warn('clicked', company_id);
 		var companyname = $(this).parent().siblings('.name').html();
-		$('#companyid').val(id);
-		$.getJSON("/company/"+id+"/modules", function(_modules) {
+		$('#company_id').val(company_id);
+		$.getJSON("/company/"+company_id+"/modules", function(_modules) {
 			console.warn('res', _modules);
 			modules = _modules;
             $mod = $('#companyModulesModal');
@@ -70,12 +70,28 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
             	`<tr ${modules[i].is_client_company ? 'class="highlight"' : ''}>
             		<td class="name">${modules[i].name}</td>
             		<td class="email">${modules[i].card_number}</td>
-            		<td class="details"><button type="button" data-id="${modules[i].id}" title="Détails" name="Détails" data-json="${modules[i].telit_json}" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal">M</button></td>
+            		<td class="details">
+            			<button type="button" data-id="${modules[i].id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal">M</button>
+            			<button type="button" data-id="${modules[i].id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-primary telitmoduleunlinkbtn" data-company="${company_id}">X</button>
+            		</td>
             	 </tr>`
             } 
             $mod.find('tbody').html(htmlcontent);
         })
     });
+
+	$('body').on("click", '.telitmoduleunlinkbtn', function(e) {
+		var csrf = $("input[name='_token']").first().val();
+		var $self = $(this);
+		$.ajax({
+			url: "/company/"+$(this).data('company')+"/module/"+$(this).data('id'),
+			type: "DELETE",
+			data: {"_token": csrf}
+		}).done(function(e) {
+			console.log(e);
+			$self.parent().parent().remove();
+		});
+	});
 
     $("#addModule").ajaxSubmit({
 		success: function(e) {
