@@ -14,7 +14,7 @@
                             <tr>
                                 <th>Nom</th>
                                 <th>Liste d'utilisateurs</th>
-                                <th>Liste de modules</th>
+                                <th>Liste des modules</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -171,17 +171,22 @@
             <div class="addmodule container">
                 <br>
                 <h4>Ajouter un module</h4>
-                <form id="addModule" action="/module" method="post">
+                <form id="addModule" action="{{ route('module.post') }}" method="post">
+                    @csrf
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nom du module</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nom du module">
+                        <label for="modulename">Nom du module</label>
+                        <input type="text" class="form-control" id="modulename" name="name" aria-describedby="modulename" placeholder="Nom du module">
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Données brutes JSON Telit</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
+                        <label for="pasdt_card_number">N° de carte PASDT lié</label>
+                        <input type="text" class="form-control" id="pasdt_card_number" name="pasdt_card_number" aria-describedby="pasdt_card_number" placeholder="00XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="telit_json">Données brutes JSON Telit</label>
+                        <textarea class="form-control" name="telit_json" id="telit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
                         <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
                     </div>
-                    <input type="hidden" name="companyid" id="companyid" val="" />
+                    <input type="hidden" name="company_id" id="company_id" val="" />
                     <button type="submit" class="btn btn-primary">Envoyer</button>
                     <div class="form-loader" hidden>
                         <img src="/images/loader.svg">
