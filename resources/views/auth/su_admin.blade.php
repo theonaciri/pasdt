@@ -170,6 +170,23 @@
             </div>
             <div class="addmodule container">
                 <br>
+                <h4>Lier un module</h4>
+                <hr>
+                <form id="linkmodule" method="post">
+                    @csrf
+                    <div class="dropdown">
+                        <div class="form-group">
+                            <label for="selectLinkModule">Lier un module encore assigné à aucune entreprise</label>
+                            <select class="form-control" id="selectLinkModule">
+                            @foreach ($list_modules as $module)
+                              <option value="{{$module->id}}">{{$module->name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </form>
+                <hr>
                 <h4>Ajouter un module</h4>
                 <form id="addModule" action="{{ route('module.post') }}" method="post">
                     @csrf

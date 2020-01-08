@@ -63,7 +63,8 @@ class AdminController extends Controller
         }
         $companies = \App\Company::all();
 
-        return view('auth/su_admin', ["companies"=>$companies]);
+        $list_modules = \App\Module::select('id', 'name')->whereNull('company_id')->get();
+        return view('auth/su_admin', ["companies"=>$companies, "list_modules"=>$list_modules]);
     }
 
     public function deleteUser(\App\User $usertoDelete) {

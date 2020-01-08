@@ -30,8 +30,8 @@ Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('imag
 Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
 Route::get('/company/{id}/users', 'CompanyController@getUsers')->name('company.users.get');
 Route::get('/company/{id}/modules', 'CompanyController@getModules')->name('company.modules.get');
-Route::get('/company/{company}/module/{module}', 'CompanyController@linkModule')->name('company.modules.link');
-Route::delete('/company/{company}/module/{module}', 'CompanyController@unlinkModule')->name('company.modules.unlink');
+Route::post('/company/{company}/module/{module}', 'CompanyController@linkModule')->name('company.module.link');
+Route::delete('/company/{company}/module/{module}', 'CompanyController@unlinkModule')->name('company.module.unlink');
 
 
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
