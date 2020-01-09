@@ -17,6 +17,17 @@
 	.ui-datepicker-trigger img {
 		height: 20px;
 	}
+@include media-breakpoint-up(lg) {
+  .modal-divided:first-child {
+    border-right: 1px solid #ced4da;
+  }
+}
+@include media-breakpoint-down(lg) {
+  .modal-divided:first-child {
+    border-bottom: 1px solid #ced4da;
+  }
+}
+
 }
 .cursor {
 	cursor: pointer;
