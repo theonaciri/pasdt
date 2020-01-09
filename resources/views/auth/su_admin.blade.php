@@ -139,7 +139,6 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __("Liste des logs reçus sans module affilié") }}</div>
-
                 <div class="card-body">
                     <table id="unlinkedLogTable" class="table">
                         <thead>
