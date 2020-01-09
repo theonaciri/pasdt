@@ -114,6 +114,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		success: function(e) {
 			$('#addModule input, #addModule textarea').val('');
 			$('#selectLinkModule').append(`<option value="${e.id}">${e.name}</option>`);
+			$("#unlinkedLogTable").find('tr[data-id="' + e.card_number +'"]').remove();
 		}
 	});
     $("#editModule").ajaxSubmit({
