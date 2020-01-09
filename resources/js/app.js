@@ -7,11 +7,13 @@
 require('./bootstrap');
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
+require('./init');
 require('./datatable-pasdt');
 require('./datatable-png');
 require('./client');
-
 require('./admin');
+
+
 //require('./graphs-chartjs.js');
 //require('./graphs-realtime-pasdt');
 //require('./graphs-realtime-plotly-pasdt');

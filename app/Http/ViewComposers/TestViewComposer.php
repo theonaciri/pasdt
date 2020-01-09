@@ -14,7 +14,7 @@ class TestViewComposer {
         $su_applied = false;
         $user = Auth::User();
     	if ($user) {
-            if ($user->su_admin && request()->company && request()->company != $user->company_id) {
+            if ($user->su_admin && request()->company) {
                 $company = \App\Company::where('id', request()->company)->first();
                 $su_applied = true;
             }
