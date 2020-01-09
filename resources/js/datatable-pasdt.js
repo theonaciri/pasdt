@@ -165,7 +165,7 @@ function _initTable() {
           "data": "options", render: function(data, type, row) {
             try {
               var obj = JSON.parse(data);
-              if (typeof obj === 'object' && obj.hasOwnProperty("maxtemp")) {
+              if (typeof obj === 'object' && obj != null && obj.hasOwnProperty("maxtemp")) {
                 return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
               }
               return '--';
@@ -283,6 +283,7 @@ src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.
 }
 
 function formatAdress(a) {
+  if (typeof a == 'undefined') return '';
   return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
 }
 

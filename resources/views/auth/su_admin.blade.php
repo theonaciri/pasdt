@@ -9,27 +9,27 @@
             <div class="card">
                 <div class="card-header">{{ __("Se connecter en tant que :") }} </div>
                 <div class="card-body">
-                	<table id="adminTable">
+                	<table id="adminTable" class="table">
                         <thead>
                             <tr>
-                                <th>Nom</th>
-                                <th>Liste d'utilisateurs</th>
-                                <th>Liste des modules</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Liste d'utilisateurs</th>
+                                <th scope="col">Liste des modules</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($companies as $company)
                             @if($self->is_client_company && $self->company_id == $company->id)
-                                <tr class="highlight">
+                                <tr class="highlight" data-id="{{$company->id}}">
                             @else
-                                <tr>
+                                <tr data-id="{{$company->id}}">
                             @endif
-                                <td class="name">{{$company->name}}</td>
-                                <td class="button">
-                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#company-user-modal">M</button>
+                                <td class="name" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">{{$company->name}}</td>
+                                <td class="button" title="Liste des utilisateurs de {{$company->name}}">
+                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#company-user-modal"><span class="oi oi-eye"></span></button>
                                 </td>
-                                <td class="button">
-                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companymodulesbtn" data-toggle="modal" data-target="#company-modules-modal">M</button>
+                                <td class="button" title="Ajouter, voir des modules de {{$company->name}}">
+                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companymodulesbtn" data-toggle="modal" data-target="#company-modules-modal"><span class="oi oi-eye"></span></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -69,7 +69,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __("Nom de l'utilisateur client") }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="clientname" type="text" class="form-control @error('clientname') is-invalid @enderror" name="clientname" value="{{ old('clientname') }}" required autocomplete="clientname" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -143,11 +143,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <table id="usersTable">
+            <table id="usersTable" class="table">
                 <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Email</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -160,7 +160,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="companyModulesModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width: 1150px;">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 1360px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Liste des modules de </h5>
@@ -168,24 +168,22 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="container">
+            <div class="container" style="max-width: 1350px">
   				<div class="row justify-content-md-center">
 		            <div class="container col-lg-6 modal-divided">
 		            <br>
 		                <h4>Modules actifs</h4>
 		                <hr>
-			            <table id="moduleTable">
+			            <table id="moduleTable" style="width: 100%" class="table">
 			                <thead>
 			                    <tr>
-			                        <th>Nom</th>
-			                        <th>Numéro de carte</th>
-			                        <th>Numéro Telit</th>
-			                        <th>Détails</th>
+			                        <th scope="col">Nom</th>
+			                        <th scope="col">Numéro de carte</th>
+			                        <th scope="col">Numéro Telit</th>
+			                        <th scope="col">Détails</th>
 			                    </tr>
 			                </thead>
-			                <tbody>
-			                    
-			                </tbody>
+			                <tbody></tbody>
 			            </table>
 			        </div>
 		            <div class="addmodule container col-lg-6 modal-divided">
@@ -204,10 +202,11 @@
 		                            </select>
 		                        </div>
 		                    </div>
-		                    <button type="submit" class="btn btn-primary">Envoyer</button>
+		                    <button type="submit" class="btn btn-primary"><span class="oi oi-link-intact"></span> Lier le module</button>
 		                </form>
 		                <hr>
 		                <h4>Ajouter un module</h4>
+                        <small class="form-text text-muted">Ajouter un module lorsque qu'aucune donnée n'a encore été envoyée. Il est préférable de rechercher si le module n'existe pas d'abord sur la liste du dessus.<br>Le module sera ajouté à liste du dessus.</small>
 		                <form id="addModule" action="{{ route('module.post') }}" method="post">
 		                    @csrf
 		                    <div class="form-group">
@@ -223,13 +222,14 @@
 		                        <textarea class="form-control" name="telit_json" id="telit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
 		                        <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
 		                    </div>
-		                    <input type="hidden" name="company_id" id="company_id" val="" />
-		                    <button type="submit" class="btn btn-primary">Envoyer</button>
+		                    <!--<input type="hidden" name="company_id" id="company_id" val="" />-->
+		                    <button type="submit" class="btn btn-primary"><span class="oi oi-plus"></span> Ajouter le module</button>
 		                    <div class="form-loader" hidden>
 		                        <img src="/images/loader.svg">
 		                    </div>
 		                    <div class="form-message"></div>
 		                </form>
+                        <br/>
 		            </div>
 		        </div>
 		    </div>
@@ -249,8 +249,55 @@
         </button>
       </div>
       <div class="modal-body">
+        <button class="btn btn-primary toggle-map">Afficher la carte</button>
         <div class="modal-map"></div>
+        <br>
+        <hr>
+        <br>
         <div class="modal-pre"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal edit module -->
+<div class="modal fade" id="editModuleModal" tabindex="-1" role="dialog" aria-labelledby="moduleModalEditLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moduleModalEditLabel">Édition du module</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Éditer un module</h4>
+            <small class="form-text text-muted">Editer un module.</small>
+            <form id="editModule" action="{{ route('module.post') }}" method="put">
+                @csrf
+                <div class="form-group">
+                    <label for="editmodulename">Nom du module</label>
+                    <input type="text" class="form-control" id="editmodulename" name="name" aria-describedby="editmodulename" placeholder="Nom du module">
+                </div>
+                <div class="form-group">
+                    <label for="editpasdt_card_number">N° de carte PASDT lié</label>
+                    <input type="text" class="form-control" id="editpasdt_card_number" name="pasdt_card_number" aria-describedby="editpasdt_card_number" placeholder="00XXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label for="edittelit_json">Données brutes JSON Telit</label>
+                    <textarea class="form-control" name="telit_json" id="edittelit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
+                    <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
+                </div>
+                <input type="hidden" name="company_id" id="editcompany_id" val="" />
+                <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span> Éditer le module</button>
+                <div class="form-loader" hidden>
+                    <img src="/images/loader.svg">
+                </div>
+                <div class="form-message"></div>
+            </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
