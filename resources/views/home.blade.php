@@ -103,7 +103,11 @@
         </button>
       </div>
       <div class="modal-body">
+        <button class="btn btn-primary toggle-map">Afficher la carte</button>
         <div class="modal-map"></div>
+        <br>
+        <hr>
+        <br>
         <div class="modal-pre"></div>
       </div>
       <div class="modal-footer">

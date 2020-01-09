@@ -8,7 +8,6 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var $p = $(this).parent();
 		var n = $p.siblings('.name').html();
 		if (confirm('Supprimer le compte de ' +  n + ' ?')) {
-			console.log('should delete', id);
 			location.href='/user/delete/' + id;
 		}
 	});
@@ -33,10 +32,8 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 
 	$('.companybtn').click(function(e) {
 		var id = $(this).attr('data-id');
-		console.warn('clicked', id);
 		var companyname = $(this).parent().siblings('.name').html();
 		$.getJSON("/company/"+id+"/users", function(users) {
-			console.warn('res', users);
             $mod = $('#companyUsersModal');
             $mod.modal("show");
             $mod.find('.modal-title').html("Liste d'utilisateurs de " + companyname);
@@ -64,11 +61,9 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
             $mod.find('.modal-title').html("Liste de modules de " + companyname);
 		    $("#linkmodule").ajaxSubmit({
 		    	url: function() {
-		    		console.warn('url', '/company/'+company_id+'/module/'+$('#selectLinkModule').val());
-			      	return '/company/'+company_id+'/module/'+$('#selectLinkModule').val();
+		    		return '/company/'+company_id+'/module/'+$('#selectLinkModule').val();
 			    },
 				success: function(e) {
-					console.warn(e);
 					$(this).find(`option[value="${$('#selectLinkModule').val()}"]`).remove();
 					$('#moduleTable tbody').append(moduleTableTr(e));
 				}
@@ -104,7 +99,6 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 			type: "PUT",
 			data: {"_token": csrf}
 		}).done(function(e) {
-			console.log(e);
 			$self.parent().parent().remove();
 			$('#selectLinkModule').append(`<option value="${e.id}">${e.name}</option>`);
 		});
