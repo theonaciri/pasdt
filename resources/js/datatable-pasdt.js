@@ -35,7 +35,6 @@ String.prototype.capFirstLetter = function () {
 }
 
 function _initTable() {
-  console.log('init');
   $(document).ready(function() {
     /* Setup - add a text input to each footer cell */
     $('#main-table tfoot th').each(function() {
@@ -89,13 +88,11 @@ function _initTable() {
         });
       },
       createdRow: function rowColor( row, data, dataIndex) {
-        //console.log('testing ', data.msg.toLowerCase().indexOf("temperature 1")> 0);
         if (data == null) {
           return;
         }
         if (typeof data.msg != 'undefined' && data.msg != null) {
           var foundValue = arrayToSearch.filter(obj=>data.msg.toLowerCase().indexOf(obj.name) > 0);
-          //console.log('found', foundValue);
           if (foundValue.length) {
             $(row).addClass(foundValue[foundValue.length -1].class);
           }
@@ -202,8 +199,6 @@ function _initTable() {
 
     $('#graphs-tab').click( function () {
       graphdata = table.rows({ 'search': 'applied' }).data();
-      
-      console.log(graphdata);
       Graphs.loadGraph(graphdata);
     });
 
@@ -247,11 +242,8 @@ function _initTable() {
     .column(3)
     .data()
     .filter(function(value, index) {
-      console.warn('testing for ', value, index);
       return value != 'Day' ? true : false;
     });
-  console.log('F', filteredData);
-
   });
 
 }
@@ -262,31 +254,30 @@ function dataTablesEvents() {
         if (data && data.module_id) {
           $.getJSON("/module/"+data.module_id, function(module_data) {
             active_module = module_data;
-            $('#moduleModal').modal("show");
+            var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
+            var f = flatten(module_data);
+            for (p in f) {
+              table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
+            }
+            var $modmodal = $('#moduleModal');
+            var str_address = formatAdress(module_data.locAddress);
+            $modmodal.find('.toggle-map').toggle(!!str_address.length).attr('data-loc', str_address);
+            $modmodal.find('.modal-map').html('');
+            $modmodal.find('.modal-pre').html(table + "</table>");
+            $modmodal.modal("show");
           })
         }
     } );
 
-  $('#moduleModal').on('show.bs.modal', function (e) {
-    var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
-    var f = flatten(active_module);
-    for (p in f) {
-      table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
-    }
-    console.warn(active_module);
-    console.warn(`<iframe width="600" height="450" frameborder="0" style="border:0"
-src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.telit_locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
-    $(this).find('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(active_module.telit_locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
-    $(this).find('.modal-pre').html( table + "</table>");
-  })
+  $('.toggle-map').click(function(e) {
+      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+    })
+  function formatAdress(a) {
+    if (typeof a == 'undefined') return '';
+    return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+  }
 }
-
-function formatAdress(a) {
-  if (typeof a == 'undefined') return '';
-  return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
-}
-
 
 _initTable();
 

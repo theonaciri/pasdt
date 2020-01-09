@@ -80,8 +80,12 @@ class ModuleController extends Controller
 
     public function deleteModule(Module $module) {
         $user = Auth::user();
-        $module->delete();
-        return response()->json($module);
+        if ($this->is_user_allowed($user, $module->company_id)) {
+            $module->delete();
+            return response()->json($module);
+        } else {
+            return abort(403, "Echec de l'authentification.");
+        }
     }
 
     /**
@@ -92,7 +96,6 @@ class ModuleController extends Controller
     public function getAllModules(Request $request) {
         $user = Auth::user();
         $modules = Module::where("company_id", "=", $user->company_id)->select('id, name')->get();
-
         return response()->json($modules);
     }
 
@@ -103,7 +106,7 @@ class ModuleController extends Controller
 
     public function getModule(\App\Module $module) {
         $user = Auth::user();
-        if ($module->company_id == $user->company_id) {
+        if ($this->is_user_allowed($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
         } else {
             return abort(403, "Echec de l'authentification.");
@@ -117,10 +120,10 @@ class ModuleController extends Controller
 
     public function getModuleJson(Module $module) {
         $user = Auth::user();
-        if ($module->company_id == $user->company_id) {
+        if ($this->is_user_allowed($user, $module->company_id)) {
             return response($module->telit_json);
         } else {
-            return abort(403, "Echec de l'authentification.");
+            return abort(403, "Echec de l'authentification pour récupérer les données JSON.");
         }
     }
 }
