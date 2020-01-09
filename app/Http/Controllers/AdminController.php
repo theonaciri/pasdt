@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -62,9 +63,20 @@ class AdminController extends Controller
             return view('home');
         }
         $companies = \App\Company::all();
-
         $list_modules = \App\Module::select('id', 'name')->whereNull('company_id')->get();
-        return view('auth/su_admin', ["companies"=>$companies, "list_modules"=>$list_modules]);
+        $unlinked_logs = DB::select("
+            SELECT cardId, logs.id AS id, logs.created_at, logs.msg
+                FROM   logs
+                LEFT OUTER JOIN modules
+                  ON (logs.cardId = modules.card_number)
+            WHERE modules.card_number IS NULL");
+        $colors = ["#3490dc", "#6574cd", "#9561e2", "#f66d9b", "#e3342f", "#f6993f", "#ffed4a", "#38c172", "#4dc0b5", "#6cb2eb", "#fff", "#6c757d", "#343a40", "#3490dc", "#6c757d", "#38c172", "#6cb2eb", "#ffed4a", "#e3342f", "#f8f9fa", "#343a40"];
+        return view('auth/su_admin', [
+            "companies"=>$companies,
+            "list_modules"=>$list_modules,
+            "unlinked_logs"=>$unlinked_logs,
+            "colors"=>$colors
+        ]);
     }
 
     public function deleteUser(\App\User $usertoDelete) {

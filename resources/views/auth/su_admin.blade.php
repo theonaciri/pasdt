@@ -42,7 +42,7 @@
 	</div>
 </div>
 
-
+<!--
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -131,7 +131,39 @@
         </div>
     </div>
 </div>
+-->
 
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">{{ __("Liste des logs reçus sans module affilié") }}</div>
+
+                <div class="card-body">
+                    <table id="unlinkedLogTable" class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Reçu le</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($unlinked_logs as $log)
+                            <tr data-id="{{$log->cardId}}" style="background-color: {{$colors[intval($log->cardId) % count($colors)]}}60">
+                                <td>{{$log->cardId}}</td>
+                                <td>{{$log->msg}}</td>
+                                <td>{{$log->created_at}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal -->
