@@ -100,8 +100,8 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var csrf = $("input[name='_token']").first().val();
 		var $self = $(this);
 		$.ajax({
-			url: "/company/"+$self.data('company')+"/module/"+$self.data('id'),
-			type: "DELETE",
+			url: "/company/"+$self.data('company')+"/module/"+$self.data('id')+"/unlink",
+			type: "PUT",
 			data: {"_token": csrf}
 		}).done(function(e) {
 			console.log(e);

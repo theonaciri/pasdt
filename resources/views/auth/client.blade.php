@@ -36,7 +36,7 @@
                                 @if ($self->is_client_company)
                                 <td class="button">
                                     <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>
-                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
+                                    <!--<button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoquserbtn">X</button>-->
                                 </td>
                                 @endif
                             </tr>
@@ -79,7 +79,7 @@
                                 <td class="email">{{$module->telit_ratePlan}}</td>
                                 <td class="button">
                                     <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal_{{$module->id}}">JSON</button>
-                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
+                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>
                                 </td>
                             </tr>
                             @endforeach

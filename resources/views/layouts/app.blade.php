@@ -35,12 +35,16 @@
 </head>
 <body>
     <div id="app">
+        @if ($su_applied) 
+        <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
+            <div class="container">
+                    <a href="{{ url('home')}}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"><span class="oi oi-warning"></span></a>
+                <a class="navbar-brand" href="{{ url('/home') }}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre">
+        @else
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                @if ($su_applied) 
-                    <a href="{{ url('home')}}" alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"><-</a>
-                @endif
-                <a class="navbar-brand" href="{{ url('/home') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}" title="Retour à l'accueil"  alt="Retour à l'accueil">
+        @endif
                     @if (!empty($_company))
                         @if (!empty($_company->logo))
                             <img src="images/companylogos/{{ $_company->logo }}" height="39" />
