@@ -1,11 +1,7 @@
 define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], function($, flatten) {
     if (!window.location.pathname.includes("admin")) return ;
     var company_modules = [];
-    console.warn('com', company_modules);
-	$('#edit-user-modal').on('shown.bs.modal', function (e) {
-
-
-	})
+	$('#edit-user-modal').on('shown.bs.modal', function (e) {})
 
 	$('.revoqbtn').click(function(e) {
 		var id = $(this).parent().siblings('.id').html();
@@ -31,6 +27,9 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		$('body').css('background-color', $(this).val());
 	})
 
+	$('#adminTable td.name').click(function() {
+		location.href="/home?company=" + $(this).parent().data('id');
+	});
 
 	$('.companybtn').click(function(e) {
 		var id = $(this).attr('data-id');
@@ -83,13 +82,16 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
     });
 
     function moduleTableTr(module) {
-    	return `<tr>
+    	return `<tr data-id="${module.id}">
             		<td class="name">${module.name}</td>
             		<td class="pasdt_card_number">${module.card_number}</td>
             		<td class="telit_id">${module.telit_id}</td>
             		<td class="details">
-            			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal">M</button>
-            			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-primary telitmoduleunlinkbtn" data-company="${module.company_id}">X</button>
+            			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal"><span class="oi oi-eye"></span></button>
+            			<button type="button" data-id="${module.id}" title="Modifier le module" name="Modifier le module" class="btn btn-primary telitmoduleeditbtn" data-company="${module.company_id}" data-toggle="modal" data-target="#editModuleModal">
+            				<span class="oi oi-pencil"></span>
+            			</button>
+            			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-primary telitmoduleunlinkbtn" data-company="${module.company_id}"><span class="oi oi-link-broken"></span></button>
             		</td>
             	 </tr>`
     }
@@ -110,30 +112,67 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 
     $("#addModule").ajaxSubmit({
 		success: function(e) {
-			console.warn('success', e);
+			$('#addModule input, #addModule textarea').val('');
+			$('#selectLinkModule').append(`<option value="${e.id}">${e.name}</option>`);
+		}
+	});
+    $("#editModule").ajaxSubmit({
+		success: function(mod) {
+			$('#editModuleModal').modal('hide')
+			var $mod = $('#moduleTable tr[data-id="'+mod.id+'"');
+			$mod.children('td.name').html(mod.name);
+			$mod.children('td.pasdt_card_number').html(mod.card_number);
+			$mod.children('td.telit_id').html(mod.telit_id);
+
+			var index = company_modules.findIndex(function(e) {return e.id == mod.id});
+			company_modules[+index] = mod;
 		}
 	});
 
 	$('body').on('click', '.telitmodulebtn', function(e) {
 		var id = $(this).attr('data-id');
-		var mod = company_modules.find(function(e) {return e.id = id});
+		var mod = company_modules.find(function(e) {return e.id == id});
 		if (typeof mod == 'undefined') return; // TODO: ERROR MSG
 
 		var modulename = $(this).parent().siblings('.name').html();
-		var json = JSON.parse(mod.telit_json);
+		var json = JSON.parse(mod.telit_json && mod.telit_json.length ? mod.telit_json : '{}');
 		var f = flatten(json);
-
-	    var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
+	    var table = '<table><tr><th scope="col">Clé</th><th scope="col">Valeur</th></tr>';
 	    for (p in f) {
 	      table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
 	    }
-	    $('#moduleModal').find('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-	src="https://www.google.com/maps/embed/v1/search?q=${formatAdress(json.locAddress)}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
-	    $('#moduleModal').find('.modal-pre').html( table + "</table>");
+	    var str_address = formatAdress(json.locAddress);
+	    var $modmodal = $('#moduleModal');
+	    $modmodal.find('.toggle-map').toggle(!!str_address.length).attr('data-loc', str_address);
+	    $modmodal.find('.modal-map').html('');
+	    $modmodal.find('.modal-pre').html(table + "</table>");
 	});
 
+
+	// EDIT Module
+	$('body').on('click', '.telitmoduleeditbtn', function(e) {
+		var id = $(this).data('id');
+		var company = $(this).data('company');
+		var mod = company_modules.find(function(e) {return e.id == id});
+		if (typeof mod == 'undefined') return; // TODO: ERROR MSG
+
+		var modulename = $(this).parent().siblings('.name').html();
+		var pasdt_card_number = $(this).parent().siblings('.pasdt_card_number').html();
+		$form = $('#editModule');
+		$form.find('#editmodulename').val(modulename);
+		$form.find('#editpasdt_card_number').val(pasdt_card_number);
+		$form.find('#edittelit_json').val(mod.telit_json);
+		$form.attr('action', "/module/"+id);
+	});
+
+	$('.toggle-map').click(function(e) {
+		$(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
+	src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+	})
+
 	function formatAdress(a) {
-	  return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+		if (typeof a == 'undefined') return '';
+	  	return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
 	}
 
 });	

@@ -23,6 +23,13 @@ class ModuleController extends Controller
        $this->middleware('auth');
     }
 
+
+
+    protected function is_user_allowed($user, $company_id) {
+        return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
+    }
+
+
     /**
     * Creates a Module
     * Connexion web
@@ -33,12 +40,34 @@ class ModuleController extends Controller
         $user = Auth::user();
         $module = new Module;
         $module->name = $request->name;
-        if (!empty($request->company_id) && ($user->company_id == $request->companyid || $user->su_admin)) {
+        if ($this->is_user_allowed($user, $request->company_id)) {
             $module->company_id = $request->company_id;
         }
         $module->card_number = $request->pasdt_card_number;
         $module->telit_json = $request->telit_json;
         $module->save();
+
+        return response()->json($module);
+    }
+
+    /**
+    * Edits a Module
+    * Connexion web
+    * @return JSON
+    */
+
+    public function putModule(Request $request, Module $module) {
+        $user = Auth::user();
+        $module->name = $request->name;
+        if ($this->is_user_allowed($user, $module->company_id)) {
+            $module->update([
+                'name'=>$request->name,
+                'card_number'=>$request->pasdt_card_number,
+                'telit_json'=>$request->telit_json
+            ]);
+        } else {
+            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+        }
 
         return response()->json($module);
     }

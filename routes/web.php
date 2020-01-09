@@ -38,7 +38,8 @@ Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
 
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
 Route::post('/module', 'ModuleController@postModule')->name('module.post');
-Route::delete('/module', 'ModuleController@deleteModule')->name('module.delete');
+Route::put('/module/{module}', 'ModuleController@putModule')->name('module.put');
+Route::delete('/module/{module}', 'ModuleController@deleteModule')->name('module.delete');
 Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get');
 Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json');
 
