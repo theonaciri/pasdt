@@ -26,7 +26,7 @@
                             @endif
                                 <td class="name" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">{{$company->name}}</td>
                                 <td class="button" title="Utilisateurs de {{$company->name}}">
-                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#company-user-modal"><span class="oi oi-eye"></span></button>
+                                    <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#companyUsersModal"><span class="oi oi-eye"></span></button>
                                 </td>
                                 <td class="button" title="Ajouter, voir des modules de {{$company->name}}">
                                     <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companymodulesbtn" data-toggle="modal" data-target="#company-modules-modal"><span class="oi oi-eye"></span></button>
