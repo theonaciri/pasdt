@@ -9,6 +9,8 @@ require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 require('./datatable-pasdt');
 require('./datatable-png');
+require('./client');
+
 require('./admin');
 //require('./graphs-chartjs.js');
 //require('./graphs-realtime-pasdt');

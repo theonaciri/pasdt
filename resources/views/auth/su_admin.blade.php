@@ -7,14 +7,14 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">{{ __("Se connecter en tant que :") }} </div>
+                <div class="card-header">{{ __("Liste des entreprises") }} </div>
                 <div class="card-body">
                 	<table id="adminTable" class="table">
                         <thead>
                             <tr>
                                 <th scope="col">Nom</th>
-                                <th scope="col">Liste d'utilisateurs</th>
-                                <th scope="col">Liste des modules</th>
+                                <th scope="col">Utilisateurs</th>
+                                <th scope="col">Modules</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,7 +25,7 @@
                                 <tr data-id="{{$company->id}}">
                             @endif
                                 <td class="name" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">{{$company->name}}</td>
-                                <td class="button" title="Liste des utilisateurs de {{$company->name}}">
+                                <td class="button" title="Utilisateurs de {{$company->name}}">
                                     <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#company-user-modal"><span class="oi oi-eye"></span></button>
                                 </td>
                                 <td class="button" title="Ajouter, voir des modules de {{$company->name}}">
@@ -35,6 +35,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <small class="form-text text-muted">cliquer sur un nom du tableau permet de voir les logs de ses modules.</small>
 				</div>
 			</div>
 		</div>

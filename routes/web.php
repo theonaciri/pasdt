@@ -31,7 +31,7 @@ Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('comp
 Route::get('/company/{id}/users', 'CompanyController@getUsers')->name('company.users.get');
 Route::get('/company/{id}/modules', 'CompanyController@getModules')->name('company.modules.get');
 Route::post('/company/{company}/module/{module}', 'CompanyController@linkModule')->name('company.module.link');
-Route::delete('/company/{company}/module/{module}', 'CompanyController@unlinkModule')->name('company.module.unlink');
+Route::put('/company/{company}/module/{module}/unlink', 'CompanyController@unlinkModule')->name('company.module.unlink');
 
 
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
