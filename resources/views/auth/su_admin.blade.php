@@ -160,7 +160,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="companyModulesModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 1150px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Liste des modules de </h5>
@@ -168,62 +168,71 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="addmodule container">
-                <br>
-                <h4>Lier un module</h4>
-                <hr>
-                <form id="linkmodule" method="post">
-                    @csrf
-                    <div class="dropdown">
-                        <div class="form-group">
-                            <label for="selectLinkModule">Lier un module encore assigné à aucune entreprise</label>
-                            <select class="form-control" id="selectLinkModule">
-                            @foreach ($list_modules as $module)
-                              <option value="{{$module->id}}">{{$module->name}}</option>
-                            @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
-                </form>
-                <hr>
-                <h4>Ajouter un module</h4>
-                <form id="addModule" action="{{ route('module.post') }}" method="post">
-                    @csrf
-                    <div class="form-group">
-                        <label for="modulename">Nom du module</label>
-                        <input type="text" class="form-control" id="modulename" name="name" aria-describedby="modulename" placeholder="Nom du module">
-                    </div>
-                    <div class="form-group">
-                        <label for="pasdt_card_number">N° de carte PASDT lié</label>
-                        <input type="text" class="form-control" id="pasdt_card_number" name="pasdt_card_number" aria-describedby="pasdt_card_number" placeholder="00XXXXXXX">
-                    </div>
-                    <div class="form-group">
-                        <label for="telit_json">Données brutes JSON Telit</label>
-                        <textarea class="form-control" name="telit_json" id="telit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
-                        <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
-                    </div>
-                    <input type="hidden" name="company_id" id="company_id" val="" />
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
-                    <div class="form-loader" hidden>
-                        <img src="/images/loader.svg">
-                    </div>
-                    <div class="form-message"></div>
-                </form>
-            </div>
-            <hr>
-            <table id="moduleTable">
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Numéro de carte</th>
-                        <th>Détails</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
+            <div class="container">
+  				<div class="row justify-content-md-center">
+		            <div class="container col-lg-6 modal-divided">
+		            <br>
+		                <h4>Modules actifs</h4>
+		                <hr>
+			            <table id="moduleTable">
+			                <thead>
+			                    <tr>
+			                        <th>Nom</th>
+			                        <th>Numéro de carte</th>
+			                        <th>Numéro Telit</th>
+			                        <th>Détails</th>
+			                    </tr>
+			                </thead>
+			                <tbody>
+			                    
+			                </tbody>
+			            </table>
+			        </div>
+		            <div class="addmodule container col-lg-6 modal-divided">
+		                <br>
+		                <h4>Lier un module</h4>
+		                <hr>
+		                <form id="linkmodule" method="post">
+		                    @csrf
+		                    <div class="dropdown">
+		                        <div class="form-group">
+		                            <label for="selectLinkModule">Lier un module encore assigné à aucune entreprise</label>
+		                            <select class="form-control" id="selectLinkModule">
+		                            @foreach ($list_modules as $module)
+		                              <option value="{{$module->id}}">{{$module->name}}</option>
+		                            @endforeach
+		                            </select>
+		                        </div>
+		                    </div>
+		                    <button type="submit" class="btn btn-primary">Envoyer</button>
+		                </form>
+		                <hr>
+		                <h4>Ajouter un module</h4>
+		                <form id="addModule" action="{{ route('module.post') }}" method="post">
+		                    @csrf
+		                    <div class="form-group">
+		                        <label for="modulename">Nom du module</label>
+		                        <input type="text" class="form-control" id="modulename" name="name" aria-describedby="modulename" placeholder="Nom du module">
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="pasdt_card_number">N° de carte PASDT lié</label>
+		                        <input type="text" class="form-control" id="pasdt_card_number" name="pasdt_card_number" aria-describedby="pasdt_card_number" placeholder="00XXXXXXX">
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="telit_json">Données brutes JSON Telit</label>
+		                        <textarea class="form-control" name="telit_json" id="telit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
+		                        <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
+		                    </div>
+		                    <input type="hidden" name="company_id" id="company_id" val="" />
+		                    <button type="submit" class="btn btn-primary">Envoyer</button>
+		                    <div class="form-loader" hidden>
+		                        <img src="/images/loader.svg">
+		                    </div>
+		                    <div class="form-message"></div>
+		                </form>
+		            </div>
+		        </div>
+		    </div>
         </div>
     </div>
 </div>

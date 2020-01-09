@@ -85,7 +85,8 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
     function moduleTableTr(module) {
     	return `<tr>
             		<td class="name">${module.name}</td>
-            		<td class="email">${module.card_number}</td>
+            		<td class="pasdt_card_number">${module.card_number}</td>
+            		<td class="telit_id">${module.telit_id}</td>
             		<td class="details">
             			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal">M</button>
             			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-primary telitmoduleunlinkbtn" data-company="${module.company_id}">X</button>

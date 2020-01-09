@@ -10674,6 +10674,18 @@ a.text-dark:focus {
   height: 20px;
 }
 
+@media (min-width: 992px) {
+  #app .modal-divided:first-child {
+    border-right: 1px solid #ced4da;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  #app .modal-divided:first-child {
+    border-bottom: 1px solid #ced4da;
+  }
+}
+
 .cursor {
   cursor: pointer;
 }
