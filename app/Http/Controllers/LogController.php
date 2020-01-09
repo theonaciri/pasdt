@@ -31,9 +31,10 @@ class LogController extends Controller
     public function getAllData(Request $request) {
         $this->middleware('auth');
         $user = Auth::user();
-
-        if ($user->su_admin) {
-          $logs = $logs = DB::table('logs')
+        $su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
+        $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
+        if ($user->su_admin && empty($su_company)) {
+            $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
                 ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
                          'modules.id as module_id', 'modules.name as module_name')
@@ -41,7 +42,7 @@ class LogController extends Controller
         } else {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
-                ->where('modules.company_id' , '=', $user->company_id)
+                ->where('modules.company_id' , '=', $company)
                 ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
