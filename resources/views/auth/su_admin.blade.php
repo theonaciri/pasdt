@@ -202,7 +202,7 @@
             </div>
             <div class="container" style="max-width: 1440px">
   				<div class="row justify-content-md-center">
-		            <div class="container col-lg-6 modal-divided">
+		            <div class="container col-lg-9 modal-divided">
 		            <br>
 		                <h4>Modules actifs</h4>
 		                <hr>
@@ -212,13 +212,14 @@
 			                        <th scope="col">Nom</th>
 			                        <th scope="col">Numéro de carte</th>
 			                        <th scope="col">Numéro Telit</th>
+			                        <th scope="col">Numéro de module</th>
 			                        <th scope="col">Détails</th>
 			                    </tr>
 			                </thead>
 			                <tbody></tbody>
 			            </table>
 			        </div>
-		            <div class="addmodule container col-lg-6 modal-divided">
+		            <div class="addmodule container col-lg-3 modal-divided">
 		                <br>
 		                <h4>Lier un module</h4>
 		                <hr>
@@ -238,7 +239,7 @@
 		                </form>
 		                <hr>
 		                <h4>Ajouter un module</h4>
-                        <small class="form-text text-muted">Ajouter un module lorsque qu'aucune donnée n'a encore été envoyée. Il est préférable de rechercher si le module n'existe pas d'abord sur la liste du dessus.<br>Le module sera ajouté à liste du dessus.</small>
+                        <small class="form-text text-muted">Rechercher d'abord si le module n'existe pas d'abord sur la liste du dessus ou s'il est affilié à une autre entreprise.<br>Le module sera ajouté à liste du dessus.</small>
 		                <form id="addModule" action="{{ route('module.post') }}" method="post">
 		                    @csrf
 		                    <div class="form-group">
@@ -250,10 +251,15 @@
 		                        <input type="text" class="form-control" id="pasdt_card_number" name="pasdt_card_number" aria-describedby="pasdt_card_number" placeholder="00XXXXXXX">
 		                    </div>
 		                    <div class="form-group">
+		                        <label for="pasdt_module_number">N° de module à afficher</label>
+		                        <input type="text" class="form-control" id="pasdt_module_number" name="pasdt_module_number" aria-describedby="pasdt_module_number" placeholder="XXXX-XXXX">
+		                    </div>
+		                    <div class="form-group">
 		                        <label for="telit_json">Données brutes JSON Telit</label>
 		                        <textarea class="form-control" name="telit_json" id="telit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
 		                        <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
 		                    </div>
+                			<input type="hidden" class="form-control" id="telit_number" name="telit_number" aria-describedby="telit_number">
 		                    <!--<input type="hidden" name="company_id" id="company_id" val="" />-->
 		                    <button type="submit" class="btn btn-primary"><span class="oi oi-plus"></span> Ajouter le module</button>
 		                    <div class="form-loader" hidden>
@@ -319,10 +325,15 @@
                     <input type="text" class="form-control" id="editpasdt_card_number" name="pasdt_card_number" aria-describedby="editpasdt_card_number" placeholder="00XXXXXXX">
                 </div>
                 <div class="form-group">
+                    <label for="pasdt_module_number">N° de module à afficher</label>
+                    <input type="text" class="form-control" id="editpasdt_module_number" name="pasdt_module_number" aria-describedby="pasdt_module_number" placeholder="XXXX-XXXX">
+                </div>
+                <div class="form-group">
                     <label for="edittelit_json">Données brutes JSON Telit</label>
                     <textarea class="form-control" name="telit_json" id="edittelit_json" rows="3" placeholder="{&#10  format: json&#10}"></textarea>
                     <small id="textHelp" class="form-text text-muted">Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> Actions en haut à droite -> View JSON.</small>
                 </div>
+                <input type="hidden" class="form-control" id="edittelit_number" name="telit_number" aria-describedby="telit_number">
                 <input type="hidden" name="company_id" id="editcompany_id" val="" />
                 <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span> Éditer le module</button>
                 <div class="form-loader" hidden>

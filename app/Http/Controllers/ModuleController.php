@@ -45,6 +45,8 @@ class ModuleController extends Controller
         }
         $module->card_number = $request->pasdt_card_number;
         $module->telit_json = $request->telit_json;
+        $module->telit_id = $request->telit_number;
+        $module->module_id = $request->pasdt_module_number;
         $module->save();
 
         return response()->json($module);
@@ -63,7 +65,9 @@ class ModuleController extends Controller
             $module->update([
                 'name'=>$request->name,
                 'card_number'=>$request->pasdt_card_number,
-                'telit_json'=>$request->telit_json
+                'telit_json'=>$request->telit_json,
+                'telit_id'=>$request->telit_number,
+                'module_id'=>$request->pasdt_module_number
             ]);
         } else {
             abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");

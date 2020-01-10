@@ -81,6 +81,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
             		<td class="name">${module.name}</td>
             		<td class="pasdt_card_number">${module.card_number}</td>
             		<td class="telit_id">${module.telit_id}</td>
+            		<td class="module_id">${module.module_id}</td>
             		<td class="details">
             			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal"><span class="oi oi-eye"></span></button>
             			<button type="button" data-id="${module.id}" title="Modifier le module" name="Modifier le module" class="btn btn-primary telitmoduleeditbtn" data-company="${module.company_id}" data-toggle="modal" data-target="#editModuleModal">
@@ -118,6 +119,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 			$mod.children('td.name').html(mod.name);
 			$mod.children('td.pasdt_card_number').html(mod.card_number);
 			$mod.children('td.telit_id').html(mod.telit_id);
+			$mod.children('td.module_id').html(mod.module_id);
 
 			var index = company_modules.findIndex(function(e) {return e.id == mod.id});
 			company_modules[+index] = mod;
@@ -157,6 +159,8 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		$form.find('#editmodulename').val(modulename);
 		$form.find('#editpasdt_card_number').val(pasdt_card_number);
 		$form.find('#edittelit_json').val(mod.telit_json);
+		$form.find('#editpasdt_module_number').val(mod.module_id);
+		$form.find('#edittelit_number').val(mod.telit_id);
 		$form.attr('action', "/module/"+id);
 	});
 
@@ -169,5 +173,23 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		if (typeof a == 'undefined') return '';
 	  	return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
 	}
+
+	$('textarea').on('change paste keyup', function(e) {
+		try {
+			var j = JSON.parse($(this).val());
+			if (typeof j != 'undefined') {
+				console.log(j);
+				$form = $(this).parent().parent();
+				if (typeof j.custom1 != 'undefined')
+					$form.find('input[name="name"]').val(j.custom1);
+				if (typeof j.iccid != 'undefined')
+					$form.find('input[name="telit_number"]').val(j.iccid);
+				if (typeof j.custom2 != 'undefined')
+					$form.find('input[name="pasdt_module_number"]').val(j.custom2);
+			}
+		} catch (e) {
+			console.warn('not json');
+		}
+	});
 
 });	
