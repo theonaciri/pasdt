@@ -33,6 +33,12 @@ String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
 }
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.href);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, '    '));
+};
 
 function _initTable() {
   $(document).ready(function() {
@@ -130,7 +136,7 @@ function _initTable() {
       },
       "ajax": {
         //"url": "/json/data/dump.json",
-        "url": "/logs",
+        "url": "/logs" + (getUrlParameter('company') ? '?company=' + getUrlParameter('company') : ''),
         "dataSrc": ""
       },
       "order": [

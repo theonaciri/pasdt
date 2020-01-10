@@ -31,9 +31,10 @@ class LogController extends Controller
     public function getAllData(Request $request) {
         $this->middleware('auth');
         $user = Auth::user();
-        $su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
+        //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
+        $su_company = $request->company ?? NULL;
         $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
-        if ($user->su_admin && empty($su_company)) {
+        if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
                 ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',

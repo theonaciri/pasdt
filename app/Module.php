@@ -12,6 +12,6 @@ class Module extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'card_number', 'telit_json'
+        'name', 'card_number', 'telit_json', 'telit_id', 'module_id'
     ];
 }
