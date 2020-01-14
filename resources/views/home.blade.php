@@ -43,20 +43,22 @@
                         <table id="synthesis-table" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>N°PASDT & sim ID</th>
+                                    <th>Num PASDT & SIM</th>
                                     <th>Client</th>
-                                    <th class="th-message">Message</th>
-                                    <th>Température</th>
+                                    <th>Num Telit</th>
+                                    <th class="th-message">Dernière temp.</th>
+                                    <th>Dernière anomalie</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>N°PASDT & sim ID</th>
+                                    <th>Num PASDT & SIM</th>
                                     <th>Client</th>
-                                    <th class="th-input-message">Message</th>
-                                    <th>Température</th>
+                                    <th>Num Telit</th>
+                                    <th class="th-input-message">Dernière temp.</th>
+                                    <th>Dernière anomalie</th>
+                                    <th>Date</th>
                                 </tr>
                             </tfoot>
                         </table>
