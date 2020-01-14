@@ -53,6 +53,32 @@ class LogController extends Controller
     }
 
     /**
+    * Get synthesis data
+    * Connexion web
+    */
+
+    public function getSynthesisData(Request $request) {
+        $this->middleware('auth');
+        $user = Auth::user();
+        if (empty($user)) abort(403);
+        //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
+        $su_company = $request->company ?? NULL;
+        $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
+
+            $logs = DB::table('logs')
+                ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
+                ->select('modules.telit_id', 'modules.company_id',
+                    'modules.telit_custom1 as part_name', 'modules.telit_custom2 as client_name',
+                    'modules.telit_custom3 as info_transfo', 'modules.telit_custom4 as client_name',
+                    'modules.telit_customer as customer',
+                    'modules.id as module_id', 'modules.name as module_name')
+                ->groupby('telit_id')
+                ->having('modules.company_id' , '=', $company)
+                ->get();
+        return response()->json($logs);
+    }
+
+    /**
      * Store single log
      * Connexion API
      */
