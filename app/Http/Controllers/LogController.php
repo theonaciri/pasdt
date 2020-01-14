@@ -66,12 +66,12 @@ class LogController extends Controller
         $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
 
             $logs = DB::table('logs')
-                ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
-                ->select('modules.telit_id', 'modules.company_id',
-                    'modules.telit_custom1 as part_name', 'modules.telit_custom2 as client_name',
-                    'modules.telit_custom3 as info_transfo', 'modules.telit_custom4 as client_name',
-                    'modules.telit_customer as customer',
-                    'modules.id as module_id', 'modules.name as module_name')
+                ->rightJoin('modules', 'card_number', '=', 'logs.cardId')
+                ->select('telit_id', 'company_id', 'module_id',
+                    'telit_custom1 as part_name', 'telit_custom2 as client_name',
+                    'telit_custom3 as info_transfo', 'telit_custom4 as client_name',
+                    'telit_customer as customer',
+                    'modules.id', 'name as module_name')
                 ->groupby('telit_id')
                 ->having('modules.company_id' , '=', $company)
                 ->get();

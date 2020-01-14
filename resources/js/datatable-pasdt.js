@@ -10,21 +10,12 @@ require( 'datatables.net-scroller-bs4' );
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 
 define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
-  'flat', './components/datatable-fr',
+  'flat', './components/datatable-fr', './components/color-event-assoc',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
-  function(datatables, Graphs, jszip, pdfmake, pdfFonts, flatten, datatablefr) {
+  function(datatables, Graphs, jszip, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch) {
     if (window.location.pathname !== "/home") return ;
-var arrayToSearch = [
-  {name: 'temperature 1',   value: '1', class: 'dt-grey'},
-  {name: 'temperature 2',   value: '2', class: 'dt-red'},
-  {name: 'defaut pression', value: '3', class: 'dt-blue'},
-  {name: 'defaut gaz',      value: '4', class: 'dt-green'},
-  {name: 'defaut pression * defaut temperature 1',      value: '5', class: 'dt-black'},
-  {name: 'defaut temperature 2 * defaut temperature 1', value: '6', class: 'dt-black'},
-  {name: '',                value: '7', class: 'dt-black'}
-];
 var table, graphdata, active_module;
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -32,12 +23,6 @@ String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
 }
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.href);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, '    '));
-};
 
 function _initTable() {
   $(document).ready(function() {
