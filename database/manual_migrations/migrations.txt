@@ -1,0 +1,6 @@
+database migrations
+14/01/2020:
+modules : 
+default value for all dates : current
+new telit_custom3
+new telit_custom4

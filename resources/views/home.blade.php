@@ -23,7 +23,10 @@
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse des logs PASDT</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
                 </li>
                 <!--<li class="nav-item">
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
@@ -35,7 +38,31 @@
             </ul>
         
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show active" id="synthesis" role="tabpanel" aria-labelledby="synthesis-tab">
+                    <div class="container">
+                        <table id="synthesis-table" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>N°PASDT & sim ID</th>
+                                    <th>Client</th>
+                                    <th class="th-message">Message</th>
+                                    <th>Température</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>N°PASDT & sim ID</th>
+                                    <th>Client</th>
+                                    <th class="th-input-message">Message</th>
+                                    <th>Température</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
                         <p id="date_filter">
                             <div class="input-group mb-3">

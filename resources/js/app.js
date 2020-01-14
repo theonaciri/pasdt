@@ -8,6 +8,7 @@ require('./bootstrap');
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 require('./init');
+require('./datatable-synthesis');
 require('./datatable-pasdt');
 require('./datatable-png');
 require('./client');

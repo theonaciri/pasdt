@@ -35,6 +35,7 @@ Route::put('/company/{company}/module/{module}/unlink', 'CompanyController@unlin
 
 
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
+Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth');
 
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
 Route::post('/module', 'ModuleController@postModule')->name('module.post');
