@@ -3,4 +3,7 @@ database migrations
 modules : 
 default value for all dates : current
 new telit_custom3
-new telit_custom4
+new telit_custom4	
+
+logs
+new maxtemp int NULL

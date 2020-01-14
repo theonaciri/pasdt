@@ -62,20 +62,34 @@ class LogController extends Controller
         $user = Auth::user();
         if (empty($user)) abort(403);
         //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
-        $su_company = $request->company ?? NULL;
-        $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
 
-            $logs = DB::table('logs')
-                ->rightJoin('modules', 'card_number', '=', 'logs.cardId')
-                ->select('telit_id', 'company_id', 'module_id',
-                    'telit_custom1 as part_name', 'telit_custom2 as client_name',
-                    'telit_custom3 as info_transfo', 'telit_custom4 as client_name',
-                    'telit_customer as customer',
-                    'modules.id', 'name as module_name')
-                ->groupby('telit_id')
-                ->having('modules.company_id' , '=', $company)
-                ->get();
-        return response()->json($logs);
+        $company = $user->company;
+        if ($user->su_admin) {
+            $company = intval($request->company) ?? -1;
+        }
+        $company_condition = $company > 0 ? "AND company_id = $company" : "";
+        $logs = DB::select(DB::raw(<<<EOTSQL
+            SELECT * FROM logs
+            LEFT JOIN modules ON modules.card_number = logs.cardId 
+            WHERE logs.id IN (
+            SELECT MAX(L.id) FROM `logs` L
+            LEFT JOIN modules ON modules.card_number = L.cardId
+            WHERE msg != '["DAY"]' AND msg != '["ACK"]'
+                $company_condition
+            GROUP BY modules.card_number)
+EOTSQL
+                    ));
+        $active_ids = [];
+        foreach ($logs as $key => $log) {
+            $active_ids[] = (int)$log->card_number;
+        }
+        $maxtemps = DB::table('logs')->distinct()
+            ->select('cardId', 'maxtemp')
+            ->whereIn('cardId', $active_ids)
+            ->groupBy('cardId')
+            ->orderBy('id', 'desc')
+            ->get();
+        return response()->json($maxtemps);
     }
 
     /**
@@ -88,6 +102,8 @@ class LogController extends Controller
         $log = $request->json()->all();
         $log["msg"] = json_encode($log["msg"]);
         $log["options"] = json_encode($log["options"]);
+        $json = json_decode($log["options"]);
+        $log["maxtemp"] = !empty($json->maxtemp) ? intval($json->maxtemp) : NULL;
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();

@@ -44,20 +44,20 @@
                             <thead>
                                 <tr>
                                     <th>Num PASDT & SIM</th>
-                                    <th>Client</th>
                                     <th>Num Telit</th>
                                     <th class="th-message">Dernière temp.</th>
                                     <th>Dernière anomalie</th>
+                                    <th>Avec température</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>Num PASDT & SIM</th>
-                                    <th>Client</th>
                                     <th>Num Telit</th>
                                     <th class="th-input-message">Dernière temp.</th>
                                     <th>Dernière anomalie</th>
+                                    <th>Avec température</th>
                                     <th>Date</th>
                                 </tr>
                             </tfoot>

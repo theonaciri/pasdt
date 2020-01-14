@@ -83,21 +83,32 @@ define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/b
 	        {
 	          "data": "module_id"
 	        },
-	        {
-	          "data": "part_name"
-	        },
 	        /*{"data": "msgId"},*/
 	        {
 	          "data": "telit_id"
 	        },
 	        { 
-	          "data": "client_name"
+	          "data": "telit_custom2"
+	        },
+	        { 
+	          "data": "msg"
 	        },
 	        {
-	          "data": "info_transfo"
+	          "data": "options", render: function(data, type, row) {
+	            try {
+	              var obj = JSON.parse(data);
+	              if (typeof obj === 'object' && obj != null && obj.hasOwnProperty("maxtemp")) {
+	                return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
+	              }
+	              return '--';
+	            } catch (e) {
+	              console.warn(e);
+	              return '--';
+	            }
+	        }
 	        },
 	        {
-	          "data": "client_name"
+	          "data": "created_at"
 	        }
 	        /*{"data": "options"},*/
 	        /*{"data": "updated_at"},*/
