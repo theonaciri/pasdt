@@ -36,15 +36,15 @@ class LogController extends Controller
         $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
         if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
-                ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
-                ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
+                ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
+                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         } else {
             $logs = DB::table('logs')
-                ->rightJoin('modules', 'modules.card_number', '=', 'logs.cardId')
+                ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
                 ->where('modules.company_id' , '=', $company)
-                ->select('logs.id', 'modules.module_id as cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
+                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         }
@@ -110,6 +110,7 @@ EOTSQL
     {
         $this->authAPI($request);
         $log = $request->json()->all();
+        $log["cardId"] = convertIdPasdtToTelit($log["cardId"]);
         $log["msg"] = json_encode($log["msg"]);
         $log["options"] = json_encode($log["options"]);
         $json = json_decode($log["options"]);
@@ -132,5 +133,15 @@ EOTSQL
         if (empty($this->user)) {
             abort(403, "Echec de l'authentification.");
         }
+    }
+
+    public function convertIdPasdtToTelit($pasdt_str) {
+        // 002306224 -> 1850-00035
+        if (strlen($pasdt_str) != 9) return NULL;
+        $serial = substr($pasdt_str, 0, 4);
+        $datecode = substr($pasdt_str, 5, 9);
+        return str_pad(dechex($datecode), 4, '0', STR_PAD_LEFT)
+            . '-'
+            . str_pad(hexdec($serial), 5, '0', STR_PAD_LEFT);
     }
 }
