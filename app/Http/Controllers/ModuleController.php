@@ -29,7 +29,6 @@ class ModuleController extends Controller
         return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
     }
 
-
     /**
     * Creates a Module
     * Connexion web
