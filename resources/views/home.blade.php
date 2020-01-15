@@ -45,20 +45,18 @@
                                 <tr>
                                     <th>Num PASDT & SIM</th>
                                     <th>Num Telit</th>
-                                    <th class="th-message">Dernière temp.</th>
                                     <th>Dernière anomalie</th>
-                                    <th>Avec température</th>
-                                    <th>Date</th>
+                                    <th>Date dernière anomalie</th>
+                                    <th>Dernière température</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>Num PASDT & SIM</th>
                                     <th>Num Telit</th>
-                                    <th class="th-input-message">Dernière temp.</th>
                                     <th>Dernière anomalie</th>
-                                    <th>Avec température</th>
-                                    <th>Date</th>
+                                    <th>Date dernière anomalie</th>
+                                    <th>Dernière température</th>
                                 </tr>
                             </tfoot>
                         </table>

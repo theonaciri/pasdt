@@ -79,6 +79,7 @@ class LogController extends Controller
             GROUP BY modules.card_number)
 EOTSQL
                     ));
+
         $active_ids = [];
         foreach ($logs as $key => $log) {
             $active_ids[] = (int)$log->card_number;
@@ -89,7 +90,16 @@ EOTSQL
             ->groupBy('cardId')
             ->orderBy('id', 'desc')
             ->get();
-        return response()->json($maxtemps);
+
+        foreach ($logs as $key => $log) {
+            foreach ($maxtemps as $key => $maxtemp) {
+                if ($maxtemp->cardId == $log->cardId) {
+                    $log->maxtemp = $maxtemp->maxtemp;
+                }
+            }
+        }
+
+        return response()->json($logs);
     }
 
     /**
