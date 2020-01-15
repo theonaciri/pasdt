@@ -42,7 +42,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/b
 	      ],
 	      initComplete: function() {
 	        /* Dropdown */
-	        this.api().columns([1, 2]).every(function() {
+	        this.api().columns([0, 1, 2]).every(function() {
 	          var column = this;
 	          var select = $('<select class="individual-search"><option value=""></option></select>')
 	            .appendTo($(column.footer()).empty())
@@ -81,41 +81,26 @@ define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/b
 	      "columns": [
 	        /* {"data": "id"},*/
 	        {
-	          "data": "module_id"
-	        },
-	        /*{"data": "msgId"},*/
-	        {
 	          "data": "telit_id"
 	        },
 	        { 
 	          "data": "telit_custom2"
 	        },
+	        {
+	          "data": "created_at"
+	        },
 	        { 
 	          "data": "msg"
 	        },
 	        {
-	          "data": "options", render: function(data, type, row) {
-	            try {
-	              var obj = JSON.parse(data);
-	              if (typeof obj === 'object' && obj != null && obj.hasOwnProperty("maxtemp")) {
-	                return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
-	              }
-	              return '--';
-	            } catch (e) {
-	              console.warn(e);
-	              return '--';
-	            }
-	        }
-	        },
-	        {
-	          "data": "created_at"
+	          "data": "maxtemp"
 	        }
 	        /*{"data": "options"},*/
 	        /*{"data": "updated_at"},*/
 	      ]
 	    });
 	    /* Search bar */
-	    table.columns([0, 3, 4]).every(function() {
+	    table.columns([3, 4]).every(function() {
 	      var that = this;
 	      $('input', this.footer()).on('keyup change clear', function() {
 	        if (that.search() !== this.value) {
