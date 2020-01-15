@@ -45,8 +45,8 @@
                                 <tr>
                                     <th>Num PASDT & SIM</th>
                                     <th>Num Telit</th>
-                                    <th>Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
+                                    <th>Dernière anomalie</th>
                                     <th>Dernière température</th>
                                 </tr>
                             </thead>
@@ -54,8 +54,8 @@
                                 <tr>
                                     <th>Num PASDT & SIM</th>
                                     <th>Num Telit</th>
-                                    <th>Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
+                                    <th>Dernière anomalie</th>
                                     <th>Dernière température</th>
                                 </tr>
                             </tfoot>
