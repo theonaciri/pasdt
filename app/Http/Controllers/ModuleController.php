@@ -29,6 +29,24 @@ class ModuleController extends Controller
         return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
     }
 
+    public function contactTelit() {
+        $endpoint = "https://api-de.devicewise.com/rest/auth/";
+        $client = new \GuzzleHttp\Client();
+        $id = 5;
+        $value = "ABC";
+
+        $response = $client->request('GET', $endpoint, ['query' => [
+            'username' => App::environment('TELIT_USERNAME'), 
+            'key2' => App::environment('TELIT_PASSWORD'),
+        ]]);
+
+        // url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
+
+        $statusCode = $response->getStatusCode();
+        $content = json_decode($response->getBody(), true);
+        return $content;
+    }
+
     /**
     * Creates a Module
     * Connexion web
