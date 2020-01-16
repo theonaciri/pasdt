@@ -30,21 +30,19 @@ class ModuleController extends Controller
     }
 
     public function contactTelit() {
-        $endpoint = "https://api-de.devicewise.com/rest/auth/";
-        $client = new \GuzzleHttp\Client();
-        $id = 5;
-        $value = "ABC";
+        $data = array("username" => env('TELIT_USERNAME'), "password" => env('TELIT_PASSWORD')); 
+        $data_string = json_encode($data);
 
-        $response = $client->request('GET', $endpoint, ['query' => [
-            'username' => App::environment('TELIT_USERNAME'), 
-            'key2' => App::environment('TELIT_PASSWORD'),
-        ]]);
-
-        // url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
-
-        $statusCode = $response->getStatusCode();
-        $content = json_decode($response->getBody(), true);
-        return $content;
+        $ch = curl_init('https://api-de.devicewise.com/rest/auth/'); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array( 
+            'Content-Type: application/json', 
+            'Content-Length: ' . strlen($data_string)) 
+        );
+        $result = curl_exec($ch);
+        return response()->json($result);
     }
 
     /**
