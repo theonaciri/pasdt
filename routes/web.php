@@ -48,3 +48,6 @@ Route::get('/checkout', 'ClientController@checkout')->name('checkout');
 Route::get('/checkout', 'ClientController@checkout')->name('company_create');
 Route::post('/add-sub', 'ClientController@addSub')->name('addSub');
 Route::get('/subscription', 'SubscriptionController@index')->name('update-payment-method');
+
+
+Route::get('/authtelit', 'ModuleController@contactTelit')->name('telit.auth');
