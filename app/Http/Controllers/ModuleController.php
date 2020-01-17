@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ModuleController extends Controller
 {
@@ -29,20 +30,77 @@ class ModuleController extends Controller
         return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
     }
 
-    public function contactTelit() {
-        $data = array("username" => env('TELIT_USERNAME'), "password" => env('TELIT_PASSWORD')); 
-        $data_string = json_encode($data);
+    protected function getSessionTelit() {
+        // curl --data-urlencode 'username=username' --data-urlencode 'password=password' 'https://api-de.devicewise.com/rest/auth/'
+        if (!empty(env('TELIT_SESSION_ID'))) {
+            return env('TELIT_SESSION_ID');
+        } else if (Storage::exists(env('TELIT_SESSION_ID_PATH'))) {
+            return Storage::get(env('TELIT_SESSION_ID_PATH'));
+        } // else
+        $arr=array(
+            'username' => env('TELIT_USERNAME'),
+            'password' => env('TELIT_PASSWORD')
+         );
+        $data_string = http_build_query($arr);
+        $ch = curl_init("https://api-de.devicewise.com/rest/auth/");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+        $final = curl_exec($ch);
+        config(['TELIT_SESSION_ID' => $final]);
+        Storage::put(env('TELIT_SESSION_ID_PATH'), $final);
+        return $final;
+    }
 
-        $ch = curl_init('https://api-de.devicewise.com/rest/auth/'); 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array( 
-            'Content-Type: application/json', 
-            'Content-Length: ' . strlen($data_string)) 
-        );
-        $result = curl_exec($ch);
-        return response()->json($result);
+
+    /**
+    ** Returns connection data, given iccid
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function getTelitJson($telit_id) {
+        $session = $this->getSessionTelit();
+        $arr=array(
+            "sessionId" => $session,
+            "iccid" => $TELIT_SESSION_ID
+         );
+        $data_string = http_build_query($arr);
+        $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.find/");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+        $final = curl_exec($ch);
+        return response($final);
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function getTelitListConnections($limit) {
+        $session = $this->getSessionTelit();
+        $arr=array(
+            "sessionId" => $session,
+            "sort" => "-dateActivated",
+            "offset"=>"0",
+            "limit"=>$limit
+         );
+        $data_string = http_build_query($arr);
+        $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.list/");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+        $final = curl_exec($ch);
+        return response($final);
     }
 
     /**
