@@ -54,7 +54,6 @@ class ModuleController extends Controller
         return $final;
     }
 
-
     /**
     ** Returns connection data, given iccid
     ** Connexion web
@@ -84,7 +83,7 @@ class ModuleController extends Controller
     ** @return JSON
     **/
 
-    public function getTelitListConnections($limit) {
+    protected function _getTelitListConnections($limit) {
         $session = $this->getSessionTelit();
         $arr=array(
             "sessionId" => $session,
@@ -100,6 +99,66 @@ class ModuleController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
         $final = curl_exec($ch);
+        return $final;
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function getTelitListConnections($limit) {
+        return response($this->_getTelitListConnections($limit));
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function saveTelitModules() {
+        $_modules = $this->_getTelitListConnections(5));
+        $modules = json_decode($_modules);
+        foreach ($modules as $key => $module) {
+            DB::table('modules')
+                ->updateOrInsert(
+                    ['telit_id' => $module->icci],
+                    [
+                        'company_id' => 0,
+                        'name' => $module->configName,
+                        'telit_id' => $module->iccid,
+                        'module_id' => $module->custom1,
+                        'telit_customer' => $module->customer,
+                        'telit_status'=> $module->status,
+                        'telit_imei'=> $module->imei,
+                        'telit_msisdn'=> $module->msisdn,
+                        'telit_ratePlan'=> $module->ratePlan,
+                        'telit_dateActivated'=> $module->dateActivated,
+                        'telit_dateModified'=> $module->dateModified,
+                        'telit_custom1'=> $module->custom1,
+                        'telit_custom2'=> $module->custom2,
+                        'telit_custom3'=> $module->custom3,
+                        'telit_custom4'=> $module->custom4,
+                        'telit_locLat'=> $module->locLat,
+                        'telit_locLon'=> $module->locLng,
+                        'telit_locAdress'=>json_encode($module->locAdress),
+                        'telit_json'=>json_encode($module)
+                    ]
+                );
+        }
+        return response('OK');
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function LookupTelitFromId($id) {
+
         return response($final);
     }
 
