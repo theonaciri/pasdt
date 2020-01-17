@@ -76,7 +76,7 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
                             </li>
                         @else
-                            @if (Route::has('register') && Auth::user()->is_client_company)
+                            @if (Route::has('register') && Auth::user()->su_admin)
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __("Nouvel accès") }}</a>
                                 </li>
