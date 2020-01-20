@@ -30,11 +30,11 @@ class ModuleController extends Controller
         return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
     }
 
-    protected function getSessionTelit() {
+    protected function getSessionTelit($force_reconnect = false) {
         // curl --data-urlencode 'username=username' --data-urlencode 'password=password' 'https://api-de.devicewise.com/rest/auth/'
-        if (!empty(env('TELIT_SESSION_ID'))) {
+        if (!$force_reconnect && !empty(env('TELIT_SESSION_ID'))) {
             return env('TELIT_SESSION_ID');
-        } else if (Storage::exists(env('TELIT_SESSION_ID_PATH'))) {
+        } else if (!$force_reconnect && Storage::exists(env('TELIT_SESSION_ID_PATH'))) {
             return Storage::get(env('TELIT_SESSION_ID_PATH'));
         } // else
         $arr=array(
@@ -74,6 +74,23 @@ class ModuleController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
         $final = curl_exec($ch);
+        return $this->checkIfNotDisconnected($final, $ch, $arr);
+    }
+
+
+    /**
+    ** To call after each Telit API calls. If we are disconnected, it relogs and sends the call again.
+    ** @return String
+    **/
+    protected function checkIfNotDisconnected($final, $ch, $arr) {
+        $res = json_decode($final);
+        if (!empty($res) && $res->success == false && $res->errorCodes[0] == -90000) {
+            $session = $this->getSessionTelit(true);
+            $arr["sessionId"] = $session;
+            $data_string = http_build_query($arr);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            $final = curl_exec($ch);
+        }
         return response($final);
     }
 
@@ -89,9 +106,9 @@ class ModuleController extends Controller
             "sessionId" => $session,
             "sort" => "-dateActivated",
             "offset"=>"0",
-            "limit"=>$limit
+            "limit"=> strval($limit)
          );
-        $data_string = http_build_query($arr);
+        $data_string = http_build_query($arr)   ;
         $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.list/");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
@@ -99,7 +116,7 @@ class ModuleController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
         $final = curl_exec($ch);
-        return $final;
+        return $this->checkIfNotDisconnected($final, $ch, $arr);
     }
 
     /**
@@ -118,9 +135,20 @@ class ModuleController extends Controller
     ** @return JSON
     **/
 
+    public function saveTelitListConnections($limit) {
+        return response($this->_getTelitListConnections($limit));
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
     public function saveTelitModules() {
-        $_modules = $this->_getTelitListConnections(5));
+        $_modules = $this->_getTelitListConnections(5);
         $modules = json_decode($_modules);
+        dd($_modules);
         foreach ($modules as $key => $module) {
             DB::table('modules')
                 ->updateOrInsert(
