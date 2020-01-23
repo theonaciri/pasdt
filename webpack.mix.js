@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const webpack = require('webpack');
 
 require('laravel-mix-bundle-analyzer');
 
@@ -12,6 +13,13 @@ require('laravel-mix-bundle-analyzer');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+mix.webpackConfig({
+  plugins: [
+   // reduce bundle size by ignoring moment js local files
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  ]
+});
 
 mix.js('resources/js/app.js', 'public/js')
    .js('resources/js/checkout.js', 'public/js')

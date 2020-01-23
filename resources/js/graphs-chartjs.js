@@ -1,4 +1,4 @@
-define(['moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlocalefr) {
+define(['moment/moment', 'chart.js', 'moment/locale/fr'], function(moment, chartJS, mlocalefr) {
 	moment.locale('fr');
 	window.mom = moment;
 	function loadGraph(dataSrc) {
