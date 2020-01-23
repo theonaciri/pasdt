@@ -1,9 +1,5 @@
 /node_modules
-/public/hot
-/public/storage
-/public/js
-/public/css
-/public/images/companylogos
+/public
 /documents
 /storage/*.key
 /vendor
