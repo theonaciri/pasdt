@@ -9,16 +9,28 @@ require( 'datatables.net-scroller-bs4' );
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 
-define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
+define(['datatables.net-bs4', './graphs-chartjs', 'jszip',
   'flat', './components/datatable-fr', './components/color-event-assoc',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
-  function(datatables, Graphs, jszip, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch) {
-    if (window.location.pathname !== "/home") return ;
+  function(datatables, Graphs, jszip, flatten, datatablefr, arrayToSearch) {
+if (window.location.pathname !== "/home") return ;
 var table, graphdata, active_module;
+window.pdfMake = true;
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+var originalPdfHtml5Action = $.fn.dataTableExt.buttons.pdfHtml5.action;
+
+$.fn.dataTableExt.buttons.pdfHtml5.action = function pdfHtml5Action(e, dt, button, config){
+    var that = this;
+    require.ensure(['pdfmake', 'pdfmake/build/vfs_fonts'], function _pdfHtml5Action(){
+        window.pdfMake = require('pdfmake');
+        var vfs = require('pdfmake/build/vfs_fonts');
+        window.pdfMake.vfs = vfs.pdfMake.vfs;
+
+        originalPdfHtml5Action.apply(that, [e, dt, button, config]);
+    });
+};
 String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
@@ -31,6 +43,9 @@ function _initTable() {
       var title = $(this).text();
       $(this).html('<input type="text" placeholder="Rechercher ' + title + '" />');
     });
+
+    window.pdfMake = true;
+
 
     table = $('#main-table').DataTable({
       dom: 'Blfrtip',
@@ -57,6 +72,22 @@ function _initTable() {
           {
             extend: 'print',
             text: 'Imprimer',
+            action: function(e, dt, button, config) {
+               
+              // Add code to make changes to table here
+       
+              // Call the original action function afterwards to
+              // continue the action.
+              // Otherwise you're just overriding it completely.
+              debugger;
+              if ($.fn.dataTable.ext.buttons.csvHtml5.available( dt, config )) {
+                      $.fn.dataTable.ext.buttons.csvHtml5.action(e, dt, button, config);
+              }
+              else {
+                debugger;
+                  $.fn.dataTable.ext.buttons.csvFlash.action(e, dt, button, config);
+              }
+            }
           }
       ],
       initComplete: function() {
