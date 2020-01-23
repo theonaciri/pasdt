@@ -8,13 +8,13 @@ require( 'datatables.net-scroller-bs4' );
 */
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
-
-define(['datatables.net-bs4', './graphs-chartjs', 'jszip',
+// jszip is commented because excel import does not work. CSV workds
+define(['datatables.net-bs4', './graphs-chartjs', /*'jszip',*/
   'flat', './components/datatable-fr', './components/color-event-assoc',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   './widgets/noping.plugin.js'],
-  function(datatables, Graphs, jszip, flatten, datatablefr, arrayToSearch) {
+  function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch) {
 if (window.location.pathname !== "/home") return ;
 var table, graphdata, active_module;
 window.pdfMake = true;

@@ -5,8 +5,9 @@
  */
 
 require('./bootstrap');
-require('webpack-jquery-ui');
+require('./dependencies/jquery-ui.datepicker.js');
 require('webpack-jquery-ui/css');
+require('../css/jquery-ui-theme.css');
 require('./init');
 require('./datatable-synthesis');
 require('./datatable-pasdt');

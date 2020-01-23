@@ -17,7 +17,8 @@ require('laravel-mix-bundle-analyzer');
 mix.webpackConfig({
   plugins: [
    // reduce bundle size by ignoring moment js local files
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin(/^\.\/widgets$/, /jquery-ui$/)
   ]
 });
 
