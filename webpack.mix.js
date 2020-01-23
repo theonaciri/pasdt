@@ -14,11 +14,12 @@ require('laravel-mix-bundle-analyzer');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-	.js('resources/js/checkout.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+   .js('resources/js/checkout.js', 'public/js')
+   .sass('resources/sass/app.scss', 'public/css')
+   .extract(['pdfmake', 'pdfmake/build/vfs_fonts']);
 
 mix.browserSync('127.0.0.1:8000');
-/*
+
 if (!mix.inProduction()) {
     mix.bundleAnalyzer();
-}*/
+}
