@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use App\Module;
-use App\Log as PasdtLog;
+use App\Log as PasdtLog;o
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -33,7 +33,7 @@ class LogController extends Controller
         $user = Auth::user();
         //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
         $su_company = $request->company ?? NULL;
-        $company = $user->su_admin && !empty($su_company) ? $su_company : $user->company_id;
+        $company = !empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company) ? $su_company : $user->company_id;
         if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
@@ -110,7 +110,7 @@ EOTSQL
     {
         $this->authAPI($request);
         $log = $request->json()->all();
-        $log["cardId"] = convertIdPasdtToTelit($log["cardId"]);
+        $log["cardId"] = $this->convertIdPasdtToTelit($log["cardId"]);
         $log["msg"] = json_encode($log["msg"]);
         $log["options"] = json_encode($log["options"]);
         $json = json_decode($log["options"]);
