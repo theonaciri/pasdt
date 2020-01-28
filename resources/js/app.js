@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+//import "requirejs";
 require('./bootstrap');
 require('./dependencies/jquery-ui.datepicker.js');
 require('webpack-jquery-ui/css');
