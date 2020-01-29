@@ -11,12 +11,17 @@
 
     <!-- Scripts -->
     <script src="/js/manifest.js"></script>
-    <script src="/js/vendor.js"></script>
+    <script src="/js/require.js"></script>
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
         <script src="{{ asset('js/checkout.js') }}" defer></script>
+    @elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+        {{-- is IE 11 or below --}}
+        <script src="/js/vendor.es5.js"></script>
+        <script src="{{ asset('js/app.es5.js') }}" defer></script>
     @else
+        <script src="/js/vendor.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 
