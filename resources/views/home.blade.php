@@ -38,7 +38,7 @@
             </ul>
         
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="synthesis" role="tabpanel" aria-labelledby="synthesis-table">
+                <div class="tab-pane fade" id="synthesis" role="tabpanel" aria-labelledby="synthesis-table">
                     <div class="container">
                         <table id="synthesis-table" class="table table-bordered">
                             <thead>
@@ -62,7 +62,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade  show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
                         <div id="date_filter" class="input-group">
                             <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
@@ -70,6 +70,9 @@
                             &nbsp;
                             <button type="button" class="btn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
+                            </button>
+                            <button type="button" class="btn" data-toggle="button" aria-pressed="false" id="notemp">
+                              Uniquement les températures
                             </button>
                         </div>
                         <table id="main-table" class="table table-bordered" style="width: 100% !important;">
