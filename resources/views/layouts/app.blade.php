@@ -46,11 +46,11 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}" title="Retour à l'accueil"  alt="Retour à l'accueil">
+                <a class="navbar-brand" href="{{ url('/home') }}" title="Retour à l'accueil">
     @endif
                     @if (!empty($_company))
                         @if (!empty($_company->logo))
-                            <img src="images/companylogos/{{ $_company->logo }}" height="39" />
+                            <img src="images/companylogos/{{ $_company->logo }}" height="39" alt="Retour à l'accueil"/>
                         @endif
                         
                         @if ($_company->name )
@@ -99,7 +99,7 @@
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 

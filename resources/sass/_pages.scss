@@ -1,7 +1,14 @@
+$screen-xxl: 1720px !default;
+
 #app {
   .py-4 {
     padding-top: .5rem !important;
   }
+
+  #main-table_wrapper {
+    margin-top: 1rem;
+  }
+
 	#main-table_paginate > ul > li > a {
 		border: 1px solid #dee2e6;
 	}
@@ -61,14 +68,14 @@ table input, table select {
   padding: 5px;
 }
 .dt-buttons.btn-group {
-  padding-left: 160px;
+  margin-left: 2rem;
  @include media-breakpoint-down(xl) {
-    padding-left: 80px;
+    margin-left: 1rem;
   }
  @include media-breakpoint-down(md) {
     float: right;
     padding-bottom: 10px;
-    padding-left: 0;
+    margin-left: 0;
   }
   margin-top: -8px;
   display: inline-block;
@@ -78,7 +85,7 @@ table input, table select {
 }
 #main-table_filter {  
     display: inline-block;
-    float: right;
+    margin-left: 1rem;
   }
 #main-table_info {  
     display: inline-block;
@@ -89,8 +96,19 @@ table input, table select {
   }
 #main-table_length {
   display: inline-block;
-  padding-right: 10px;
   float: left;
+}
+
+#date_filter {
+  @media (max-width: $screen-xxl) { 
+    margin-top: 1rem;
+  }
+  @media (min-width: $screen-xxl) { 
+    right: 1rem;
+    margin-top: -4px;
+    position: absolute;
+    width: initial;
+  }
 }
 
 
@@ -112,8 +130,9 @@ table input, table select {
   stroke: #000;
 }
 
-
-
+.container {
+  max-width: 100%;
+}
 
 // SLIDER
 .slidecontainer {

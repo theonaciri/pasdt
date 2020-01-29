@@ -1,3 +1,4 @@
+define(['jquery'], function($) {
 
 // Date range filter
 minDateFilter = "";
@@ -22,3 +23,4 @@ $.fn.dataTableExt.afnFiltering.push(
 
     return true;
   });
+});
