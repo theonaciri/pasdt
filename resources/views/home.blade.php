@@ -23,7 +23,7 @@
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse des logs PASDT</a>
+                    <a class="nav-link active" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse des logs PASDT</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
@@ -38,7 +38,7 @@
             </ul>
         
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="synthesis" role="tabpanel" aria-labelledby="synthesis-tab">
+                <div class="tab-pane fade show active" id="synthesis" role="tabpanel" aria-labelledby="synthesis-table">
                     <div class="container">
                         <table id="synthesis-table" class="table table-bordered">
                             <thead>
@@ -64,17 +64,15 @@
                 </div>
                 <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
-                        <p id="date_filter">
-                            <div class="input-group mb-3">
-                                <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
-                                <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
-                                &nbsp;
-                                <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off" id="noday">
-                                  Uniquement les anomalies
-                                </button>
-                            </div>
-                        </p>
-                        <table id="main-table" class="table table-bordered">
+                        <div id="date_filter" class="input-group">
+                            <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
+                            <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
+                            &nbsp;
+                            <button type="button" class="btn" data-toggle="button" aria-pressed="false" id="noday">
+                              Uniquement les anomalies
+                            </button>
+                        </div>
+                        <table id="main-table" class="table table-bordered" style="width: 100% !important;">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -96,12 +94,9 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="graphs" role="tabpanel" aria-labelledby="graphs-tab">
-                    
-
+                <div class="tab-pane fade" id="graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
                     <div class="" id="chart-events" style="width: 90%;"></div>
                     <!--<div id="my_dataviz" width="960" height="500"></div>
-                    <!--
                     <div id="tester" style="width:600px;height:250px;"></div>
                     <button type="button" id="visib" class="btn btn-secondary" style="display: none; position: absolute; top: 300px; right: 0">
                       Transformateur 12 declenchement * defaut temperature 2<br>

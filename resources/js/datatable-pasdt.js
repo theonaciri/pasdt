@@ -8,13 +8,12 @@ require( 'datatables.net-scroller-bs4' );
 */
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
-// jszip is commented because excel import does not work. CSV workds
+// jszip is commented because excel import does not work. CSV works
 define(['datatables.net-bs4', './graphs-chartjs', /*'jszip',*/
-  'flat', './components/datatable-fr', './components/color-event-assoc',
+  'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
-  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
-  './widgets/noping.plugin.js'],
-  function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch) {
+  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
+  function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch, noping) {
 if (window.location.pathname !== "/home") return ;
 var table, graphdata, active_module;
 window.pdfMake = true;
@@ -79,12 +78,10 @@ function _initTable() {
               // Call the original action function afterwards to
               // continue the action.
               // Otherwise you're just overriding it completely.
-              debugger;
               if ($.fn.dataTable.ext.buttons.csvHtml5.available( dt, config )) {
                       $.fn.dataTable.ext.buttons.csvHtml5.action(e, dt, button, config);
               }
               else {
-                debugger;
                   $.fn.dataTable.ext.buttons.csvFlash.action(e, dt, button, config);
               }
             }
@@ -216,7 +213,7 @@ function _initTable() {
     });
 
     $("#datepicker_to").datepicker({
-      dateFormat: "yy-mm-dd",
+      dateFormat: "yy-mm-dd", 
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
@@ -229,7 +226,7 @@ function _initTable() {
       table.draw();
     });
 
-    initNopingButtons(table);
+    noping.initNopingButtons(table);
     var filteredData = table
     .column(3)
     .data()
