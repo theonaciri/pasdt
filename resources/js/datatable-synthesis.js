@@ -1,5 +1,5 @@
 define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
-  'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
+  'flat', './components/datatable-fr', './components/color-event-assoc',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
   function(datatables, Graphs, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch, noping) {
@@ -156,8 +156,6 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	      maxDateFilter = new Date(this.value).getTime();
 	      table.draw();
 	    });
-
-	    noping.initNopingButtons(table);
 	    var filteredData = table
 	    .column(3)
 	    .data()

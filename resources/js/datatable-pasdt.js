@@ -148,17 +148,8 @@ function _initTable() {
           }
         },
         {
-          "data": "options", render: function(data, type, row) {
-            try {
-              var obj = JSON.parse(data);
-              if (typeof obj === 'object' && obj != null && obj.hasOwnProperty("maxtemp")) {
-                return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
-              }
-              return '--';
-            } catch (e) {
-              console.warn(e);
-              return '--';
-            }
+          "data": "maxtemp", render: function(maxtemp, type, row) {
+                return maxtemp == null ? '--' : String(maxtemp) + '°C';
           }
         }
         /*{"data": "options"},*/
@@ -182,7 +173,7 @@ function _initTable() {
         }
       });
     });
-
+    //table.columns.adjust.draw();
     dataTablesEvents();
 
 
@@ -226,13 +217,13 @@ function _initTable() {
       table.draw();
     });
 
-    noping.initNopingButtons(table);
     var filteredData = table
     .column(3)
     .data()
     .filter(function(value, index) {
       return value != 'Day' ? true : false;
     });
+    noping.initNopingButtons(table);
   });
 
 }
