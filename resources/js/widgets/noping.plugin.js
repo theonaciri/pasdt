@@ -1,19 +1,14 @@
 define(['jquery'], function($) {
-
 	$noday = $("#noday");
 	$notemp = $("#notemp");
 	function initNopingButtons(table) {
-	//timeout for whatever reason datatables is not initialised
 		$noday.click(function(e) {
 			cumulative_filter(table, true, false);
 		});
 		$notemp.click(function(e) {
 			cumulative_filter(table, false, true);
 		});
-		/*$('body').click(function(e) {
-			if (e.target.id === "noday") return ;
-			ext_search(table, $("#noday"), false);
-		})*/
+		//timeout for whatever reason datatables is not initialised
 		setTimeout(function(){
 			cumulative_filter(table, false, false);
 		}, 400);
@@ -35,11 +30,9 @@ define(['jquery'], function($) {
 		localStorage.setItem('notemp', toggle_temp_value);
 		$notemp.toggleClass('btn-dark', toggle_temp_value);
 
-		console.log('TOGGLE VALUES', toggle_ping_value, toggle_temp_value);
 		$.fn.dataTable.ext.search.push(
 	        function( settings, data, dataIndex ) {
-	        	if (!toggle_ping_value && !toggle_temp_value) return true;
-	        	var ret = false;
+	        	var ret = true;
 	        	if (toggle_ping_value) {
 	            	ret = data[3] != 'Day' && data[3] != 'Ack' && data[3] != 'Test';
 		        	if (ret && toggle_temp_value) {
