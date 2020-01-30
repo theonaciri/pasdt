@@ -8,10 +8,11 @@ define(['jquery'], function($) {
 		$notemp.click(function(e) {
 			cumulative_filter(table, false, true);
 		});
-		//timeout for whatever reason datatables is not initialised
-		setTimeout(function(){
-			cumulative_filter(table, false, false);
-		}, 400);
+		cumulative_filter(table, false, false);
+
+		$('th[class^="sorting"]').click(function() {
+		    cumulative_filter(table, false, false);
+		});
 	}
 
 
@@ -44,6 +45,7 @@ define(['jquery'], function($) {
 		            	ret = data[3] != 'Day' && data[3] != 'Ack' && data[3] != 'Test';
 		        	}
 	        	}
+	        	window.toggle_temp = toggle_temp_value;
 	        	return ret;
 	        }
 	    );

@@ -13,4 +13,13 @@ define(['js-cookie'], function(cookie) {
 	} else if (location.pathname === "/home") {
 		cookie.remove('su_company');
 	}
+
+
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	  console.log('new', e.target); // newly activated tab
+	  //e.relatedTarget // previous active tab
+	  localStorage.setItem('opened-tab', e.target.getAttribute('id'));
+	})
+	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
+	$('#' + opened_tab).click();
 })
