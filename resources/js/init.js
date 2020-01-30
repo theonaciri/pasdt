@@ -16,7 +16,7 @@ define(['js-cookie'], function(cookie) {
 
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	  console.log('new', e.target); // newly activated tab
+	  // e.target // newly activated tab
 	  //e.relatedTarget // previous active tab
 	  localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	})
