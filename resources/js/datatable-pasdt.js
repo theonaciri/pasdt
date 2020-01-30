@@ -104,6 +104,7 @@ function _initTable() {
             }
           });
         });
+        noping.initNopingButtons(table);
       },
       createdRow: function rowColor( row, data, dataIndex) {
         if (data == null) {
@@ -114,6 +115,12 @@ function _initTable() {
           if (foundValue.length) {
             $(row).addClass(foundValue[foundValue.length -1].class);
           }
+        }
+        if (typeof data.maxtemp != 'undefined' && data.maxtemp != null && data.maxtemp != '--') {
+          var color = "dt-green";
+          if (data.maxtemp >= 80 && data.maxtemp < 90) color = "dt-orange";
+          else if (data.maxtemp >= 90) color = "dt-red";
+          $(row).find(":nth-child(5)").addClass(color);
         }
       },
       language: datatablefr,
@@ -149,8 +156,14 @@ function _initTable() {
         },
         {
           "data": "maxtemp", render: function(maxtemp, type, row) {
-                return maxtemp == null ? '--' : String(maxtemp) + '°C';
-          }
+            if (type === 'sort') {
+              if (maxtemp == '--') return undefined;
+              return maxtemp;
+            }
+            if (maxtemp == null) return '--';
+            return String(maxtemp) + '°C';
+          },
+          "type": "num"
         }
         /*{"data": "options"},*/
         /*{"data": "updated_at"},*/
@@ -223,9 +236,7 @@ function _initTable() {
     .filter(function(value, index) {
       return value != 'Day' ? true : false;
     });
-    noping.initNopingButtons(table);
   });
-
 }
 
 function dataTablesEvents() {

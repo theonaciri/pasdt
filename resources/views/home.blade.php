@@ -82,7 +82,7 @@
                                     <th>N°PASDT & sim ID</th>
                                     <th>Client</th>
                                     <th class="th-message">Message</th>
-                                    <th>Température</th>
+                                    <th>Températures</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -91,7 +91,7 @@
                                     <th>N°PASDT & sim ID</th>
                                     <th>Client</th>
                                     <th class="th-input-message">Message</th>
-                                    <th>Température</th>
+                                    <th>Températures</th>
                                 </tr>
                             </tfoot>
                         </table>
