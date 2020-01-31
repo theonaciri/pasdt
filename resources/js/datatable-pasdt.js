@@ -151,7 +151,9 @@ function _initTable() {
             if (data == null) {
               return '';
             }
-            return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+            var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+            if (msg === "Ack") return "Acquittement"
+            return msg;
           }
         },
         {

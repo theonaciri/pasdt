@@ -92,7 +92,15 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	          "data": "created_at"
 	        },
 	        {
-	          "data": "maxtemp"
+	          "data": "maxtemp", render: function(maxtemp, type, row) {
+	            if (type === 'sort') {
+	              if (maxtemp == '--') return undefined;
+	              return maxtemp;
+	            }
+	            if (maxtemp == null) return '--';
+	            return String(maxtemp) + '°C';
+	          },
+	          "type": "num"
 	        }
 	        /*{"data": "options"},*/
 	        /*{"data": "updated_at"},*/
