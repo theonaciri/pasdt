@@ -90,7 +90,7 @@
                             @endif
                             @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Panneau de configuration") }}</a>
+                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Gérer mon parc") }}</a>
                                 </li>
                             @endif
                             @if (Route::has('checkout') && Auth::user()->is_client_company === 1)
@@ -100,7 +100,7 @@
                             @endif
                             @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Entreprises") }}</a>
+                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Configuration administrateur") }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
