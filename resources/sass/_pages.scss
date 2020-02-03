@@ -1,33 +1,27 @@
-$screen-xxl: 1720px !default;
+$screen-xxl: 1740px !default;
+.py-4 {
+  padding-top: .5rem !important;
+}
 
-#app {
-  .py-4 {
-    padding-top: .5rem !important;
-  }
+.dataTables_wrapper {
+  margin-top: 1rem;
+}
 
-  .dataTables_wrapper {
-    margin-top: 1rem;
-  }
-
-	.dataTables_paginate  > ul > li > a {
-		border: 1px solid #dee2e6;
+.dataTables_paginate  > ul > li > a {
+	border: 1px solid #dee2e6;
+}
+.dataTable {
+	max-width: 100%;
+	input[type="text"] {
+		width: 100%;
 	}
-	.dataTable {
-		max-width: 100%;
-		input[type="text"] {
-			width: 100%;
-		}
-	}
-	.individual-search {
-		max-width: 30vw;
-	}
-	.ui-datepicker-trigger img {
-		height: 20px;
-	}
+}
+.ui-datepicker-trigger img {
+	height: 20px;
+}
 @include media-breakpoint-up(lg) {
-  .modal-divided:first-child {
-    border-right: 1px solid #ced4da;
-  }
+.modal-divided:first-child {
+  border-right: 1px solid #ced4da;
 }
 @include media-breakpoint-down(lg) {
   .modal-divided:first-child {
@@ -39,7 +33,7 @@ $screen-xxl: 1720px !default;
   margin-right:.2rem;
 }
 .date_range_filter {
-  max-width: 100px;
+  max-width: 120px;
 }
 
 table input, table select {

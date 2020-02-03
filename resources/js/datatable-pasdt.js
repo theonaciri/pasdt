@@ -40,7 +40,7 @@ function _initTable() {
     /* Setup - add a text input to each footer cell */
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();
-      $(this).html('<input type="text" placeholder="Rechercher ' + title + '" />');
+      $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
     });
 
     window.pdfMake = true;
@@ -91,7 +91,7 @@ function _initTable() {
         /* Dropdown */
         this.api().columns([1, 2]).every(function() {
           var column = this;
-          var select = $('<select class="individual-search"><option value=""></option></select>')
+          var select = $('<select class="individual-search form-control"><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $.fn.dataTable.util.escapeRegex($(this).val());
@@ -209,6 +209,10 @@ function _initTable() {
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
+      beforeShow: function( input, inst){
+        console.warn(input, inst);
+        $(inst).addClass('btn btn-secondary');
+      },
       "onSelect": function(date) {
         minDateFilter = new Date(date).getTime();
         table.draw();
@@ -216,7 +220,7 @@ function _initTable() {
     }).keyup(function() {
       minDateFilter = new Date(this.value).getTime();
       table.draw();
-    });
+    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     $("#datepicker_to").datepicker({
       dateFormat: "yy-mm-dd", 
@@ -230,7 +234,7 @@ function _initTable() {
     }).keyup(function() {
       maxDateFilter = new Date(this.value).getTime();
       table.draw();
-    });
+    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     var filteredData = table
     .column(3)

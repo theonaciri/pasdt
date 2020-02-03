@@ -44,18 +44,16 @@
                             <thead>
                                 <tr>
                                     <th>Num PASDT & SIM</th>
-                                    <th>Num Telit</th>
-                                    <th>Date dernière anomalie</th>
                                     <th>Dernière anomalie</th>
+                                    <th>Date dernière anomalie</th>
                                     <th>Dernière température</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>Num PASDT & SIM</th>
-                                    <th>Num Telit</th>
-                                    <th>Date dernière anomalie</th>
                                     <th>Dernière anomalie</th>
+                                    <th>Date dernière anomalie</th>
                                     <th>Dernière température</th>
                                 </tr>
                             </tfoot>
@@ -65,8 +63,8 @@
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
                         <div id="date_filter" class="input-group">
-                            <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_from" />
-                            <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date" type="text" id="datepicker_to" />
+                            <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
+                            <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />
                             &nbsp;
                             <button type="button" class="btn togglebtn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
@@ -88,7 +86,7 @@
                             <tfoot>
                                 <tr>
                                     <th>Date</th>
-                                    <th>N°PASDT & sim ID</th>
+                                    <th id="module-id">N°PASDT & sim ID</th>
                                     <th>Client</th>
                                     <th class="th-input-message">Message</th>
                                     <th>Températures</th>
