@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ModuleController extends Controller
 {
@@ -27,6 +28,166 @@ class ModuleController extends Controller
 
     protected function is_user_allowed($user, $company_id) {
         return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
+    }
+
+    protected function getSessionTelit($force_reconnect = false) {
+        // curl --data-urlencode 'username=username' --data-urlencode 'password=password' 'https://api-de.devicewise.com/rest/auth/'
+        if (!$force_reconnect && !empty(env('TELIT_SESSION_ID'))) {
+            return env('TELIT_SESSION_ID');
+        } else if (!$force_reconnect && Storage::exists(env('TELIT_SESSION_ID_PATH'))) {
+            return Storage::get(env('TELIT_SESSION_ID_PATH'));
+        } // else
+        $arr=array(
+            'username' => env('TELIT_USERNAME'),
+            'password' => env('TELIT_PASSWORD')
+         );
+        $data_string = http_build_query($arr);
+        $ch = curl_init("https://api-de.devicewise.com/rest/auth/");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+        $final = curl_exec($ch);
+        config(['TELIT_SESSION_ID' => $final]);
+        Storage::put(env('TELIT_SESSION_ID_PATH'), $final);
+        return $final;
+    }
+
+    /**
+    ** Returns connection data, given iccid
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function getTelitJson($telit_id) {
+        $session = $this->getSessionTelit();
+        $arr=array(
+            "sessionId" => $session,
+            "iccid" => $TELIT_SESSION_ID
+         );
+        $data_string = http_build_query($arr);
+        $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.find/");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+        $final = curl_exec($ch);
+        return $this->checkIfNotDisconnected($final, $ch, $arr);
+    }
+
+
+    /**
+    ** To call after each Telit API calls. If we are disconnected, it relogs and sends the call again.
+    ** @return String
+    **/
+    protected function checkIfNotDisconnected($final, $ch, $arr) {
+        $res = json_decode($final);
+        if (!empty($res) && $res->success == false && $res->errorCodes[0] == -90000) {
+            $session = $this->getSessionTelit(true);
+            $arr["sessionId"] = $session;
+            $data_string = http_build_query($arr);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            $final = curl_exec($ch);
+        }
+        return response($final);
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    protected function _getTelitListConnections($limit) {
+        $session = $this->getSessionTelit();
+        $arr=array(
+            "sessionId" => $session,
+            "sort" => "-dateActivated",
+            "offset"=>"0",
+            "limit"=> strval($limit)
+         );
+        $data_string = http_build_query($arr)   ;
+        $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.list/");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
+        $final = curl_exec($ch);
+        return $this->checkIfNotDisconnected($final, $ch, $arr);
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function getTelitListConnections($limit) {
+        return response($this->_getTelitListConnections($limit));
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function saveTelitListConnections($limit) {
+        return response($this->_getTelitListConnections($limit));
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function saveTelitModules() {
+        $_modules = $this->_getTelitListConnections(5);
+        $modules = json_decode($_modules);
+        dd($_modules);
+        foreach ($modules as $key => $module) {
+            DB::table('modules')
+                ->updateOrInsert(
+                    ['telit_id' => $module->icci],
+                    [
+                        'company_id' => 0,
+                        'name' => $module->configName,
+                        'telit_id' => $module->iccid,
+                        'module_id' => $module->custom1,
+                        'telit_customer' => $module->customer,
+                        'telit_status'=> $module->status,
+                        'telit_imei'=> $module->imei,
+                        'telit_msisdn'=> $module->msisdn,
+                        'telit_ratePlan'=> $module->ratePlan,
+                        'telit_dateActivated'=> $module->dateActivated,
+                        'telit_dateModified'=> $module->dateModified,
+                        'telit_custom1'=> $module->custom1,
+                        'telit_custom2'=> $module->custom2,
+                        'telit_custom3'=> $module->custom3,
+                        'telit_custom4'=> $module->custom4,
+                        'telit_locLat'=> $module->locLat,
+                        'telit_locLon'=> $module->locLng,
+                        'telit_locAdress'=>json_encode($module->locAdress),
+                        'telit_json'=>json_encode($module)
+                    ]
+                );
+        }
+        return response('OK');
+    }
+
+    /**
+    ** Returns list of connections ordered by more recently activated, given limit
+    ** Connexion web
+    ** @return JSON
+    **/
+
+    public function LookupTelitFromId($id) {
+
+        return response($final);
     }
 
     /**

@@ -4,16 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+//import "requirejs";
 require('./bootstrap');
-require('webpack-jquery-ui');
+require('./dependencies/jquery-ui.datepicker.js');
 require('webpack-jquery-ui/css');
+require('../css/jquery-ui-theme.css');
 require('./init');
 require('./datatable-synthesis');
 require('./datatable-pasdt');
 require('./datatable-png');
 require('./client');
 require('./admin');
-
 
 //require('./graphs-chartjs.js');
 //require('./graphs-realtime-pasdt');
