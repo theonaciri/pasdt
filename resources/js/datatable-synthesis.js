@@ -201,31 +201,25 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	        }
 	      });
 	  });
+	}
+	dataTablesEvents();
+	function dataTablesEvents() {
+	  $('#synthesis-table').on('click', 'tr', function () {
+	        var data = table.row( this ).data();
+	        if (data && data.module_id) {
+	          	$('#home-tab').click();
+	          	$('#module-id > select').val(data.cardId).change();
+	        }
+	    } );
 
-
-		dataTablesEvents();
-		function dataTablesEvents() {
-		  $('#synthesis-table').on('click', 'tr', function () {
-		        var data = table.row( this ).data();
-		        if (data) {
-		          	$('#home-tab').click();
-		          	setTimeout(function() {
-		          		$('#main-table #module-name .selectpicker')
-			          		.selectpicker('val', data.module_id + ' - ' + data.name)
-			          		.trigger('change');
-		          	}, 1);
-		        }
-		    } );
-
-		  $('.toggle-map').click(function(e) {
-		      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-		    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
-		    })
-		  function formatAdress(a) {
-		    if (typeof a == 'undefined') return '';
-		    return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
-		  }
-		}
+	  $('.toggle-map').click(function(e) {
+	      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
+	    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+	    })
+	  function formatAdress(a) {
+	    if (typeof a == 'undefined') return '';
+	    return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+	  }
 	}
 
 	setTimeout(_initTable, 1);
