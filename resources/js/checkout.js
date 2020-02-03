@@ -3,12 +3,15 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+/*
 require('./bootstrap');
-require('webpack-jquery-ui');
-require('webpack-jquery-ui/css');
+require('./dependencies/jquery-ui.datepicker.js');
+require('../css/jquery-ui-theme.css');
 require('./stripe-checkout');
 require('./axios');
+
+*/
+
 //require('./graphs-chartjs.js');
 //require('./graphs-realtime-pasdt');
 //require('./graphs-realtime-plotly-pasdt');

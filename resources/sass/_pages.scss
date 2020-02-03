@@ -1,34 +1,42 @@
-#app {
-  .py-4 {
-    padding-top: .5rem !important;
-  }
-	#main-table_paginate > ul > li > a {
-		border: 1px solid #dee2e6;
+$screen-xxl: 1740px !default;
+.py-4 {
+  padding-top: .5rem !important;
+}
+
+.dataTables_wrapper {
+  margin-top: 1rem;
+}
+
+.dataTables_paginate  > ul > li > a {
+	border: 1px solid #dee2e6;
+}
+.dataTable {
+	max-width: 100%;
+	input[type="text"] {
+		width: 100%;
 	}
-	#main-table {
-		max-width: 100%;
-		input[type="text"] {
-			width: 100%;
-		}
-	}
-	.individual-search {
-		max-width: 30vw;
-	}
-	.ui-datepicker-trigger img {
-		height: 20px;
-	}
+}
+.ui-datepicker-trigger img {
+	height: 20px;
+}
 @include media-breakpoint-up(lg) {
-  .modal-divided:first-child {
-    border-right: 1px solid #ced4da;
-  }
+.modal-divided:first-child {
+  border-right: 1px solid #ced4da;
 }
 @include media-breakpoint-down(lg) {
   .modal-divided:first-child {
     border-bottom: 1px solid #ced4da;
   }
 }
+.togglebtn {
+  margin-left:.2rem;
+  margin-right:.2rem;
+}
+.date_range_filter {
+  max-width: 120px;
+}
 
-table input {
+table input, table select {
   width: 100%;
 }
 
@@ -40,6 +48,10 @@ table input {
 /* TABLE */
 .dt-grey {
 	background-color: #604a7b33;
+}
+
+.dt-orange {
+  background-color: #ffc277b8;
 }
 
 .dt-red {
@@ -61,14 +73,14 @@ table input {
   padding: 5px;
 }
 .dt-buttons.btn-group {
-  padding-left: 160px;
- @include media-breakpoint-down(xl) {
-    padding-left: 80px;
+  margin-left: 2rem;
+  @include media-breakpoint-down(xl) {
+    margin-left: 1rem;
   }
- @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(md) {
     float: right;
     padding-bottom: 10px;
-    padding-left: 0;
+    margin-left: 0;
   }
   margin-top: -8px;
   display: inline-block;
@@ -76,21 +88,32 @@ table input {
     margin-left: -4px;
   }
 }
-#main-table_filter {  
+.dataTables_filter {  
+    display: inline-block;
+    margin-left: 1rem;
+  }
+.dataTables_info {  
+    display: inline-block;
+  }
+.dataTables_paginate {  
     display: inline-block;
     float: right;
   }
-#main-table_info {  
-    display: inline-block;
-  }
-#main-table_paginate {  
-    display: inline-block;
-    float: right;
-  }
-#main-table_length {
+.dataTables_length {
   display: inline-block;
-  padding-right: 10px;
   float: left;
+}
+
+#date_filter {
+  @media (max-width: $screen-xxl) { 
+    margin-top: 1rem;
+  }
+  @media (min-width: $screen-xxl) { 
+    right: 1rem;
+    margin-top: -4px;
+    position: absolute;
+    width: initial;
+  }
 }
 
 
@@ -112,8 +135,9 @@ table input {
   stroke: #000;
 }
 
-
-
+.container {
+  max-width: 100%;
+}
 
 // SLIDER
 .slidecontainer {
@@ -203,4 +227,10 @@ table input {
 
 .highlight {
   background-color: #ffff8a;
+}
+
+#synthesis {
+  .dt-buttons {
+
+  }
 }

@@ -48,3 +48,8 @@ Route::get('/checkout', 'ClientController@checkout')->name('checkout');
 Route::get('/checkout', 'ClientController@checkout')->name('company_create');
 Route::post('/add-sub', 'ClientController@addSub')->name('addSub');
 Route::get('/subscription', 'SubscriptionController@index')->name('update-payment-method');
+
+
+Route::get('/telit-json/{telit_id}', 'ModuleController@getTelitJson')->name('telit.json');
+Route::get('/telit-connections/{limit}', 'ModuleController@getTelitListConnections')->name('telit.connecion.list');
+Route::get('/save-telit-modules', 'ModuleController@saveTelitModules')->name('telit.save.modules');

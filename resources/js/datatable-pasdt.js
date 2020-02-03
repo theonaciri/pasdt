@@ -8,17 +8,28 @@ require( 'datatables.net-scroller-bs4' );
 */
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
-
-define(['datatables.net-bs4', './graphs-chartjs', 'jszip', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
-  'flat', './components/datatable-fr', './components/color-event-assoc',
+// jszip is commented because excel import does not work. CSV works
+define(['datatables.net-bs4', './graphs-chartjs', /*'jszip',*/
+  'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
-  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
-  './widgets/noping.plugin.js'],
-  function(datatables, Graphs, jszip, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch) {
-    if (window.location.pathname !== "/home") return ;
+  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
+  function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch, noping) {
+if (window.location.pathname !== "/home") return ;
 var table, graphdata, active_module;
+window.pdfMake = true;
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+var originalPdfHtml5Action = $.fn.dataTableExt.buttons.pdfHtml5.action;
+
+$.fn.dataTableExt.buttons.pdfHtml5.action = function pdfHtml5Action(e, dt, button, config){
+    var that = this;
+    require.ensure(['pdfmake', 'pdfmake/build/vfs_fonts'], function _pdfHtml5Action(){
+        window.pdfMake = require('pdfmake');
+        var vfs = require('pdfmake/build/vfs_fonts');
+        window.pdfMake.vfs = vfs.pdfMake.vfs;
+
+        originalPdfHtml5Action.apply(that, [e, dt, button, config]);
+    });
+};
 String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
@@ -29,8 +40,11 @@ function _initTable() {
     /* Setup - add a text input to each footer cell */
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();
-      $(this).html('<input type="text" placeholder="Rechercher ' + title + '" />');
+      $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
     });
+
+    window.pdfMake = true;
+
 
     table = $('#main-table').DataTable({
       dom: 'Blfrtip',
@@ -57,13 +71,27 @@ function _initTable() {
           {
             extend: 'print',
             text: 'Imprimer',
+            action: function(e, dt, button, config) {
+               
+              // Add code to make changes to table here
+       
+              // Call the original action function afterwards to
+              // continue the action.
+              // Otherwise you're just overriding it completely.
+              if ($.fn.dataTable.ext.buttons.csvHtml5.available( dt, config )) {
+                      $.fn.dataTable.ext.buttons.csvHtml5.action(e, dt, button, config);
+              }
+              else {
+                  $.fn.dataTable.ext.buttons.csvFlash.action(e, dt, button, config);
+              }
+            }
           }
       ],
       initComplete: function() {
         /* Dropdown */
         this.api().columns([1, 2]).every(function() {
           var column = this;
-          var select = $('<select class="individual-search"><option value=""></option></select>')
+          var select = $('<select class="individual-search form-control"><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $.fn.dataTable.util.escapeRegex($(this).val());
@@ -76,6 +104,7 @@ function _initTable() {
             }
           });
         });
+        noping.initNopingButtons(table);
       },
       createdRow: function rowColor( row, data, dataIndex) {
         if (data == null) {
@@ -86,6 +115,12 @@ function _initTable() {
           if (foundValue.length) {
             $(row).addClass(foundValue[foundValue.length -1].class);
           }
+        }
+        if (typeof data.maxtemp != 'undefined' && data.maxtemp != null && data.maxtemp != '--') {
+          var color = "dt-green";
+          if (data.maxtemp >= 80 && data.maxtemp < 90) color = "dt-orange";
+          else if (data.maxtemp >= 90) color = "dt-red";
+          $(row).find(":nth-child(5)").addClass(color);
         }
       },
       language: datatablefr,
@@ -116,22 +151,21 @@ function _initTable() {
             if (data == null) {
               return '';
             }
-            return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+            var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+            if (msg === "Ack") return "Acquittement"
+            return msg;
           }
         },
         {
-          "data": "options", render: function(data, type, row) {
-            try {
-              var obj = JSON.parse(data);
-              if (typeof obj === 'object' && obj != null && obj.hasOwnProperty("maxtemp")) {
-                return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
-              }
-              return '--';
-            } catch (e) {
-              console.warn(e);
-              return '--';
+          "data": "maxtemp", render: function(maxtemp, type, row) {
+            if (type === 'sort') {
+              if (maxtemp == '--') return undefined;
+              return maxtemp;
             }
-          }
+            if (maxtemp == null) return '--';
+            return String(maxtemp) + '°C';
+          },
+          "type": "num"
         }
         /*{"data": "options"},*/
         /*{"data": "updated_at"},*/
@@ -154,7 +188,7 @@ function _initTable() {
         }
       });
     });
-
+    //table.columns.adjust.draw();
     dataTablesEvents();
 
 
@@ -175,6 +209,10 @@ function _initTable() {
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
+      beforeShow: function( input, inst){
+        console.warn(input, inst);
+        $(inst).addClass('btn btn-secondary');
+      },
       "onSelect": function(date) {
         minDateFilter = new Date(date).getTime();
         table.draw();
@@ -182,10 +220,10 @@ function _initTable() {
     }).keyup(function() {
       minDateFilter = new Date(this.value).getTime();
       table.draw();
-    });
+    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     $("#datepicker_to").datepicker({
-      dateFormat: "yy-mm-dd",
+      dateFormat: "yy-mm-dd", 
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
@@ -196,9 +234,8 @@ function _initTable() {
     }).keyup(function() {
       maxDateFilter = new Date(this.value).getTime();
       table.draw();
-    });
+    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
-    initNopingButtons(table);
     var filteredData = table
     .column(3)
     .data()
@@ -206,7 +243,6 @@ function _initTable() {
       return value != 'Day' ? true : false;
     });
   });
-
 }
 
 function dataTablesEvents() {

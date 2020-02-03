@@ -5,5 +5,12 @@ default value for all dates : current
 new telit_custom3
 new telit_custom4	
 
+
+15/01/2020:
 logs
 new maxtemp int NULL
+
+16/01/2020:
+.env
+TELIT_USERNAME
+TELIT_PASSWORD

@@ -17,7 +17,7 @@
                                 <th>Créé le</th>
                                 <th>Modifié le</th>
                                 @if ($self->is_client_company)
-                                <th>Actions</th>
+                                <!--<th>Actions</th>-->
                                 @endif
                             </tr>
                         </thead>
@@ -34,10 +34,10 @@
                                 <td class="created_at">{{$user->created_at}}</td>
                                 <td class="updated_at">{{$user->updated_at}}</td>
                                 @if ($self->is_client_company)
-                                <td class="button">
-                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>
+                                <!--<td class="button"> -->
+                                    <!--<button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>-->
                                     <!--<button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoquserbtn">X</button>-->
-                                </td>
+                                <!--</td>-->
                                 @endif
                             </tr>
                             @endforeach
@@ -79,7 +79,7 @@
                                 <td class="email">{{$module->telit_ratePlan}}</td>
                                 <td class="button">
                                     <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal_{{$module->id}}">JSON</button>
-                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>
+                                    <!--<button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
                                 </td>
                             </tr>
                             @endforeach
@@ -149,7 +149,8 @@
                 <div class="card-body">
                     <h3>Logo actuel :</h3>
 
-                    <img src="images/companylogos/{{ $company->logo }}">
+                    <img src="images/companylogos/{{ $company->logo }}" height="39">
+                    <br>
                     <br>
                     @if($self->is_client_company)
                         @if ($message = Session::get('success'))

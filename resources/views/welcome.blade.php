@@ -70,7 +70,7 @@
                     @auth
                         <a href="{{ url('/home') }}">Accueil</a>
 
-                        @if (Route::has('register') && Auth::user()->is_client_company)
+                        @if (Route::has('register') && Auth::user()->su_admin)
                             <a href="{{ route('register') }}">Créer un nouvel accès</a>
                         @endif
                         @if (Route::has('client') && Auth::user()->company_id != 0)
