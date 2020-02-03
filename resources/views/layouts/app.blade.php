@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="/js/manifest.js"></script>
-    <script src="/js/require.js"></script>
+    <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
@@ -30,7 +30,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/datatables-bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
         @if(isset($_company->colors))
