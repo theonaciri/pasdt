@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="/js/manifest.js"></script>
-    <script src="/js/require.js"></script>
+    <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
