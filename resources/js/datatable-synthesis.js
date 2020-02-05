@@ -147,17 +147,16 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 
 	}
 
+	dataTablesEvents();
 	function dataTablesEvents() {
 	  $('#synthesis-table').on('click', 'tr', function () {
 	        var data = table.row( this ).data();
-	        console.log('CLICK', data);
 	        if (data && data.module_id) {
 	          	$('#home-tab').click();
 	          	$('#module-id > select').val(data.cardId).change();
 	        }
 	    } );
 
-	  dataTablesEvents();
 	  $('.toggle-map').click(function(e) {
 	      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
 	    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
