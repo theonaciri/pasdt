@@ -69,7 +69,7 @@ class AdminController extends Controller
                 FROM   logs
                 LEFT OUTER JOIN modules
                   ON (logs.cardId = modules.module_id)
-            WHERE modules.card_number IS NULL");
+            WHERE modules.telit_id IS NULL");
         $colors = ["#3490dc", "#6574cd", "#9561e2", "#f66d9b", "#e3342f", "#f6993f", "#ffed4a", "#38c172", "#4dc0b5", "#6cb2eb", "#fff", "#6c757d", "#343a40", "#3490dc", "#6c757d", "#38c172", "#6cb2eb", "#ffed4a", "#e3342f", "#f8f9fa", "#343a40"];
         return view('auth/su_admin', [
             "companies"=>$companies,

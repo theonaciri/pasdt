@@ -247,11 +247,7 @@
 		                        <input type="text" class="form-control" id="modulename" name="name" aria-describedby="modulename" placeholder="Nom du module">
 		                    </div>
 		                    <div class="form-group">
-		                        <label for="pasdt_card_number">N° de carte PASDT lié</label>
-		                        <input type="text" class="form-control" id="pasdt_card_number" name="pasdt_card_number" aria-describedby="pasdt_card_number" placeholder="00XXXXXXX">
-		                    </div>
-		                    <div class="form-group">
-		                        <label for="pasdt_module_number">N° de module à afficher</label>
+		                        <label for="pasdt_module_number">N° de module</label>
 		                        <input type="text" class="form-control" id="pasdt_module_number" name="pasdt_module_number" aria-describedby="pasdt_module_number" placeholder="XXXX-XXXX">
 		                    </div>
 		                    <div class="form-group">
@@ -321,11 +317,7 @@
                     <input type="text" class="form-control" id="editmodulename" name="name" aria-describedby="editmodulename" placeholder="Nom du module">
                 </div>
                 <div class="form-group">
-                    <label for="editpasdt_card_number">N° de carte PASDT lié</label>
-                    <input type="text" class="form-control" id="editpasdt_card_number" name="pasdt_card_number" aria-describedby="editpasdt_card_number" placeholder="00XXXXXXX">
-                </div>
-                <div class="form-group">
-                    <label for="pasdt_module_number">N° de module à afficher</label>
+                    <label for="pasdt_module_number">N° de module</label>
                     <input type="text" class="form-control" id="editpasdt_module_number" name="pasdt_module_number" aria-describedby="pasdt_module_number" placeholder="XXXX-XXXX">
                 </div>
                 <div class="form-group">
