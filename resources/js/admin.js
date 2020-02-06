@@ -79,7 +79,6 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
     function moduleTableTr(module) {
     	return `<tr data-id="${module.id}">
             		<td class="name">${module.name}</td>
-            		<td class="pasdt_card_number">${module.card_number}</td>
             		<td class="telit_id">${module.telit_id}</td>
             		<td class="module_id">${module.module_id}</td>
             		<td class="details">
@@ -109,7 +108,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		success: function(e) {
 			$('#addModule input, #addModule textarea').val('');
 			$('#selectLinkModule').append(`<option value="${e.id}">${e.name}</option>`);
-			$("#unlinkedLogTable").find('tr[data-id="' + e.card_number +'"]').remove();
+			$("#unlinkedLogTable").find('tr[data-id="' + e.telit_id +'"]').remove();
 		}
 	});
     $("#editModule").ajaxSubmit({
@@ -117,7 +116,6 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 			$('#editModuleModal').modal('hide')
 			var $mod = $('#moduleTable tr[data-id="'+mod.id+'"');
 			$mod.children('td.name').html(mod.name);
-			$mod.children('td.pasdt_card_number').html(mod.card_number);
 			$mod.children('td.telit_id').html(mod.telit_id);
 			$mod.children('td.module_id').html(mod.module_id);
 
@@ -154,10 +152,8 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		if (typeof mod == 'undefined') return; // TODO: ERROR MSG
 
 		var modulename = $(this).parent().siblings('.name').html();
-		var pasdt_card_number = $(this).parent().siblings('.pasdt_card_number').html();
 		$form = $('#editModule');
 		$form.find('#editmodulename').val(modulename);
-		$form.find('#editpasdt_card_number').val(pasdt_card_number);
 		$form.find('#edittelit_json').val(mod.telit_json);
 		$form.find('#editpasdt_module_number').val(mod.module_id);
 		$form.find('#edittelit_number').val(mod.telit_id);
