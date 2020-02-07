@@ -26,4 +26,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    /**
+     * If user is auth, go home, or log
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function redirect(Request $req)
+    {
+        return view('home');
+    }
 }
