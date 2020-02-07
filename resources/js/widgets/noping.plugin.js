@@ -13,9 +13,12 @@ define(['jquery'], function($) {
 		$('th[class^="sorting"]').click(function() {
 		    cumulative_filter(table, false, false);
 		});
+		
+		$('#main-table, .dataTables_filter').on("change click keyup", 'input, select', function() {
+		    cumulative_filter(table, false, false);
+		})
+		
 	}
-
-
 
 
 	function cumulative_filter(table, ping_toggle, temp_toggle) {
@@ -54,5 +57,8 @@ define(['jquery'], function($) {
 	    $('#main-table').find('.th-input-message input').attr('placeholder', toggle_ping_value ? 'Rechercher Anomalie' : 'Rechercher Message');
 	    $.fn.dataTable.ext.search.pop();
 	}
-	return {initNopingButtons: initNopingButtons};
+	return {
+		initNopingButtons: initNopingButtons,
+		cumulative_filter: cumulative_filter
+	};
 });
