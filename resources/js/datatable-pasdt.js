@@ -14,7 +14,7 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'jszip',*/
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
   function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch, noping) {
-if (window.location.pathname !== "/home") return ;
+if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
 window.pdfMake = true;
 
