@@ -5,6 +5,7 @@
 /documents
 /storage/*.key
 /vendor
+/public/images/companylogos
 .todo
 .tmp
 .env
