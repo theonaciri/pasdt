@@ -203,7 +203,6 @@ class ModuleController extends Controller
         if ($this->is_user_allowed($user, $request->company_id)) {
             $module->company_id = $request->company_id;
         }
-        $module->card_number = $request->pasdt_card_number;
         $module->telit_json = $request->telit_json;
         $module->telit_id = $request->telit_number;
         $module->module_id = $request->pasdt_module_number;
@@ -224,7 +223,6 @@ class ModuleController extends Controller
         if ($this->is_user_allowed($user, $module->company_id)) {
             $module->update([
                 'name'=>$request->name,
-                'card_number'=>$request->pasdt_card_number,
                 'telit_json'=>$request->telit_json,
                 'telit_id'=>$request->telit_number,
                 'module_id'=>$request->pasdt_module_number
