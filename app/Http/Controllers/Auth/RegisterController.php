@@ -62,6 +62,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'company_id' => ['required'],
+            'is_client_company' => ['required']
         ]);
     }
 
@@ -73,16 +75,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        dd($data);
+        $user = Auth::user();
+        if (!$user->su_admin) {
+            return view('home');
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'company_id' => $this->creator_company,
-            'is_client_company' => false,
+            'company_id' => $data['company'],
+            'is_client_company' => $data['is_client_company'],
             'api_token' => Str::random(60)
         ]);
     }
-
 
     /**
      * Handle a registration request for the application.
@@ -100,5 +106,21 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * Extends register view
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->su_admin) {
+            return view('home');
+        }
+        $companies = \App\Company::all();
+        return view('auth.register', ['companies'=>$companies]);
     }
 }

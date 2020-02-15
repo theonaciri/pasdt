@@ -11,12 +11,17 @@
 
     <!-- Scripts -->
     <script src="/js/manifest.js"></script>
-    <script src="/js/vendor.js"></script>
+    <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
         <script src="{{ asset('js/checkout.js') }}" defer></script>
+    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+        {{-- is IE 11 or below --}}
+        <script src="/js/vendor.es5.js"></script>
+        <script src="{{ asset('js/app.es5.js') }}" defer></script>
     @else
+        <script src="/js/vendor.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 
@@ -25,7 +30,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/datatables-bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
         @if(isset($_company->colors))
@@ -85,7 +89,7 @@
                             @endif
                             @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Panneau de configuration") }}</a>
+                                    <a class="nav-link" href="{{ route('client') }}">{{ __("Gérer mon parc") }}</a>
                                 </li>
                             @endif
                             @if (Route::has('checkout') && Auth::user()->is_client_company === 1)
@@ -95,7 +99,7 @@
                             @endif
                             @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Entreprises") }}</a>
+                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Configuration administrateur") }}</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">

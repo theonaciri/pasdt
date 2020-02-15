@@ -37,14 +37,14 @@ class LogController extends Controller
         if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
-                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
+                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at', 'logs.maxtemp',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         } else {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
                 ->where('modules.company_id' , '=', $company)
-                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at',
+                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at', 'logs.maxtemp',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         }
