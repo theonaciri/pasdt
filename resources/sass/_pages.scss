@@ -1,38 +1,39 @@
-$screen-xxl: 1720px !default;
+$screen-xxl: 1740px !default;
+.py-4 {
+  padding-top: .5rem !important;
+}
 
-#app {
-  .py-4 {
-    padding-top: .5rem !important;
-  }
+.dataTables_wrapper {
+  margin-top: 1rem;
+}
 
-  #main-table_wrapper {
-    margin-top: 1rem;
-  }
-
-	#main-table_paginate > ul > li > a {
-		border: 1px solid #dee2e6;
+.dataTables_paginate  > ul > li > a {
+	border: 1px solid #dee2e6;
+}
+.dataTable {
+	max-width: 100%;
+	input[type="text"] {
+		width: 100%;
 	}
-	#main-table {
-		max-width: 100%;
-		input[type="text"] {
-			width: 100%;
-		}
-	}
-	.individual-search {
-		max-width: 30vw;
-	}
-	.ui-datepicker-trigger img {
-		height: 20px;
-	}
+}
+.ui-datepicker-trigger img {
+	height: 20px;
+}
 @include media-breakpoint-up(lg) {
-  .modal-divided:first-child {
-    border-right: 1px solid #ced4da;
-  }
+.modal-divided:first-child {
+  border-right: 1px solid #ced4da;
 }
 @include media-breakpoint-down(lg) {
   .modal-divided:first-child {
     border-bottom: 1px solid #ced4da;
   }
+}
+.togglebtn {
+  margin-left:.2rem;
+  margin-right:.2rem;
+}
+.date_range_filter {
+  max-width: 120px;
 }
 
 table input, table select {
@@ -47,6 +48,10 @@ table input, table select {
 /* TABLE */
 .dt-grey {
 	background-color: #604a7b33;
+}
+
+.dt-orange {
+  background-color: #ffc277b8;
 }
 
 .dt-red {
@@ -69,10 +74,10 @@ table input, table select {
 }
 .dt-buttons.btn-group {
   margin-left: 2rem;
- @include media-breakpoint-down(xl) {
+  @include media-breakpoint-down(xl) {
     margin-left: 1rem;
   }
- @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(md) {
     float: right;
     padding-bottom: 10px;
     margin-left: 0;
@@ -83,18 +88,18 @@ table input, table select {
     margin-left: -4px;
   }
 }
-#main-table_filter {  
+.dataTables_filter {  
     display: inline-block;
     margin-left: 1rem;
   }
-#main-table_info {  
+.dataTables_info {  
     display: inline-block;
   }
-#main-table_paginate {  
+.dataTables_paginate {  
     display: inline-block;
     float: right;
   }
-#main-table_length {
+.dataTables_length {
   display: inline-block;
   float: left;
 }
@@ -222,4 +227,10 @@ table input, table select {
 
 .highlight {
   background-color: #ffff8a;
+}
+
+#synthesis {
+  .dt-buttons {
+
+  }
 }

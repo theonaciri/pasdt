@@ -14,7 +14,7 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'jszip',*/
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
   function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch, noping) {
-if (window.location.pathname !== "/home") return ;
+if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
 window.pdfMake = true;
 
@@ -40,7 +40,7 @@ function _initTable() {
     /* Setup - add a text input to each footer cell */
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();
-      $(this).html('<input type="text" placeholder="Rechercher ' + title + '" />');
+      $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
     });
 
     window.pdfMake = true;
@@ -91,7 +91,7 @@ function _initTable() {
         /* Dropdown */
         this.api().columns([1, 2]).every(function() {
           var column = this;
-          var select = $('<select class="individual-search"><option value=""></option></select>')
+          var select = $('<select class="individual-search form-control"><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $.fn.dataTable.util.escapeRegex($(this).val());
@@ -104,6 +104,7 @@ function _initTable() {
             }
           });
         });
+        noping.initNopingButtons(table);
       },
       createdRow: function rowColor( row, data, dataIndex) {
         if (data == null) {
@@ -114,6 +115,12 @@ function _initTable() {
           if (foundValue.length) {
             $(row).addClass(foundValue[foundValue.length -1].class);
           }
+        }
+        if (typeof data.maxtemp != 'undefined' && data.maxtemp != null && data.maxtemp != '--') {
+          var color = "dt-green";
+          if (data.maxtemp >= 80 && data.maxtemp < 90) color = "dt-orange";
+          else if (data.maxtemp >= 90) color = "dt-red";
+          $(row).find(":nth-child(5)").addClass(color);
         }
       },
       language: datatablefr,
@@ -144,22 +151,21 @@ function _initTable() {
             if (data == null) {
               return '';
             }
-            return data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+            var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+            if (msg === "Ack") return "Acquittement"
+            return msg;
           }
         },
         {
-          "data": "options", render: function(data, type, row) {
-            try {
-              var obj = JSON.parse(data);
-              if (typeof obj === 'object' && obj != null && obj.hasOwnProperty("maxtemp")) {
-                return obj.maxtemp > -90 ? String(obj.maxtemp) + '°C' : '--';
-              }
-              return '--';
-            } catch (e) {
-              console.warn(e);
-              return '--';
+          "data": "maxtemp", render: function(maxtemp, type, row) {
+            if (type === 'sort') {
+              if (maxtemp == '--') return undefined;
+              return maxtemp;
             }
-          }
+            if (maxtemp == null) return '--';
+            return String(maxtemp) + '°C';
+          },
+          "type": "num"
         }
         /*{"data": "options"},*/
         /*{"data": "updated_at"},*/
@@ -182,7 +188,7 @@ function _initTable() {
         }
       });
     });
-
+    //table.columns.adjust.draw();
     dataTablesEvents();
 
 
@@ -203,6 +209,10 @@ function _initTable() {
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
+      beforeShow: function( input, inst){
+        console.warn(input, inst);
+        $(inst).addClass('btn btn-secondary');
+      },
       "onSelect": function(date) {
         minDateFilter = new Date(date).getTime();
         table.draw();
@@ -210,7 +220,7 @@ function _initTable() {
     }).keyup(function() {
       minDateFilter = new Date(this.value).getTime();
       table.draw();
-    });
+    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     $("#datepicker_to").datepicker({
       dateFormat: "yy-mm-dd", 
@@ -224,9 +234,8 @@ function _initTable() {
     }).keyup(function() {
       maxDateFilter = new Date(this.value).getTime();
       table.draw();
-    });
+    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
-    noping.initNopingButtons(table);
     var filteredData = table
     .column(3)
     .data()
@@ -234,7 +243,6 @@ function _initTable() {
       return value != 'Day' ? true : false;
     });
   });
-
 }
 
 function dataTablesEvents() {

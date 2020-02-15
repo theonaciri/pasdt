@@ -25,6 +25,33 @@ class ModuleController extends Controller
     }
 
 
+    public function index(Request $request) {
+        $user = Auth::user();
+        //if (Gate::allows('company-admin')) {
+        //if (Auth::user()->is_client_company) {
+            // The current user can edit settings
+        if ($user->su_admin !== 1) {
+            return view('home');
+        }
+        $companies = \App\Company::all();
+        $modules = \App\Module::select("*")
+                    ->rightJoin('company', 'modules.company_id', '=', 'company.id');
+        $list_modules = \App\Module::select('id', 'name')->whereNull('company_id')->get();
+        $unlinked_logs = DB::select("
+            SELECT cardId, logs.id AS id, logs.created_at, logs.msg
+                FROM   logs
+                LEFT OUTER JOIN modules
+                  ON (logs.cardId = modules.module_id)
+            WHERE modules.telit_id IS NULL");
+        $colors = ["#3490dc", "#6574cd", "#9561e2", "#f66d9b", "#e3342f", "#f6993f", "#ffed4a", "#38c172", "#4dc0b5", "#6cb2eb", "#fff", "#6c757d", "#343a40", "#3490dc", "#6c757d", "#38c172", "#6cb2eb", "#ffed4a", "#e3342f", "#f8f9fa", "#343a40"];
+        return view('auth/module', [
+            "companies"=>$companies,
+            "list_modules"=>$list_modules,
+            "modules"=>$modules,
+            "unlinked_logs"=>$unlinked_logs,
+            "colors"=>$colors
+        ]);
+    }
 
     protected function is_user_allowed($user, $company_id) {
         return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
@@ -203,7 +230,6 @@ class ModuleController extends Controller
         if ($this->is_user_allowed($user, $request->company_id)) {
             $module->company_id = $request->company_id;
         }
-        $module->card_number = $request->pasdt_card_number;
         $module->telit_json = $request->telit_json;
         $module->telit_id = $request->telit_number;
         $module->module_id = $request->pasdt_module_number;
@@ -224,7 +250,6 @@ class ModuleController extends Controller
         if ($this->is_user_allowed($user, $module->company_id)) {
             $module->update([
                 'name'=>$request->name,
-                'card_number'=>$request->pasdt_card_number,
                 'telit_json'=>$request->telit_json,
                 'telit_id'=>$request->telit_number,
                 'module_id'=>$request->pasdt_module_number

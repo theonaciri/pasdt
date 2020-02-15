@@ -1,15 +1,15 @@
 define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
-  'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
+  'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
-  function(datatables, Graphs, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch, noping) {
+  function(datatables, Graphs, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch, moment) {
     if (window.location.pathname !== "/home") return ;
     function _initTable() {
 	  $(document).ready(function() {
 	    /* Setup - add a text input to each footer cell */
 	    $('#synthesis-table tfoot th').each(function() {
 	      var title = $(this).text();
-	      $(this).html('<input type="text" placeholder="Rechercher ' + title + '" />');
+	      $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
 	    });
 
 	    table = $('#synthesis-table').DataTable({
@@ -43,7 +43,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	        /* Dropdown */
 	        this.api().columns([0, 1]).every(function() {
 	          var column = this;
-	          var select = $('<select class="individual-search"><option value=""></option></select>')
+	          var select = $('<select class="individual-search form-control"><option value=""></option></select>')
 	            .appendTo($(column.footer()).empty())
 	            .on('change', function() {
 	              var val = $.fn.dataTable.util.escapeRegex($(this).val());
@@ -67,6 +67,19 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	            $(row).addClass(foundValue[foundValue.length -1].class);
 	          }
 	        }
+	        if (typeof data.created_at != 'undefined' && data.created_at != null && data.created_at != '') {
+	          var color = "dt-green";
+	          var days = moment().diff(moment(data.created_at), "days");
+	          if (days <= 3 && days >= 2) color = "dt-orange";
+	          else if (days < 2) color = "dt-red";
+	          $(row).find(":nth-child(3)").addClass(color);
+	        }
+	        if (typeof data.maxtemp != 'undefined' && data.maxtemp != null && data.maxtemp != '--') {
+	          var color = "dt-green";
+	          if (data.maxtemp >= 80 && data.maxtemp < 90) color = "dt-orange";
+	          else if (data.maxtemp >= 90) color = "dt-red";
+	          $(row).find(":nth-child(4)").addClass(color);
+	        }
 	      },
 	      language: datatablefr,
 	      "ajax": {
@@ -75,31 +88,46 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	        "dataSrc": ""
 	      },
 	      "order": [
-	        [0, "desc"]
+	        [2, "desc"]
 	      ],
 	      "columns": [
 	        /* {"data": "id"},*/
 	        {
-	          "data": "telit_id"
-	        },
+	          "data": "cardId"
+	        },/*
 	        { 
 	          "data": "telit_custom2"
-	        },
+	        },*/
 	        { 
-	          "data": "msg"
+	          "data": "msg", render: function(data, type, row) {
+	            if (data == null) {
+	              return '';
+	            }
+	            var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+	            if (msg === "Ack") return "Acquittement"
+	            return msg;
+	          }
 	        },
 	        {
 	          "data": "created_at"
 	        },
 	        {
-	          "data": "maxtemp"
+	          "data": "maxtemp", render: function(maxtemp, type, row) {
+	            if (type === 'sort') {
+	              if (maxtemp == '--') return undefined;
+	              return maxtemp;
+	            }
+	            if (maxtemp == null) return '--';
+	            return String(maxtemp) + '°C';
+	          },
+	          "type": "num"
 	        }
 	        /*{"data": "options"},*/
 	        /*{"data": "updated_at"},*/
 	      ]
 	    });
 	    /* Search bar */
-	    table.columns([2, 3, 4]).every(function() {
+	    table.columns([1, 3]).every(function() {
 	      var that = this;
 	      $('input', this.footer()).on('keyup change clear', function() {
 	        if (that.search() !== this.value) {
@@ -107,7 +135,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	            that
 	              .search(`^${this.value}$`, true, false)
 	              .draw();
-	          } else {  
+	          } else {
 	            that
 	              .search(this.value)
 	              .draw();
@@ -115,78 +143,17 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	        }
 	      });
 	    });
-
-
-	    $('#graphs-tab').click( function () {
-	      graphdata = table.rows({ 'search': 'applied' }).data();
-	      Graphs.loadGraph(graphdata);
-	    });
-
-	    $('#realtime-graphs-tab').click( function () {
-	      graphdata = table.rows().data();
-	      
-	      Graphs.loadGraph(graphdata);
-	    });
-	    $.datepicker.setDefaults($.datepicker.regional["fr"]);
-
-	    $("#datepicker_from").datepicker({
-	      dateFormat: "yy-mm-dd",
-	      showOn: "button",
-	      buttonImage: "images/Calendar.png",
-	      buttonImageOnly: false,
-	      "onSelect": function(date) {
-	        minDateFilter = new Date(date).getTime();
-	        table.draw();
-	      }
-	    }).keyup(function() {
-	      minDateFilter = new Date(this.value).getTime();
-	      table.draw();
-	    });
-
-	    $("#datepicker_to").datepicker({
-	      dateFormat: "yy-mm-dd",
-	      showOn: "button",
-	      buttonImage: "images/Calendar.png",
-	      buttonImageOnly: false,
-	      "onSelect": function(date) {
-	        maxDateFilter = new Date(date).getTime();
-	        table.draw();
-	      }
-	    }).keyup(function() {
-	      maxDateFilter = new Date(this.value).getTime();
-	      table.draw();
-	    });
-
-	    noping.initNopingButtons(table);
-	    var filteredData = table
-	    .column(3)
-	    .data()
-	    .filter(function(value, index) {
-	      return value != 'Day' ? true : false;
-	    });
 	  });
 
 	}
 
-
+	dataTablesEvents();
 	function dataTablesEvents() {
-	  $('#synth-table').on('click', 'tr', function () {
+	  $('#synthesis-table').on('click', 'tr', function () {
 	        var data = table.row( this ).data();
 	        if (data && data.module_id) {
-	          $.getJSON("/module/"+data.module_id, function(module_data) {
-	            active_module = module_data;
-	            var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
-	            var f = flatten(module_data);
-	            for (p in f) {
-	              table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
-	            }
-	            var $modmodal = $('#moduleModal');
-	            var str_address = formatAdress(module_data.locAddress);
-	            $modmodal.find('.toggle-map').toggle(!!str_address.length).attr('data-loc', str_address);
-	            $modmodal.find('.modal-map').html('');
-	            $modmodal.find('.modal-pre').html(table + "</table>");
-	            $modmodal.modal("show");
-	          })
+	          	$('#home-tab').click();
+	          	$('#module-id > select').val(data.cardId).change();
 	        }
 	    } );
 
