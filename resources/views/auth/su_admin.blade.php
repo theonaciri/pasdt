@@ -1,15 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+<a href="/" class="btn btn-secondary"   ><span class="oi oi-arrow-left"></span> Retour à l'analyse</a>
 <br>
-
+<br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">{{ __("Liste des entreprises") }} </div>
                 <div class="card-body">
-                	<table id="adminTable" class="table">
+                	<table id="adminTable" class="table stripe">
                         <thead>
                             <tr>
                                 <th scope="col">Nom</th>
@@ -132,7 +133,7 @@
     </div>
 </div>
 -->
-
+<!--
 <br>
 <div class="container">
     <div class="row justify-content-center">
@@ -149,13 +150,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($unlinked_logs as $log)
+                            {{-- @foreach ($unlinked_logs as $log)
                             <tr data-id="{{$log->cardId}}" style="background-color: {{$colors[intval($log->cardId) % count($colors)]}}60">
                                 <td>{{$log->cardId}}</td>
                                 <td>{{$log->msg}}</td>
                                 <td>{{$log->created_at}}</td>
                             </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -163,7 +164,7 @@
         </div>
     </div>
 </div>
-
+-->
 
 <!-- Modal -->
 <div class="modal fade" id="companyUsersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">

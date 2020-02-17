@@ -31,6 +31,7 @@
     "dependencies": {
         "Buttons": "https://github.com/DataTables/Buttons.git",
         "babel-loader": "^8.0.6",
+        "bootstrap-select": "^1.13.12",
         "bootstrap-slider": "^10.6.2",
         "chart.js": "^2.8.0",
         "core-js": "3",
