@@ -15,6 +15,7 @@ require('./datatable-pasdt');
 require('./datatable-png');
 require('./client');
 require('./admin');
+require('./register');
 
 //require('./graphs-chartjs.js');
 //require('./graphs-realtime-pasdt');
