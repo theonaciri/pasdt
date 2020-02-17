@@ -3,9 +3,15 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
   function(datatables, Graphs, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch, moment) {
-    if (window.location.pathname !== "/home") return ;
+	if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
     function _initTable() {
-	  $(document).ready(function() {
+    	/*
+    	if (!$('#synthesis-table').is(':visible')) {
+    		$('#synth-tab').one('click', _initTable);
+    		console.warn('BB false');
+    		return ;
+    	}*/
+			console.warn('BB true');
 	    /* Setup - add a text input to each footer cell */
 	    $('#synthesis-table tfoot th').each(function() {
 	      var title = $(this).text();
@@ -43,18 +49,23 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	        /* Dropdown */
 	        this.api().columns([0, 1]).every(function() {
 	          var column = this;
-	          var select = $('<select class="individual-search form-control"><option value=""></option></select>')
+	          var select = $('<select class="selectpicker form-control" multiple><option value=""></option></select>')
 	            .appendTo($(column.footer()).empty())
 	            .on('change', function() {
-	              var val = $.fn.dataTable.util.escapeRegex($(this).val());
-	              column.search(val ? '^' + val + '$' : '', true, false).draw();
+	              var val = $(this).val();
+	              if (!val.length || val.length == 1 && !val[0].length) {
+	                column.search('', true, false).draw();
+	              } else { // /!\ No escape security
+	                column.search('^' + val.join('|') + '$', true, false).draw();
+	              }
 	            });
 
-	          column.data().unique().sort().each(function(d, j) {
-	            if (d != null && typeof d != 'undefined') {
-	              select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
-	            }
-	          });
+		        column.data().unique().sort().each(function(d, j) {
+		            if (d != null && typeof d != 'undefined') {
+		              select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
+		            }
+		        });
+	        	select.selectpicker({actionsBox: true});
 	        });
 	      },
 	      createdRow: function rowColor( row, data, dataIndex) {
@@ -80,6 +91,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	          else if (data.maxtemp >= 90) color = "dt-red";
 	          $(row).find(":nth-child(4)").addClass(color);
 	        }
+	        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.cardId + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
 	      },
 	      language: datatablefr,
 	      "ajax": {
@@ -93,7 +105,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	      "columns": [
 	        /* {"data": "id"},*/
 	        {
-	          "data": "cardId"
+	          "data": "name"
 	        },/*
 	        { 
 	          "data": "telit_custom2"
@@ -142,30 +154,31 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	          }
 	        }
 	      });
-	    });
 	  });
 
+
+		dataTablesEvents();
+		function dataTablesEvents() {
+		  $('#synthesis-table').on('click', 'tr', function () {
+		        var data = table.row( this ).data();
+		        if (data && data.module_id) {
+		          	$('#home-tab').click();
+		          	$('#module-id > select').val(data.cardId).change();
+		        }
+		    } );
+
+		  $('.toggle-map').click(function(e) {
+		      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
+		    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+		    })
+		  function formatAdress(a) {
+		    if (typeof a == 'undefined') return '';
+		    return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+		  }
+		}
 	}
 
-	dataTablesEvents();
-	function dataTablesEvents() {
-	  $('#synthesis-table').on('click', 'tr', function () {
-	        var data = table.row( this ).data();
-	        if (data && data.module_id) {
-	          	$('#home-tab').click();
-	          	$('#module-id > select').val(data.cardId).change();
-	        }
-	    } );
-
-	  $('.toggle-map').click(function(e) {
-	      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-	    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
-	    })
-	  function formatAdress(a) {
-	    if (typeof a == 'undefined') return '';
-	    return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
-	  }
-	}
-
-_initTable();
+	//$(document).ready(function() {
+		setTimeout(_initTable, 1);
+	//});
 });

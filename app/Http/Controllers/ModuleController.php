@@ -37,18 +37,18 @@ class ModuleController extends Controller
         $modules = \App\Module::select("*")
                     ->rightJoin('company', 'modules.company_id', '=', 'company.id');
         $list_modules = \App\Module::select('id', 'name')->whereNull('company_id')->get();
-        $unlinked_logs = DB::select("
+        /*$unlinked_logs = DB::select("
             SELECT cardId, logs.id AS id, logs.created_at, logs.msg
                 FROM   logs
                 LEFT OUTER JOIN modules
                   ON (logs.cardId = modules.module_id)
-            WHERE modules.telit_id IS NULL");
+            WHERE modules.telit_id IS NULL");*/
         $colors = ["#3490dc", "#6574cd", "#9561e2", "#f66d9b", "#e3342f", "#f6993f", "#ffed4a", "#38c172", "#4dc0b5", "#6cb2eb", "#fff", "#6c757d", "#343a40", "#3490dc", "#6c757d", "#38c172", "#6cb2eb", "#ffed4a", "#e3342f", "#f8f9fa", "#343a40"];
         return view('auth/module', [
             "companies"=>$companies,
             "list_modules"=>$list_modules,
             "modules"=>$modules,
-            "unlinked_logs"=>$unlinked_logs,
+            /*"unlinked_logs"=>$unlinked_logs,*/
             "colors"=>$colors
         ]);
     }
