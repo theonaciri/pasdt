@@ -1,5 +1,4 @@
 define(['js-cookie'], function(cookie) {
-
 	window.getUrlParameter = function(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -22,4 +21,5 @@ define(['js-cookie'], function(cookie) {
 	})
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
+	console.warn('AA');
 })

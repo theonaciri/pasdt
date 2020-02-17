@@ -1,4 +1,28 @@
 $screen-xxl: 1740px !default;
+
+#main-table {
+
+  .th-multiselect {
+      max-width: 200px;
+      @include media-breakpoint-up(xl) {
+        max-width: 281px;
+      }
+    }
+
+  }
+
+  #synthesis-table {
+    .th-multiselect {
+      max-width: 200px;
+      @include media-breakpoint-up(md) {
+        max-width: 400px;
+      }
+      @include media-breakpoint-up(xl) {
+        max-width: 800px;
+      }
+  }
+}
+
 .py-4 {
   padding-top: .5rem !important;
 }
@@ -91,6 +115,7 @@ table input, table select {
 .dataTables_filter {  
     display: inline-block;
     margin-left: 1rem;
+    float: left;
   }
 .dataTables_info {  
     display: inline-block;
@@ -227,10 +252,4 @@ table input, table select {
 
 .highlight {
   background-color: #ffff8a;
-}
-
-#synthesis {
-  .dt-buttons {
-
-  }
 }

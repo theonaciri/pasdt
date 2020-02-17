@@ -16,8 +16,8 @@
                                 <th>Mail</th>
                                 <th>Créé le</th>
                                 <th>Modifié le</th>
-                                @if ($self->is_client_company)
-                                <!--<th>Actions</th>-->
+                                @if ($self->su_admin)
+                                <th>Actions</th>
                                 @endif
                             </tr>
                         </thead>
@@ -33,11 +33,11 @@
                                 <td class="email">{{$user->email}}</td>
                                 <td class="created_at">{{$user->created_at}}</td>
                                 <td class="updated_at">{{$user->updated_at}}</td>
-                                @if ($self->is_client_company)
-                                <!--<td class="button"> -->
-                                    <!--<button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>-->
-                                    <!--<button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoquserbtn">X</button>-->
-                                <!--</td>-->
+                                @if ($self->su_admin)
+                                <td class="button"> 
+                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>
+                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoquserbtn">X</button>
+                                </td>
                                 @endif
                             </tr>
                             @endforeach

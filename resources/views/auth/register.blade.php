@@ -2,6 +2,8 @@
 
 @section('content')
 
+
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -16,12 +18,23 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Organisme') }}</label>
 
                             <div class="col-md-6">
-                                <p class="organisme">{{ $_company->name }}</p>
+                                <select class="form-control" id="company" name="company">
+                                    @foreach ($companies as $company)
+                                    <option value="{{$company->id}}" {{ __($company->id == Auth::user()->company_id ?
+                                        "selected" : "") }}>{{$company->name}}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('company_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nom') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __("Nom de l'utilisateur") }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -48,7 +61,24 @@
                             </div>
                         </div>
 
-                        <input id="admin" type="hidden" name="admin" value="{{ $self->company_id }}" required autocomplete="admin">
+                        <div class="form-group row">
+                            <label for="is_client_company" class="col-md-4 col-form-label text-md-right">{{ __('Client référent') }}</label>
+
+                            <div class="col-md-6">
+                                <div class="checkbox text-center">
+                                    <label class="form-checkbox form-icon">
+                                        <input id="is_client_company" type="checkbox" class="sev_check">
+                                    </label>
+                                </div>
+                                @error('is_client_company')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
