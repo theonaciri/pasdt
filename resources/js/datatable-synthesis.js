@@ -121,7 +121,14 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	          }
 	        },
 	        {
-	          "data": "created_at"
+	          "data": "created_at", render: function(data, type, row) {
+	          	if (type === 'sort') {
+	              return row.created_at;
+	            }
+	            var ret = moment(data).format('lll');
+	            if (ret == 'Invalid date') return '--';
+	            return ret;
+	          }
 	        },
 	        {
 	          "data": "maxtemp", render: function(maxtemp, type, row) {
