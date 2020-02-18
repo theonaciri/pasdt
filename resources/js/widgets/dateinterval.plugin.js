@@ -6,6 +6,7 @@ maxDateFilter = "";
 
 $.fn.dataTableExt.afnFiltering.push(
   function(oSettings, aData, iDataIndex) {
+    console.log('a', oSettings, aData, iDataIndex);
     if (typeof aData._date == 'undefined') {
       aData._date = new Date(aData[0]).getTime();
     }
@@ -20,7 +21,6 @@ $.fn.dataTableExt.afnFiltering.push(
         return false;
       }
     }
-
     return true;
   });
 });

@@ -9,12 +9,12 @@ require( 'datatables.net-scroller-bs4' );
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 // jszip is commented because excel import does not work. CSV works
-define(['datatables.net-bs4', './graphs-chartjs', /*'jszip',*/
+define(['datatables.net-bs4', './graphs-chartjs', 'moment/moment',/*'jszip',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
-  function(datatables, Graphs/*, jszip*/, flatten, datatablefr, arrayToSearch, noping) {
+  function(datatables, Graphs/*, jszip*/, moment, flatten, datatablefr, arrayToSearch, noping) {
 if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
 window.pdfMake = true;
@@ -152,7 +152,13 @@ function _initTable() {
         /* {"data": "id"},*/
         {
           "data": "created_at", render: function(data, type, row) {
-            return data;//new Date(data).toLocaleString("fr-FR")
+            if (type === 'sort') {
+              return row.created_at;
+            }
+            var ret = moment(data).format('lll');
+            if (ret == 'Invalid date') return '--';
+            return ret;
+            //return data;//new Date(data).toLocaleString("fr-FR")
           }
         },
         {
@@ -221,7 +227,7 @@ function _initTable() {
     $.datepicker.setDefaults($.datepicker.regional["fr"]);
 
     $("#datepicker_from").datepicker({
-      dateFormat: "yy-mm-dd",
+      dateFormat: "dd/mm/yy",
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
@@ -239,7 +245,7 @@ function _initTable() {
     }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     $("#datepicker_to").datepicker({
-      dateFormat: "yy-mm-dd", 
+      dateFormat: "dd/mm/yy", 
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
