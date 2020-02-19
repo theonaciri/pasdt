@@ -235,13 +235,14 @@ function _initTable() {
         console.warn(input, inst);
         $(inst).addClass('btn btn-secondary');
       },
-      "onSelect": function(date) {
-        minDateFilter = new Date(date).getTime();
+      "onSelect": function(date, d) {
+        var dateObj = new Date(d.selectedYear, d.selectedMonth, d.selectedDay);
+        minDateFilter = new Date(dateObj).getTime();
         table.draw();
       }
     }).keyup(function() {
-      minDateFilter = new Date(this.value).getTime();
-      table.draw();
+        var dateObj = new Date(this.value);
+        minDateFilter = new Date(dateObj).getTime();
     }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     $("#datepicker_to").datepicker({
@@ -249,13 +250,16 @@ function _initTable() {
       showOn: "button",
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
-      "onSelect": function(date) {
-        maxDateFilter = new Date(date).getTime();
+      "onSelect": function(date, d) {
+        var dateObj = new Date(d.selectedYear, d.selectedMonth, d.selectedDay);
+        dateObj.setDate(dateObj.getDate() + 1);
+        maxDateFilter = new Date(dateObj).getTime();
         table.draw();
       }
     }).keyup(function() {
-      maxDateFilter = new Date(this.value).getTime();
-      table.draw();
+        var dateObj = new Date(this.value);
+        dateObj.setDate(dateObj.getDate() + 1);
+        maxDateFilter = new Date(dateObj).getTime();
     }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     var filteredData = table
