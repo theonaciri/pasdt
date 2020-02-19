@@ -6,18 +6,18 @@ maxDateFilter = "";
 
 $.fn.dataTableExt.afnFiltering.push(
   function(oSettings, aData, iDataIndex) {
-    console.log('a', oSettings, aData, iDataIndex);
+    var elem_date = new Date(oSettings.aoData[iDataIndex]._aData.created_at);
     if (typeof aData._date == 'undefined') {
-      aData._date = new Date(aData[0]).getTime();
+      aData._date = elem_date.getTime();
     }
     if (minDateFilter && !isNaN(minDateFilter)) {
-      if (aData._date < minDateFilter) {
+      if (elem_date < new Date(minDateFilter)) {
         return false;
       }
     }
 
     if (maxDateFilter && !isNaN(maxDateFilter)) {
-      if (aData._date > maxDateFilter) {
+      if (elem_date > new Date(maxDateFilter)) {
         return false;
       }
     }
