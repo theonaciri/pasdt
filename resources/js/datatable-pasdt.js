@@ -202,6 +202,8 @@ function _initTable() {
             that
               .search(`^${this.value}$`, true, false)
               .draw();
+          } else if (that.selector.cols == 3) {
+            that.draw();
           } else {  
             that
               .search(this.value)
@@ -243,6 +245,7 @@ function _initTable() {
     }).keyup(function() {
         var dateObj = new Date(this.value);
         minDateFilter = new Date(dateObj).getTime();
+        table.draw();
     }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     $("#datepicker_to").datepicker({
@@ -260,10 +263,11 @@ function _initTable() {
         var dateObj = new Date(this.value);
         dateObj.setDate(dateObj.getDate() + 1);
         maxDateFilter = new Date(dateObj).getTime();
+        table.draw();
     }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
     var filteredData = table
-    .column(3)
+    .column(2)
     .data()
     .filter(function(value, index) {
       return value != 'Day' ? true : false;
