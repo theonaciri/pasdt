@@ -55,7 +55,7 @@
                                     <th class="th-multiselect">Nom du module</th>
                                     <th class="th-multiselect">Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
-                                    <th>Dernière température</th>
+                                    <th>Température min.</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -90,7 +90,7 @@
                                     <th class="th-multiselect" id="module-id">Nom du module</th>
                                     <!--<th>Client</th>-->
                                     <th class="th-input-message">Message</th>
-                                    <th>Températures</th>
+                                    <th class="select-temp">Température min.</th>
                                 </tr>
                             </tfoot>
                         </table>
