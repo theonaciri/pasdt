@@ -4,12 +4,24 @@ define(['jquery'], function($) {
 minDateFilter = "";
 maxDateFilter = "";
 
+function getTemp(oSettings, iDataIndex) {
+    $temp = $('#' + oSettings.nTable.id + ' .select-temp input');
+    //var tempstr = oSettings.aoPreSearchCols[3].sSearch;
+    var tempstr = $temp.val();
+    if (typeof tempstr == 'undefined' || !tempstr || !tempstr.length) return true;
+    var tempval = Number(tempstr);
+    var maxtemp = oSettings.aoData[iDataIndex]._aData.maxtemp;
+    if (maxtemp == null) return false;
+    maxtemp = Number(maxtemp);
+    return maxtemp >= tempval;
+}
+
 $.fn.dataTableExt.afnFiltering.push(
   function(oSettings, aData, iDataIndex) {
+    var ret = getTemp(oSettings, iDataIndex);
+    if (oSettings.nTable.id !== 'main-table' ) return ret;
     var elem_date = new Date(oSettings.aoData[iDataIndex]._aData.created_at);
-    if (typeof aData._date == 'undefined') {
-      aData._date = elem_date.getTime();
-    }
+
     if (minDateFilter && !isNaN(minDateFilter)) {
       if (elem_date < new Date(minDateFilter)) {
         return false;
@@ -21,6 +33,6 @@ $.fn.dataTableExt.afnFiltering.push(
         return false;
       }
     }
-    return true;
+    return ret;
   });
 });
