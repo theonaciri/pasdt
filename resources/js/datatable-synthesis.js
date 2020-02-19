@@ -123,7 +123,8 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	        {
 	          "data": "created_at", render: function(data, type, row) {
 	          	if (type === 'sort') {
-	              return row.created_at;
+		            if (row.created_at == null) row.created_at = '';
+	              	return row.created_at;
 	            }
 	            var ret = moment(data).format('lll');
 	            if (ret == 'Invalid date') return '--';
@@ -146,7 +147,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	      ]
 	    });
 	    /* Search bar */
-	    table.columns([1, 3]).every(function() {
+	    table.columns([2, 3]).every(function() {
 	      var that = this;
 	      $('input', this.footer()).on('keyup change clear', function() {
 	        if (that.search() !== this.value) {
@@ -155,6 +156,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	              .search(`^${this.value}$`, true, false)
 	              .draw();
 	          } else {
+	          	console.log("LOOKING FOR", this.value);
 	            that
 	              .search(this.value)
 	              .draw();
