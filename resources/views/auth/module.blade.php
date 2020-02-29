@@ -131,7 +131,7 @@
     </div>
 </div>
 -->
-
+<!--
 <br>
 <div class="container">
     <div class="row justify-content-center">
@@ -162,7 +162,7 @@
         </div>
     </div>
 </div>
-
+-->
 
 <!-- Modal -->
 <div class="modal fade" id="companyUsersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">

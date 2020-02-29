@@ -18,6 +18,7 @@
     </div>
 </div>
 @endif
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
@@ -26,7 +27,7 @@
                     <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse anomalies PASDT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
+                    <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs</a>
                 </li>
                 <!--<li class="nav-item">
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
@@ -43,18 +44,18 @@
                         <table id="synthesis-table" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Num PASDT & SIM</th>
-                                    <th>Dernière anomalie</th>
+                                    <th class="th-multiselect">Nom du module</th>
+                                    <th class="th-multiselect">Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
                                     <th>Dernière température</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Num PASDT & SIM</th>
-                                    <th>Dernière anomalie</th>
+                                    <th class="th-multiselect">Nom du module</th>
+                                    <th class="th-multiselect">Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
-                                    <th>Dernière température</th>
+                                    <th>Température min.</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -63,8 +64,8 @@
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
                         <div id="date_filter" class="input-group">
-                            <span id="date-label-from" class="date-label">De&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
-                            <span id="date-label-to" class="date-label">&nbsp;à&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />
+                            <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
+                            <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />
                             &nbsp;
                             <button type="button" class="btn togglebtn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
@@ -77,8 +78,8 @@
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>N°PASDT & sim ID</th>
-                                    <th>Client</th>
+                                    <th class="th-multiselect" >Nom du module</th>
+                                    <!--<th>Client</th>-->
                                     <th class="th-message">Message</th>
                                     <th>Températures</th>
                                 </tr>
@@ -86,10 +87,10 @@
                             <tfoot>
                                 <tr>
                                     <th>Date</th>
-                                    <th id="module-id">N°PASDT & sim ID</th>
-                                    <th>Client</th>
+                                    <th class="th-multiselect" id="module-id">Nom du module</th>
+                                    <!--<th>Client</th>-->
                                     <th class="th-input-message">Message</th>
-                                    <th>Températures</th>
+                                    <th class="select-temp">Température min.</th>
                                 </tr>
                             </tfoot>
                         </table>
