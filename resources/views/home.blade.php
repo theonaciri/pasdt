@@ -23,7 +23,7 @@
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse des logs PASDT</a>
+                    <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse anomalies PASDT</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs PASDT</a>
