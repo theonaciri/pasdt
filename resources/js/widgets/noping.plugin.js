@@ -38,14 +38,14 @@ define(['jquery'], function($) {
 	        function( settings, data, dataIndex ) {
 	        	var ret = true;
 	        	if (toggle_ping_value) {
-	            	ret = data[2] != 'Day' && data[2] != 'Acquittement' && data[2] != 'Test';
+	            	ret = data[2] != 'Day' && data[2] != 'Acquittement'  && data[2] != 'Hour' && data[2] != 'Test';
 		        	if (ret && toggle_temp_value) {
 		            	ret = data[3] != '--';// && +data[3] < 700 && +data[3] > -98;
 		        	}
 	        	} else if (toggle_temp_value) {
 	        		ret = data[3] != '--';// && +data[3] < 700 && +data[3] > -98;
 	        		if (ret && toggle_ping_value) {
-		            	ret = data[2] != 'Day' && data[2] != 'Acquittement' && data[2] != 'Test';
+		            	ret = data[2] != 'Day' && data[2] != 'Acquittement' && data[2] != 'Hour' && data[2] != 'Test';
 		        	}
 	        	}
 	        	window.toggle_temp = toggle_temp_value;
