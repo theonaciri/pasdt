@@ -63,7 +63,7 @@
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
-                        <button type="button" class="btn togglebtn toggle-buttons" data-toggle="button" aria-pressed="false">Options de recherche</button>
+                        <button type="button" class="btn togglebtn toggle-buttons" data-toggle="button" aria-pressed="false" title="Montrer plus ou moins d'options de recherche"><span class="oi oi-minus"></span><span class="oi oi-plus"></span>&nbsp;<span class="oi oi-magnifying-glass"></span></button>
                         <div id="date_filter" class="input-group">
                             <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
                             <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />

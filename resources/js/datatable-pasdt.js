@@ -306,8 +306,9 @@ function _initTable() {
       var toggle_ping_value = localStorage.getItem('nosearch') === "true";
       toggle_ping_value = notoggle ? toggle_ping_value : !toggle_ping_value;
       localStorage.setItem('nosearch', toggle_ping_value);
-      $(e.target).toggleClass('btn-dark', toggle_ping_value);
+      $(e.currentTarget).toggleClass('btn-dark', toggle_ping_value);
       $('#date_filter, .dt-buttons').toggle(toggle_ping_value);
+      console.warn(toggle_ping_value);
     }
 
     $('.toggle-buttons').on("click", toggleAdvancedSearchButtons);
