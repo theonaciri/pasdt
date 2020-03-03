@@ -24,7 +24,7 @@
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse des modules PASDT</a>
+                    <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">Synthèse anomalies PASDT</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs</a>
@@ -63,6 +63,7 @@
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
+                        <!--<button type="button" class="btn togglebtn toggle-buttons" data-toggle="button" aria-pressed="false" title="Montrer plus ou moins d'options de recherche"><span class="oi oi-minus"></span><span class="oi oi-plus"></span>&nbsp;<span class="oi oi-magnifying-glass"></span></button>-->
                         <div id="date_filter" class="input-group">
                             <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
                             <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />
