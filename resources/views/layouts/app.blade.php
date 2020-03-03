@@ -23,6 +23,7 @@
     @else
         <script src="/js/vendor.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app2.js') }}" defer></script>
     @endif
 
     <!-- Fonts -->
@@ -31,6 +32,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app2.css') }}" rel="stylesheet">
     <style>
         @if(isset($_company->colors))
         body {
