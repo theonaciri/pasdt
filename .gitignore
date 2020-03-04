@@ -1,5 +1,7 @@
 /node_modules
-/public
+/public/*
+!/public/css/app2.css
+!/public/js/app2.js
 /documents
 /storage/*.key
 /vendor
