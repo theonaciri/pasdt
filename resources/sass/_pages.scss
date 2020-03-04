@@ -22,7 +22,6 @@ $screen-xxl: 1740px !default;
       }
   }
 }
-
 .py-4 {
   padding-top: .5rem !important;
 }
@@ -96,18 +95,37 @@ table input, table select {
 #date-label-from, #date-label-to {
   padding: 5px;
 }
+
+
+.toggle-buttons {
+  left: 34rem;
+  position: absolute;
+  top: 6.35rem;
+  .oi-minus {
+    display: none;
+  }
+  &.btn-dark {
+    top: 3.35rem;
+    .oi-minus {
+      display: inline-block;
+    }
+    .oi-plus {
+      display: none;
+    } 
+  }
+}
 .dt-buttons.btn-group {
-  margin-left: 2rem;
+  margin-left: 5rem;
+  margin-top: -8px;
+  display: inline-block;
   @include media-breakpoint-down(xl) {
-    margin-left: 1rem;
+    margin-left: 5rem;
   }
   @include media-breakpoint-down(md) {
     float: right;
     padding-bottom: 10px;
     margin-left: 0;
   }
-  margin-top: -8px;
-  display: inline-block;
   button:not(:first-child) {
     margin-left: -4px;
   }

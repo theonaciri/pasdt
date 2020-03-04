@@ -116,7 +116,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	              return '';
 	            }
 	            var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
-	            if (msg === "Ack") return "Acquittement"
+	            if (msg === "Ack") return "Acquittement";
 	            return msg;
 	          }
 	        },
