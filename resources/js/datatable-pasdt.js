@@ -174,7 +174,7 @@ function _initTable() {
               return '';
             }
             var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
-            if (msg === "Ack") return "Acquittement"
+            if (msg === "Ack") return "Acquittement";
             return msg;
           }
         },
@@ -302,6 +302,16 @@ function _initTable() {
       if (typeof a == 'undefined') return '';
       return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
     }
+    function toggleAdvancedSearchButtons(e, notoggle) {
+      var toggle_ping_value = localStorage.getItem('nosearch') === "true";
+      toggle_ping_value = notoggle ? toggle_ping_value : !toggle_ping_value;
+      localStorage.setItem('nosearch', toggle_ping_value);
+      $(e.target).toggleClass('btn-dark', toggle_ping_value);
+      $('#date_filter, .dt-buttons').toggle(toggle_ping_value);
+    }
+
+    $('.toggle-buttons').on("click", toggleAdvancedSearchButtons);
+    //toggleAdvancedSearchButtons({target: $('.toggle-buttons')}, true);
   }
 }
 
