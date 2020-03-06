@@ -31,6 +31,8 @@ class LogController extends Controller
     public function getAllData(Request $request) {
         $this->middleware('auth');
         $user = Auth::user();
+        if (empty($user)) abort(403, "Echec de l'authentification.");
+        if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
         //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
         $su_company = $request->company ?? NULL;
         $company = !empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company) ? $su_company : $user->company_id;
