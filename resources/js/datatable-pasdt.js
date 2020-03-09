@@ -181,10 +181,10 @@ function _initTable() {
         {
           "data": "maxtemp", render: function(maxtemp, type, row) {
             if (type === 'sort') {
-              if (maxtemp == '--') return undefined;
+              if (maxtemp == '--' || maxtemp == -99 || maxtemp == 785) return undefined;
               return maxtemp;
             }
-            if (maxtemp == null) return '--';
+            if (maxtemp == null || maxtemp == -99 || maxtemp == 785) return '--';
             return String(maxtemp) + '°C';
           },
           "type": "num"
