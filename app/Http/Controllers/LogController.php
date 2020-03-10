@@ -39,14 +39,16 @@ class LogController extends Controller
         if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
-                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at', 'logs.maxtemp',
+                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options',
+                         'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         } else {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
                 ->where('modules.company_id' , '=', $company)
-                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at', 'logs.maxtemp',
+                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options',
+                         'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         }
@@ -116,7 +118,8 @@ EOTSQL
         $log["msg"] = json_encode($log["msg"]);
         $log["options"] = json_encode($log["options"]);
         $json = json_decode($log["options"]);
-        $log["maxtemp"] = !empty($json->maxtemp) ? intval($json->maxtemp) : NULL;
+        $log["maxtemp"] = isset($json->maxtemp) ? intval($json->maxtemp) : NULL;
+        $log["vbat"] = isset($json->vbat) ? intval($json->vbat) : NULL;
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
