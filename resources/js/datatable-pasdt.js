@@ -188,13 +188,24 @@ function _initTable() {
             return String(maxtemp) + '°C';
           },
           "type": "num"
+        },
+        {
+          "data": "vbat", render: function(vbat, type, row) {
+            if (type === 'sort') {
+              if (vbat == '--') return undefined;
+              return vbat;
+            }
+            if (vbat == null || vbat == "") return '--';
+            return String(vbat) + ' V';
+          },
+          "type": "num"
         }
         /*{"data": "options"},*/
         /*{"data": "updated_at"},*/
       ]
     });
     /* Search bar */
-    table.columns([0, 2, 3]).every(function() {
+    table.columns([0, 2, 3, 4]).every(function() {
       var that = this;
       $('input', this.footer()).on('keyup change clear', function() {
         if (that.search() !== this.value) {

@@ -82,7 +82,8 @@
                                     <th class="th-multiselect" >Nom du module</th>
                                     <!--<th>Client</th>-->
                                     <th class="th-message">Message</th>
-                                    <th>Températures</th>
+                                    <th>Température</th>
+                                    <th>Batterie</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -92,6 +93,7 @@
                                     <!--<th>Client</th>-->
                                     <th class="th-input-message">Message</th>
                                     <th class="select-temp">Température min.</th>
+                                    <th class="select-temp">Batterie</th>
                                 </tr>
                             </tfoot>
                         </table>
