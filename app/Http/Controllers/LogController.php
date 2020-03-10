@@ -31,20 +31,24 @@ class LogController extends Controller
     public function getAllData(Request $request) {
         $this->middleware('auth');
         $user = Auth::user();
+        if (empty($user)) abort(403, "Echec de l'authentification.");
+        if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
         //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
         $su_company = $request->company ?? NULL;
         $company = !empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company) ? $su_company : $user->company_id;
         if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
-                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at', 'logs.maxtemp',
+                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options',
+                         'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         } else {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
                 ->where('modules.company_id' , '=', $company)
-                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options', 'logs.created_at', 'logs.updated_at', 'logs.maxtemp',
+                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options',
+                         'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
                          'modules.id as module_id', 'modules.name as module_name')
                 ->get();
         }
@@ -114,7 +118,8 @@ EOTSQL
         $log["msg"] = json_encode($log["msg"]);
         $log["options"] = json_encode($log["options"]);
         $json = json_decode($log["options"]);
-        $log["maxtemp"] = !empty($json->maxtemp) ? intval($json->maxtemp) : NULL;
+        $log["maxtemp"] = isset($json->maxtemp) ? intval($json->maxtemp) : NULL;
+        $log["vbat"] = isset($json->vbat) ? intval($json->vbat) : NULL;
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
