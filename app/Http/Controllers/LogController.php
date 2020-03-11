@@ -70,6 +70,8 @@ class LogController extends Controller
         $company = $user->company;
         if ($user->su_admin) {
             $company = intval($request->company) ?? -1;
+        } else {
+            $company = intval($user->company->id) ?? -1;
         }
         $company_condition = $company > 0 ? "AND company_id = $company" : "";
 
