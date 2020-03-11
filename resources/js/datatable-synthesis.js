@@ -11,7 +11,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
     		console.warn('BB false');
     		return ;
     	}*/
-			console.warn('BB true');
+			//console.warn('BB true');
 	    /* Setup - add a text input to each footer cell */
 	    $('#synthesis-table tfoot th').each(function() {
 	      var title = $(this).text();

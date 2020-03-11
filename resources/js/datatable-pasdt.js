@@ -45,7 +45,7 @@ function _initTable() {
         return ;
       }
       */
-  console.warn('CC true');
+  //console.warn('CC true');
     /* Setup - add a text input to each footer cell */  
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();
@@ -245,7 +245,7 @@ function _initTable() {
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
       beforeShow: function( input, inst){
-        console.warn(input, inst);
+        //console.warn(input, inst);
         $(inst).addClass('btn btn-secondary');
       },
       "onSelect": function(date, d) {
