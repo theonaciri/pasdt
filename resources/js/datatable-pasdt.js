@@ -181,11 +181,22 @@ function _initTable() {
         {
           "data": "maxtemp", render: function(maxtemp, type, row) {
             if (type === 'sort') {
-              if (maxtemp == '--') return undefined;
+              if (maxtemp == '--' || maxtemp == -99 || maxtemp == 785) return undefined;
               return maxtemp;
             }
-            if (maxtemp == null) return '--';
+            if (maxtemp == null || maxtemp == -99 || maxtemp == 785) return '--';
             return String(maxtemp) + '°C';
+          },
+          "type": "num"
+        },
+        {
+          "data": "vbat", render: function(vbat, type, row) {
+            if (type === 'sort') {
+              if (vbat == '--') return undefined;
+              return vbat;
+            }
+            if (vbat == null || vbat == "") return '--';
+            return String(vbat) + ' V';
           },
           "type": "num"
         }
@@ -194,7 +205,7 @@ function _initTable() {
       ]
     });
     /* Search bar */
-    table.columns([0, 2, 3]).every(function() {
+    table.columns([0, 2, 3, 4]).every(function() {
       var that = this;
       $('input', this.footer()).on('keyup change clear', function() {
         if (that.search() !== this.value) {

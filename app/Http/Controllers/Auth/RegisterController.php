@@ -59,11 +59,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'company_id' => ['required'],
-            'is_client_company' => ['required']
+            //'name' => 'required|string|max:255',
+            //'email' => 'required|string|email|max:255|unique:users',
+            //'password' => 'required|string|min:8|confirmed',
+            //'company_id' => 'required'
         ]);
     }
 
@@ -75,7 +74,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        dd($data);
         $user = Auth::user();
         if (!$user->su_admin) {
             return view('home');
@@ -85,7 +83,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'company_id' => $data['company'],
-            'is_client_company' => $data['is_client_company'],
+            'is_client_company' => !empty($data['is_client_company']),
             'api_token' => Str::random(60)
         ]);
     }
@@ -98,8 +96,14 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        $validator = $this->validator($request->all());
 
+        $validator->validate();
+        if ($validator->fails()) {
+            return redirect($this->redirectPath())
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         event(new Registered($user = $this->create($request->all())));
 
         //$this->guard()->login($user);
