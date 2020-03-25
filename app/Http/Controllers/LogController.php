@@ -74,38 +74,54 @@ class LogController extends Controller
             $company = intval($user->company->id) ?? -1;
         }
         $company_condition = $company > 0 ? "AND company_id = $company" : "";
-        $logs = DB::select(DB::raw(<<<EOTSQL
-            SELECT * FROM logs
+
+        // alerts without temps
+        $alerts_array = DB::select(DB::raw(<<<EOTSQL
+            SELECT name, card_number, msg, maxtemp, logs.created_at FROM logs
             LEFT JOIN modules ON modules.card_number = logs.cardId 
             WHERE logs.id IN (
             SELECT MAX(L.id) FROM `logs` L
             LEFT JOIN modules ON modules.card_number = L.cardId
-            WHERE msg != '["DAY"]' AND msg != '["ACK"]'
+            WHERE msg != '["DAY"]' AND msg != '["ACK"]' AND msg != '["HOUR"]'
                 $company_condition
             GROUP BY modules.card_number)
-EOTSQL
-                    ));
+EOTSQL));
 
-        $active_ids = [];
-        foreach ($logs as $key => $log) {
-            $active_ids[] = (int)$log->card_number;
-        }
-        $maxtemps = DB::table('logs')->distinct()
-            ->select('cardId', 'maxtemp')
-            ->whereIn('cardId', $active_ids)
-            ->groupBy('cardId')
-            ->orderBy('id', 'desc')
-            ->get();
+        /*
+        $lastemps_array = DB::select(DB::raw(<<<EOTMAXSQL
+                    SELECT cardId, maxtemp
+                    FROM logs
+                    WHERE maxtemp IS NOT NULL AND maxtemp < 785 AND maxtemp > -99;
+EOTMAXSQL));
+*/
 
-        foreach ($logs as $key => $log) {
-            foreach ($maxtemps as $key => $maxtemp) {
-                if ($maxtemp->cardId == $log->cardId) {
-                    $log->maxtemp = $maxtemp->maxtemp;
+
+        $lastemps_array = DB::select(DB::raw(<<<EOTSQL
+            SELECT name, card_number, msg, maxtemp, logs.created_at AS temp_created_at FROM logs
+            LEFT JOIN modules ON modules.card_number = logs.cardId
+            WHERE maxtemp IS NOT NULL AND maxtemp < 785 AND maxtemp > -99
+                AND logs.id IN (
+                SELECT MAX(L.id) FROM `logs` L
+                LEFT JOIN modules ON modules.card_number = L.cardId
+                    $company_condition
+            GROUP BY modules.card_number)
+EOTSQL));
+
+            //$res = array_merge($alerts_array, $lastemps_array);
+            foreach ($lastemps_array as $key => $temp) {
+                foreach ($alerts_array as $_key => $alert) {
+                    if ($alert->card_number == $temp->card_number) { // temps with alerts
+                        $alert->maxtemp = $temp->maxtemp;
+                        $alert->temp_created_at = $temp->temp_created_at;
+                        break;
+                    }
+                    if ($_key === array_key_last($alerts_array)) { // temps without alerts
+                        array_push($alerts_array, $temp);
+                    }
                 }
             }
-        }
-
-        return response()->json($logs);
+        return response()->json($alerts_array);
+        //return response()->json($othermodules);
     }
 
     /**
@@ -121,7 +137,7 @@ EOTSQL
         $log["options"] = json_encode($log["options"]);
         $json = json_decode($log["options"]);
         $log["maxtemp"] = isset($json->maxtemp) ? intval($json->maxtemp) : NULL;
-        $log["vbat"] = isset($json->vbat) ? intval($json->vbat) : NULL;
+        $log["vbat"] = isset($json->vbat) ? $json->vbat : NULL;
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
