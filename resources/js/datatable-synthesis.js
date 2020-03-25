@@ -78,7 +78,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	            $(row).addClass(foundValue[foundValue.length -1].class);
 	          }
 	        }
-	        if (typeof data.created_at != 'undefined' && data.created_at != null && data.created_at != '') {
+	        /*if (typeof data.created_at != 'undefined' && data.created_at != null && data.created_at != '') {
 	          var color = "dt-green";
 	          var days = moment().diff(moment(data.created_at), "days");
 	          if (days <= 3 && days >= 2) color = "dt-orange";
@@ -90,7 +90,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	          if (data.maxtemp >= 80 && data.maxtemp < 90) color = "dt-orange";
 	          else if (data.maxtemp >= 90) color = "dt-red";
 	          $(row).find(":nth-child(4)").addClass(color);
-	        }
+	        }*/
 	        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.cardId + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
 	      },
 	      language: datatablefr,
@@ -105,20 +105,23 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	      "columns": [
 	        /* {"data": "id"},*/
 	        {
-	          "data": "name"
+	          "data": "name",
+	          "defaultContent": "<i>Not set</i>"
 	        },/*
 	        { 
 	          "data": "telit_custom2"
 	        },*/
 	        { 
-	          "data": "msg", render: function(data, type, row) {
+	          "data": "msg",
+	          render: function(data, type, row) {
 	            if (data == null) {
 	              return '';
 	            }
 	            var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
 	            if (msg === "Ack") return "Acquittement";
 	            return msg;
-	          }
+	          },
+	          "defaultContent": "<i>Not set</i>"
 	        },
 	        {
 	          "data": "created_at", render: function(data, type, row) {
@@ -126,10 +129,12 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 		            if (row.created_at == null) row.created_at = '';
 	              	return row.created_at;
 	            }
+	            if (data == null) return '--';
 	            var ret = moment(data).format('lll');
 	            if (ret == 'Invalid date') return '--';
 	            return ret;
-	          }
+	          },
+	          "defaultContent": "<i>Not set</i>"
 	        },
 	        {
 	          "data": "maxtemp", render: function(maxtemp, type, row) {
@@ -140,14 +145,29 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	            if (maxtemp == null) return '--';
 	            return String(maxtemp) + '°C';
 	          },
+	          "defaultContent": "<i>Not set</i>",
 	          "type": "num"
-	        }
+	        },
+	        {
+	          "data": "temp_created_at", render: function(data, type, row) {
+	          	if (type === 'sort') {
+		            if (row.temp_created_at == null) row.temp_created_at = '';
+	              	return row.temp_created_at;
+	            }
+
+	            if (data == null) return '--';
+	            var ret = moment(data).format('lll');
+	            if (ret == 'Invalid date') return '--';
+	            return ret;
+	          },
+	          "defaultContent": "<i>Not set</i>"
+	        },
 	        /*{"data": "options"},*/
 	        /*{"data": "updated_at"},*/
 	      ]
 	    });
 	    /* Search bar */
-	    table.columns([2, 3]).every(function() {
+	    table.columns([2, 3, 4]).every(function() {
 	      var that = this;
 	      $('input', this.footer()).on('keyup change clear', function() {
 	        if (that.search() !== this.value) {

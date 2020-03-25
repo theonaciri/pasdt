@@ -48,6 +48,7 @@
                                     <th class="th-multiselect">Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
                                     <th>Dernière température</th>
+                                    <th>Date dernière temp.</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -56,6 +57,7 @@
                                     <th class="th-multiselect">Dernière anomalie</th>
                                     <th>Date dernière anomalie</th>
                                     <th>Température min.</th>
+                                    <th>Date dernière temp.</th>
                                 </tr>
                             </tfoot>
                         </table>
