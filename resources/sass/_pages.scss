@@ -2,6 +2,9 @@ $screen-xxl: 1740px !default;
 
 #main-table {
 
+  td:nth-child(2) {
+    display: none;
+  }
   .th-multiselect {
       max-width: 200px;
       @include media-breakpoint-up(xl) {
@@ -20,6 +23,15 @@ $screen-xxl: 1740px !default;
       @include media-breakpoint-up(xl) {
         max-width: 800px;
       }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .th-date{
+    width: 146px !important;
+  }
+  .select-temp, .select-bat {
+    width: 82px !important;
   }
 }
 .py-4 {

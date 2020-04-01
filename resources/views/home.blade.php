@@ -80,22 +80,24 @@
                         <table id="main-table" class="table table-bordered" style="width: 100% !important;">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th class="th-date">Date</th>
+                                    <th class="th-multiselect" style="display: none">ID du module</th>
                                     <th class="th-multiselect" >Nom du module</th>
                                     <!--<th>Client</th>-->
                                     <th class="th-message">Message</th>
-                                    <th>Température</th>
+                                    <th class="select-temp">Température</th>
                                     <th>Batterie</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Date</th>
-                                    <th class="th-multiselect" id="module-id">Nom du module</th>
+                                    <th class="th-date">Date</th>
+                                    <th class="th-multiselect" id="module-id" style="display: none">ID du module</th>
+                                    <th class="th-multiselect" id="module-name">Nom du module</th>
                                     <!--<th>Client</th>-->
                                     <th class="th-input-message">Message</th>
                                     <th class="select-temp">Température min.</th>
-                                    <th class="select-temp">Batterie</th>
+                                    <th class="select-bat">Batterie</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -138,6 +140,7 @@
         <hr>
         <br>
         <div class="modal-pre"></div>
+        <div class="modal-address"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

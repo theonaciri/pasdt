@@ -190,9 +190,10 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 		function dataTablesEvents() {
 		  $('#synthesis-table').on('click', 'tr', function () {
 		        var data = table.row( this ).data();
-		        if (data && data.module_id) {
+		        console.warn(data);
+		        if (data && data.card_number) {
 		          	$('#home-tab').click();
-		          	$('#module-id > select').val(data.cardId).change();
+		          	$('#module-name > select').val(data.card_number).change();
 		        }
 		    } );
 
