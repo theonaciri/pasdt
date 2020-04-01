@@ -78,7 +78,7 @@ class LogController extends Controller
             SELECT name, card_number, msg, maxtemp, logs.created_at FROM logs
             LEFT JOIN modules ON modules.card_number = logs.cardId 
             WHERE logs.id IN (
-            SELECT MAX(L.id) FROM `logs` L
+            SELECT MAX(L.id) FROM logs L
             LEFT JOIN modules ON modules.card_number = L.cardId
             WHERE msg != '["DAY"]' AND msg != '["ACK"]' AND msg != '["HOUR"]'
                 $company_condition

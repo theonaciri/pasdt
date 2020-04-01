@@ -98,7 +98,7 @@ function _initTable() {
       ],
       initComplete: function() {
         /* Dropdown */
-        this.api().columns([1]).every(function() {
+        this.api().columns([2]).every(function() {
           var column = this;
           var select = $('<select class="selectpicker form-control" multiple><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
@@ -111,10 +111,10 @@ function _initTable() {
               }
               //var a = $.fn.dataTable.util.escapeRegex(val.join('|'));
             });
-
-          column.data().unique().sort().each(function(d, j) {
+            column.data().unique().sort().each(function(d, j, e) {
             if (d != null && typeof d != 'undefined') {
-              select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
+              var val = d.toString().replace(/["'$$$]/g, "");
+              select.append('<option value="' + val + '">' + val + '</option>')
             }
           });
           select.selectpicker({actionsBox: true});
@@ -137,7 +137,7 @@ function _initTable() {
           else if (data.maxtemp >= 90) color = "dt-red";
           $(row).find(":nth-child(5)").addClass(color);
         }
-        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.cardId);
+        $("td:nth-child(3)", row).attr("title", "Num PASDT & SIM: " + data.cardId);
       },
       language: datatablefr,
       "ajax": {
@@ -151,7 +151,7 @@ function _initTable() {
       "columns": [
         /* {"data": "id"},*/
         {
-          "data": "created_at", render: function(data, type, row) {
+          data: "created_at", render: function(data, type, row) {
             if (type === 'sort') {
               return row.created_at;
             }
@@ -160,9 +160,19 @@ function _initTable() {
             return ret;
             //return data;//new Date(data).toLocaleString("fr-FR")
           }
-        },
-        {
-          "data": "module_name"
+        }, {
+          data: "cardId"
+        }, {
+          data: "module_name",
+          render: function ( data, type, row ) {
+            if (type === 'sort' || type === 'filter') {
+              return typeof row.module_name == 'string' && typeof row.cardId == 'string' ? row.cardId + ' - ' + row.module_name : '--';
+            }
+              return typeof row.module_name == 'string' ? row.module_name : '--';
+          },
+          data: function(row, type, val, meta) {
+            return row.cardId + '$$$ - ' + row.module_name;
+          }
         },
         /*{"data": "msgId"},
         {
@@ -205,7 +215,7 @@ function _initTable() {
       ]
     });
     /* Search bar */
-    table.columns([0, 2, 3, 4]).every(function() {
+    table.columns([0, 3, 4, 5]).every(function() {
       var that = this;
       $('input', this.footer()).on('keyup change clear', function() {
         if (that.search() !== this.value) {
@@ -245,7 +255,6 @@ function _initTable() {
       buttonImage: "images/Calendar.png",
       buttonImageOnly: false,
       beforeShow: function( input, inst){
-        console.warn(input, inst);
         $(inst).addClass('btn btn-secondary');
       },
       "onSelect": function(date, d) {
@@ -290,28 +299,41 @@ function _initTable() {
           if (data && data.module_id) {
             $.getJSON("/module/"+data.module_id, function(module_data) {
               active_module = module_data;
-              var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
+              /*var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
               var f = flatten(module_data);
               for (p in f) {
                 table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
-              }
+              }*/
               var $modmodal = $('#moduleModal');
               var str_address = formatAdress(module_data.locAddress);
-              $modmodal.find('.toggle-map').toggle(!!str_address.length).attr('data-loc', str_address);
+              $modmodal.find('.toggle-map').toggle(!!module_data.locLat && !!module_data.locLng)
+                //.attr('data-loc', str_address)
+                .attr('data-loclat', module_data.locLat)
+                .attr('data-loclng', module_data.locLng);
               $modmodal.find('.modal-map').html('');
-              $modmodal.find('.modal-pre').html(table + "</table>");
+              //$modmodal.find('.modal-pre').html(table + "</table>");
+              $modmodal.find('.modal-address').html(
+                "<p><b>Adresse: </b> " + str_address + "</p>"
+                + "<p><b>ID du module: </b> " + data.cardId + "</p>"
+                + "<p><b>ID Telit: </b> " + module_data.iccid + "</p>"
+                + (module_data.custom1 ? "<p><b>Custom1: </b> " + module_data.custom1 + "</p>" : '')
+                + (module_data.custom2 ? "<p><b>Custom2: </b> " + module_data.custom2 + "</p>" : '')
+                + (module_data.custom3 ? "<p><b>Custom3: </b> " + module_data.custom3 + "</p>" : '')
+                );
               $modmodal.modal("show");
             })
           }
       } );
 
     $('.toggle-map').click(function(e) {
+
         $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-      src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+      src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loclat')},${$(this).data('loclng')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
       })
-    function formatAdress(a) {
+    function formatAdress(a, escape = false) {
       if (typeof a == 'undefined') return '';
-      return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+      var str = `${a.streetNumber ? a.streetNumber : ''} ${a.city} ${a.state} ${a.zipCode} ${a.country}`;
+      return escape ? escape(str) : str;
     }
     function toggleAdvancedSearchButtons(e, notoggle) {
       var toggle_ping_value = localStorage.getItem('nosearch') === "true";
