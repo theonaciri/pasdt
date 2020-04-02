@@ -74,7 +74,7 @@
                             @else
                                 <tr>
                             @endif
-                                <td class="id">{{$module->card_number}}</td>
+                                <td class="id">{{$module->module_id}}</td>
                                 <td class="name">{{$module->name}}</td>
                                 <td class="email">{{$module->telit_ratePlan}}</td>
                                 <td class="button">
