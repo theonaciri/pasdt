@@ -280,3 +280,15 @@ table input, table select {
 .highlight {
   background-color: #ffff8a;
 }
+
+// colors
+.color-modal-button {
+  margin: 1rem;
+}
+.color-div-container > div{
+  padding: 1rem;
+}
+
+.color-div-container > div:nth-child(2n-1) {
+  border-right: 1px solid grey;
+}
