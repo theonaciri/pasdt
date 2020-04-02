@@ -11,16 +11,16 @@ require( 'datatables.net-scroller-bs4' );
 // jszip is commented because excel import does not work. CSV works
 define(['datatables.net-bs4', './graphs-chartjs', 'moment/moment',/*'jszip',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
-  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
-  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
+  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 
+  'Buttons/js/buttons.flash', */
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
   function(datatables, Graphs/*, jszip*/, moment, flatten, datatablefr, arrayToSearch, noping) {
 if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
-window.pdfMake = true;
+//window.pdfMake = true;
 
+/*
 var originalPdfHtml5Action = $.fn.dataTableExt.buttons.pdfHtml5.action;
-
 $.fn.dataTableExt.buttons.pdfHtml5.action = function pdfHtml5Action(e, dt, button, config){
     var that = this;
     require.ensure(['pdfmake', 'pdfmake/build/vfs_fonts'], function _pdfHtml5Action(){
@@ -30,7 +30,7 @@ $.fn.dataTableExt.buttons.pdfHtml5.action = function pdfHtml5Action(e, dt, butto
 
         originalPdfHtml5Action.apply(that, [e, dt, button, config]);
     });
-};
+};*/
 String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
@@ -45,16 +45,12 @@ function _initTable() {
         return ;
       }
       */
-  //console.warn('CC true');
+    //console.warn('CC true');
     /* Setup - add a text input to each footer cell */  
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();
       $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
     });
-
-    window.pdfMake = true;
-
-
     table = $('#main-table').DataTable({
       dom: 'Blfrtip',
       lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
@@ -76,7 +72,7 @@ function _initTable() {
             }
           }, 
           'csvHtml5',
-          'pdfHtml5',
+          /*'pdfHtml5',*//*
           {
             extend: 'print',
             text: 'Imprimer',
@@ -94,27 +90,32 @@ function _initTable() {
                   $.fn.dataTable.ext.buttons.csvFlash.action(e, dt, button, config);
               }
             }
-          }
+          }*/
       ],
       initComplete: function() {
         /* Dropdown */
         this.api().columns([1]).every(function() {
           var column = this;
-          var select = $('<select class="selectpicker form-control" multiple><option value=""></option></select>')
+          var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $(this).val();
+              var count_before = table.page.info().recordsDisplay;
               if (!val.length || val.length == 1 && !val[0].length) {
                 column.search('', true, false).draw();
               } else { // /!\ No escape security
                 column.search('^' + val.join('|') + '$', true, false).draw();
               }
+              var count_after = table.page.info().recordsDisplay;
+              if (count_before < 10 && count_after > count_before || count_after < 10) {
+                select.selectpicker('toggle');
+              }
               //var a = $.fn.dataTable.util.escapeRegex(val.join('|'));
             });
-
-          column.data().unique().sort().each(function(d, j) {
+            column.data().unique().sort().each(function(d, j) {
             if (d != null && typeof d != 'undefined') {
-              select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
+              var val = d.toString().replace(/["'$$$]/g, "");
+              select.append('<option value="' + val + '">' + val + '</option>')
             }
           });
           select.selectpicker({actionsBox: true});
@@ -137,7 +138,7 @@ function _initTable() {
           else if (data.maxtemp >= 90) color = "dt-red";
           $(row).find(":nth-child(5)").addClass(color);
         }
-        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.cardId);
+        $("td:nth-child(3)", row).attr("title", "Num PASDT & SIM: " + data.cardId);
       },
       language: datatablefr,
       "ajax": {
@@ -151,7 +152,7 @@ function _initTable() {
       "columns": [
         /* {"data": "id"},*/
         {
-          "data": "created_at", render: function(data, type, row) {
+          data: "created_at", render: function(data, type, row) {
             if (type === 'sort') {
               return row.created_at;
             }
@@ -160,9 +161,17 @@ function _initTable() {
             return ret;
             //return data;//new Date(data).toLocaleString("fr-FR")
           }
-        },
-        {
-          "data": "module_name"
+        }, {
+          data: "module_name",
+          render: function ( data, type, row ) {
+            if (type === 'sort' || type === 'filter') {
+              return typeof row.module_name == 'string' && typeof row.cardId == 'string' ? row.cardId + ' - ' + row.module_name : '--';
+            }
+              return typeof row.module_name == 'string' ? row.module_name : '--';
+          },
+          data: function(row, type, val, meta) {
+            return row.cardId + '$$$ - ' + row.module_name;
+          }
         },
         /*{"data": "msgId"},
         {
@@ -237,46 +246,26 @@ function _initTable() {
       
       Graphs.loadGraph(graphdata);
     });
-    $.datepicker.setDefaults($.datepicker.regional["fr"]);
 
-    $("#datepicker_from").datepicker({
-      dateFormat: "dd/mm/yy",
-      showOn: "button",
-      buttonImage: "images/Calendar.png",
-      buttonImageOnly: false,
-      beforeShow: function( input, inst){
-        //console.warn(input, inst);
-        $(inst).addClass('btn btn-secondary');
-      },
-      "onSelect": function(date, d) {
-        var dateObj = new Date(d.selectedYear, d.selectedMonth, d.selectedDay);
-        minDateFilter = new Date(dateObj).getTime();
-        table.draw();
-      }
-    }).keyup(function() {
-        var dateObj = new Date(this.value);
-        minDateFilter = new Date(dateObj).getTime();
-        table.draw();
-    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
+    var $datepicker_from = $("#datepicker_from");
+    var $datepicker_to = $("#datepicker_to");
+    var today = new Date().toISOString().split("T")[0];
 
-    $("#datepicker_to").datepicker({
-      dateFormat: "dd/mm/yy", 
-      showOn: "button",
-      buttonImage: "images/Calendar.png",
-      buttonImageOnly: false,
-      "onSelect": function(date, d) {
-        var dateObj = new Date(d.selectedYear, d.selectedMonth, d.selectedDay);
-        dateObj.setDate(dateObj.getDate() + 1);
-        maxDateFilter = new Date(dateObj).getTime();
-        table.draw();
-      }
-    }).keyup(function() {
-        var dateObj = new Date(this.value);
-        dateObj.setDate(dateObj.getDate() + 1);
-        maxDateFilter = new Date(dateObj).getTime();
-        table.draw();
-    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
+    $datepicker_from.attr('max', today)
+    .change(function(e, a, c) {
+      var dat = $(this).val();
+      minDateFilter = dat ? dat + ' 00:00:00' : '';
+      $datepicker_to.attr('min', dat);
+      table.draw();
+    });
 
+    $datepicker_to.attr('max', today)
+    .change(function(e, a, c) {
+      var dat = $(this).val();
+      maxDateFilter = dat ? dat + ' 23:59:59' : '';
+      $datepicker_from.attr('max', dat ? dat : today);
+      table.draw();
+    });
     var filteredData = table
     .column(2)
     .data()
@@ -290,28 +279,41 @@ function _initTable() {
           if (data && data.module_id) {
             $.getJSON("/module/"+data.module_id, function(module_data) {
               active_module = module_data;
-              var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
+              /*var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
               var f = flatten(module_data);
               for (p in f) {
                 table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
-              }
+              }*/
               var $modmodal = $('#moduleModal');
               var str_address = formatAdress(module_data.locAddress);
-              $modmodal.find('.toggle-map').toggle(!!str_address.length).attr('data-loc', str_address);
+              $modmodal.find('.toggle-map').toggle(!!module_data.locLat && !!module_data.locLng)
+                //.attr('data-loc', str_address)
+                .attr('data-loclat', module_data.locLat)
+                .attr('data-loclng', module_data.locLng);
               $modmodal.find('.modal-map').html('');
-              $modmodal.find('.modal-pre').html(table + "</table>");
+              //$modmodal.find('.modal-pre').html(table + "</table>");
+              $modmodal.find('.modal-address').html(
+                "<p><b>Adresse: </b> " + str_address + "</p>"
+                + "<p><b>ID du module: </b> " + data.cardId + "</p>"
+                + "<p><b>ID Telit: </b> " + module_data.iccid + "</p>"
+                + (module_data.custom1 ? "<p><b>Custom1: </b> " + module_data.custom1 + "</p>" : '')
+                + (module_data.custom2 ? "<p><b>Custom2: </b> " + module_data.custom2 + "</p>" : '')
+                + (module_data.custom3 ? "<p><b>Custom3: </b> " + module_data.custom3 + "</p>" : '')
+                );
               $modmodal.modal("show");
             })
           }
       } );
 
     $('.toggle-map').click(function(e) {
+
         $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-      src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loc')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
+      src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loclat')},${$(this).data('loclng')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
       })
-    function formatAdress(a) {
+    function formatAdress(a, escape = false) {
       if (typeof a == 'undefined') return '';
-      return escape(`${a.streetNumber} ${a.city} ${a.state} ${a.zipCode} ${a.country}`);
+      var str = `${a.streetNumber ? a.streetNumber : ''} ${a.city} ${a.state} ${a.zipCode} ${a.country}`;
+      return escape ? escape(str) : str;
     }
     function toggleAdvancedSearchButtons(e, notoggle) {
       var toggle_ping_value = localStorage.getItem('nosearch') === "true";

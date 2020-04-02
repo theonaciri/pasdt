@@ -4,7 +4,7 @@ define(['moment/moment', 'chart.js', 'moment/locale/fr'], function(moment, chart
 	function loadGraph(dataSrc) {
 		var datasets = [];
 		for (var i = dataSrc.length - 1; i >= 0; i--) {
-			if (dataSrc[i].options != null && dataSrc[i].options.includes("maxtemp")) {
+			if (dataSrc[i].options != null && dataSrc[i].options.indexOf("maxtemp") > 0) {
 				var op = JSON.parse(dataSrc[i].options);
 				if (op.maxtemp > -98 && op.maxtemp < 784) {
 					var dataset = datasets.find(function(e) {return e.label === dataSrc[i].cardId});
@@ -68,7 +68,6 @@ define(['moment/moment', 'chart.js', 'moment/locale/fr'], function(moment, chart
 	    var g = Math.floor(Math.random() * 255);
 	    var b = Math.floor(Math.random() * 255);
 	    //console.log("rgba(" + r + "," + g + "," + b + ", 0.5)");
-	    return "rgba(" + r + "," + g + "," + b + ", 0.5)";
 	}
 	return {loadGraph: loadGraph};
 });

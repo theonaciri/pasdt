@@ -18,10 +18,8 @@
         <script src="{{ asset('js/checkout.js') }}" defer></script>
     @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
-        <script src="/js/vendor.es5.js"></script>
         <script src="{{ asset('js/app.es5.js') }}" defer></script>
     @else
-        <script src="/js/vendor.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/app2.js') }}" defer></script>
     @endif

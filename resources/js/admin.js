@@ -1,5 +1,5 @@
 define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], function($, flatten) {
-    if (!window.location.pathname.includes("admin")) return ;
+    if (window.location.pathname.indexOf("admin") < 0) return ;
     var company_modules = [];
 	$('#edit-user-modal').on('shown.bs.modal', function (e) {})
 
@@ -174,7 +174,6 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		try {
 			var j = JSON.parse($(this).val());
 			if (typeof j != 'undefined') {
-				console.log(j);
 				$form = $(this).parent().parent();
 				if (typeof j.custom1 != 'undefined')
 					$form.find('input[name="name"]').val(j.custom1);

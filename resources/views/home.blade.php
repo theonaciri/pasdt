@@ -67,8 +67,10 @@
                     <div class="container">
                         <!--<button type="button" class="btn togglebtn toggle-buttons" data-toggle="button" aria-pressed="false" title="Montrer plus ou moins d'options de recherche"><span class="oi oi-minus"></span><span class="oi oi-plus"></span>&nbsp;<span class="oi oi-magnifying-glass"></span></button>-->
                         <div id="date_filter" class="input-group">
-                            <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
-                            <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />
+                            <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span>
+                            <input class="date_range_filter date form-control" type="date" id="datepicker_from" placeholder="jj/mm/aaaa" />
+                            <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span>
+                            <input class="date_range_filter date form-control" type="date" id="datepicker_to" placeholder="jj/mm/aaaa" />
                             &nbsp;
                             <button type="button" class="btn togglebtn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
@@ -80,22 +82,22 @@
                         <table id="main-table" class="table table-bordered" style="width: 100% !important;">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th class="th-date">Date</th>
                                     <th class="th-multiselect" >Nom du module</th>
                                     <!--<th>Client</th>-->
                                     <th class="th-message">Message</th>
-                                    <th>Température</th>
+                                    <th class="select-temp">Température</th>
                                     <th>Batterie</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Date</th>
-                                    <th class="th-multiselect" id="module-id">Nom du module</th>
+                                    <th class="th-date">Date</th>
+                                    <th class="th-multiselect" id="module-name">Nom du module</th>
                                     <!--<th>Client</th>-->
                                     <th class="th-input-message">Message</th>
                                     <th class="select-temp">Température min.</th>
-                                    <th class="select-temp">Batterie</th>
+                                    <th class="select-bat">Batterie</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -138,6 +140,7 @@
         <hr>
         <br>
         <div class="modal-pre"></div>
+        <div class="modal-address"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

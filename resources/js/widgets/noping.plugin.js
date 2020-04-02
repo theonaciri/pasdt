@@ -22,17 +22,20 @@ define(['jquery'], function($) {
 
 
 	function cumulative_filter(table, ping_toggle, temp_toggle) {
-		// ping
 		var toggle_ping_value = localStorage.getItem('noping') === "true";
-		toggle_ping_value = ping_toggle ? !toggle_ping_value : !!toggle_ping_value;
-		localStorage.setItem('noping', toggle_ping_value);
-		$noday.toggleClass('btn-dark', toggle_ping_value);
-
-		// temp
 		var toggle_temp_value = localStorage.getItem('notemp') === "true";
+
 		toggle_temp_value = temp_toggle ? !toggle_temp_value : !!toggle_temp_value;
-		localStorage.setItem('notemp', toggle_temp_value);
+		toggle_ping_value = ping_toggle ? !toggle_ping_value : !!toggle_ping_value;
+
+		$noday.toggleClass('btn-dark', toggle_ping_value);
 		$notemp.toggleClass('btn-dark', toggle_temp_value);
+		localStorage.setItem('noping', toggle_ping_value);
+		localStorage.setItem('notemp', toggle_temp_value);
+		
+		if (toggle_ping_value && toggle_temp_value) {
+			toggle_ping_value = toggle_temp_value = false;
+		}
 
 		$.fn.dataTable.ext.search.push(
 	        function( settings, data, dataIndex ) {

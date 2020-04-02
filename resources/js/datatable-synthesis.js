@@ -1,8 +1,8 @@
-define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
+define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
-  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
-  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
-  function(datatables, Graphs, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch, moment) {
+  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
+  'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js'],
+  function(datatables, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
 	if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
     function _initTable() {
     	/*
@@ -39,11 +39,11 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	            }
 	          }, 
 	          'csvHtml5',
-	          'pdfHtml5',
+	          /*'pdfHtml5',*//*
 	          {
 	            extend: 'print',
 	            text: 'Imprimer',
-	          }
+	          }*/
 	      ],
 	      initComplete: function() {
 	        /* Dropdown */
@@ -62,7 +62,8 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 
 		        column.data().unique().sort().each(function(d, j) {
 		            if (d != null && typeof d != 'undefined') {
-		              select.append('<option value="' + d.toString().replace(/["']/g, "") + '">' + d + '</option>')
+		            	var val = d.toString().replace(/["'$$$]/g, "");
+             			select.append('<option value="' + val + '">' + val + '</option>')
 		            }
 		        });
 	        	select.selectpicker({actionsBox: true});
@@ -91,7 +92,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	          else if (data.maxtemp >= 90) color = "dt-red";
 	          $(row).find(":nth-child(4)").addClass(color);
 	        }*/
-	        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.cardId + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
+	        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.card_number + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
 	      },
 	      language: datatablefr,
 	      "ajax": {
@@ -105,8 +106,17 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	      "columns": [
 	        /* {"data": "id"},*/
 	        {
-	          "data": "name",
-	          "defaultContent": "<i>Not set</i>"
+	        	"data": "name",
+	        	"defaultContent": "<i>Pas de nom de module</i>",
+	        	render: function ( data, type, row ) {
+	        		if (type === 'sort' || type === 'filter') {
+	        			return typeof row.name == 'string' && typeof row.card_number == 'string' ? row.card_number + ' - ' + row.name : '--';
+	        		}
+	        		return typeof row.name == 'string' ? row.name : '--';
+	        	},
+	        	data: function(row, type, val, meta) {
+	        		return row.card_number + '$$$ - ' + row.name;
+	        	}
 	        },/*
 	        { 
 	          "data": "telit_custom2"
@@ -176,7 +186,6 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	              .search(`^${this.value}$`, true, false)
 	              .draw();
 	          } else {
-	          	console.log("LOOKING FOR", this.value);
 	            that
 	              .search(this.value)
 	              .draw();
@@ -190,9 +199,11 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 		function dataTablesEvents() {
 		  $('#synthesis-table').on('click', 'tr', function () {
 		        var data = table.row( this ).data();
-		        if (data && data.module_id) {
+		        if (data) {
 		          	$('#home-tab').click();
-		          	$('#module-id > select').val(data.cardId).change();
+		          	$('#main-table #module-name .selectpicker')
+		          		.selectpicker('val', data.card_number + ' - ' + data.name)
+		          		.trigger('change');
 		        }
 		    } );
 
@@ -207,7 +218,5 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 		}
 	}
 
-	//$(document).ready(function() {
-		setTimeout(_initTable, 1);
-	//});
+	setTimeout(_initTable, 1);
 });
