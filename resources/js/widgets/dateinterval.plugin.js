@@ -20,16 +20,15 @@ $.fn.dataTableExt.afnFiltering.push(
   function(oSettings, aData, iDataIndex) {
     var ret = getTemp(oSettings, iDataIndex);
     if (oSettings.nTable.id !== 'main-table' ) return ret;
-    var elem_date = new Date(oSettings.aoData[iDataIndex]._aData.created_at);
-
-    if (minDateFilter && !isNaN(minDateFilter)) {
-      if (elem_date < new Date(minDateFilter)) {
+    var elem_date = oSettings.aoData[iDataIndex]._aData.created_at;
+    if (typeof minDateFilter == 'string' && minDateFilter.length) {
+      if (!elem_date || elem_date <= minDateFilter) {
         return false;
       }
     }
 
-    if (maxDateFilter && !isNaN(maxDateFilter)) {
-      if (elem_date > new Date(maxDateFilter)) {
+    if (typeof maxDateFilter == 'string' && maxDateFilter.length) {
+      if (!elem_date || elem_date >= maxDateFilter) {
         return false;
       }
     }

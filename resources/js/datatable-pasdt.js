@@ -11,16 +11,16 @@ require( 'datatables.net-scroller-bs4' );
 // jszip is commented because excel import does not work. CSV works
 define(['datatables.net-bs4', './graphs-chartjs', 'moment/moment',/*'jszip',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
-  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
-  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js',
+  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 
+  'Buttons/js/buttons.flash', */
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
   function(datatables, Graphs/*, jszip*/, moment, flatten, datatablefr, arrayToSearch, noping) {
 if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
-window.pdfMake = true;
+//window.pdfMake = true;
 
+/*
 var originalPdfHtml5Action = $.fn.dataTableExt.buttons.pdfHtml5.action;
-
 $.fn.dataTableExt.buttons.pdfHtml5.action = function pdfHtml5Action(e, dt, button, config){
     var that = this;
     require.ensure(['pdfmake', 'pdfmake/build/vfs_fonts'], function _pdfHtml5Action(){
@@ -30,7 +30,7 @@ $.fn.dataTableExt.buttons.pdfHtml5.action = function pdfHtml5Action(e, dt, butto
 
         originalPdfHtml5Action.apply(that, [e, dt, button, config]);
     });
-};
+};*/
 String.prototype.capFirstLetter = function () {
     return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
         .toUpperCase() + this.slice(1) : this;
@@ -45,16 +45,12 @@ function _initTable() {
         return ;
       }
       */
-  console.warn('CC true');
+  console.log('CC true');
     /* Setup - add a text input to each footer cell */  
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();
       $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
     });
-
-    window.pdfMake = true;
-
-
     table = $('#main-table').DataTable({
       dom: 'Blfrtip',
       lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
@@ -76,7 +72,7 @@ function _initTable() {
             }
           }, 
           'csvHtml5',
-          'pdfHtml5',
+          /*'pdfHtml5',*//*
           {
             extend: 'print',
             text: 'Imprimer',
@@ -94,20 +90,25 @@ function _initTable() {
                   $.fn.dataTable.ext.buttons.csvFlash.action(e, dt, button, config);
               }
             }
-          }
+          }*/
       ],
       initComplete: function() {
         /* Dropdown */
-        this.api().columns([2]).every(function() {
+        this.api().columns([1]).every(function() {
           var column = this;
           var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $(this).val();
+              var count_before = table.page.info().recordsDisplay;
               if (!val.length || val.length == 1 && !val[0].length) {
                 column.search('', true, false).draw();
               } else { // /!\ No escape security
                 column.search('^' + val.join('|') + '$', true, false).draw();
+              }
+              var count_after = table.page.info().recordsDisplay;
+              if (count_before < 10 && count_after > count_before || count_after < 10) {
+                select.selectpicker('toggle');
               }
               //var a = $.fn.dataTable.util.escapeRegex(val.join('|'));
             });
@@ -161,8 +162,6 @@ function _initTable() {
             //return data;//new Date(data).toLocaleString("fr-FR")
           }
         }, {
-          data: "cardId"
-        }, {
           data: "module_name",
           render: function ( data, type, row ) {
             if (type === 'sort' || type === 'filter') {
@@ -215,7 +214,7 @@ function _initTable() {
       ]
     });
     /* Search bar */
-    table.columns([0, 3, 4, 5]).every(function() {
+    table.columns([0, 2, 3, 4]).every(function() {
       var that = this;
       $('input', this.footer()).on('keyup change clear', function() {
         if (that.search() !== this.value) {
@@ -247,45 +246,27 @@ function _initTable() {
       
       Graphs.loadGraph(graphdata);
     });
-    $.datepicker.setDefaults($.datepicker.regional["fr"]);
 
-    $("#datepicker_from").datepicker({
-      dateFormat: "dd/mm/yy",
-      showOn: "button",
-      buttonImage: "images/Calendar.png",
-      buttonImageOnly: false,
-      beforeShow: function( input, inst){
-        $(inst).addClass('btn btn-secondary');
-      },
-      "onSelect": function(date, d) {
-        var dateObj = new Date(d.selectedYear, d.selectedMonth, d.selectedDay);
-        minDateFilter = new Date(dateObj).getTime();
-        table.draw();
-      }
-    }).keyup(function() {
-        var dateObj = new Date(this.value);
-        minDateFilter = new Date(dateObj).getTime();
-        table.draw();
-    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
 
-    $("#datepicker_to").datepicker({
-      dateFormat: "dd/mm/yy", 
-      showOn: "button",
-      buttonImage: "images/Calendar.png",
-      buttonImageOnly: false,
-      "onSelect": function(date, d) {
-        var dateObj = new Date(d.selectedYear, d.selectedMonth, d.selectedDay);
-        dateObj.setDate(dateObj.getDate() + 1);
-        maxDateFilter = new Date(dateObj).getTime();
-        table.draw();
-      }
-    }).keyup(function() {
-        var dateObj = new Date(this.value);
-        dateObj.setDate(dateObj.getDate() + 1);
-        maxDateFilter = new Date(dateObj).getTime();
-        table.draw();
-    }).next(".ui-datepicker-trigger").addClass("btn btn-secondary");
+    var $datepicker_from = $("#datepicker_from");
+    var $datepicker_to = $("#datepicker_to");
+    var today = new Date().toISOString().split("T")[0];
 
+    $datepicker_from.attr('max', today)
+    .change(function(e, a, c) {
+      var dat = $(this).val();
+      minDateFilter = dat ? dat + ' 00:00:00' : '';
+      $datepicker_to.attr('min', dat);
+      table.draw();
+    });
+
+    $datepicker_to.attr('max', today)
+    .change(function(e, a, c) {
+      var dat = $(this).val();
+      maxDateFilter = dat ? dat + ' 23:59:59' : '';
+      $datepicker_from.attr('max', dat ? dat : today);
+      table.draw();
+    });
     var filteredData = table
     .column(2)
     .data()

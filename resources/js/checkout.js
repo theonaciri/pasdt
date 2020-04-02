@@ -5,8 +5,6 @@
  */
 /*
 require('./bootstrap');
-require('./dependencies/jquery-ui.datepicker.js');
-require('../css/jquery-ui-theme.css');
 require('./stripe-checkout');
 require('./axios');
 
