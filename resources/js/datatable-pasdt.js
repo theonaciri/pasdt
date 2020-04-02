@@ -136,6 +136,12 @@ function _initTable() {
           var color = "dt-green";
           if (data.maxtemp >= 80 && data.maxtemp < 90) color = "dt-orange";
           else if (data.maxtemp >= 90) color = "dt-red";
+          $(row).find(":nth-child(4)").addClass(color);
+        }
+        if (typeof data.vbat != 'undefined' && data.vbat != null && data.vbat != '--') {
+          var color = "dt-green";
+          if (data.vbat <= 12 && data.vbat > 11) color = "dt-orange";
+          else if (data.vbat <= 11 ) color = "dt-red";
           $(row).find(":nth-child(5)").addClass(color);
         }
         $("td:nth-child(3)", row).attr("title", "Num PASDT & SIM: " + data.cardId);
