@@ -100,7 +100,7 @@ function _initTable() {
         /* Dropdown */
         this.api().columns([2]).every(function() {
           var column = this;
-          var select = $('<select class="selectpicker form-control" multiple><option value=""></option></select>')
+          var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function() {
               var val = $(this).val();
@@ -111,7 +111,7 @@ function _initTable() {
               }
               //var a = $.fn.dataTable.util.escapeRegex(val.join('|'));
             });
-            column.data().unique().sort().each(function(d, j, e) {
+            column.data().unique().sort().each(function(d, j) {
             if (d != null && typeof d != 'undefined') {
               var val = d.toString().replace(/["'$$$]/g, "");
               select.append('<option value="' + val + '">' + val + '</option>')
