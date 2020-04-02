@@ -2,9 +2,6 @@ $screen-xxl: 1740px !default;
 
 #main-table {
 
-  td:nth-child(2) {
-    display: none;
-  }
   .th-multiselect {
       max-width: 200px;
       @include media-breakpoint-up(xl) {
@@ -68,7 +65,7 @@ $screen-xxl: 1740px !default;
   margin-right:.2rem;
 }
 .date_range_filter {
-  max-width: 120px;
+  max-width: 180px;
 }
 
 table input, table select {

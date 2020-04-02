@@ -1,8 +1,8 @@
-define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_fonts.js',
+define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
-  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', 'Buttons/js/buttons.print', 
-  'Buttons/js/buttons.flash', './widgets/dateinterval.plugin.js'],
-  function(datatables, Graphs, pdfmake, pdfFonts, flatten, datatablefr, arrayToSearch, moment) {
+  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
+  'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js'],
+  function(datatables, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
 	if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
     function _initTable() {
     	/*
@@ -11,7 +11,7 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
     		console.warn('BB false');
     		return ;
     	}*/
-			console.warn('BB true');
+			console.log('BB true');
 	    /* Setup - add a text input to each footer cell */
 	    $('#synthesis-table tfoot th').each(function() {
 	      var title = $(this).text();
@@ -39,11 +39,11 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	            }
 	          }, 
 	          'csvHtml5',
-	          'pdfHtml5',
+	          /*'pdfHtml5',*//*
 	          {
 	            extend: 'print',
 	            text: 'Imprimer',
-	          }
+	          }*/
 	      ],
 	      initComplete: function() {
 	        /* Dropdown */
@@ -186,7 +186,6 @@ define(['datatables.net-bs4', './graphs-chartjs', 'pdfmake', 'pdfmake/build/vfs_
 	              .search(`^${this.value}$`, true, false)
 	              .draw();
 	          } else {
-	          	console.log("LOOKING FOR", this.value);
 	            that
 	              .search(this.value)
 	              .draw();
