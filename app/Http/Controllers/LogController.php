@@ -77,14 +77,14 @@ class LogController extends Controller
 
         // alerts without temps
         $alerts_array = DB::select(DB::raw(<<<EOTSQL
-            SELECT name, card_number, msg, maxtemp, logs.created_at FROM logs
-            LEFT JOIN modules ON modules.card_number = logs.cardId 
+            SELECT name, module_id, msg, maxtemp, logs.created_at FROM logs
+            LEFT JOIN modules ON modules.module_id = logs.cardId 
             WHERE logs.id IN (
-            SELECT MAX(L.id) FROM `logs` L
-            LEFT JOIN modules ON modules.card_number = L.cardId
+            SELECT MAX(L.id) FROM logs L
+            LEFT JOIN modules ON modules.module_id = L.cardId
             WHERE msg != '["DAY"]' AND msg != '["ACK"]' AND msg != '["HOUR"]'
                 $company_condition
-            GROUP BY modules.card_number)
+            GROUP BY modules.module_id)
 EOTSQL));
 
         /*
@@ -97,20 +97,20 @@ EOTMAXSQL));
 
 
         $lastemps_array = DB::select(DB::raw(<<<EOTSQL
-            SELECT name, card_number, msg, maxtemp, logs.created_at AS temp_created_at FROM logs
-            LEFT JOIN modules ON modules.card_number = logs.cardId
+            SELECT name, module_id, msg, maxtemp, logs.created_at AS temp_created_at FROM logs
+            LEFT JOIN modules ON modules.module_id = logs.cardId
             WHERE maxtemp IS NOT NULL AND maxtemp < 785 AND maxtemp > -99
                 AND logs.id IN (
                 SELECT MAX(L.id) FROM `logs` L
-                LEFT JOIN modules ON modules.card_number = L.cardId
+                LEFT JOIN modules ON modules.module_id = L.cardId
                     $company_condition
-            GROUP BY modules.card_number)
+            GROUP BY modules.module_id)
 EOTSQL));
 
             //$res = array_merge($alerts_array, $lastemps_array);
             foreach ($lastemps_array as $key => $temp) {
                 foreach ($alerts_array as $_key => $alert) {
-                    if ($alert->card_number == $temp->card_number) { // temps with alerts
+                    if ($alert->module_id == $temp->module_id) { // temps with alerts
                         $alert->maxtemp = $temp->maxtemp;
                         $alert->temp_created_at = $temp->temp_created_at;
                         break;
@@ -141,6 +141,17 @@ EOTSQL));
         $newlog = new PasdtLog();
         $newlog->fill($log);
         $newlog->save();
+
+        if (is_null(Module::where('module_id', '=', $log["cardId"])->first())) {
+            $module = new Module;
+            $module->name = 'Nouveau module';
+            $module->company_id = 1;
+            $module->telit_json = '{}';
+            $module->module_id = $log["cardId"];
+            $module->telit_id = '';
+            $module->save();
+
+        }
         return response()->json('{"ok": "ok"}');
     }
 

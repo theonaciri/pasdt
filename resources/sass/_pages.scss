@@ -22,6 +22,15 @@ $screen-xxl: 1740px !default;
       }
   }
 }
+
+@include media-breakpoint-up(md) {
+  .th-date{
+    width: 146px !important;
+  }
+  .select-temp, .select-bat {
+    width: 82px !important;
+  }
+}
 .py-4 {
   padding-top: .5rem !important;
 }
@@ -56,7 +65,7 @@ $screen-xxl: 1740px !default;
   margin-right:.2rem;
 }
 .date_range_filter {
-  max-width: 120px;
+  max-width: 180px;
 }
 
 table input, table select {
