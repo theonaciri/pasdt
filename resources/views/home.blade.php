@@ -121,6 +121,7 @@
             </div>
         </div>
     </div>
+    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
 </div>
 
 <!-- Modal -->
@@ -148,5 +149,52 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="colorModal" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="colorModalLabel">Code couleurs</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-header">
+          <h5 class="modal-title" id="colorModalLabel">Code couleur des logs</h5>
+      </div>
+      <div class="modal-body row color-div-container">
+          <div class="col-md-6 dt-grey" title="Gris">Température 1</div>
+          <div class="col-md-6 dt-red" title="Rouge">Température 2</div>
+          <div class="col-md-6 dt-blue" title="Bleu">Défaut pression</div>
+          <div class="col-md-6 dt-green" title="Vert">Défaut gaz</div>
+          <div class="col-md-6 dt-black" title="Noir">Défaut pression * Défaut température 1</div>
+          <div class="col-md-6 dt-black" title="Noir">Défaut température 2 * Défaut température 1</div>
+          <div class="col-md-6 dt-black" title="Noir">Autre</div>
+      </div>
+      <div class="modal-header">
+          <h5 class="modal-title" id="colorModalLabel">Code couleur de la température</h5>
+      </div>
+      <div class="modal-body row color-div-container">
+          <div class="col-md-6 dt-red" title="Rouge">> à 90°C</div>
+          <div class="col-md-6 dt-orange" title="Orange">> à 80°C</div>
+          <div class="col-md-6 dt-green" title="Vert">< à 80°C</div>
+      </div>
+
+      <div class="modal-header">
+          <h5 class="modal-title" id="colorModalLabel">Code couleur de la batterie</h5>
+      </div>
+      <div class="modal-body row color-div-container">
+          <div class="col-md-6 dt-red" title="Rouge">< à 11V</div>
+          <div class="col-md-6 dt-orange" title="Orange">< à 12V</div>
+          <div class="col-md-6 dt-green" title="Vert">> à 12 V</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 @endsection

@@ -5,6 +5,7 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
   function(datatables, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
 	if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
     function _initTable() {
+    	var now = moment();
     	/*
     	if (!$('#synthesis-table').is(':visible')) {
     		$('#synth-tab').one('click', _initTable);
@@ -47,17 +48,22 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	      ],
 	      initComplete: function() {
 	        /* Dropdown */
-	        this.api().columns([0, 1]).every(function() {
+	        this.api().columns([0]).every(function() {
 	          var column = this;
-	          var select = $('<select class="selectpicker form-control" multiple><option value=""></option></select>')
+	          var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
 	            .appendTo($(column.footer()).empty())
 	            .on('change', function() {
-	              var val = $(this).val();
-	              if (!val.length || val.length == 1 && !val[0].length) {
-	                column.search('', true, false).draw();
-	              } else { // /!\ No escape security
-	                column.search('^' + val.join('|') + '$', true, false).draw();
-	              }
+	            	var val = $(this).val();
+	            	var count_before = table.page.info().recordsDisplay;
+	            	if (!val.length || val.length == 1 && !val[0].length) {
+	            		column.search('', true, false).draw();
+					} else { // /!\ No escape security
+						column.search('^' + val.join('|') + '$', true, false).draw();
+					}
+					var count_after = table.page.info().recordsDisplay;
+					if (count_before < 10 && count_after > count_before || count_after < 10) {
+						select.selectpicker('toggle');
+					}
 	            });
 
 		        column.data().unique().sort().each(function(d, j) {
@@ -92,7 +98,9 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	          else if (data.maxtemp >= 90) color = "dt-red";
 	          $(row).find(":nth-child(4)").addClass(color);
 	        }*/
-	        $("td:nth-child(2)", row).attr("title", "Num PASDT & SIM: " + data.card_number + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
+	        $("td:nth-child(1)", row).attr("title", "Num PASDT & SIM: " + data.module_id + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
+	        $("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM à kk:mm:ss"));
+	        $("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM à kk:mm:ss"));
 	      },
 	      language: datatablefr,
 	      "ajax": {
@@ -110,12 +118,12 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	        	"defaultContent": "<i>Pas de nom de module</i>",
 	        	render: function ( data, type, row ) {
 	        		if (type === 'sort' || type === 'filter') {
-	        			return typeof row.name == 'string' && typeof row.card_number == 'string' ? row.card_number + ' - ' + row.name : '--';
+	        			return typeof row.name == 'string' && typeof row.module_id == 'string' ? row.module_id + ' - ' + row.name : '--';
 	        		}
 	        		return typeof row.name == 'string' ? row.name : '--';
 	        	},
 	        	data: function(row, type, val, meta) {
-	        		return row.card_number + '$$$ - ' + row.name;
+	        		return row.module_id + '$$$ - ' + row.name;
 	        	}
 	        },/*
 	        { 
@@ -140,11 +148,11 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	              	return row.created_at;
 	            }
 	            if (data == null) return '--';
-	            var ret = moment(data).format('lll');
-	            if (ret == 'Invalid date') return '--';
-	            return ret;
+	            var result = now.to(data);
+	            if (result == 'Invalid date') return '--';
+	            return result;
 	          },
-	          "defaultContent": "<i>Not set</i>"
+	          "defaultContent": "--"
 	        },
 	        {
 	          "data": "maxtemp", render: function(maxtemp, type, row) {
@@ -155,7 +163,7 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	            if (maxtemp == null) return '--';
 	            return String(maxtemp) + '°C';
 	          },
-	          "defaultContent": "<i>Not set</i>",
+	          "defaultContent": "<i>Temp invalide</i>",
 	          "type": "num"
 	        },
 	        {
@@ -166,9 +174,9 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	            }
 
 	            if (data == null) return '--';
-	            var ret = moment(data).format('lll');
-	            if (ret == 'Invalid date') return '--';
-	            return ret;
+	            var result = now.to(data);
+	            if (result == 'Invalid date') return '--';
+	            return result + ' à ' + moment(data).format('kk[h]mm');
 	          },
 	          "defaultContent": "<i>Not set</i>"
 	        },
@@ -177,7 +185,7 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 	      ]
 	    });
 	    /* Search bar */
-	    table.columns([2, 3, 4]).every(function() {
+	    table.columns([1, 2, 3, 4]).every(function() {
 	      var that = this;
 	      $('input', this.footer()).on('keyup change clear', function() {
 	        if (that.search() !== this.value) {
@@ -201,9 +209,11 @@ define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vf
 		        var data = table.row( this ).data();
 		        if (data) {
 		          	$('#home-tab').click();
-		          	$('#main-table #module-name .selectpicker')
-		          		.selectpicker('val', data.card_number + ' - ' + data.name)
-		          		.trigger('change');
+		          	setTimeout(function() {
+		          		$('#main-table #module-name .selectpicker')
+			          		.selectpicker('val', data.module_id + ' - ' + data.name)
+			          		.trigger('change');
+		          	}, 1);
 		        }
 		    } );
 

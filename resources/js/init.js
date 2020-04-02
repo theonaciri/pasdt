@@ -21,5 +21,8 @@ define(['js-cookie'], function(cookie) {
 	})
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
+	$('.color-modal-button').click(function() {
+		$("#colorModal").modal("show");
+	})
 	console.warn('AA');
 })

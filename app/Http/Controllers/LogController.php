@@ -144,7 +144,7 @@ EOTSQL));
 
         if (is_null(Module::where('module_id', '=', $log["cardId"])->first())) {
             $module = new Module;
-            $module->name = 'Nouveau module';
+            $module->name = '--';
             $module->company_id = 1;
             $module->telit_json = '{}';
             $module->module_id = $log["cardId"];
