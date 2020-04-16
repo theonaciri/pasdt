@@ -31,6 +31,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app2.css') }}" rel="stylesheet">
+    
     <style>
         @if(isset($_company->colors))
         body {
@@ -130,4 +131,5 @@
         </main>
     </div>
 </body>
+
 </html>
