@@ -35,6 +35,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request('tab') === 'graphs' ? 'active' : '' }}" id="realtime-graphs-tab" data-toggle="tab" href="#realtime-graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes de températures</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">Graphes de températures live</a>
+                </li>
             
             </ul>
         
@@ -116,7 +119,18 @@
                 -->
                 </div>
                 <div class="tab-pane fade" id="realtime-graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
-                    <canvas id="myChart" width="400" height="300"></canvas>
+                </div>
+                <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
+                    <div id="parentCanvas">
+                      <canvas id="liveChart"></canvas>
+                    </div>
+                    <p>
+                      <button id="randomizeData">Randomize Data</button>
+                      <button id="addDataset">Add Dataset</button>
+                      <button id="removeDataset">Remove Dataset</button>
+                      <button id="addData">Add Data</button>
+                    </p>
+
                 </div>
             </div>
         </div>
