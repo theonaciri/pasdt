@@ -26,7 +26,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			y: event.value
 		});
 		window.myChart.update({
-			preservation: true
+			preservation: !!event.preservation
 		});
 	}
 
@@ -46,6 +46,23 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		clearTimeout(timeoutIDs[index]);
 	}
 
+	function addDataSet(dataset, temps) {
+		var colorName = colorNames[config.data.datasets.length % colorNames.length];
+		var newColor = chartColors[colorName];
+		var newDataset = {
+			label: (dataset.name ? dataset.name : config.data.datasets.length + 1),
+			backgroundColor: color(newColor).alpha(0.5).rgbString(),
+			borderColor: newColor,
+			fill: false,
+			lineTension: 0,
+			data: Array.isArray(temps) ? temps : []
+		};
+
+		config.data.datasets.push(newDataset);
+		window.myChart.update();
+		//startFeed(config.data.datasets.length - 1);
+	}
+
 	function first_init() {
 		console.log('in init');
 		document.getElementById('randomizeData').addEventListener('click', function() {
@@ -57,22 +74,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			window.myChart.update();
 		});
 
-		document.getElementById('addDataset').addEventListener('click', function() {
-			var colorName = colorNames[config.data.datasets.length % colorNames.length];
-			var newColor = chartColors[colorName];
-			var newDataset = {
-				label: 'Dataset ' + (config.data.datasets.length + 1),
-				backgroundColor: color(newColor).alpha(0.5).rgbString(),
-				borderColor: newColor,
-				fill: false,
-				lineTension: 0,
-				data: []
-			};
-
-			config.data.datasets.push(newDataset);
-			window.myChart.update();
-			startFeed(config.data.datasets.length - 1);
-		});
+		document.getElementById('addDataset').addEventListener('click', addDataSet);
 
 		document.getElementById('removeDataset').addEventListener('click', function() {
 			stopFeed(config.data.datasets.length - 1);
@@ -89,11 +91,43 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			});
 			window.myChart.update();
 		});
-
-		++nb_init;
 	}
 
-	function init() {
+	function setFirstData(data) {
+		console.log("data", data);
+		$.getJSON("/logs/temp")
+		.done(function(data) {
+			console.log(data);
+			for (var i = 0; i < data.modules.length; ++i) {
+				var temps = data.temps.filter(d => d.cardId === data.modules[i].module_id);
+				var vals = [];
+				for (var i = 0; i < temps.length; ++i) {
+					vals.push({
+						x: new Date(temps[i].created_at),
+						y: temps[i].maxtemp
+					});
+				}
+				addDataSet(data.modules[i], vals);
+			}
+/*			for (var i = 0; i < data.temps.length && i <5; ++i) {
+				console.log(Object.keys(data.modules).find(
+						k => data.modules[k].module_id === data.temps[i].cardId
+					));
+				onReceive({
+					index: Object.keys(data.modules).find(
+						k => data.modules[k].module_id === data.temps[i].cardId
+					),
+					timestamp: new Date(data.temps[i].created_at),
+					value: data.temps[i].maxtemp
+				});
+			}*/
+		})
+		.fail(function( jqxhr, textStatus, error ) {
+			console.error( "Request Failed: " + error );
+		});
+	}
+
+	function init(data) {
 		if (!nb_init) {
 			first_init();
 		} else {
@@ -106,7 +140,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		config = {
 			type: 'line',
 			data: {
-				datasets: [{
+				datasets: [/*{
 					label: 'Dataset 1 (linear interpolation)',
 					backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
 					borderColor: chartColors.red,
@@ -121,7 +155,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 					fill: false,
 					cubicInterpolationMode: 'monotone',
 					data: []
-				}]
+				}*/]
 			},
 			options: {
 				title: {
@@ -132,14 +166,14 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 					xAxes: [{
 						type: 'realtime',
 						realtime: {
-							duration: 1*10*60*1000,
+							duration: 2* 24 * 60 * 60 * 1000,
 							delay: 2000,
 						}
 					}],
 					yAxes: [{
 						scaleLabel: {
 							display: true,
-							labelString: 'value'
+							labelString: '°C'
 						}
 					}]
 				},
@@ -156,9 +190,12 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		var ctx = chart_elem.getContext('2d');
 		ctx.clearRect(0, 0, chart_elem.width, chart_elem.height);
 		window.myChart = new Chart(ctx, config);
-		startFeed(0);
-		startFeed(1);
+		//startFeed(0);
+		//startFeed(1);
 		console.log('loaded');
+
+		setFirstData(data);
+		++nb_init;
 	}
 	return {init: init};
 });

@@ -254,7 +254,8 @@ function _initTable() {
     });
 
     $('#graphs-live-tab').click( function () {
-      graph_annotated.init();
+      graphdata = table.rows({ 'search': 'applied' }).data();
+      graph_annotated.init(graphdata);
     });
 
     var $datepicker_from = $("#datepicker_from");

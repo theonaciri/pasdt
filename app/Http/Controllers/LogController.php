@@ -56,6 +56,41 @@ class LogController extends Controller
         return response()->json($logs);
     }
 
+
+    public function getTempData(Request $request) {
+        $this->middleware('auth');
+        $user = Auth::user();
+        if (empty($user)) abort(403);
+        $req = $request->json()->all();
+
+        if (/*empty($req->companies) ||*/ empty($user->company_id)) abort(403);
+        $modules = Module::/*where("company_id", "=", $user->company_id)*/
+            select('company_id', 'name', 'module_id')
+            ->get()->toArray();
+        $modules_list = array_column($modules, 'module_id');
+
+        $from = $req->from ?? date("Y-m-j 0:0:0", strtotime('-1 days'));
+        $to = date("Y-m-j 23:59:59");
+
+        $temps = DB::table('logs')
+                    ->select('cardId', 'maxtemp', 'created_at')
+                    ->whereBetween('created_at', [$from, $to])
+                    ->whereIn('cardId', $modules_list)
+                    ->whereNotNull('maxtemp')
+                    ->where('maxtemp', '!=', '-99')
+                    ->where('maxtemp', '!=', '785')
+                    ->get();
+        $res = [
+            'temps'  => $temps,
+            'modules'=> $modules,
+            'modules_list'=> $modules_list,
+            'to'     => $to,
+            'from'   => $from
+        ];
+        return response()->json($res);
+
+    }
+
     /**
     * Get synthesis data
     * Connexion web
