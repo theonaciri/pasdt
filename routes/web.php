@@ -40,6 +40,7 @@ Route::put('/company/{company}/module/{module}/unlink', 'CompanyController@unlin
 
 /* LOGS */
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
+Route::get('/logs/temp', 'LogController@getTempData')->name('log.get.temp');
 Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth');
 
 
