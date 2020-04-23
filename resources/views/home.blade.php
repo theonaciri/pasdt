@@ -33,10 +33,7 @@
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
                 </li>-->
                 <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'graphs' ? 'active' : '' }}" id="realtime-graphs-tab" data-toggle="tab" href="#realtime-graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes de températures</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">Graphes de températures live</a>
+                    <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">Graphes de températures en direct</a>
                 </li>
             
             </ul>
@@ -65,6 +62,7 @@
                             </tfoot>
                         </table>
                     </div>
+                    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
@@ -105,37 +103,25 @@
                             </tfoot>
                         </table>
                     </div>
-                </div>
-                <div class="tab-pane fade {{ request('tab') === 'graphs' ? 'show active' : '' }}" id="graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
-                    <div class="" id="chart-events" style="width: 90%;"></div>
-                    <!--<div id="my_dataviz" width="960" height="500"></div>
-                    <div id="tester" style="width:600px;height:250px;"></div>
-                    <button type="button" id="visib" class="btn btn-secondary" style="display: none; position: absolute; top: 300px; right: 0">
-                      Transformateur 12 declenchement * defaut temperature 2<br>
-                      Carte n° 005606224<br>
-                      Le 20/06/2019 à 09:40:31
-                    </button>
-                    <img id="imgid" src="images/screendata.png" />
-                -->
-                </div>
-                <div class="tab-pane fade" id="realtime-graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
+                    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
                     <div id="parentCanvas">
                       <canvas id="liveChart"></canvas>
                     </div>
-                    <p>
+                    <p style="display: none">
                       <button id="randomizeData">Randomize Data</button>
                       <button id="addDataset">Add Dataset</button>
                       <button id="removeDataset">Remove Dataset</button>
                       <button id="addData">Add Data</button>
                     </p>
-
+                    <div style="display: none">
+                      <input id="litepicker">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
 </div>
 
 <!-- Modal -->

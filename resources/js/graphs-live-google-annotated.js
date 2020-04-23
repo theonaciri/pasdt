@@ -15,6 +15,10 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 	};
 	var color = Chart.helpers.color;
 	var colorNames = Object.keys(chartColors);
+	var interval;
+
+	var last_date = new Date();
+	last_date.setDate(last_date.getDate() - 2);
 
 	function randomScalingFactor() {
 		return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
@@ -26,7 +30,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			y: event.value
 		});
 		window.myChart.update({
-			preservation: true
+			preservation: !!event.preservation
 		});
 	}
 
@@ -46,6 +50,33 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		clearTimeout(timeoutIDs[index]);
 	}
 
+	function addData(dataset, module, data) {
+		for (var i = 0; i < data.length; ++i) {
+			dataset.data.push({
+				x: data[i].x,
+				y: data[i].y
+			});
+		}
+		window.myChart.update();
+	}
+
+	function addDataSet(dataset, temps) {
+		var colorName = colorNames[config.data.datasets.length % colorNames.length];
+		var newColor = chartColors[colorName];
+		var newDataset = {
+			label: (dataset.name ? dataset.name : config.data.datasets.length + 1),
+			backgroundColor: color(newColor).alpha(0.5).rgbString(),
+			borderColor: newColor,
+			fill: false,
+			lineTension: 0,
+			data: Array.isArray(temps) ? temps : []
+		};
+
+		config.data.datasets.push(newDataset);
+		window.myChart.update();
+		//startFeed(config.data.datasets.length - 1);
+	}
+
 	function first_init() {
 		console.log('in init');
 		document.getElementById('randomizeData').addEventListener('click', function() {
@@ -57,22 +88,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			window.myChart.update();
 		});
 
-		document.getElementById('addDataset').addEventListener('click', function() {
-			var colorName = colorNames[config.data.datasets.length % colorNames.length];
-			var newColor = chartColors[colorName];
-			var newDataset = {
-				label: 'Dataset ' + (config.data.datasets.length + 1),
-				backgroundColor: color(newColor).alpha(0.5).rgbString(),
-				borderColor: newColor,
-				fill: false,
-				lineTension: 0,
-				data: []
-			};
-
-			config.data.datasets.push(newDataset);
-			window.myChart.update();
-			startFeed(config.data.datasets.length - 1);
-		});
+		document.getElementById('addDataset').addEventListener('click', addDataSet);
 
 		document.getElementById('removeDataset').addEventListener('click', function() {
 			stopFeed(config.data.datasets.length - 1);
@@ -89,14 +105,58 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			});
 			window.myChart.update();
 		});
-
-		++nb_init;
 	}
 
-	function init() {
+	function onDataReceive(data, shouldAddDataSet = false) {
+		for (var i = 0; i < data.modules.length; ++i) {
+			var temps = data.temps.filter(d => d.cardId === data.modules[i].module_id);
+			var vals = [];
+			for (var j = 0; j < temps.length; ++j) {
+				vals.push({
+					x: new Date(temps[j].created_at),
+					y: temps[j].maxtemp
+				});
+			}
+			if (shouldAddDataSet) {
+				addDataSet(data.modules[i], vals);
+			} else {
+				addData(config.data.datasets[i], data.modules[i], vals);
+			}
+		}
+		if (data.temps.length) {
+			last_date = new Date(data.temps[data.temps.length -1].created_at);
+		}
+	}
+
+	function auto_update() {
+		interval = setInterval(function() {
+			$.getJSON("/logs/temp", {from: last_date.toJSON()})
+			.done(function(data) {
+				onDataReceive(data);
+			})
+			.fail(function( jqxhr, textStatus, error ) {
+				console.error( "Request Failed: " + error );
+			});
+		}, 10 * 1000)
+	}
+
+	function setFirstData(data) {
+		console.log("data", data);
+		$.getJSON("/logs/temp")
+		.done(function(data) {
+			onDataReceive(data, true);
+			auto_update();
+		})
+		.fail(function( jqxhr, textStatus, error ) {
+			console.error( "Request Failed: " + error );
+		});
+	}
+
+	function init(data) {
 		if (!nb_init) {
 			first_init();
 		} else {
+  			clearInterval(interval);
 			chart_elem.remove();
 			chart_elem = document.createElement("canvas");
 			chart_elem.id = "liveChart";
@@ -106,7 +166,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		config = {
 			type: 'line',
 			data: {
-				datasets: [{
+				datasets: [/*{
 					label: 'Dataset 1 (linear interpolation)',
 					backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
 					borderColor: chartColors.red,
@@ -121,25 +181,25 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 					fill: false,
 					cubicInterpolationMode: 'monotone',
 					data: []
-				}]
+				}*/]
 			},
 			options: {
 				title: {
 					display: true,
-					text: 'Push data feed sample'
+					text: 'Les données sont actualisées toutes les minutes'
 				},
 				scales: {
 					xAxes: [{
 						type: 'realtime',
 						realtime: {
-							duration: 1*10*60*1000,
+							duration: 4* 24 * 60 * 60 * 1000,
 							delay: 2000,
 						}
 					}],
 					yAxes: [{
 						scaleLabel: {
 							display: true,
-							labelString: 'value'
+							labelString: '°C'
 						}
 					}]
 				},
@@ -156,9 +216,16 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		var ctx = chart_elem.getContext('2d');
 		ctx.clearRect(0, 0, chart_elem.width, chart_elem.height);
 		window.myChart = new Chart(ctx, config);
-		startFeed(0);
-		startFeed(1);
+		//startFeed(0);
+		//startFeed(1);
 		console.log('loaded');
+
+		setFirstData(data);
+		++nb_init;
+	}
+
+	if (localStorage.getItem('opened-tab') === 'graphs-live-tab') {
+		init();
 	}
 	return {init: init};
 });
