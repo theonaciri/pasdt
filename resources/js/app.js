@@ -6,6 +6,8 @@
 
 //import "requirejs";
 require('./bootstrap');
+window.DataTable = require( 'datatables.net' );
+debugger;
 require('./init');
 require('./datatable-synthesis');
 require('./datatable-pasdt');

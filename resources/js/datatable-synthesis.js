@@ -1,8 +1,8 @@
-define(['datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
+define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js'],
-  function(datatables, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
+  function(datatables, datatables_bs, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
 	if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
     function _initTable() {
     	var now = moment();
