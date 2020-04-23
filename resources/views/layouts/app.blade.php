@@ -26,7 +26,7 @@
         <script src="/js/anychart-stock.min.js" type="text/javascript" defer></script>
         <script src="/js/anychart-ui.min.js" type="text/javascript" defer></script>
         <script src="/js/anychart-exports.min.js" type="text/javascript" defer></script>
-        <script src="/js/dji-daily-short.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-theme-dark_blue.min.js" type="text/javascript" defer></script>
         <!--<script src="/js/anychart-jquery.min.js" type="text/javascript" defer></script>-->
 
     <!-- Fonts -->
