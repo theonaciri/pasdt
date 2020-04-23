@@ -140,8 +140,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		}, 10 * 1000)
 	}
 
-	function setFirstData(data) {
-		console.log("data", data);
+	function setFirstData() {
 		$.getJSON("/logs/temp")
 		.done(function(data) {
 			onDataReceive(data, true);
@@ -152,7 +151,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		});
 	}
 
-	function init(data) {
+	function init() {
 		if (!nb_init) {
 			first_init();
 		} else {
@@ -192,7 +191,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 					xAxes: [{
 						type: 'realtime',
 						realtime: {
-							duration: 4* 24 * 60 * 60 * 1000,
+							duration: 3* 24 * 60 * 60 * 1000,
 							delay: 2000,
 						}
 					}],
@@ -220,12 +219,8 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		//startFeed(1);
 		console.log('loaded');
 
-		setFirstData(data);
+		setFirstData();
 		++nb_init;
-	}
-
-	if (localStorage.getItem('opened-tab') === 'graphs-live-tab') {
-		init();
 	}
 	return {init: init};
 });

@@ -62,13 +62,18 @@ class LogController extends Controller
         $user = Auth::user();
         if (empty($user)) abort(403);
 
-        if (/*empty($req->companies) ||*/ empty($user->company_id)) abort(403);
-        $modules = Module::/*where("company_id", "=", $user->company_id)*/
+        if (empty($user->company_id)) abort(403);
+        $modules = Module::
             select('company_id', 'name', 'module_id')
+            ->when(!$user->su_admin, function($query) use ($user) {
+                $query->where('company_id', $user->company_id);
+            })
             ->get()->toArray();
         $modules_list = array_column($modules, 'module_id');
+
         $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-3 days'));
         $to = date("Y-m-d 23:59:59");
+
         // check dates ?
         $temps = DB::table('logs')
                     ->select('cardId', 'maxtemp', 'created_at')
