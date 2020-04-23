@@ -186,7 +186,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			options: {
 				title: {
 					display: true,
-					text: 'Push data feed sample'
+					text: 'Les données sont actualisées toutes les minutes'
 				},
 				scales: {
 					xAxes: [{
@@ -222,6 +222,10 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 
 		setFirstData(data);
 		++nb_init;
+	}
+
+	if (localStorage.getItem('opened-tab') === 'graphs-live-tab') {
+		init();
 	}
 	return {init: init};
 });

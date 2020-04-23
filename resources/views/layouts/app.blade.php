@@ -10,7 +10,6 @@
     <title>{{ config('app.name', 'PASDT') }}</title>
 
     <!-- Scripts -->
-    <script src="/js/manifest.js"></script>
     <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
@@ -30,7 +29,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app2.css') }}" rel="stylesheet">
+    <!--<link href="{{ asset('css/app2.css') }}" rel="stylesheet">-->
     
     <style>
         @if(isset($_company->colors))
