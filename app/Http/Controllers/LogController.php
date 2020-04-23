@@ -72,7 +72,7 @@ class LogController extends Controller
             ->get()->toArray();
         $modules_list = array_column($modules, 'module_id');
 
-        $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-3 days'));
+        $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-60 days'));
         $to = date("Y-m-d 23:59:59");
 
         // check dates ?
