@@ -1,226 +1,134 @@
-define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], function($) {
-	var chart_elem = document.getElementById('liveChart');
-	var parent = document.getElementById('parentCanvas');
-	var timeoutIDs = [];
-	var nb_init = 0;
-	var config = {};
-	var chartColors = {
-		red: 'rgb(255, 99, 132)',
-		orange: 'rgb(255, 159, 64)',
-		yellow: 'rgb(255, 205, 86)',
-		green: 'rgb(75, 192, 192)',
-		blue: 'rgb(54, 162, 235)',
-		purple: 'rgb(153, 102, 255)',
-		grey: 'rgb(201, 203, 207)'
-	};
-	var color = Chart.helpers.color;
-	var colorNames = Object.keys(chartColors);
-	var interval;
+define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function($) {
+	var $mod_select = $('#graphModuleSelect');
+	var chart = null;
+	var data = null;
+	var theme = localStorage.getItem('graph-theme') || "defaultTheme";
+	var active_module = localStorage.getItem('graph-active-module');
 
-	var last_date = new Date();
-	last_date.setDate(last_date.getDate() - 2);
-
-	function randomScalingFactor() {
-		return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-	}
-
-	function onReceive(event) {
-		window.myChart.config.data.datasets[event.index].data.push({
-			x: event.timestamp,
-			y: event.value
-		});
-		window.myChart.update({
-			preservation: !!event.preservation
-		});
-	}
-
-	function startFeed(index) {
-		var receive = function() {
-			onReceive({
-				index: index,
-				timestamp: Date.now(),
-				value: randomScalingFactor()
+	function init() {
+		var a = new Date("2020-04-18 13:40:24");
+		$.getJSON("/logs/temp", {from: a.toJSON()})
+		.done(function(_data) {
+			$(document).ready(function() {
+				data = _data;
+				setModuleSelect();
+				onDataReceive();
 			});
-			timeoutIDs[index] = setTimeout(receive, Math.random() * 1000 + 500);
-		}
-		timeoutIDs[index] = setTimeout(receive, Math.random() * 1000 + 500);
-	}
-
-	function stopFeed(index) {
-		clearTimeout(timeoutIDs[index]);
-	}
-
-	function addData(dataset, module, data) {
-		for (var i = 0; i < data.length; ++i) {
-			dataset.data.push({
-				x: data[i].x,
-				y: data[i].y
-			});
-		}
-		window.myChart.update();
-	}
-
-	function addDataSet(dataset, temps) {
-		var colorName = colorNames[config.data.datasets.length % colorNames.length];
-		var newColor = chartColors[colorName];
-		var newDataset = {
-			label: (dataset.name ? dataset.name : config.data.datasets.length + 1),
-			backgroundColor: color(newColor).alpha(0.5).rgbString(),
-			borderColor: newColor,
-			fill: false,
-			lineTension: 0,
-			data: Array.isArray(temps) ? temps : []
-		};
-
-		config.data.datasets.push(newDataset);
-		window.myChart.update();
-		//startFeed(config.data.datasets.length - 1);
-	}
-
-	function first_init() {
-		console.log('in init');
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			config.data.datasets.forEach(function(dataset) {
-				dataset.data.forEach(function(dataObj) {
-					dataObj.y = randomScalingFactor();
-				});
-			});
-			window.myChart.update();
-		});
-
-		document.getElementById('addDataset').addEventListener('click', addDataSet);
-
-		document.getElementById('removeDataset').addEventListener('click', function() {
-			stopFeed(config.data.datasets.length - 1);
-			config.data.datasets.pop();
-			window.myChart.update();
-		});
-
-		document.getElementById('addData').addEventListener('click', function() {
-			config.data.datasets.forEach(function(dataset) {
-				dataset.data.push({
-					x: Date.now(),
-					y: randomScalingFactor()
-				});
-			});
-			window.myChart.update();
-		});
-	}
-
-	function onDataReceive(data, shouldAddDataSet = false) {
-		for (var i = 0; i < data.modules.length; ++i) {
-			var temps = data.temps.filter(d => d.cardId === data.modules[i].module_id);
-			var vals = [];
-			for (var j = 0; j < temps.length; ++j) {
-				vals.push({
-					x: new Date(temps[j].created_at),
-					y: temps[j].maxtemp
-				});
-			}
-			if (shouldAddDataSet) {
-				addDataSet(data.modules[i], vals);
-			} else {
-				addData(config.data.datasets[i], data.modules[i], vals);
-			}
-		}
-		if (data.temps.length) {
-			last_date = new Date(data.temps[data.temps.length -1].created_at);
-		}
-	}
-
-	function auto_update() {
-		interval = setInterval(function() {
-			$.getJSON("/logs/temp", {from: last_date.toJSON()})
-			.done(function(data) {
-				onDataReceive(data);
-			})
-			.fail(function( jqxhr, textStatus, error ) {
-				console.error( "Request Failed: " + error );
-			});
-		}, 10 * 1000)
-	}
-
-	function setFirstData() {
-		$.getJSON("/logs/temp")
-		.done(function(data) {
-			onDataReceive(data, true);
-			auto_update();
 		})
 		.fail(function( jqxhr, textStatus, error ) {
 			console.error( "Request Failed: " + error );
 		});
+
+	}
+	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
+	$('#themeSelect').on('change', function (){
+	  	// recreate chart to reset theme
+	  	theme = this.value;
+	  	onDataReceive();
+		localStorage.setItem('graph-theme', this.value);
+	});
+
+	function transformData(temp_data) {
+		var filtered_data = data.temps.filter(function(t) {return t.cardId === active_module});
+		for (var i = 0; i < filtered_data.length; ++i) {
+			filtered_data[i].created_at = new Date(temp_data[i].created_at).toUTCString();
+		}
+		return filtered_data;
 	}
 
-	function init() {
-		if (!nb_init) {
-			first_init();
-		} else {
-  			clearInterval(interval);
-			chart_elem.remove();
-			chart_elem = document.createElement("canvas");
-			chart_elem.id = "liveChart";
-			parent.appendChild(chart_elem);
+	function setModuleSelect() {
+		var first_selected = false;
+		var modules_with_data = data.modules.filter(function(m) {
+			return !!data.temps.filter(function(t) {
+				return t.cardId === m.module_id
+			}).length
+		});
+		for (var i = data.modules.length - 1; i >= 0; i--) {
+			var enabled = modules_with_data.find(function(m) {return m.module_id === data.modules[i].module_id});
+			$mod_select.append('<option value="' + data.modules[i].module_id + '"'
+			+ (!enabled ? 
+				' disabled' :
+				(!first_selected ? ' selected' : '')
+			   )
+			+ '>'
+			+ data.modules[i].module_id + ' - ' + data.modules[i].name + "</option>");
+			first_selected = true;
 		}
-		
-		config = {
-			type: 'line',
-			data: {
-				datasets: [/*{
-					label: 'Dataset 1 (linear interpolation)',
-					backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
-					borderColor: chartColors.red,
-					fill: false,
-					lineTension: 0,
-					borderDash: [8, 4],
-					data: []
-				}, {
-					label: 'Dataset 2 (cubic interpolation)',
-					backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
-					borderColor: chartColors.blue,
-					fill: false,
-					cubicInterpolationMode: 'monotone',
-					data: []
-				}*/]
-			},
-			options: {
-				title: {
-					display: true,
-					text: 'Les données sont actualisées toutes les minutes'
-				},
-				scales: {
-					xAxes: [{
-						type: 'realtime',
-						realtime: {
-							duration: 3* 24 * 60 * 60 * 1000,
-							delay: 2000,
-						}
-					}],
-					yAxes: [{
-						scaleLabel: {
-							display: true,
-							labelString: '°C'
-						}
-					}]
-				},
-				tooltips: {
-					mode: 'nearest',
-					intersect: false
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: false
-				}
-			}
-		};
-		var ctx = chart_elem.getContext('2d');
-		ctx.clearRect(0, 0, chart_elem.width, chart_elem.height);
-		window.myChart = new Chart(ctx, config);
-		//startFeed(0);
-		//startFeed(1);
-		console.log('loaded');
+		active_module = $mod_select.children('option:not([disabled]):first').val();
+		$mod_select.on('change', function() {
+			active_module = $mod_select.val();
+			localStorage.setItem('graph-active-module', active_module);
+			onDataReceive();
+		})
+	}
 
-		setFirstData();
-		++nb_init;
+	function onDataReceive() {
+		$('#anychart').css("width", (window.innerWidth-100) + "px").css('height', (window.innerHeight -300) + "px")
+		if (chart != null) chart.dispose();
+		// set theme
+  		anychart.theme(theme);  
+
+
+		var date_options = {month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"};
+		// chart type
+		chart = anychart.line();
+
+		// chart title
+		chart.title("Evolution des températures des modules");
+
+		// set X axis labels formatter
+		// create custom Date Time scale
+		var dateTimeScale = anychart.scales.dateTime();
+		var dateTimeTicks = dateTimeScale.ticks();
+		dateTimeTicks.interval(0, 6);
+		// apply Date Time scale
+		chart.xScale(dateTimeScale);
+  		chart.xScale(dateTimeScale);
+		chart.xAxis().labels().format(function () {
+			return new Date(this.value).toLocaleDateString("fr-FR", date_options);
+		});
+
+		// set Y axis label formatter
+		chart.yScale().minimum(-20);
+		chart.yScale().maximum(90);
+
+		// data
+		var filtered_data = transformData(data.temps);
+		// create a data set
+		// map the data
+		var dataSet = anychart.data.set(filtered_data);
+
+	    var mapping = dataSet.mapAs({value: "maxtemp", x: "created_at"});
+		var series = chart.line(mapping);
+
+
+		// set series stroke settings
+		series.stroke({
+			angle: 90,
+			keys: ['#2fa85a', '#ecef17', '#ee4237'],
+			thickness: 3
+		});
+		// adjust tooltips
+		var tooltip = series.tooltip();
+		tooltip.format(function () {
+			var value = (this.value).toFixed(0);
+			var date = new Date(this.x);
+			var transformedDate =  date.toLocaleDateString("fr-FR", date_options);
+			return "Temp: " + value + "°C.\nLe " + transformedDate ;
+		});
+
+
+		//minimap
+		// access labels
+
+		// turn on X Scroller
+		chart.xScroller(true);
+		// turn on Y Scroller
+		chart.yScroller(true);
+
+		// set container and draw chart
+		chart.container("anychart");
+		chart.draw();
 	}
 	return {init: init};
 });

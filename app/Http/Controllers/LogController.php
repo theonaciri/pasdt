@@ -68,6 +68,7 @@ class LogController extends Controller
             ->when(!$user->su_admin, function($query) use ($user) {
                 $query->where('company_id', $user->company_id);
             })
+            ->orderBy('module_id', 'ASC')
             ->get()->toArray();
         $modules_list = array_column($modules, 'module_id');
 
