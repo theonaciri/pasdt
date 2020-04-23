@@ -15,6 +15,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 	};
 	var color = Chart.helpers.color;
 	var colorNames = Object.keys(chartColors);
+	var interval;
 
 	var last_date = new Date();
 	last_date.setDate(last_date.getDate() - 2);
@@ -56,6 +57,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 				y: data[i].y
 			});
 		}
+		window.myChart.update();
 	}
 
 	function addDataSet(dataset, temps) {
@@ -118,8 +120,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 			if (shouldAddDataSet) {
 				addDataSet(data.modules[i], vals);
 			} else {
-				addData(config.data.datasets[i], data.modules[i], vals)
-				window.myChart.update();
+				addData(config.data.datasets[i], data.modules[i], vals);
 			}
 		}
 		if (data.temps.length) {
@@ -128,7 +129,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 	}
 
 	function auto_update() {
-		setInterval(function() {
+		interval = setInterval(function() {
 			$.getJSON("/logs/temp", {from: last_date.toJSON()})
 			.done(function(data) {
 				onDataReceive(data);
@@ -155,6 +156,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		if (!nb_init) {
 			first_init();
 		} else {
+  			clearInterval(interval);
 			chart_elem.remove();
 			chart_elem = document.createElement("canvas");
 			chart_elem.id = "liveChart";

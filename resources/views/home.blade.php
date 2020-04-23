@@ -130,7 +130,9 @@
                       <button id="removeDataset">Remove Dataset</button>
                       <button id="addData">Add Data</button>
                     </p>
-
+                    <div>
+                      <input id="litepicker">
+                    </div>
                 </div>
             </div>
         </div>
