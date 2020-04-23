@@ -16,6 +16,9 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 	var color = Chart.helpers.color;
 	var colorNames = Object.keys(chartColors);
 
+	var last_date = new Date();
+	last_date.setDate(last_date.getDate() - 2);
+
 	function randomScalingFactor() {
 		return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 	}
@@ -44,6 +47,15 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 
 	function stopFeed(index) {
 		clearTimeout(timeoutIDs[index]);
+	}
+
+	function addData(dataset, module, data) {
+		for (var i = 0; i < data.length; ++i) {
+			dataset.data.push({
+				x: data[i].x,
+				y: data[i].y
+			});
+		}
 	}
 
 	function addDataSet(dataset, temps) {
@@ -93,34 +105,46 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 		});
 	}
 
+	function onDataReceive(data, shouldAddDataSet = false) {
+		for (var i = 0; i < data.modules.length; ++i) {
+			var temps = data.temps.filter(d => d.cardId === data.modules[i].module_id);
+			var vals = [];
+			for (var j = 0; j < temps.length; ++j) {
+				vals.push({
+					x: new Date(temps[j].created_at),
+					y: temps[j].maxtemp
+				});
+			}
+			if (shouldAddDataSet) {
+				addDataSet(data.modules[i], vals);
+			} else {
+				addData(config.data.datasets[i], data.modules[i], vals)
+				window.myChart.update();
+			}
+		}
+		if (data.temps.length) {
+			last_date = new Date(data.temps[data.temps.length -1].created_at);
+		}
+	}
+
+	function auto_update() {
+		setInterval(function() {
+			$.getJSON("/logs/temp", {from: last_date.toJSON()})
+			.done(function(data) {
+				onDataReceive(data);
+			})
+			.fail(function( jqxhr, textStatus, error ) {
+				console.error( "Request Failed: " + error );
+			});
+		}, 10 * 1000)
+	}
+
 	function setFirstData(data) {
 		console.log("data", data);
 		$.getJSON("/logs/temp")
 		.done(function(data) {
-			console.log(data);
-			for (var i = 0; i < data.modules.length; ++i) {
-				var temps = data.temps.filter(d => d.cardId === data.modules[i].module_id);
-				var vals = [];
-				for (var i = 0; i < temps.length; ++i) {
-					vals.push({
-						x: new Date(temps[i].created_at),
-						y: temps[i].maxtemp
-					});
-				}
-				addDataSet(data.modules[i], vals);
-			}
-/*			for (var i = 0; i < data.temps.length && i <5; ++i) {
-				console.log(Object.keys(data.modules).find(
-						k => data.modules[k].module_id === data.temps[i].cardId
-					));
-				onReceive({
-					index: Object.keys(data.modules).find(
-						k => data.modules[k].module_id === data.temps[i].cardId
-					),
-					timestamp: new Date(data.temps[i].created_at),
-					value: data.temps[i].maxtemp
-				});
-			}*/
+			onDataReceive(data, true);
+			auto_update();
 		})
 		.fail(function( jqxhr, textStatus, error ) {
 			console.error( "Request Failed: " + error );
@@ -166,7 +190,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 					xAxes: [{
 						type: 'realtime',
 						realtime: {
-							duration: 2* 24 * 60 * 60 * 1000,
+							duration: 4* 24 * 60 * 60 * 1000,
 							delay: 2000,
 						}
 					}],
