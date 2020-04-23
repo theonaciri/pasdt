@@ -192,7 +192,7 @@ define(["jquery", "moment/moment", "chart.js", "chartjs-plugin-streaming"], func
 					xAxes: [{
 						type: 'realtime',
 						realtime: {
-							duration: 4* 24 * 60 * 60 * 1000,
+							duration: 3* 24 * 60 * 60 * 1000,
 							delay: 2000,
 						}
 					}],
