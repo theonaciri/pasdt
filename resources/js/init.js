@@ -24,5 +24,4 @@ define(['js-cookie'], function(cookie) {
 	$('.color-modal-button').click(function() {
 		$("#colorModal").modal("show");
 	})
-	console.warn('AA');
 })

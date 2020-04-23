@@ -284,7 +284,7 @@ class ModuleController extends Controller
 
     public function getAllModules(Request $request) {
         $user = Auth::user();
-        $modules = Module::where("company_id", "=", $user->company_id)->select('id, name')->get();
+        $modules = Module::where("company_id", "=", $user->company_id)->select('id', 'name')->get();
         return response()->json($modules);
     }
 
