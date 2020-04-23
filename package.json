@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "Buttons": "https://github.com/DataTables/Buttons.git",
+        "anychart-jquery": "^1.0.5",
         "babel-loader": "^8.0.6",
         "bootstrap-select": "^1.13.12",
         "bootstrap-slider": "^10.6.2",
