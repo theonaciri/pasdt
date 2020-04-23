@@ -292,3 +292,7 @@ table input, table select {
 .color-div-container > div:nth-child(2n-1) {
   border-right: 1px solid grey;
 }
+
+.anychart-credits-text, .anychart-credits-logo {
+  display: none;
+}

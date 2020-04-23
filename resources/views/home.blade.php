@@ -106,6 +106,7 @@
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
+                    <div id="anychart" style="width: 640px; height: 480px;"></div>
                     <div id="parentCanvas">
                       <canvas id="liveChart"></canvas>
                     </div>
