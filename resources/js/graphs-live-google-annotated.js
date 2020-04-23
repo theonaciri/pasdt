@@ -1,7 +1,9 @@
 define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function($) {
+	var $mod_select = $('#graphModuleSelect');
 	var chart = null;
 	var data = null;
 	var theme = localStorage.getItem('graph-theme') || "defaultTheme";
+	var active_module = localStorage.getItem('graph-active-module');
 
 	function init() {
 		var a = new Date("2020-04-18 13:40:24");
@@ -9,8 +11,8 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		.done(function(_data) {
 			$(document).ready(function() {
 				data = _data;
-				onDataReceive(theme);
-				//auto_update();
+				setModuleSelect();
+				onDataReceive();
 			});
 		})
 		.fail(function( jqxhr, textStatus, error ) {
@@ -27,9 +29,37 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 	});
 
 	function transformData(temp_data) {
-		for (var i = temp_data.length - 1; i >= 0; i--) {
-			temp_data[i].created_at = new Date(temp_data[i].created_at).toUTCString();
+		var filtered_data = data.temps.filter(function(t) {return t.cardId === active_module});
+		for (var i = 0; i < filtered_data.length; ++i) {
+			filtered_data[i].created_at = new Date(temp_data[i].created_at).toUTCString();
 		}
+		return filtered_data;
+	}
+
+	function setModuleSelect() {
+		var first_selected = false;
+		var modules_with_data = data.modules.filter(function(m) {
+			return !!data.temps.filter(function(t) {
+				return t.cardId === m.module_id
+			}).length
+		});
+		for (var i = data.modules.length - 1; i >= 0; i--) {
+			var enabled = modules_with_data.find(function(m) {return m.module_id === data.modules[i].module_id});
+			$mod_select.append('<option value="' + data.modules[i].module_id + '"'
+			+ (!enabled ? 
+				' disabled' :
+				(!first_selected ? ' selected' : '')
+			   )
+			+ '>'
+			+ data.modules[i].module_id + ' - ' + data.modules[i].name + "</option>");
+			first_selected = true;
+		}
+		active_module = $mod_select.children('option:not([disabled]):first').val();
+		$mod_select.on('change', function() {
+			active_module = $mod_select.val();
+			localStorage.setItem('graph-active-module', active_module);
+			onDataReceive();
+		})
 	}
 
 	function onDataReceive() {
@@ -63,11 +93,11 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		chart.yScale().maximum(90);
 
 		// data
-		transformData(data.temps);
+		var filtered_data = transformData(data.temps);
 		// create a data set
-		var dataSet = anychart.data.set(data.temps);
-
 		// map the data
+		var dataSet = anychart.data.set(filtered_data);
+
 	    var mapping = dataSet.mapAs({value: "maxtemp", x: "created_at"});
 		var series = chart.line(mapping);
 
@@ -86,6 +116,15 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 			var transformedDate =  date.toLocaleDateString("fr-FR", date_options);
 			return "Temp: " + value + "°C.\nLe " + transformedDate ;
 		});
+
+
+		//minimap
+		// access labels
+
+		// turn on X Scroller
+		chart.xScroller(true);
+		// turn on Y Scroller
+		chart.yScroller(true);
 
 		// set container and draw chart
 		chart.container("anychart");

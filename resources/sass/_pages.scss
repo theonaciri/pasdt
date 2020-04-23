@@ -296,3 +296,7 @@ table input, table select {
 .anychart-credits-text, .anychart-credits-logo {
   display: none;
 }
+
+#graphModuleSelect option:disabled {
+  background-color: #d5d5d5;
+}

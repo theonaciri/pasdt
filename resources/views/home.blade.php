@@ -104,19 +104,30 @@
                         </table>
                     </div>
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
-                </div>
-                <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
-                  <div class="form-group col-sm-4 col-sm-3 col-md-2">
-                    <label for="themeSelect">Thème</label>
-                    <select class="form-control" id="themeSelect">
-                      <option value="defaultTheme">Défaut</option>
-                      <option value="darkBlue">Bleu sombre</option>
-                    </select>
+                  </div>
+                  <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
+                    <div class="row">
+                      <div class="col col-md-3">
+                        <div class="form-group">
+                        <label for="themeSelect">Thème</label>
+                        <select class="form-control" id="themeSelect">
+                          <option value="defaultTheme">Défaut</option>
+                          <option value="darkBlue">Bleu sombre</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col col-md-9">
+                      <div class="form-group">
+                        <label for="graphModuleSelect">Module</label>
+                        <select class="form-control" id="graphModuleSelect">
+                        </select>
+                      </div>
+                    </div>
                   </div>
                   <div id="anychart" style="width: 640px; height: 480px;"></div>
                 </div>
+              </div>
             </div>
-        </div>
     </div>
 </div>
 
