@@ -61,20 +61,20 @@ class LogController extends Controller
         $this->middleware('auth');
         $user = Auth::user();
         if (empty($user)) abort(403);
-        $req = $request->json()->all();
 
         if (/*empty($req->companies) ||*/ empty($user->company_id)) abort(403);
         $modules = Module::/*where("company_id", "=", $user->company_id)*/
             select('company_id', 'name', 'module_id')
             ->get()->toArray();
         $modules_list = array_column($modules, 'module_id');
-
-        $from = $req->from ?? date("Y-m-j 0:0:0", strtotime('-1 days'));
-        $to = date("Y-m-j 23:59:59");
-
+        $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-3 days'));
+        $to = date("Y-m-d 23:59:59");
+        // check dates ?
         $temps = DB::table('logs')
                     ->select('cardId', 'maxtemp', 'created_at')
-                    ->whereBetween('created_at', [$from, $to])
+                    ->whereDate('created_at', '>', $from)
+                    ->whereDate('created_at', '<=', $to)
+                    //->whereBetween('created_at', [$from, $to])
                     ->whereIn('cardId', $modules_list)
                     ->whereNotNull('maxtemp')
                     ->where('maxtemp', '!=', '-99')

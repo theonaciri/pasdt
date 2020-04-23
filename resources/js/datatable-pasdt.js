@@ -9,7 +9,7 @@ require( 'datatables.net-scroller-bs4' );
 
 //var rowColor = require('./widgets/created-row-color.plugin.js');
 // jszip is commented because excel import does not work. CSV works
-define(['datatables.net', 'datatables.net-bs', /*'./graphs-chartjs',*/ './graphs-live-google-annotated', 'moment/moment',/*'jszip',*/
+define(['datatables.net', 'datatables.net-bs4', /*'./graphs-chartjs',*/ './graphs-live-google-annotated', 'moment/moment',/*'jszip',*/
   'flat', './components/datatable-fr', './components/color-event-assoc', './widgets/noping.plugin.js',
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 
   'Buttons/js/buttons.flash', */

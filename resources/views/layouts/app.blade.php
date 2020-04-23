@@ -16,12 +16,12 @@
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
         <script src="{{ asset('js/checkout.js') }}" defer></script>
-    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || FALSE && (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
         <script src="{{ asset('js/app.es5.js') }}" defer></script>
     @else
         <script src="{{ asset('js/app.js') }}" defer></script>
-        <script src="{{ asset('js/app2.js') }}" defer></script>
+        <!--<script src="{{ asset('js/app2.js') }}" defer></script>-->
     @endif
 
     <!-- Fonts -->
