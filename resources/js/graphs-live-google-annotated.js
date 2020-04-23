@@ -1,18 +1,30 @@
 define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function($) {
-	
+	var chart = null;
+	var data = null;
+	var theme = localStorage.getItem('graph-theme') || "defaultTheme";
+
 	function init() {
 		var a = new Date("2020-04-18 13:40:24");
 		$.getJSON("/logs/temp", {from: a.toJSON()})
-		.done(function(data) {
+		.done(function(_data) {
 			$(document).ready(function() {
-				onDataReceive(data, true);
+				data = _data;
+				onDataReceive(theme);
 				//auto_update();
 			});
 		})
 		.fail(function( jqxhr, textStatus, error ) {
 			console.error( "Request Failed: " + error );
 		});
+
 	}
+	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
+	$('#themeSelect').on('change', function (){
+	  	// recreate chart to reset theme
+	  	theme = this.value;
+	  	onDataReceive();
+		localStorage.setItem('graph-theme', this.value);
+	});
 
 	function transformData(temp_data) {
 		for (var i = temp_data.length - 1; i >= 0; i--) {
@@ -20,13 +32,19 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		}
 	}
 
-	function onDataReceive(data) {
+	function onDataReceive() {
+		$('#anychart').css("width", (window.innerWidth-100) + "px").css('height', (window.innerHeight -300) + "px")
+		if (chart != null) chart.dispose();
+		// set theme
+  		anychart.theme(theme);  
+
+
 		var date_options = {month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"};
 		// chart type
-		var chart = anychart.line();
+		chart = anychart.line();
 
 		// chart title
-		chart.title("Line Chart DateTime Scale");
+		chart.title("Evolution des températures des modules");
 
 		// set X axis labels formatter
 		// create custom Date Time scale
@@ -64,61 +82,14 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		var tooltip = series.tooltip();
 		tooltip.format(function () {
 			var value = (this.value).toFixed(0);
-			var date = new Date(this.created_at);
+			var date = new Date(this.x);
 			var transformedDate =  date.toLocaleDateString("fr-FR", date_options);
-
 			return "Temp: " + value + "°C.\nLe " + transformedDate ;
 		});
 
 		// set container and draw chart
 		chart.container("anychart");
 		chart.draw();
-	}
-	function onDataReceive0(data) {
-		//$('#anychart').anychart('column', [3, 1, 2]);
-
-		transformData(data.temps);
-		var dataTable = anychart.data.table();
-	    dataTable.addData(data.temps);
-	    var mapping = dataTable.mapAs({x: "created_at", value: "maxtemp"});
-
-	    var chart = anychart.stock();
-	    var line = chart.plot().line(mapping);
-
-	    var rangePicker = anychart.ui.rangePicker();
-	    var rangeSelector = anychart.ui.rangeSelector();
-
-		// apply Date Time scale
-	    var dateScale = anychart.scales.dateTime();
-		var dateTicks = dateScale.ticks();
-		dateTicks.interval(0,6);
-  		chart.xScale(dateScale);
-
-
-  		// adjust tooltips
-		var tooltip = line.tooltip();
-		tooltip.format(function () {
-			var value = (this.maxtemp).toFixed(0);
-			var date = new Date(this.x);
-			var options = {year: "numeric", month: "numeric", day: "numeric"};
-			var transformedDate =  date.toLocaleDateString("fr-FR", options);
-
-			return "Value: $" + value + " mil.\n" + transformedDate ;
-		});
-
-	    chart.title("Render the range selectors into a chart instance");
-
-		line.stroke({
-			angle: 90,
-			keys: ['#2fa85a', '#ecef17', '#ee4237'],
-			thickness: 3
-		});
-	    chart.container("anychart");
-	    chart.draw();
-		window.thischart = chart;
-	    // Render the range picker into an instance of a stock chart
-	    rangePicker.render(chart);
-	    rangeSelector.render(chart);
 	}
 	return {init: init};
 });

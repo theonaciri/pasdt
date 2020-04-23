@@ -106,19 +106,14 @@
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
-                    <div id="anychart" style="width: 640px; height: 480px;"></div>
-                    <div id="parentCanvas">
-                      <canvas id="liveChart"></canvas>
-                    </div>
-                    <p style="display: none">
-                      <button id="randomizeData">Randomize Data</button>
-                      <button id="addDataset">Add Dataset</button>
-                      <button id="removeDataset">Remove Dataset</button>
-                      <button id="addData">Add Data</button>
-                    </p>
-                    <div style="display: none">
-                      <input id="litepicker">
-                    </div>
+                  <div class="form-group col-sm-4 col-sm-3 col-md-2">
+                    <label for="themeSelect">Thème</label>
+                    <select class="form-control" id="themeSelect">
+                      <option value="defaultTheme">Défaut</option>
+                      <option value="darkBlue">Bleu sombre</option>
+                    </select>
+                  </div>
+                  <div id="anychart" style="width: 640px; height: 480px;"></div>
                 </div>
             </div>
         </div>
