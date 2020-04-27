@@ -72,6 +72,8 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		var date_options = {month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"};
 		// chart type
 		chart = anychart.line();
+		chart.animation(true);
+		chart.crosshair(true);
 
 		// chart title
 		chart.title("Evolution des températures des modules");
@@ -83,14 +85,13 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		dateTimeTicks.interval(0, 6);
 		// apply Date Time scale
 		chart.xScale(dateTimeScale);
-  		chart.xScale(dateTimeScale);
+
 		chart.xAxis().labels().format(function () {
 			return new Date(this.value).toLocaleDateString("fr-FR", date_options);
 		});
-
-		// set Y axis label formatter
-		chart.yScale().minimum(-20);
-		chart.yScale().maximum(90);
+		chart.yAxis().labels().format(function () {
+			return this.value + '°C';
+		});
 
 		// data
 		var filtered_data = transformData(data.temps);
@@ -101,6 +102,9 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 	    var mapping = dataSet.mapAs({value: "maxtemp", x: "created_at"});
 		var series = chart.line(mapping);
 
+		// set Y axis label formatter
+		chart.yScale().minimum(getMinTempOfDataSet(filtered_data) -5);
+		chart.yScale().maximum(getMaxTempOfDataSet(filtered_data) +5);
 
 		// set series stroke settings
 		series.stroke({
@@ -114,7 +118,7 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 			var value = (this.value).toFixed(0);
 			var date = new Date(this.x);
 			var transformedDate =  date.toLocaleDateString("fr-FR", date_options);
-			return "Temp: " + value + "°C.\nLe " + transformedDate ;
+			return "Temp: " + value + "°C\nLe " + transformedDate ;
 		});
 
 
@@ -129,6 +133,13 @@ define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function(
 		// set container and draw chart
 		chart.container("anychart");
 		chart.draw();
+	}
+
+	function getMaxTempOfDataSet(dataset) {
+		return Math.max.apply(Math, dataset.map(function(o) { return o.maxtemp; }))
+	}
+	function getMinTempOfDataSet(dataset) {
+		return Math.min.apply(Math, dataset.map(function(o) { return o.maxtemp; }))
 	}
 	return {init: init};
 });
