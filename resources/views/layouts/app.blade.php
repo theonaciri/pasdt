@@ -26,12 +26,15 @@
         <script src="/js/anychart-stock.min.js" type="text/javascript" defer></script>
         <script src="/js/anychart-ui.min.js" type="text/javascript" defer></script>
         <script src="/js/anychart-exports.min.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-locale-fr.min.js" type="text/javascript" defer></script>
+
         <script src="/js/anychart-theme-dark_blue.min.js" type="text/javascript" defer></script>
         <!--<script src="/js/anychart-jquery.min.js" type="text/javascript" defer></script>-->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="/css/anychart-ui.min.css" defer/>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
