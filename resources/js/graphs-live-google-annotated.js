@@ -104,9 +104,8 @@ function onDataReceive() {
 			return series.name() + ": " + this.value + "°C";
 		});
 	plot.xAxis().labels().format(function() {new Date(this.value).toLocaleDateString("fr-FR", date_options)});
-
     var series = plot.spline(mapping)
-            .name('PASDT Port de Rouen')
+            .name(getModuleFromId(active_module).name)
             .stroke(strokeColorsFct);
 	series.hovered().markers(true);
 	window.series = series;
@@ -212,6 +211,9 @@ function startStream(mapping, dataTable, filtered_data) {
 	//minimap
 	// access labels
 
+function getModuleFromId(module_id) {
+	return data.modules.find(function(o) { return o.module_id == module_id;})
+}
 /*
 function getMaxDateOfDataSet(dataset) {
 	return Math.max.apply(Math, dataset.map(function(o) { return o.created_at; }))
