@@ -1,9 +1,10 @@
 define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function($) {
+window.chart = null;
 var $mod_select = $('#graphModuleSelect');
-var chart = null;
 var data = null;
 var theme = localStorage.getItem('graph-theme') || "defaultTheme";
 var active_module = localStorage.getItem('graph-active-module');
+var interval_var = null;
 
 function init() {
 	var a = new Date("2020-04-18 13:40:24");
@@ -29,11 +30,11 @@ $('#themeSelect').on('change', function (){
 });
 
 function transformData(temp_data) {
-	var filtered_data = data.temps.filter(function(t) {return t.cardId === active_module});
-	for (var i = 0; i < filtered_data.length; ++i) {
-		filtered_data[i].created_at = new Date(temp_data[i].created_at).toUTCString();
+	var _filtered_data = data.temps.filter(function(t) {return t.cardId === active_module});
+	for (var i = 0; i < _filtered_data.length; ++i) {
+		_filtered_data[i].created_at = new Date(temp_data[i].created_at).toUTCString();
 	}
-	return filtered_data;
+	return _filtered_data;
 }
 
 function setModuleSelect() {
@@ -75,8 +76,7 @@ function onDataReceive() {
 	var date_options = {month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"};
 
 	// create a data set
-	var filtered_data = transformData(data.temps);	
-    console.log("data", filtered_data);
+	var filtered_data = transformData(data.temps);
 
     // create a table
 	var dataTable = anychart.data.table('created_at');
@@ -109,7 +109,7 @@ function onDataReceive() {
             .name('PASDT Port de Rouen')
             .stroke(strokeColorsFct);
 	series.hovered().markers(true);
-
+	window.series = series;
 
 	function strokeColorsFct() {
 	  var v = this.value;
@@ -175,7 +175,27 @@ function onDataReceive() {
 	// // set container and draw chart
 	chart.container("anychart");
 	chart.draw();
+	//startStream(mapping, dataTable, filtered_data);
 }
+/*
+function startStream(mapping, dataTable, filtered_data) {
+ 	// set interval of data stream
+	clearInterval(interval_var);
+	console.warn(filtered_data);
+	interval_var = setInterval(function() {
+
+      // append data
+
+      anychart.data.set().append({
+        cardId: "1850-00099",
+		created_at: "Sat, 18 Apr 2020 22:16:10 GMT",
+        // random value from 1 to 500
+        maxtemp : Math.floor((Math.random() * 40)+ 1)
+      });
+    }, 2000);
+  };
+
+*/
 /************************************/
 
 	// set X axis labels formatter
@@ -192,12 +212,16 @@ function onDataReceive() {
 	//minimap
 	// access labels
 
-
+/*
+function getMaxDateOfDataSet(dataset) {
+	return Math.max.apply(Math, dataset.map(function(o) { return o.created_at; }))
+}
 function getMaxTempOfDataSet(dataset) {
 	return Math.max.apply(Math, dataset.map(function(o) { return o.maxtemp; }))
 }
 function getMinTempOfDataSet(dataset) {
 	return Math.min.apply(Math, dataset.map(function(o) { return o.maxtemp; }))
 }
+*/
 return {init: init};
 });
