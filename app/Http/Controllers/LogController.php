@@ -15,21 +15,26 @@ use SoulDoit\DataTable\SSP;
 
 class LogController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Request $request)
-    {
-       // $this->middleware('auth');
+
+    public function getDefaultData(Request $req) {
+        $o = json_decode('{"draw":"1","columns":[{"data":"0","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"1","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"2","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"3","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"4","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}}],"order":[{"column":"0","dir":"desc"}],"start":"0","length":"10","search":{"value":null,"regex":"false"},"_":"1588506951547"}', true);
+        foreach($o as $key => $v) {
+            $req[$key] = $v;
+        }
+        return $req;
     }
-
-
-    /**
+        /**
     * Server-side filtering
     **/
-    function getData(Request $request) {
+    public function getData(Request $request, bool $tojson = true) {
+        if (count($request->all()) == 0) { $request = $this->getDefaultData($request); }
+        $this->middleware('auth');
+        $user = Auth::user();
+        if (empty($user)) abort(403, "Echec de l'authentification.");
+        if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
+        $su_company = $request->company ?? NULL;
+        $company = !empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company) ? $su_company : $user->company_id;
+
         date_default_timezone_set('Europe/Paris');
         $primaryKey = 'id';
 
@@ -37,7 +42,7 @@ class LogController extends Controller
             ['db'=>'created_at','dt'=>0, 'formatter'=> function($value, $model) {
                 return "Le " . date("d/m/y à H:i:s", strtotime($value));
             }],
-            ['db'=>'cardId',    'dt'=>1],
+            ['db'=>'modules.name',    'dt'=>1],
             ['db'=>'msg',       'dt'=>2, 'formatter'=> function($value, $model) {
                 return ucfirst(strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value))));
             }],
@@ -50,10 +55,15 @@ class LogController extends Controller
             }]
             //['db'=>'last_name'], // must include this because need to re-use in 'first_name' formatter
         ];
-        $dt_obj = new SSP('\App\Log', $dt);
+        $dt_obj = new SSP('logs', $dt);
+        $dt_obj->leftJoin('modules', 'logs.cardId', 'modules.module_id');
+        //$dt_obj->where($query_function);
         $dt_arr = $dt_obj->getDtArr();
-    
-        return response()->json($dt_arr);
+        if ($tojson) {
+            return response()->json($dt_arr);
+        } else {
+            return $dt_arr;
+        }
     }
 
     /**

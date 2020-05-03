@@ -81,6 +81,34 @@
                             </button>
                         </div>
                         <table id="main-table" class="table table-bordered" style="width: 100% !important;">
+                            
+                        @if (isset($logs) && false)
+                        <thead>
+                                <tr>
+                                    <th class="th-date">Date</th>
+                                    <th class="th-multiselect" >Nom du module</th>
+                                    <!--<th>Client</th>-->
+                                    <th class="th-message">Message</th>
+                                    <th class="select-temp">Température</th>
+                                    <th>Batterie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @foreach ($logs["data"] as $log)
+                                @if($loop->even)
+                                  <tr role="row" class="even">
+                                @else
+                                  <tr role="row" class="odd">
+                                @endif
+                                    <td class="sorting_1">{{$log[0]}}<td>
+                                    <td>{{$log[1]}}</td>
+                                    <td>{{$log[2]}}</td>
+                                    <td>{{$log[3]}}</td>
+                                    <td>{{$log[4]}}</td>
+                                  </tr>
+                              @endforeach
+                            </tbody>
+                            @else
                             <thead>
                                 <tr>
                                     <th class="th-date">Date</th>
@@ -91,6 +119,7 @@
                                     <th>Batterie</th>
                                 </tr>
                             </thead>
+                            @endif
                             <tfoot>
                                 <tr>
                                     <th class="th-date">Date</th>
@@ -202,6 +231,9 @@
     </div>
   </div>
 </div>
-
-
+@if (isset($logs))
+<script>
+var prelogs ='{!!json_encode($logs)!!}';
+</script>
+@endif
 @endsection
