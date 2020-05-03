@@ -27,7 +27,9 @@ class HomeController extends Controller
     {
         $log = new LogController;
         //return view('home');
-        return view('home', ["logs"=>$log->getData($req, false)]);
+        return view('home', [
+            "logs" => $log->getData($req, false),
+            "synth" => $log->getSynthesisData($req, false)]);
     }
 
     /**

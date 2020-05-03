@@ -15,7 +15,6 @@ use SoulDoit\DataTable\SSP;
 
 class LogController extends Controller
 {
-
     public function getDefaultData(Request $req) {
         $o = json_decode('{"draw":"1","columns":[{"data":"0","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"1","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"2","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"3","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}},{"data":"4","name":null,"searchable":"true","orderable":"true","search":{"value":null,"regex":"false"}}],"order":[{"column":"0","dir":"desc"}],"start":"0","length":"10","search":{"value":null,"regex":"false"},"_":"1588506951547"}', true);
         foreach($o as $key => $v) {
@@ -42,15 +41,18 @@ class LogController extends Controller
             ['db'=>'created_at','dt'=>0, 'formatter'=> function($value, $model) {
                 return "Le " . date("d/m/y à H:i:s", strtotime($value));
             }],
-            ['db'=>'modules.name',    'dt'=>1],
-            ['db'=>'msg',       'dt'=>2, 'formatter'=> function($value, $model) {
-                return ucfirst(strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value))));
+            ['db'=>'modules.name',  'dt'=>1],
+            ['db'=>'msg',           'dt'=>2, 'formatter'=> function($value, $model) {
+                $msg = ucfirst(strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value))));
+                if ($msg === "Ack")
+                    return "Acquittement";
+                return $msg;
             }],
-            ['db'=>'maxtemp',   'dt'=>3, 'formatter'=> function($value, $model) {
+            ['db'=>'maxtemp',       'dt'=>3, 'formatter'=> function($value, $model) {
                 $t = intval($value);
                 return $t != null && $t < 785 && $t > -99 ? $value . "°C" : "";
             }],
-            ['db'=>'vbat',      'dt'=>4, 'formatter'=> function($value, $model) {
+            ['db'=>'vbat',          'dt'=>4, 'formatter'=> function($value, $model) {
                 return $value != null ? $value . "V" : "";
             }]
             //['db'=>'last_name'], // must include this because need to re-use in 'first_name' formatter
@@ -145,7 +147,7 @@ class LogController extends Controller
     * Connexion web
     */
 
-    public function getSynthesisData(Request $request) {
+    public function getSynthesisData(Request $request, bool $tojson = true) {
         $this->middleware('auth');
         $user = Auth::user();
         if (empty($user)) abort(403);
@@ -204,7 +206,11 @@ EOTSQL));
                     }
                 }
             }
-        return response()->json($alerts_array);
+        if ($tojson) {
+            return response()->json($alerts_array);
+        } else {
+            return $alerts_array;
+        }
         //return response()->json($othermodules);
     }
 

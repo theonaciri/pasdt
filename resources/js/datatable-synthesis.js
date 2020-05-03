@@ -102,12 +102,13 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 	        $("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM à kk:mm:ss"));
 	        $("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM à kk:mm:ss"));
 	      },
-	      language: datatablefr,
-	      "ajax": {
+		  language: datatablefr,
+		  data: presynths,
+	      /*"ajax": {
 	        //"url": "/json/data/dump.json",
 	        "url": "/logs/synth" + (getUrlParameter('company') ? '?company=' + getUrlParameter('company') : ''),
 	        "dataSrc": ""
-	      },
+	      },*/
 	      "order": [
 	        [2, "desc"]
 	      ],
