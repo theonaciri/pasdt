@@ -232,9 +232,12 @@
     </div>
   </div>
 </div>
-@if (isset($logs))
 <script>
-var prelogs ='{!!json_encode($logs)!!}';
-</script>
+@if (isset($logs))
+var prelogs = {!!json_encode($logs)!!};
 @endif
+@if (isset($synth))
+var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
+@endif
+</script>
 @endsection
