@@ -131,6 +131,7 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        <p>Le tableau est actualisé toutes les 5 minutes</p>
                     </div>
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                   </div>

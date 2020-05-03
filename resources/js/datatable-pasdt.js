@@ -77,46 +77,43 @@ function _initTable() {
       }, 
       'csvHtml5'
     ],
-    initComplete: function (settings, data) {
-      prelogs = null;
-      console.error('deleting');
-    },
     /*columns: {!!json_encode($dt_info['labels'])!!},
     order: {!!json_encode($dt_info['order'])!!},*/
-    // initComplete: function() {
-    //   /* Dropdown */
-    //   this.api().columns([1]).every(function() {
-    //     var column = this;
-    //     var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
-    //       .appendTo($(column.footer()).empty())
-    //       .on('change', function() {
-    //         var val = $(this).val();
-    //         var count_before = table.page.info().recordsDisplay;
-    //         if (!val.length || val.length == 1 && !val[0].length) {
-    //           column.search('', true, false).draw();
-    //         } else { // /!\ No escape security
-    //           column.search('^' + val.join('|') + '$', true, false).draw();
-    //         }
-    //         var count_after = table.page.info().recordsDisplay;
-    //         if (count_before < 10 && count_after > count_before || count_after < 10) {
-    //           select.selectpicker('toggle');
-    //         }
-    //         //var a = $.fn.dataTable.util.escapeRegex(val.join('|'));
-    //       });
-    //       column.data().unique().sort().each(function(d, j) {
-    //       if (d != null && typeof d != 'undefined') {
-    //         var val = d.toString().replace(/["'$$$]/g, "");
-    //         select.append('<option value="' + val + '">' + val + '</option>')
-    //       }
-    //     });
-    //     select.selectpicker({actionsBox: true});
-    //   });
-    //   noping.initNopingButtons(table);
-    // },
+    initComplete: function() {
+      prelogs = null;
+      /* Dropdown */
+     /* this.api().columns([1]).every(function() {
+        var column = this;
+        var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
+          .appendTo($(column.footer()).empty())
+          .on('change', function() {
+            var val = $(this).val();
+            var count_before = table.page.info().recordsDisplay;
+            if (!val.length || val.length == 1 && !val[0].length) {
+              column.search('', true, false).draw();
+            } else { // /!\ No escape security
+              column.search('^' + val.join('|') + '$', true, false).draw();
+            }
+            var count_after = table.page.info().recordsDisplay;
+            if (count_before < 10 && count_after > count_before || count_after < 10) {
+              select.selectpicker('toggle');
+            }
+            //var a = $.fn.dataTable.util.escapeRegex(val.join('|'));
+          });
+          column.data().unique().sort().each(function(d, j) {
+          if (d != null && typeof d != 'undefined') {
+            var val = d.toString().replace(/["'$$$]/g, "");
+            select.append('<option value="' + val + '">' + val + '</option>')
+          }
+        });
+        select.selectpicker({actionsBox: true});
+      });
+      noping.initNopingButtons(table);*/
+    },
   });
 setInterval( function () {
-  //table.ajax.reload( null, false ); // user paging is not reset on reload
-}, 60000 );
+  table.ajax.reload( null, false ); // user paging is not reset on reload
+}, 5 * 60000 );
 }
 function _0initTable() {
   // app.js  table.style.width = _fnStringToCss( total );
