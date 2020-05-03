@@ -26,7 +26,7 @@ Route::get('/client', 'ClientController@index')->name('client');
 Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin');
 Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUser');
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
-
+Route::get('/users/get', 'AdminController@getUsers')->name('users.get');
 
 
 /* COMPANY */
@@ -40,6 +40,7 @@ Route::put('/company/{company}/module/{module}/unlink', 'CompanyController@unlin
 
 /* LOGS */
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
+Route::get('/logs/get', 'LogController@getData')->name('log.get');
 Route::get('/logs/temp', 'LogController@getTempData')->name('log.get.temp');
 Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth');
 

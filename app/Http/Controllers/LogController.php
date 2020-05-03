@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use SoulDoit\DataTable\SSP;
+
 
 class LogController extends Controller
 {
@@ -21,6 +23,37 @@ class LogController extends Controller
     public function __construct(Request $request)
     {
        // $this->middleware('auth');
+    }
+
+
+    /**
+    * Server-side filtering
+    **/
+    function getData(Request $request) {
+        date_default_timezone_set('Europe/Paris');
+        $primaryKey = 'id';
+
+        $dt = [
+            ['db'=>'created_at','dt'=>0, 'formatter'=> function($value, $model) {
+                return "Le " . date("d/m/y à H:i:s", strtotime($value));
+            }],
+            ['db'=>'cardId',    'dt'=>1],
+            ['db'=>'msg',       'dt'=>2, 'formatter'=> function($value, $model) {
+                return ucfirst(strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value))));
+            }],
+            ['db'=>'maxtemp',   'dt'=>3, 'formatter'=> function($value, $model) {
+                $t = intval($value);
+                return $t != null && $t < 785 && $t > -99 ? $value . "°C" : "";
+            }],
+            ['db'=>'vbat',      'dt'=>4, 'formatter'=> function($value, $model) {
+                return $value != null ? $value . "V" : "";
+            }]
+            //['db'=>'last_name'], // must include this because need to re-use in 'first_name' formatter
+        ];
+        $dt_obj = new SSP('\App\Log', $dt);
+        $dt_arr = $dt_obj->getDtArr();
+    
+        return response()->json($dt_arr);
     }
 
     /**

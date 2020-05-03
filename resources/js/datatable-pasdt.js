@@ -37,6 +37,15 @@ String.prototype.capFirstLetter = function () {
 }
 
 function _initTable() {
+  $('#main-table').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: '/logs/get'
+    /*columns: {!!json_encode($dt_info['labels'])!!},
+    order: {!!json_encode($dt_info['order'])!!},*/
+});
+}
+function _0initTable() {
   // app.js  table.style.width = _fnStringToCss( total );
   /*
       if (!$('#main-table').is(':visible')) {
@@ -52,6 +61,8 @@ function _initTable() {
       $(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
     });
     table = $('#main-table').DataTable({
+      serverSide: true,
+      ajax: "/logs/get",
       dom: 'Blfrtip',
       lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
       pageLength: 10,
