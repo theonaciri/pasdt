@@ -15,9 +15,36 @@ var cal_interval = flatpickr('#dateinterval_logtable', {
       table.ajax.reload( null, false );
     }
 });
-$('.clear-cal').on('click', function() {
+
+$('.clear-cal').on('click', function(e) {
   cal_interval.clear();
-})
+});
+
+var onlytemp = false; //localStorage.getItem('notemp') === "true";
+var noday = false; //localStorage.getItem('noday') === "true";
+$("#noday").toggleClass('btn-dark', noday).on('click', function(e) {
+  noday = !noday;
+  if (onlytemp == noday == true) {
+    onlytemp = false;
+    $("#notemp").toggleClass('btn-dark', onlytemp);
+  }
+  localStorage.setItem('noday', noday);
+  $("#noday").toggleClass('btn-dark', noday);
+  table.ajax.reload( null, false );
+});
+
+$("#notemp").toggleClass('btn-dark', onlytemp)
+  .on('click', function(e) {
+  onlytemp = !onlytemp;
+  if (onlytemp == noday == true) {
+    noday = false;
+    $("#noday").toggleClass('btn-dark', noday);
+  }
+  localStorage.setItem('notemp', onlytemp);
+  $("#notemp").toggleClass('btn-dark', onlytemp);
+  table.ajax.reload( null, false );
+});
+
 function dataTablesEvents() {
   $('#main-table').on('click', 'tr', function () {
       var data = table.row( this ).data();
@@ -86,7 +113,10 @@ function getData(data, callback, settings) {
     }
   } else {
     data.interval = [];
-    cal_interval.selectedDates.forEach(function(d) {data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))})
+    cal_interval.selectedDates.forEach(function(d) {data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
+    data.onlytemp = onlytemp;
+    data.noday = noday;
+
     console.log(data);
     $.ajax({
       "url": "/logs/get",

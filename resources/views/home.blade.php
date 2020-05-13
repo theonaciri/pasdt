@@ -40,10 +40,6 @@
         
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'show active' : '' }}" id="synthesis" role="tabpanel" aria-labelledby="synthesis-table">
-                  <div class="col-md-6">
-                    <input name="dateinterval" id="dateinterval_synth"/>
-                    <button class="btn btn-secondary clear-cal">X</button>
-                  </div>
                     <div class="container">
                         <table id="synthesis-table" class="table table-bordered">
                             <thead>
