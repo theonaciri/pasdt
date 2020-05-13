@@ -38,7 +38,7 @@ class LogController extends Controller
         $primaryKey = 'id';
 
         $dt = [
-            ['db'=>'created_at','dt'=>0, 'formatter'=> function($value, $model) {
+            ['db'=>'created_at',    'dt'=>0, 'formatter'=> function($value, $model) {
                 return "Le " . date("d/m/y à H:i:s", strtotime($value));
             }],
             ['db'=>'modules.name',  'dt'=>1],
@@ -59,8 +59,43 @@ class LogController extends Controller
         ];
         $dt_obj = new SSP('logs', $dt);
         $dt_obj->leftJoin('modules', 'logs.cardId', 'modules.module_id');
-        //$dt_obj->where($query_function);
+
+        /* Search */
+        $s_array = [];
+
+        foreach ($request["columns"] as $key => $column) {
+            $s_value = $column["search"]["value"];
+            $colname = $dt[$key]["db"];
+            if (!empty($s_value)) {
+                if ($colname == "modules.name") {
+                    $r = str_replace(",", "|", trim($s_value, ", |"));
+                    $dt_obj->where('modules.name', 'REGEXP', $r);
+                } else {
+                    if ($colname == "created_at") { // date format
+                        $r = $this::formatDateSearch($s_value);
+                    } else if ($colname == "msg") {
+                        $r = $s_value;
+                    } else { // keep only numbers
+                        $r = preg_replace('/[^0-9.]+/', '', $s_value);
+                    }
+                    $dt_obj->where('logs.' . $colname, 'like', '%' . $r . '%');
+                }
+                $s_array[$colname] = $r;
+            }
+        }
+        // Interval
+        if (!empty($request['interval']) && is_array($request['interval']) && count($request['interval']) === 2) {
+            $dt_obj->where(function($query) use ($request){
+                $query->whereBetween('logs.created_at', [$request['interval'][0], $request['interval'][1] . ' 23:59:59']);
+            });
+            $s_array["interval"] = $request['interval'];
+        }
         $dt_arr = $dt_obj->getDtArr();
+        $dt_arr['search_results'] = $s_array;
+        //dd('SOO',  $s0 ? "%" . $s0 . "%": "%");
+        //$dt_obj->where('logs.maxtemp', "17");
+        //$dt_obj->where($query_function);
+        //dd($dt_obj);
         if ($tojson) {
             return response()->json($dt_arr);
         } else {
@@ -267,5 +302,32 @@ EOTSQL));
         return str_pad(dechex($datecode), 4, '0', STR_PAD_LEFT)
             . '-'
             . str_pad(hexdec($serial), 5, '0', STR_PAD_LEFT);
+    }
+
+    public static function formatDateSearch($originalDate) {
+        $originalDate = str_replace('h', ':', $originalDate);
+        $originalDate = str_replace(['à', ','], ' ', $originalDate);
+        $originalDate = str_replace('/', '-', $originalDate);
+        $srch = "";
+
+        if (ctype_digit($originalDate) && strlen($originalDate) <= 2) {
+            return "-" . $originalDate . " "; // 18 nous donne tous les jours 18 du mois
+        } else if (ctype_digit($originalDate) && strlen($originalDate) == 4) {
+            $srch = "Y";
+            $originalDate = "01/01/" . $originalDate;
+        } else {
+            if (strpos($originalDate, "-") !== FALSE) {
+                $srch .= "Y-m-d ";
+            }
+            switch (substr_count($originalDate, ":")) {
+                case 1: //18h nous donne tous les jours à 18h
+                    return " " . $originalDate;
+                    break;
+                case 2:
+                    $srch .= "H:i";
+                    break;
+            }
+        }
+        return date(trim($srch), strtotime($originalDate));
     }
 }

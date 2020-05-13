@@ -46,8 +46,7 @@ mix.js('resources/js/app.js', 'public/js')
    //.babel('public/js/vendor.js', 'public/js/vendor.es5.js');
 
 mix.browserSync('127.0.0.1:8000');
-/*
+
 if (!mix.inProduction()) {
     mix.bundleAnalyzer();
 }
-*/
