@@ -32,8 +32,8 @@
         <!--<script src="/js/anychart-jquery.min.js" type="text/javascript" defer></script>-->
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
     <link rel="stylesheet" href="/css/anychart-ui.min.css" defer/>
 
     <!-- Styles -->

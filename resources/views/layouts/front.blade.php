@@ -20,8 +20,8 @@
     @endif
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -30,7 +30,7 @@
         html, body {
             background-color: #e0ebeb;
             color: #636b6f;
-            font-family: 'Nunito', sans-serif;
+            font-family: sans-serif;
             font-weight: 200;
             height: 100vh;
             margin: 0;

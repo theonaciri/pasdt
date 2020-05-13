@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LogController;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,11 @@ class HomeController extends Controller
      */
     public function index(Request $req)
     {
-        return view('home');
+        $log = new LogController;
+        //return view('home');
+        return view('home', [
+            "logs" => $log->getData($req, false),
+            "synth" => $log->getSynthesisData($req, false)]);
     }
 
     /**

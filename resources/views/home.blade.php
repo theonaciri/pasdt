@@ -65,14 +65,13 @@
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="container">
+                  <div class="container">
                         <!--<button type="button" class="btn togglebtn toggle-buttons" data-toggle="button" aria-pressed="false" title="Montrer plus ou moins d'options de recherche"><span class="oi oi-minus"></span><span class="oi oi-plus"></span>&nbsp;<span class="oi oi-magnifying-glass"></span></button>-->
                         <div id="date_filter" class="input-group">
-                            <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span>
-                            <input class="date_range_filter date form-control" type="date" id="datepicker_from" placeholder="jj/mm/aaaa" />
-                            <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span>
-                            <input class="date_range_filter date form-control" type="date" id="datepicker_to" placeholder="jj/mm/aaaa" />
-                            &nbsp;
+                            <div class="date-interval-container row">
+                              <input name="dateinterval" id="dateinterval_logtable" class="col-md-10"/>
+                              <button class="btn btn-secondary clear-cal col-md-2" title="Vider le calendrier">X</button>
+                            </div>
                             <button type="button" class="btn togglebtn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
                             </button>
@@ -81,6 +80,34 @@
                             </button>
                         </div>
                         <table id="main-table" class="table table-bordered" style="width: 100% !important;">
+                            
+                        @if (isset($logs) && false)
+                        <thead>
+                                <tr>
+                                    <th class="th-date">Date</th>
+                                    <th class="th-multiselect" >Nom du module</th>
+                                    <!--<th>Client</th>-->
+                                    <th class="th-message">Message</th>
+                                    <th class="select-temp">Température</th>
+                                    <th>Batterie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @foreach ($logs["data"] as $log)
+                                @if($loop->even)
+                                  <tr role="row" class="even">
+                                @else
+                                  <tr role="row" class="odd">
+                                @endif
+                                    <td class="sorting_1">{{$log[0]}}<td>
+                                    <td>{{$log[1]}}</td>
+                                    <td>{{$log[2]}}</td>
+                                    <td>{{$log[3]}}</td>
+                                    <td>{{$log[4]}}</td>
+                                  </tr>
+                              @endforeach
+                            </tbody>
+                            @else
                             <thead>
                                 <tr>
                                     <th class="th-date">Date</th>
@@ -91,17 +118,23 @@
                                     <th>Batterie</th>
                                 </tr>
                             </thead>
+                            @endif
                             <tfoot>
                                 <tr>
-                                    <th class="th-date">Date</th>
-                                    <th class="th-multiselect" id="module-name">Nom du module</th>
+                                    <th class="th-date" rowspan="1" colspan="1" data-column="0"><input type="text" class="form-control" placeholder="Rechercher Date"></th>
+                                    <th class="th-multiselect" id="module-name" rowspan="1" colspan="1" data-column="1">
+                                      <div class="dropdown bootstrap-select show-tick form-control">
+                                        <select class="selectpicker form-control">
+                                      </div>
+                                    </th>
                                     <!--<th>Client</th>-->
-                                    <th class="th-input-message">Message</th>
-                                    <th class="select-temp">Température min.</th>
-                                    <th class="select-bat">Batterie</th>
+                                    <th class="th-input-message" rowspan="1" colspan="1" data-column="2"><input type="text" class="form-control" placeholder="Rechercher Anomalie"></th>
+                                    <th class="select-temp" rowspan="1" colspan="1" data-column="3"><input type="text" class="form-control" placeholder="Rechercher Température min."></th>
+                                    <th class="select-bat" rowspan="1" colspan="1" data-column="4"><input type="text" class="form-control" placeholder="Rechercher Batterie"></th>
                                 </tr>
                             </tfoot>
                         </table>
+                        <p>Le tableau est actualisé toutes les 5 minutes</p>
                     </div>
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                   </div>
@@ -202,6 +235,12 @@
     </div>
   </div>
 </div>
-
-
+<script>
+@if (isset($logs))
+var prelogs = {!!json_encode($logs)!!};
+@endif
+@if (isset($synth))
+var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
+@endif
+</script>
 @endsection

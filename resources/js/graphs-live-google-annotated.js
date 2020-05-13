@@ -1,4 +1,4 @@
-define(["jquery", "moment/moment"/*, "anychart", "anychart-jquery"*/], function($) {
+define(["jquery", /*, "anychart", "anychart-jquery"*/], function($) {
 window.chart = null;
 var $mod_select = $('#graphModuleSelect');
 var data = null;
@@ -89,7 +89,7 @@ function onDataReceive() {
 	chart = anychart.stock();
 	chart.animation(true);
 	chart.crosshair(true);
-	chart.title("Evolution des températures des modules");
+	chart.title("Evolution des températures");
 
 	// create the plot
 	var plot = chart.plot(0);
