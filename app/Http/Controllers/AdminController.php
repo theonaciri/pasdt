@@ -94,4 +94,24 @@ class AdminController extends Controller
         }
         return redirect()->route('admin', []);
     }
+
+    /**
+    * Server-side filtering on users
+    **/
+    function getUsers(Request $request) {
+        $primaryKey = 'id';
+
+        $dt = [
+            ['db'=>'id', 'dt'=>0, 'formatter'=>function($value, $model){ return str_pad($value, 8, '0', STR_PAD_LEFT); }],
+            ['db'=>'email', 'dt'=>1],
+            ['db'=>'name', 'dt'=>2],
+            ['db'=>'created_at', 'dt'=>3],
+            ['db'=>'email_verified_at']
+            //['db'=>'last_name'], // must include this because need to re-use in 'first_name' formatter
+        ];
+        $dt_obj = new SSP('\App\User', $dt);
+        $dt_arr = $dt_obj->getDtArr();
+    
+        return response()->json($dt_arr);
+    }
 }

@@ -101,8 +101,10 @@ table input, table select {
 .dt-black {
 	background-color: #2223;
 }
-#date-label-from, #date-label-to {
-  padding: 5px;
+
+.date-interval-container {
+  width: 312px;
+  margin: 0;
 }
 
 
@@ -189,6 +191,11 @@ table input, table select {
 
 .container {
   max-width: 100%;
+}
+
+// dropdown
+.actions-btn.bs-select-all {
+  display: none;
 }
 
 // SLIDER
