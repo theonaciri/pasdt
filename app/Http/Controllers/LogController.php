@@ -90,6 +90,25 @@ class LogController extends Controller
             });
             $s_array["interval"] = $request['interval'];
         }
+        // OnlyTemp/Anom
+        if (!empty($request['onlytemp']) && $request['onlytemp'] == "true") {
+            $dt_obj->where(function($query) use ($request){
+                $query->whereNotNull('maxtemp')
+                      ->where('maxtemp', '<>', '')
+                      ->where('maxtemp', '!=', '-99')
+                      ->where('maxtemp', '!=', '785');
+            });
+            $s_array["onlytemp"] = $request['onlytemp'];
+        }
+        if (!empty($request['noday']) && $request['noday'] == "true") {
+            $dt_obj->where(function($query) use ($request){
+                $query->where('msg', '!=', '["DAY"]')
+                      ->where('msg', '!=', '["HOUR"]')
+                      ->where('msg', '!=', '["ACK"]');
+            });
+            $s_array["noday"] = $request['noday'];
+        }
+
         $dt_arr = $dt_obj->getDtArr();
         $dt_arr['search_results'] = $s_array;
         //dd('SOO',  $s0 ? "%" . $s0 . "%": "%");
