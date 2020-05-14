@@ -109,6 +109,9 @@ class LogController extends Controller
             $s_array["noday"] = $request['noday'];
         }
 
+        // company filter
+        $dt_obj->where('modules.company_id' , '=', $company);
+
         $dt_arr = $dt_obj->getDtArr();
         $dt_arr['search_results'] = $s_array;
         //dd('SOO',  $s0 ? "%" . $s0 . "%": "%");
