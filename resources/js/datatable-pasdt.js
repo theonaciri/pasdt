@@ -45,7 +45,6 @@ function _initTable() {
         return ;
       }
       */
-  console.log('CC true');
     /* Setup - add a text input to each footer cell */  
     $('#main-table tfoot th').each(function() {
       var title = $(this).text();

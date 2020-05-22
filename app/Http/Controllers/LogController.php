@@ -167,7 +167,7 @@ EOTSQL));
         }
     }
 
-    public function convertIdPasdtToTelit($pasdt_str) {
+    public function convertOverspeedToTelit($pasdt_str) {
         // 002306224 -> 1850-00035
         if (strlen($pasdt_str) != 9) return NULL;
         $serial = substr($pasdt_str, 0, 4);
@@ -175,5 +175,13 @@ EOTSQL));
         return str_pad(dechex($datecode), 4, '0', STR_PAD_LEFT)
             . '-'
             . str_pad(hexdec($serial), 5, '0', STR_PAD_LEFT);
+    }
+    public function convertTelitIdtoIdPasdt($pasdt_str) {
+        // 1850-00035 -> 002306224
+        if (strlen($pasdt_str) != 10) return NULL;
+        $datecode = substr($pasdt_str, 0, 4);
+        $serial = substr($pasdt_str, 6, 10);
+        return str_pad(dechex($serial), 4, '0', STR_PAD_LEFT)
+            . str_pad(hexdec($datecode), 5, '0', STR_PAD_LEFT);
     }
 }
