@@ -286,7 +286,7 @@ EOTSQL));
     {
         $this->authAPI($request);
         $log = $request->json()->all();
-        $log["cardId"] = $this->convertIdPasdtToTelit($log["cardId"]);
+        $log["cardId"] = $this->convertOverspeedToTelit($log["cardId"]);
         $log["msg"] = json_encode($log["msg"]);
         $log["options"] = json_encode($log["options"]);
         $json = json_decode($log["options"]);
@@ -322,8 +322,8 @@ EOTSQL));
             abort(403, "Echec de l'authentification.");
         }
     }
-
-    public function convertIdPasdtToTelit($pasdt_str) {
+    
+    public function convertOverspeedToTelit($pasdt_str) {
         // 002306224 -> 1850-00035
         if (strlen($pasdt_str) != 9) return NULL;
         $serial = substr($pasdt_str, 0, 4);
@@ -332,7 +332,14 @@ EOTSQL));
             . '-'
             . str_pad(hexdec($serial), 5, '0', STR_PAD_LEFT);
     }
-
+    public function convertTelitToOverspeed($pasdt_str) {
+        // 1850-00035 -> 002306224
+        if (strlen($pasdt_str) != 10) return NULL;
+        $datecode = substr($pasdt_str, 0, 4);
+        $serial = substr($pasdt_str, 6, 10);
+        return str_pad(dechex($serial), 4, '0', STR_PAD_LEFT)
+            . str_pad(hexdec($datecode), 5, '0', STR_PAD_LEFT);
+    }
     public static function formatDateSearch($originalDate) {
         $originalDate = str_replace('h', ':', $originalDate);
         $originalDate = str_replace(['à', ','], ' ', $originalDate);
