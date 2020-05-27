@@ -35,7 +35,15 @@ class LogController extends Controller
         if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
         //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
         $su_company = $request->company ?? NULL;
-        $company = !empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company) ? $su_company : $user->company_id;
+        if (!empty($user->su_admin) && $user->su_admin == 1) {
+            if (!empty($su_company)) {
+                $company = $su_company;
+            } else {
+                $company = '%';
+            }
+        } else {
+            $company = $user->company_id;
+        }
         if ($user->su_admin && is_null($su_company)) {
             $logs = DB::table('logs')
                 ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
@@ -176,7 +184,7 @@ EOTSQL));
             . '-'
             . str_pad(hexdec($serial), 5, '0', STR_PAD_LEFT);
     }
-    public function convertTelitIdtoIdPasdt($pasdt_str) {
+    public function convertTelitToOverspeed($pasdt_str) {
         // 1850-00035 -> 002306224
         if (strlen($pasdt_str) != 10) return NULL;
         $datecode = substr($pasdt_str, 0, 4);
