@@ -32,8 +32,15 @@ class LogController extends Controller
         if (empty($user)) abort(403, "Echec de l'authentification.");
         if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
         $su_company = $request->company ?? NULL;
-        $company = !empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company) ? $su_company : $user->company_id;
-
+        if (!empty($user->su_admin) && $user->su_admin == 1) {
+            if (!empty($su_company)) {
+                $company = $su_company;
+            } else {
+                $company = '%';
+            }
+        } else {
+            $company = $user->company_id;
+        }
         date_default_timezone_set('Europe/Paris');
         $primaryKey = 'id';
 
