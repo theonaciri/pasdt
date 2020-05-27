@@ -1,5 +1,7 @@
 $screen-xxl: 1600px !default;
-
+.navbar-light .navbar-nav {
+  color: rgb(80, 80, 80);
+}
 #main-table {
 
   .th-multiselect {
