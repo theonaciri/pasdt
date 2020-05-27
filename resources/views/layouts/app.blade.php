@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="description" content="suivi de logs PASDT">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="manifest" href="/manifest.webmanifest">
 
     <title>{{ config('app.name', 'PASDT') }}</title>
-
+    <link rel="apple-touch-icon" href="/images/logo-192.png">
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
@@ -41,7 +42,7 @@
     <!--<link href="{{ asset('css/app2.css') }}" rel="stylesheet">-->
     
     <style>
-        @if(isset($_company->colors))
+        @if(!empty($_company->colors))
         body {
             background-color: {{ $_company->colors }} 
         }

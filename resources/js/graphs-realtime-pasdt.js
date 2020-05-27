@@ -131,7 +131,6 @@ function formatDate(date){
         //console.log('x', new Date(now - (historyLength  - 2) * duration_s), ' to ', new Date(now - duration_s));
         // push the accumulated count onto the back, and reset the count
         scrollData.push(Math.min(30, count));
-        console.log('count', Math.min(30, count));
         count = 0;
 
         // redraw the line

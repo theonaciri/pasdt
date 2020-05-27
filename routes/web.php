@@ -18,7 +18,6 @@ Route::get('/', function () {
 
 Route::get('/', 'HomeController@index')->name('welcome');
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 /* USER */
@@ -28,7 +27,6 @@ Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUs
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get');
 
-
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
 Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post');
@@ -37,13 +35,13 @@ Route::get('/company/{id}/modules', 'CompanyController@getModules')->name('compa
 Route::post('/company/{company}/module/{module}', 'CompanyController@linkModule')->name('company.module.link');
 Route::put('/company/{company}/module/{module}/unlink', 'CompanyController@unlinkModule')->name('company.module.unlink');
 
-
 /* LOGS */
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
 Route::get('/logs/get', 'LogController@getData')->name('log.get');
 Route::get('/logs/temp', 'LogController@getTempData')->name('log.get.temp');
 Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth');
-
+Route::get('/logs/OverspeedToTelit/{pasdt_str}', 'LogController@convertOverspeedToTelit')->name('log.convert.over.to.telit');
+Route::get('/logs/TelitToOverspeed/{pasdt_str}', 'LogController@convertTelitToOverspeed')->name('log.convert.telit.to.over');
 
 /* MODULE */
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
@@ -54,15 +52,11 @@ Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get')
 Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json');
 Route::get('/module', 'ModuleController@index')->name('module');
 
-
-
 /* CHECKOUT */
 Route::get('/checkout', 'ClientController@checkout')->name('checkout');
 Route::get('/checkout', 'ClientController@checkout')->name('company_create');
 Route::post('/add-sub', 'ClientController@addSub')->name('addSub');
 Route::get('/subscription', 'SubscriptionController@index')->name('update-payment-method');
-
-
 
 /* TELIT */
 Route::get('/telit-json/{telit_id}', 'ModuleController@getTelitJson')->name('telit.json');
