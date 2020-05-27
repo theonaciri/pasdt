@@ -117,7 +117,7 @@ class LogController extends Controller
         }
 
         // company filter
-        $dt_obj->where('modules.company_id' , '=', $company);
+        $dt_obj->where('modules.company_id' , 'LIKE', $company);
 
         $dt_arr = $dt_obj->getDtArr();
         $dt_arr['search_results'] = $s_array;
