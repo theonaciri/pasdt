@@ -10,35 +10,27 @@
     <title>{{ config('app.name', 'PASDT') }}</title>
 
     <!-- Scripts -->
-    <script src="/js/manifest.js"></script>
-    <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
-        <!--  <link rel="stylesheet" href="StripeElements.css"> -->
-        <script src="{{ asset('js/checkout.js') }}" defer></script>
     @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
-        <script src="/js/vendor.es5.js"></script>
         <script src="{{ asset('js/app.es5.js') }}" defer></script>
     @else
-        <script src="/js/vendor.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
-        <script src="{{ asset('js/app2.js') }}" defer></script>
     @endif
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app2.css') }}" rel="stylesheet">
         
 	<style>
         html, body {
             background-color: #e0ebeb;
             color: #636b6f;
-            font-family: 'Nunito', sans-serif;
+            font-family: sans-serif;
             font-weight: 200;
             height: 100vh;
             margin: 0;

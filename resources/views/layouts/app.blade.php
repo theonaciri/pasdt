@@ -15,22 +15,32 @@
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
-        <script src="{{ asset('js/checkout.js') }}" defer></script>
-    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+        <!--<script src="{{ asset('js/checkout.js') }}" defer></script>-->
+    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || FALSE && (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
         <script src="{{ asset('js/app.es5.js') }}" defer></script>
     @else
         <script src="{{ asset('js/app.js') }}" defer></script>
-        <script src="{{ asset('js/app2.js') }}" defer></script>
+        <!--<script src="{{ asset('js/app2.js') }}" defer></script>-->
     @endif
+        <script src="/js/anychart-base.min.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-stock.min.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-ui.min.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-exports.min.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-locale-fr.min.js" type="text/javascript" defer></script>
+
+        <script src="/js/anychart-theme-dark_blue.min.js" type="text/javascript" defer></script>
+        <!--<script src="/js/anychart-jquery.min.js" type="text/javascript" defer></script>-->
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
+    <link rel="stylesheet" href="/css/anychart-ui.min.css" defer/>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app2.css') }}" rel="stylesheet">
+    <!--<link href="{{ asset('css/app2.css') }}" rel="stylesheet">-->
+    
     <style>
         @if(!empty($_company->colors))
         body {
@@ -130,4 +140,5 @@
         </main>
     </div>
 </body>
+
 </html>

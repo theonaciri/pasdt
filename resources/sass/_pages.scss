@@ -103,8 +103,10 @@ table input, table select {
 .dt-black {
 	background-color: #2223;
 }
-#date-label-from, #date-label-to {
-  padding: 5px;
+
+.date-interval-container {
+  width: 312px;
+  margin: 0;
 }
 
 
@@ -191,6 +193,11 @@ table input, table select {
 
 .container {
   max-width: 100%;
+}
+
+// dropdown
+.actions-btn.bs-select-all {
+  display: none;
 }
 
 // SLIDER
@@ -293,4 +300,12 @@ table input, table select {
 
 .color-div-container > div:nth-child(2n-1) {
   border-right: 1px solid grey;
+}
+
+.anychart-credits-text, .anychart-credits-logo {
+  display: none;
+}
+
+#graphModuleSelect option:disabled {
+  background-color: #d5d5d5;
 }

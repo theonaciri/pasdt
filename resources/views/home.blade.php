@@ -33,7 +33,7 @@
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
                 </li>-->
                 <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'graphs' ? 'active' : '' }}" id="realtime-graphs-tab" data-toggle="tab" href="#realtime-graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes de températures</a>
+                    <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">Graphes de températures en direct</a>
                 </li>
             
             </ul>
@@ -62,16 +62,16 @@
                             </tfoot>
                         </table>
                     </div>
+                    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="container">
+                  <div class="container">
                         <!--<button type="button" class="btn togglebtn toggle-buttons" data-toggle="button" aria-pressed="false" title="Montrer plus ou moins d'options de recherche"><span class="oi oi-minus"></span><span class="oi oi-plus"></span>&nbsp;<span class="oi oi-magnifying-glass"></span></button>-->
                         <div id="date_filter" class="input-group">
-                            <span id="date-label-from" class="date-label">Du&nbsp;:&nbsp;</span>
-                            <input class="date_range_filter date form-control" type="date" id="datepicker_from" placeholder="jj/mm/aaaa" />
-                            <span id="date-label-to" class="date-label">&nbsp;au&nbsp;:&nbsp;</span>
-                            <input class="date_range_filter date form-control" type="date" id="datepicker_to" placeholder="jj/mm/aaaa" />
-                            &nbsp;
+                            <div class="date-interval-container row">
+                              <input name="dateinterval" id="dateinterval_logtable" class="col-md-10"/>
+                              <button class="btn btn-secondary clear-cal col-md-2" title="Vider le calendrier">X</button>
+                            </div>
                             <button type="button" class="btn togglebtn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
                             </button>
@@ -80,6 +80,34 @@
                             </button>
                         </div>
                         <table id="main-table" class="table table-bordered" style="width: 100% !important;">
+                            
+                        @if (isset($logs) && false)
+                        <thead>
+                                <tr>
+                                    <th class="th-date">Date</th>
+                                    <th class="th-multiselect" >Nom du module</th>
+                                    <!--<th>Client</th>-->
+                                    <th class="th-message">Message</th>
+                                    <th class="select-temp">Température</th>
+                                    <th>Batterie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @foreach ($logs["data"] as $log)
+                                @if($loop->even)
+                                  <tr role="row" class="even">
+                                @else
+                                  <tr role="row" class="odd">
+                                @endif
+                                    <td class="sorting_1">{{$log[0]}}<td>
+                                    <td>{{$log[1]}}</td>
+                                    <td>{{$log[2]}}</td>
+                                    <td>{{$log[3]}}</td>
+                                    <td>{{$log[4]}}</td>
+                                  </tr>
+                              @endforeach
+                            </tbody>
+                            @else
                             <thead>
                                 <tr>
                                     <th class="th-date">Date</th>
@@ -90,38 +118,50 @@
                                     <th>Batterie</th>
                                 </tr>
                             </thead>
+                            @endif
                             <tfoot>
                                 <tr>
-                                    <th class="th-date">Date</th>
-                                    <th class="th-multiselect" id="module-name">Nom du module</th>
+                                    <th class="th-date" rowspan="1" colspan="1" data-column="0"><input type="text" class="form-control" placeholder="Rechercher Date"></th>
+                                    <th class="th-multiselect" id="module-name" rowspan="1" colspan="1" data-column="1">
+                                      <div class="dropdown bootstrap-select show-tick form-control">
+                                        <select class="selectpicker form-control">
+                                      </div>
+                                    </th>
                                     <!--<th>Client</th>-->
-                                    <th class="th-input-message">Message</th>
-                                    <th class="select-temp">Température min.</th>
-                                    <th class="select-bat">Batterie</th>
+                                    <th class="th-input-message" rowspan="1" colspan="1" data-column="2"><input type="text" class="form-control" placeholder="Rechercher Anomalie"></th>
+                                    <th class="select-temp" rowspan="1" colspan="1" data-column="3"><input type="text" class="form-control" placeholder="Rechercher Température min."></th>
+                                    <th class="select-bat" rowspan="1" colspan="1" data-column="4"><input type="text" class="form-control" placeholder="Rechercher Batterie"></th>
                                 </tr>
                             </tfoot>
                         </table>
+                        <p>Le tableau est actualisé toutes les 5 minutes</p>
                     </div>
+                    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
+                  </div>
+                  <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
+                    <div class="row">
+                      <div class="col col-md-3">
+                        <div class="form-group">
+                        <label for="themeSelect">Thème</label>
+                        <select class="form-control" id="themeSelect">
+                          <option value="defaultTheme">Défaut</option>
+                          <option value="darkBlue">Bleu sombre</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col col-md-9">
+                      <div class="form-group">
+                        <label for="graphModuleSelect">Module</label>
+                        <select class="form-control" id="graphModuleSelect">
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="anychart" style="width: 640px; height: 480px;"></div>
                 </div>
-                <div class="tab-pane fade {{ request('tab') === 'graphs' ? 'show active' : '' }}" id="graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
-                    <div class="" id="chart-events" style="width: 90%;"></div>
-                    <!--<div id="my_dataviz" width="960" height="500"></div>
-                    <div id="tester" style="width:600px;height:250px;"></div>
-                    <button type="button" id="visib" class="btn btn-secondary" style="display: none; position: absolute; top: 300px; right: 0">
-                      Transformateur 12 declenchement * defaut temperature 2<br>
-                      Carte n° 005606224<br>
-                      Le 20/06/2019 à 09:40:31
-                    </button>
-                    <img id="imgid" src="images/screendata.png" />
-                -->
-                </div>
-                <div class="tab-pane fade" id="realtime-graphs" role="tabpanel" aria-labelledby="realtime-graphs-tab">
-                    <canvas id="myChart" width="400" height="300"></canvas>
-                </div>
+              </div>
             </div>
-        </div>
     </div>
-    <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
 </div>
 
 <!-- Modal -->
@@ -195,6 +235,12 @@
     </div>
   </div>
 </div>
-
-
+<script>
+@if (isset($logs))
+var prelogs = {!!json_encode($logs)!!};
+@endif
+@if (isset($synth))
+var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
+@endif
+</script>
 @endsection

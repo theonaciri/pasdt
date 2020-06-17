@@ -1,4 +1,4 @@
-define(['js-cookie'], function(cookie) {
+define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_annotated) {
 	window.getUrlParameter = function(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -24,5 +24,13 @@ define(['js-cookie'], function(cookie) {
 	$('.color-modal-button').click(function() {
 		$("#colorModal").modal("show");
 	})
-	console.warn('AA');
+
+	if ((location.pathname === "/home" || location.pathname === "/") && opened_tab === 'graphs-live-tab') {
+		graph_annotated.init();
+	}
+
+    $('#graphs-live-tab').click( function () {
+     	graph_annotated.init();
+    });
+
 })

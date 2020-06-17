@@ -6,7 +6,13 @@
 
 //import "requirejs";
 require('./bootstrap');
+//window.DataTable = require( 'datatables.net' );
+
 require('./init');
+require('flatpickr');
+const flatpickr_fr = require("flatpickr/dist/l10n/fr.js").default.fr;
+require('flatpickr/dist/flatpickr.min.css');
+flatpickr.localize(flatpickr_fr);
 require('./datatable-synthesis');
 require('./datatable-pasdt');
 require('./datatable-png');
