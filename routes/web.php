@@ -26,6 +26,7 @@ Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin');
 Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUser');
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get');
+Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify');
 
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
