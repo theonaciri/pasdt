@@ -33,7 +33,7 @@
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
                 </li>-->
                 <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">Graphes de températures en direct</a>
+                    <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">Graphes de températures</a>
                 </li>
             
             </ul>
@@ -49,7 +49,7 @@
                                     <th>Date dernière anomalie</th>
                                     <th>Dernière température</th>
                                     <th>Date dernière temp.</th>
-                                    <th>Actions</th>
+                                    <th>Détails</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -59,7 +59,7 @@
                                     <th>Date dernière anomalie</th>
                                     <th>Température min.</th>
                                     <th>Date dernière temp.</th>
-                                    <th>Actions</th>
+                                    <th>Détails</th>
                                 </tr>
                             </tfoot>
                         </table>
