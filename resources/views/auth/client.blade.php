@@ -293,7 +293,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('users.modify', ['user'=>16]) }}">
                 @csrf
                 <div class="modal-body">
 
