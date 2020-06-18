@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -140,5 +141,26 @@ class ClientController extends Controller
             return redirect()->route('home', []);
         }
         return redirect()->route('client', []);
+    }
+ 
+    public function modifUser($usertoModif) {
+        $authUser = Auth::user();
+        if ($authUser->company_id == 0) {
+            return redirect()->route('home', []);
+        }
+        $usertoModif = User::find(6);
+        if ($authUser->is_client_company
+          && $authUser->company_id 
+          == $usertoModif->company_id) {
+            $usertoModif->name = request('name');
+            $usertoModif->email = request('email');
+            $usertoModif->password = Hash::make(request('password'));
+
+            $usertoModif->save();
+        }
+        else{
+            abort(403);
+        }
+        return response()->json($usertoModif);
     }
 }

@@ -26,6 +26,7 @@ Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin');
 Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUser');
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get');
+Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify');
 
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
@@ -49,6 +50,7 @@ Route::post('/module', 'ModuleController@postModule')->name('module.post');
 Route::put('/module/{module}', 'ModuleController@putModule')->name('module.put');
 Route::delete('/module/{module}', 'ModuleController@deleteModule')->name('module.delete');
 Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get');
+Route::get('/module/module_id/{module:module_id}', 'ModuleController@getModuleByModuleId')->name('module.getByModuleId');
 Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json');
 Route::get('/module', 'ModuleController@index')->name('module');
 

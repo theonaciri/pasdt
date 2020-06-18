@@ -303,6 +303,20 @@ class ModuleController extends Controller
     }
 
     /**
+    * Get Module by module_id
+    * Connexion web
+    */
+
+    public function getModuleByModuleId(\App\Module $module) {
+        $user = Auth::user();
+        if ($this->is_user_allowed($user, $module->company_id)) {
+            return response()->json(json_decode($module->telit_json));
+        } else {
+            return abort(403, "Echec de l'authentification.");
+        }
+    }
+
+    /**
     * Get Module
     * Connexion web
     */
