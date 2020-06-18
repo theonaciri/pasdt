@@ -46,46 +46,6 @@ $("#notemp").toggleClass('btn-dark', onlytemp)
 });
 
 function dataTablesEvents() {
-  $('#main-table').on('click', 'tr', function () {
-      var data = table.row( this ).data();
-      if (data && data.module_id) {
-        $.getJSON("/module/"+data.module_id, function(module_data) {
-          active_module = module_data;
-          /*var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
-          var f = flatten(module_data);
-          for (p in f) {
-            table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
-          }*/
-          var $modmodal = $('#moduleModal');
-          var str_address = formatAdress(module_data.locAddress);
-          $modmodal.find('.toggle-map').toggle(!!module_data.locLat && !!module_data.locLng)
-            //.attr('data-loc', str_address)
-            .attr('data-loclat', module_data.locLat)
-            .attr('data-loclng', module_data.locLng);
-          $modmodal.find('.modal-map').html('');
-          //$modmodal.find('.modal-pre').html(table + "</table>");
-          $modmodal.find('.modal-address').html(
-            "<p><b>Adresse: </b> " + str_address + "</p>"
-            + "<p><b>ID du module: </b> " + data.cardId + "</p>"
-            + "<p><b>ID Telit: </b> " + module_data.iccid + "</p>"
-            + (module_data.custom1 ? "<p><b>Custom1: </b> " + module_data.custom1 + "</p>" : '')
-            + (module_data.custom2 ? "<p><b>Custom2: </b> " + module_data.custom2 + "</p>" : '')
-            + (module_data.custom3 ? "<p><b>Custom3: </b> " + module_data.custom3 + "</p>" : '')
-            );
-          $modmodal.modal("show");
-        })
-      }
-  });
-
-  $('.toggle-map').click(function(e) {
-      $(this).hide('fast').siblings('.modal-map').html(`<iframe width="100%" height="450" frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/search?q=${$(this).data('loclat')},${$(this).data('loclng')}&key=AIzaSyC-PpGeJv_tmROsmyi8ZS3p5UY0dsb9wMQ" allowfullscreen></iframe>`);
-    })
-  function formatAdress(a, escape = false) {
-    if (typeof a == 'undefined') return '';
-    var str = `${a.streetNumber ? a.streetNumber : ''} ${a.city} ${a.state} ${a.zipCode} ${a.country}`;
-    return escape ? escape(str) : str;
-  }
   function toggleAdvancedSearchButtons(e, notoggle) {
     var toggle_ping_value = localStorage.getItem('nosearch') === "true";
     toggle_ping_value = notoggle ? toggle_ping_value : !toggle_ping_value;
