@@ -6,7 +6,7 @@
     <meta name="description" content="suivi de logs PASDT">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="manifest" href="/manifest.webmanifest">
+    <!--<link rel="manifest" href="/manifest.webmanifest">-->
 
     <title>{{ config('app.name', 'PASDT') }}</title>
     <link rel="apple-touch-icon" href="/images/logo-192.png">
