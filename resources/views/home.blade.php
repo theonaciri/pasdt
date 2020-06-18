@@ -49,6 +49,7 @@
                                     <th>Date dernière anomalie</th>
                                     <th>Dernière température</th>
                                     <th>Date dernière temp.</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -58,6 +59,7 @@
                                     <th>Date dernière anomalie</th>
                                     <th>Température min.</th>
                                     <th>Date dernière temp.</th>
+                                    <th>Actions</th>
                                 </tr>
                             </tfoot>
                         </table>

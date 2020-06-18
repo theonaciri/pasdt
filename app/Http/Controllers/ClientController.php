@@ -148,13 +148,15 @@ class ClientController extends Controller
         if ($authUser->company_id == 0) {
             return redirect()->route('home', []);
         }
-        $usertoModif = User::find($usertoModif);
-        if ($authUser->is_client_company && $authUser->company_id == $usertoModif->company_id) {
+        $usertoModif = User::find(6);
+        if ($authUser->is_client_company
+          && $authUser->company_id 
+          == $usertoModif->company_id) {
             $usertoModif->name = request('name');
             $usertoModif->email = request('email');
             $usertoModif->password = Hash::make(request('password'));
 
-            $usertoModif->save;
+            $usertoModif->save();
         }
         else{
             abort(403);
