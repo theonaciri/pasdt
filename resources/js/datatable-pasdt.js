@@ -45,22 +45,17 @@ $("#notemp").toggleClass('btn-dark', onlytemp)
   table.ajax.reload( null, false );
 });
 
-function dataTablesEvents() {
-  function toggleAdvancedSearchButtons(e, notoggle) {
-    var toggle_ping_value = localStorage.getItem('nosearch') === "true";
-    toggle_ping_value = notoggle ? toggle_ping_value : !toggle_ping_value;
-    localStorage.setItem('nosearch', toggle_ping_value);
-    $(e.target).toggleClass('btn-dark', toggle_ping_value);
-    $('#date_filter, .dt-buttons').toggle(toggle_ping_value);
-  }
-
-  $('.toggle-buttons').on("click", toggleAdvancedSearchButtons);
-  //toggleAdvancedSearchButtons({target: $('.toggle-buttons')}, true);
-} // dataTablesEvents
-
+/* old function ?
+function toggleAdvancedSearchButtons(e, notoggle) {
+  var toggle_ping_value = localStorage.getItem('nosearch') === "true";
+  toggle_ping_value = notoggle ? toggle_ping_value : !toggle_ping_value;
+  localStorage.setItem('nosearch', toggle_ping_value);
+  $(e.target).toggleClass('btn-dark', toggle_ping_value);
+  $('#date_filter, .dt-buttons').toggle(toggle_ping_value);
+}
+*/
 function filterColumn($this) {
   var i = $this.parent().attr('data-column');
-  console.log('i', i, $this.val());
   table.column( i ).search(
       $this.val()).draw();
 }
@@ -77,7 +72,6 @@ function getData(data, callback, settings) {
     data.onlytemp = onlytemp;
     data.noday = noday;
 
-    console.log(data);
     $.ajax({
       "url": "/logs/get",
       "data": data
@@ -117,7 +111,7 @@ function initTable() {
     ],
     /*columns: {!!json_encode($dt_info['labels'])!!},
     order: {!!json_encode($dt_info['order'])!!},*/
-    initComplete: function() {
+    initComplete: function(settings, json) {
       prelogs = null;
       setInterval( function () {
         table.ajax.reload( null, false ); // user paging is not reset on reload

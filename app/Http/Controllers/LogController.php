@@ -189,9 +189,8 @@ class LogController extends Controller
             ->get()->toArray();
         $modules_list = array_column($modules, 'module_id');
 
-        $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-3 days'));
+        $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-12 days'));
         $to = date("Y-m-d 23:59:59");
-
         // check dates ?
         $temps = DB::table('logs')
                     ->select('cardId', 'maxtemp', 'created_at')
@@ -202,6 +201,7 @@ class LogController extends Controller
                     ->whereNotNull('maxtemp')
                     ->where('maxtemp', '!=', '-99')
                     ->where('maxtemp', '!=', '785')
+                    ->orderBy('created_at', 'ASC')
                     ->get();
         $res = [
             'temps'  => $temps,

@@ -1,4 +1,4 @@
-define(["jquery", /*, "anychart", "anychart-jquery"*/], function($) {
+define(["jquery", 'moment' /*, "anychart", "anychart-jquery"*/], function($, moment) {
 window.chart = null;
 var $mod_select = $('#graphModuleSelect');
 var data = null;
@@ -7,19 +7,22 @@ var active_module = localStorage.getItem('graph-active-module');
 var interval_var = null;
 
 function init() {
-	var a = new Date("2020-04-18 13:40:24");
-	$.getJSON("/logs/temp", {from: a.toJSON()})
-	.done(function(_data) {
-		$(document).ready(function() {
-			data = _data;
-			setModuleSelect();
-			onDataReceive();
-		});
-	})
-	.fail(function( jqxhr, textStatus, error ) {
-		console.error( "Request Failed: " + error );
-	});
+	if (chart != null) return ; // only one init;
+	var a = new Date("2018-04-25 13:40:24");
 
+	//$('#graphModuleSelect').on('loaded.bs.select', function() {
+		$.getJSON("/logs/temp", {from: a.toJSON(), modules: $('#graphModuleSelect').val()})
+		.done(function(_data) {
+			$(document).ready(function() {
+				data = _data;
+				setModuleSelect();
+				onDataReceive();
+			});
+		})
+		.fail(function( jqxhr, textStatus, error ) { // TODO
+			console.error( "Request Failed: " + error );
+		});
+	//})
 }
 $('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
 $('#themeSelect').on('change', function (){
@@ -32,12 +35,13 @@ $('#themeSelect').on('change', function (){
 function transformData(temp_data) {
 	var _filtered_data = data.temps.filter(function(t) {return t.cardId === active_module});
 	for (var i = 0; i < _filtered_data.length; ++i) {
-		_filtered_data[i].created_at = new Date(temp_data[i].created_at).toUTCString();
+		_filtered_data[i].created_at = new Date(_filtered_data[i].created_at);
 	}
 	return _filtered_data;
 }
 
 function setModuleSelect() {
+	if ($mod_select.val() !== null) return ; // already initialized
 	var first_selected = false;
 	var modules_with_data = data.modules.filter(function(m) {
 		return !!data.temps.filter(function(t) {
@@ -77,7 +81,6 @@ function onDataReceive() {
 
 	// create a data set
 	var filtered_data = transformData(data.temps);
-
     // create a table
 	var dataTable = anychart.data.table('created_at');
 	// add data
@@ -98,12 +101,12 @@ function onDataReceive() {
         .xGrid(true)
         .xMinorGrid(true)
         .legend().titleFormat(function () {
-			return "Le " + new Date(this.value).toLocaleDateString("fr-FR", date_options);
+        	return "Le " + new Date(this.value).toLocaleDateString("fr-FR", date_options);
 		})
 		.itemsFormat(function() {
 			return series.name() + ": " + this.value + "°C";
 		});
-	plot.xAxis().labels().format(function() {new Date(this.value).toLocaleDateString("fr-FR", date_options)});
+	//plot.xAxis().labels().format(function() {return new Date(this.value).toLocaleDateString("fr-FR", date_options)});
     var series = plot.spline(mapping)
             .name(getModuleFromId(active_module).name)
             .stroke(strokeColorsFct);
@@ -132,11 +135,18 @@ function onDataReceive() {
 
 	// adjust tooltips
 	var tooltip = series.tooltip();
-	tooltip.format(function () {
-		var value = (this.value).toFixed(0);
+
+
+    var tooltipchart = chart.tooltip();
+	tooltipchart.titleFormat(function () {
 		var date = new Date(this.x);
 		var transformedDate =  date.toLocaleDateString("fr-FR", date_options);
-		return "Temp: " + value + "°C\nLe " + transformedDate ;
+        return "Le " + transformedDate;
+    });
+
+	tooltip.format(function () {
+		var value = (this.value).toFixed(0);
+		return "Temp: " + value + "°C";
 	});
 
 	// set Y axis label formatter
