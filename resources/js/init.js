@@ -19,18 +19,21 @@ define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_a
 	  //e.relatedTarget // previous active tab
 	  localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	})
-	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
-	$('#' + opened_tab).click();
 	$('.color-modal-button').click(function() {
 		$("#colorModal").modal("show");
 	})
 
-	if ((location.pathname === "/home" || location.pathname === "/") && opened_tab === 'graphs-live-tab') {
-		graph_annotated.init();
-	}
-
     $('#graphs-live-tab').click( function () {
+    	var module_names = $('#module-name .selectpicker').val();
+        if (Array.isArray(module_names) && module_names.length) {
+          var mod_name = module_names[0];
+          var mod = presynths.find(function(m) {return m.name === mod_name});
+          if (typeof mod !== 'undefined') {
+          	$('#graphModuleSelect').val(mod.module_id).trigger('change');
+          }
+        }
      	graph_annotated.init();
     });
-
+	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
+	$('#' + opened_tab).click();
 })
