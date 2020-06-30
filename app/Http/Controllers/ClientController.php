@@ -52,7 +52,6 @@ class ClientController extends Controller
           "modules" => $this->modules,
           "subscriptions" => $this->subscriptions,
           "users" => $this->users,
-          "modulesids" => $modulesids,
           "notifs" => $notifs
         ]);
         /*} else {
