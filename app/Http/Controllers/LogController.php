@@ -353,7 +353,7 @@ EOTSQL));
             }
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
         }
-        else if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
+        else if ($newlog['maxtemp'] != -99 && $newlog['maxtemp'] != 0 && $newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
             if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
                 $type = 'TEMP_CRIT_LOW';
             } else {
