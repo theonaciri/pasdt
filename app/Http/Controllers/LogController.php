@@ -324,7 +324,7 @@ EOTSQL));
         if (empty($module))
             $module = Module::whereModuleId($newlog['cardId'])->first();
         $lastemplog = PasdtLog::where('cardId', $module['module_id'])
-                            ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->first();
+                            ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->skip(1)->take(1)->first();
 
         /* BATTERY */
         if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_HIGH']) {
@@ -363,12 +363,12 @@ EOTSQL));
         }
 
         /* DIFF TEMP */
-        $difftemp = $newlog['maxtemp'] - $lastemplog['maxtemp'] / ($newlog['maxtemp'] + $lastemplog['maxtemp'] / 2);
-        if ($difftemp > (config('pasdt.thresholds')['TEMP_INCREASE'] / 100)) {
+        $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100 ;
+        if ($difftemp > config('pasdt.thresholds')['TEMP_INCREASE']) {
             $type = 'TEMP_INCREASE';
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
         }
-        if ($difftemp < (config('pasdt.thresholds')['TEMP_DECREASE'] / 100)) {
+        else if ($difftemp < config('pasdt.thresholds')['TEMP_DECREASE']) {
             $type = 'TEMP_DECREASE';
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
         }
