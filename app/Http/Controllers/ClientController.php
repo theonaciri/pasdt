@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
+use App\Notification;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
@@ -40,11 +41,20 @@ class ClientController extends Controller
             return view('home');
         }
         $this->modules = \App\Module::where('company_id', $user->company_id)->get();
+        $modulesids = $this->modules->pluck('module_id')->toArray();
         $this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();
         $this->users = User::where('id', '!=', auth()->id())
                             ->where('company_id', Auth::user()->company_id)
                             ->get();
-        return view('auth/client', ["company"=>$company, "modules"=>$this->modules, "subscriptions"=>$this->subscriptions, "users"=>$this->users]);
+        $notifs = Notification::where('seen', 0)->whereIn('module', $modulesids)->orderBy('id', 'ASC')->limit(20)->get();
+        return view('auth/client', [
+          "company" => $company,
+          "modules" => $this->modules,
+          "subscriptions" => $this->subscriptions,
+          "users" => $this->users,
+          "modulesids" => $modulesids,
+          "notifs" => $notifs
+        ]);
         /*} else {
             return view('home');
         }*/
