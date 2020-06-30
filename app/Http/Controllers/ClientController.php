@@ -46,7 +46,7 @@ class ClientController extends Controller
         $this->users = User::where('id', '!=', auth()->id())
                             ->where('company_id', Auth::user()->company_id)
                             ->get();
-        $notifs = Notification::where('seen', 0)->whereIn('module', $modulesids)->orderBy('id', 'ASC')->limit(20)->get();
+        $notifs = Notification::where('seen', 0)->whereIn('module', $modulesids)->orderBy('id', 'DESC')->limit(20)->get();
         return view('auth/client', [
           "company" => $company,
           "modules" => $this->modules,
