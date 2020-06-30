@@ -26,10 +26,10 @@
                             @endif
                                 <td class="name">{{$notif->type}}</td>
                                 <td class="email">{{$notif->module}}</td>
-                                @if(strpos($notif->type, 'CRIT') > -1)
-                                <td class="created_at">{{$notif->value}}&nbsp;V</td>
-                            @else
+                            @if(strpos($notif->type, 'TEMP') > -1)
                                 <td class="created_at">{{$notif->value}}&nbsp;°C</td>
+                            @else
+                                <td class="created_at">{{$notif->value}}&nbsp;V</td>
                             @endif
                                 <td class="updated_at">{{$notif->created_at}}</td>
                             </tr>
