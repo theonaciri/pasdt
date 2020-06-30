@@ -6,9 +6,48 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">{{ __("Dernières notifications") }}</div>
+                <div class="card-body">
+                    <table class="adminTable">
+                        <thead>
+                                <tr>
+                                <th>Type</th>
+                                <th>Module</th>
+                                <th>Valeur</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($notifs as $notif)
+                            @if(strpos($notif->type, 'CRIT') > -1)
+                                <tr class="highlight">
+                            @else
+                                <tr>
+                            @endif
+                                <td class="name">{{$notif->type}}</td>
+                                <td class="email">{{$notif->module}}</td>
+                                @if(strpos($notif->type, 'CRIT') > -1)
+                                <td class="created_at">{{$notif->value}}&nbsp;V</td>
+                            @else
+                                <td class="created_at">{{$notif->value}}&nbsp;°C</td>
+                            @endif
+                                <td class="updated_at">{{$notif->created_at}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
                 <div class="card-header">{{ __("Liste des utilisateurs de votre groupe") }} {{ $company->name }} </div>
                 <div class="card-body">
-                    <table id="adminTable">
+                    <table id="adminTable" class="adminTable">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -58,7 +97,7 @@
                 <div class="card-header">{{ __("Liste des modules de votre groupe") }} </div>
                 <div class="card-body">
                     <p>Pour ajouter la surveillance d'un module, contactez notre équipe.</p>
-                    <table id="adminTable">
+                    <table class="adminTable">
                         <thead>
                             <tr>
                                 <th>Numéro</th>
@@ -104,7 +143,7 @@
                         <a class="" href="checkout">Ajouter un abonnement</a>
                     @endif
                     @if (false)
-                    <table id="adminTable">
+                    <table class="adminTable">
                         <thead>
                             <tr>
                                 <th>ID</th>

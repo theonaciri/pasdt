@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use App\Module;
+use App\Notification;
 use App\Log as PasdtLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use SoulDoit\DataTable\SSP;
-
+use DateTime;
 
 class LogController extends Controller
 {
@@ -293,6 +294,7 @@ EOTSQL));
     public function storeData(Request $request)
     {
         $this->authAPI($request);
+        $module = null;
         $log = $request->json()->all();
         $log["cardId"] = $this->convertOverspeedToTelit($log["cardId"]);
         $log["msg"] = json_encode($log["msg"]);
@@ -312,9 +314,87 @@ EOTSQL));
             $module->module_id = $log["cardId"];
             $module->telit_id = '';
             $module->save();
-
         }
+
+        $this->checkForAnomalities($newlog, $module);
         return response()->json('{"ok": "ok"}');
+    }
+
+    protected function checkForAnomalities(PasdtLog $newlog, $module) {
+        if (empty($module))
+            $module = Module::whereModuleId($newlog['cardId'])->first();
+        $lastemplog = PasdtLog::where('cardId', $module['module_id'])
+                            ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->first();
+
+        /* BATTERY */
+        if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_HIGH']) {
+            if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_CRIT_HIGH']) {
+                $type = 'BATTERY_CRIT_HIGH';
+            } else {
+                $type = 'BATTERY_HIGH';
+            }
+            $this->newNotif($newlog, $type, $newlog['vbat']);
+        }
+        else if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_LOW']) {
+            if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_CRIT_LOW']) {
+                $type = 'BATTERY_CRIT_LOW';
+            } else {
+                $type = 'BATTERY_LOW';
+            }
+            $this->newNotif($newlog, $type, $newlog['vbat']);
+        }
+
+        /* TEMP */
+        if ($newlog['maxtemp'] >= config('pasdt.thresholds')['TEMP_HIGH']) {
+            if ($newlog['maxtemp'] >= config('pasdt.thresholds')['TEMP_CRIT_HIGH']) {
+                $type = 'TEMP_CRIT_HIGH';
+            } else {
+                $type = 'TEMP_HIGH';
+            }
+            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+        }
+        else if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
+            if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
+                $type = 'TEMP_CRIT_LOW';
+            } else {
+                $type = 'TEMP_LOW';
+            }
+            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+        }
+
+        /* DIFF TEMP */
+        $difftemp = $newlog['maxtemp'] - $lastemplog['maxtemp'] / ($newlog['maxtemp'] + $lastemplog['maxtemp'] / 2);
+        if ($difftemp > (config('pasdt.thresholds')['TEMP_INCREASE'] / 100)) {
+            $type = 'TEMP_INCREASE';
+            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+        }
+        if ($difftemp < (config('pasdt.thresholds')['TEMP_DECREASE'] / 100)) {
+            $type = 'TEMP_DECREASE';
+            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+        }
+
+        /* DIFF TIME */
+        /*
+        $datetimenew = new DateTime($newlog['created_at']);
+        $datetimeold = new DateTime($lastemplog['created_at']);
+        $interval = $datetimenew->diff($datetimeold);
+        $seconds = $interval->format('%s');
+
+        if ($seconds > config('pasdt.thresholds')['NO_LOG']) {
+            $type = 'NO_LOG';
+            $this->newNotif($newlog, $type, $newlog['created_at']);
+        }
+        */
+    }
+
+    protected function newNotif($log, $type, $value) {
+        $not = new Notification();
+        $not->log = $log['id'];
+        $not->type = $type;
+        $not->module = $log['cardId']; 
+        $not->value = $value;
+        $not->save();
+        return $not;
     }
 
     protected function authAPI(Request $request) {
