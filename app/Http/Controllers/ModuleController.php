@@ -69,18 +69,67 @@ class ModuleController extends Controller
             'password' => env('TELIT_PASSWORD')
          );
         $data_string = http_build_query($arr);
-        $ch = curl_init("https://api-de.devicewise.com/rest/auth/");
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://api-de.devicewise.com/rest/auth/");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
         $final = curl_exec($ch);
+        if(curl_errno($ch)){
+            Log::info('Curl error: ' . curl_error($ch));
+            return null;
+        }
+        curl_close($ch);
         config(['TELIT_SESSION_ID' => $final]);
         Storage::put(env('TELIT_SESSION_ID_PATH'), $final);
         return $final;
     }
 
+    public function updateModules() {
+        $modulesids = DB::table('modules')->whereNotNull('telit_id')->pluck('telit_id');
+        foreach ($modulesids as $key => $telit_id) {
+            $this->updateOrInsertModule($telit_id);
+        }
+        return response()->json("ok");
+    }
+
+    public function updateOrInsertModule($telit_id) {
+        $telit_response = $this->getTelitJson($telit_id);
+        $module = json_decode($telit_response->original)->params;
+        //$mod = \App\Module::firstWhere('telit_id', $telit_id);
+        $arr = [
+            //'company_id' => 0,
+            //'telit_carrierCustom1'  => $module->carrierCustom1,
+            'name'                  => $module->custom1 ?? '',
+            'telit_id'              => $module->iccid ?? '',
+            'module_id'             => $module->custom2 ?? '',
+            'telit_customer'        => $module->customer ?? '',
+            'telit_status'          => $module->status ?? '',
+            'telit_imei'            => $module->imei ?? '',
+            'telit_imsi'            => $module->imsi ?? '',
+            'telit_msisdn'          => $module->msisdn ?? '',
+            'telit_lastSync_gen'    => $module->lastSync->general ?? '',
+            'telit_ratePlan'        => $module->ratePlan ?? '',
+            'telit_dateActivated'   => $module->dateActivated ?? '',
+            'telit_dateModified'    => $module->dateModified ?? '',
+            'telit_custom1'         => $module->custom1 ?? '',
+            'telit_custom2'         => $module->custom2 ?? '',
+            'telit_custom3'         => $module->custom3 ?? '',
+            'telit_custom4'         => $module->custom4 ?? '',  
+            'telit_locLat'          => $module->locLat ?? '',
+            'telit_locLon'          => $module->locLng ?? '',
+            'telit_locAdress'       => json_encode($module->locAddress ?? ''),
+            'telit_json'            => json_encode($module) ?? ''
+        ];
+        $filtered_arr = array_filter($arr, fn($value) => !is_null($value) && $value !== '');
+        DB::table('modules')
+                ->updateOrInsert(['telit_id' => $telit_id], $filtered_arr);
+        //header('Content-type: application/json; charset=UTF-8');
+        return response()->json($arr);
+        
+    }
     /**
     ** Returns connection data, given iccid
     ** Connexion web
@@ -89,18 +138,25 @@ class ModuleController extends Controller
 
     public function getTelitJson($telit_id) {
         $session = $this->getSessionTelit();
-        $arr=array(
+        if (is_null($session)) {
+            abort(403);
+        }
+        $arr = array(
             "sessionId" => $session,
-            "iccid" => $TELIT_SESSION_ID
-         );
+            "iccid" => $telit_id
+        );
         $data_string = http_build_query($arr);
-        $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.find/");
+        $ch = curl_init("http://api-de.devicewise.com/rest/_/cdp.connection.find/");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded"));
         $final = curl_exec($ch);
+        if (curl_errno($ch)){
+            Log::info('Curl error: ' . curl_error($ch));
+            return null;
+        }
         return $this->checkIfNotDisconnected($final, $ch, $arr);
     }
 
@@ -136,7 +192,7 @@ class ModuleController extends Controller
             "limit"=> strval($limit)
          );
         $data_string = http_build_query($arr)   ;
-        $ch = curl_init("https://api-de.devicewise.com/rest/_/cdp.connection.list/");
+        $ch = curl_init("http://api-de.devicewise.com/rest/_/cdp.connection.list/");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -26,8 +26,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->exec('/home/cfmhtacoep-theon/www/pasdt/app/Console/update_db.sh')
-                 ->twiceDaily(8, 14)->environments(['production']);
+        /*$schedule->exec('/home/cfmhtacoep-theon/www/pasdt/app/Console/update_db.sh')
+                 ->twiceDaily(8, 14)->environments(['production']);*/
+        $schedule->call('App\Http\Controllers\ModuleController@updateModules')->dailyAt('9:00');
     }
 
     /**
