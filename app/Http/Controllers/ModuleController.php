@@ -123,7 +123,7 @@ class ModuleController extends Controller
             'telit_locAdress'       => json_encode($module->locAddress ?? ''),
             'telit_json'            => json_encode($module) ?? ''
         ];
-        $filtered_arr = array_filter($arr, fn($value) => !is_null($value) && $value !== '');
+        $filtered_arr = array_filter($arr, function($value) { return !is_null($value) && $value !== ''; });
         DB::table('modules')
                 ->updateOrInsert(['telit_id' => $telit_id], $filtered_arr);
         //header('Content-type: application/json; charset=UTF-8');
