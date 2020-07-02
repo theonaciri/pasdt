@@ -62,6 +62,8 @@ Route::get('/subscription', 'SubscriptionController@index')->name('update-paymen
 
 /* TELIT */
 Route::get('/telit-json/{telit_id}', 'ModuleController@getTelitJson')->name('telit.json');
+Route::get('/module/{telit_id}/update', 'ModuleController@updateOrInsertModule')->name('telit.module.update_insert');
+Route::get('/modules/update', 'ModuleController@updateModules')->name('telit.modules.update');
 Route::get('/telit-connections/{limit}', 'ModuleController@getTelitListConnections')->name('telit.connecion.list');
 Route::get('/save-telit-modules', 'ModuleController@saveTelitModules')->name('telit.save.modules');
 
