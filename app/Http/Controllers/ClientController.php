@@ -41,12 +41,17 @@ class ClientController extends Controller
             return view('home');
         }
         $this->modules = \App\Module::where('company_id', $user->company_id)->get();
-        $modulesids = $this->modules->pluck('module_id')->toArray();
+        //$modulesids = $this->modules->pluck('module_id')->toArray();
         $this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();
         $this->users = User::where('id', '!=', auth()->id())
                             ->where('company_id', Auth::user()->company_id)
                             ->get();
-        $notifs = Notification::where('seen', 0)->whereIn('module', $modulesids)->orderBy('id', 'DESC')->limit(20)->get();
+        $notifs = Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'notifications.created_at', 'notifications.updated_at')
+                    ->where('seen', 0)
+                    /*->where('company', $user->company_id)*/
+                    ->leftJoin('modules', 'modules.module_id', 'notifications.module')
+                    ->orderBy('id', 'DESC')
+                    ->limit(20)->get();
         return view('auth/client', [
           "company" => $company,
           "modules" => $this->modules,

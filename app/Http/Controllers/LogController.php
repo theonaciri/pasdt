@@ -352,7 +352,7 @@ EOTSQL));
                 $type = 'TEMP_HIGH';
             }
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
-        }
+        }/*
         else if ($newlog['maxtemp'] != -99 && $newlog['maxtemp'] != 0 && $newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
             if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
                 $type = 'TEMP_CRIT_LOW';
@@ -360,7 +360,7 @@ EOTSQL));
                 $type = 'TEMP_LOW';
             }
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
-        }
+        }*/
 
         /* DIFF TEMP */
         $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100 ;
@@ -395,6 +395,12 @@ EOTSQL));
         $not->value = $value;
         $not->save();
         return $not;
+    }
+
+    public function acknowledgeNotif(Notification $notif) {
+        $notif->seen = true;
+        $notif->save();
+        return response()->json(['ok'=>'ok']);
     }
 
     protected function authAPI(Request $request) {
