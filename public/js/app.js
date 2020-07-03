@@ -49051,6 +49051,20 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
       $self.parent().parent().remove();
     });
   });
+  $('.vubtn').click(function () {
+    var $self = $(this);
+    var id = $self.parent().parent().data('id');
+    var csrf = $("input[name='_token']").first().val();
+    $.ajax({
+      url: "/notif/" + id + "/acknowledge",
+      type: "POST",
+      data: {
+        "_token": csrf
+      }
+    }).done(function () {
+      $self.parent().parent().remove();
+    });
+  });
 }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
