@@ -29,7 +29,9 @@ class LogController extends Controller
     public function getData(Request $request, bool $tojson = true) {
         $su_company = $request->company ?? NULL;
 
-        if (count($request->all()) || !$request["columns"]) { $request = $this->getDefaultData($request); }
+        if (count($request->all()) === 0 || !$request["columns"]) {
+            $request = $this->getDefaultData($request);
+        }
         $this->middleware('auth');
         $user = Auth::user();
         if (empty($user)) abort(403, "Echec de l'authentification.");

@@ -39,8 +39,8 @@ class ClientController extends Controller
         $su_company = $request->company ?? NULL;
         $id_company = $user->company_id;
         if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
-              $id_company = $su_company;
-          }
+          $id_company = $su_company;
+        }
         $company = \App\Company::where('id', $id_company)->first();
         if (empty($company)) {
             return view('home');
