@@ -49167,6 +49167,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./components/datatable-fr */ "./resources/js/components/datatable-fr.js"), __webpack_require__(/*! ./components/color-event-assoc */ "./resources/js/components/color-event-assoc.js"), __webpack_require__(/*! datatables.net-bs4 */ "./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js"),
 /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
 __webpack_require__(/*! bootstrap-select */ "./node_modules/bootstrap-select/dist/js/bootstrap-select.js"), __webpack_require__(/*! bootstrap-select/js/i18n/defaults-fr_FR.js */ "./node_modules/bootstrap-select/js/i18n/defaults-fr_FR.js")], __WEBPACK_AMD_DEFINE_RESULT__ = (function (datatablefr, arrayToSearch) {
+  function GetURLParameter(e) {
+    for (var t = window.location.search.substring(1).split("&"), n = 0; n < t.length; n++) {
+      var a = t[n].split("=");
+      if (a[0] == e) return typeof a[1] === 'undefined' ? true : a[1];
+    }
+  }
+
   if (window.location.pathname !== "/home" && window.location.pathname !== "/") return;
   var table, graphdata, active_module;
   var cal_interval = flatpickr('#dateinterval_logtable', {
@@ -49239,6 +49246,7 @@ __webpack_require__(/*! bootstrap-select */ "./node_modules/bootstrap-select/dis
       });
       data.onlytemp = onlytemp;
       data.noday = noday;
+      data.company = GetURLParameter("company");
       $.ajax({
         "url": "/logs/get",
         "data": data
