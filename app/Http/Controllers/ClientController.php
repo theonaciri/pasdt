@@ -27,26 +27,36 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         //if (Gate::allows('company-client')) {
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
-        if ($user->company_id == 0) {
+        if (empty($user) || empty($user->company_id) || $user->company_id == 0) {
             return view('home');
         }
-        $company = \App\Company::where('id', $user->company_id)->first();
+        $su_company = $request->company ?? NULL;
+        $id_company = $user->company_id;
+        if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
+          $id_company = $su_company;
+        }
+        $company = \App\Company::where('id', $id_company)->first();
         if (empty($company)) {
             return view('home');
         }
-        $this->modules = \App\Module::where('company_id', $user->company_id)->get();
-        $modulesids = $this->modules->pluck('module_id')->toArray();
+        $this->modules = \App\Module::where('company_id', $id_company)->get();
+        //$modulesids = $this->modules->pluck('module_id')->toArray();
         $this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();
         $this->users = User::where('id', '!=', auth()->id())
-                            ->where('company_id', Auth::user()->company_id)
+                            ->where('company_id', $id_company)
                             ->get();
-        $notifs = Notification::where('seen', 0)->whereIn('module', $modulesids)->orderBy('id', 'DESC')->limit(20)->get();
+        $notifs = Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'notifications.created_at', 'notifications.updated_at')
+                    ->where('seen', 0)
+                    ->where('notifications.company', $id_company)
+                    ->leftJoin('modules', 'modules.module_id', 'notifications.module')
+                    ->orderBy('id', 'DESC')
+                    ->limit(20)->get();
         return view('auth/client', [
           "company" => $company,
           "modules" => $this->modules,
