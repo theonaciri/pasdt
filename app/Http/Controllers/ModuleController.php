@@ -54,7 +54,7 @@ class ModuleController extends Controller
     }
 
     protected function is_user_allowed($user, $company_id) {
-        return !empty($request->company_id) && ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
+        return ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
     }
 
     protected function getSessionTelit($force_reconnect = false) {
