@@ -12,4 +12,16 @@ define(['jquery'], function() {
 			$self.parent().parent().remove();
 		});
 	});
+	$('.vubtn').click(function() {
+		var $self = $(this);
+		var id = $self.parent().parent().data('id');
+		var csrf = $("input[name='_token']").first().val();
+		$.ajax({
+			url: "/notif/" + id + "/acknowledge",
+			type: "POST",
+			data: {"_token": csrf}
+		}).done(function() {
+			$self.parent().parent().remove();
+		});
+	});
 });

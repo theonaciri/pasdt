@@ -15,23 +15,27 @@
                                 <th>Module</th>
                                 <th>Valeur</th>
                                 <th>Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($notifs as $notif)
                             @if(strpos($notif->type, 'CRIT') > -1)
-                                <tr class="highlight">
+                                <tr class="highlight" data-id="{{$notif->id}}">
                             @else
-                                <tr>
+                                <tr data-id="{{$notif->id}}">
                             @endif
                                 <td class="name">{{$notif->type}}</td>
-                                <td class="email">{{$notif->module}}</td>
+                                <td class="email">{{$notif->name}}</td>
                             @if(strpos($notif->type, 'TEMP') > -1)
                                 <td class="created_at">{{$notif->value}}&nbsp;°C</td>
                             @else
                                 <td class="created_at">{{$notif->value}}&nbsp;V</td>
                             @endif
                                 <td class="updated_at">{{$notif->created_at}}</td>
+                                <td class="button">
+                                    <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn">Vu</button>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

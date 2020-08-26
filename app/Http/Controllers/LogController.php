@@ -27,12 +27,15 @@ class LogController extends Controller
     * Server-side filtering
     **/
     public function getData(Request $request, bool $tojson = true) {
-        if (count($request->all()) == 0) { $request = $this->getDefaultData($request); }
+        $su_company = $request->company ?? NULL;
+
+        if (count($request->all()) === 0 || !$request["columns"]) {
+            $request = $this->getDefaultData($request);
+        }
         $this->middleware('auth');
         $user = Auth::user();
         if (empty($user)) abort(403, "Echec de l'authentification.");
         if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
-        $su_company = $request->company ?? NULL;
         if (!empty($user->su_admin) && $user->su_admin == 1) {
             if (!empty($su_company)) {
                 $company = $su_company;
@@ -352,7 +355,7 @@ EOTSQL));
                 $type = 'TEMP_HIGH';
             }
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
-        }
+        }/*
         else if ($newlog['maxtemp'] != -99 && $newlog['maxtemp'] != 0 && $newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
             if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
                 $type = 'TEMP_CRIT_LOW';
@@ -360,7 +363,7 @@ EOTSQL));
                 $type = 'TEMP_LOW';
             }
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
-        }
+        }*/
 
         /* DIFF TEMP */
         $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100 ;
@@ -395,6 +398,12 @@ EOTSQL));
         $not->value = $value;
         $not->save();
         return $not;
+    }
+
+    public function acknowledgeNotif(Notification $notif) {
+        $notif->seen = true;
+        $notif->save();
+        return response()->json(['ok'=>'ok']);
     }
 
     protected function authAPI(Request $request) {
