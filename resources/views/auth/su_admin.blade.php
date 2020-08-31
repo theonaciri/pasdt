@@ -27,14 +27,14 @@
                             @else
                                 <tr data-id="{{$company->id}}">
                             @endif
-                                <td class="logo" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">
+                                <td class="logo" style="cursor:pointer" title="Cliquer pour modifier le logo de {{$company->name}}">
                                     @if (!empty($company->logo))
                                         <img src="images/companylogos/{{$company->logo}}" height="39" alt="" />
                                     @endif
                                 </td>
-                                <td class="colors" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">
+                                <td class="colors" style="cursor:pointer" title="Cliquer pour modifier les couleurs de {{$company->name}}">
                                     @if (!empty($company->colors))
-                                        <div style="width: 39px; height: 39px; background-color: {{$company->colors}}"></div>
+                                        <div style="width: 39px; height: 39px; border-radius: 5px; background-color: {{$company->colors}}"></div>
                                     @endif
                                 </td>
                                 <td class="name" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">{{$company->name}}</td>
@@ -48,7 +48,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <small class="form-text text-muted">cliquer sur un nom du tableau permet de voir les logs de ses modules.</small>
+                    <small class="form-text text-muted">Cliquer sur un nom du tableau permet de voir les logs de l'entreprise. Cliquer sur un logo ou une couleur permet de modifier ces valeurs.</small>
 				</div>
 			</div>
 		</div>
