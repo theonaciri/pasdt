@@ -184,7 +184,7 @@
 <br>
 
 <!-- IMG UPLOAD -->
-<div class="container">
+<div class="container" id="customize-client">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
@@ -213,7 +213,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -252,7 +252,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form action="{{ route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ $su_applied ? route('company.colors.post', ['company' => $_company->id]) : route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
