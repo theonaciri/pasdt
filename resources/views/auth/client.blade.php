@@ -15,23 +15,27 @@
                                 <th>Module</th>
                                 <th>Valeur</th>
                                 <th>Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($notifs as $notif)
                             @if(strpos($notif->type, 'CRIT') > -1)
-                                <tr class="highlight">
+                                <tr class="highlight" data-id="{{$notif->id}}">
                             @else
-                                <tr>
+                                <tr data-id="{{$notif->id}}">
                             @endif
                                 <td class="name">{{$notif->type}}</td>
-                                <td class="email">{{$notif->module}}</td>
+                                <td class="email">{{$notif->name}}</td>
                             @if(strpos($notif->type, 'TEMP') > -1)
                                 <td class="created_at">{{$notif->value}}&nbsp;°C</td>
                             @else
                                 <td class="created_at">{{$notif->value}}&nbsp;V</td>
                             @endif
                                 <td class="updated_at">{{$notif->created_at}}</td>
+                                <td class="button">
+                                    <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn">Vu</button>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -180,7 +184,7 @@
 <br>
 
 <!-- IMG UPLOAD -->
-<div class="container">
+<div class="container" id="customize-client">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
@@ -209,7 +213,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -248,7 +252,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form action="{{ route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ $su_applied ? route('company.colors.post', ['company' => $_company->id]) : route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">

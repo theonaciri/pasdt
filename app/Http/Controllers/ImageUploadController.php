@@ -36,7 +36,7 @@ class ImageUploadController extends Controller
         $imageName = time().'.'.request()->image->getClientOriginalExtension();
         request()->image->move(public_path('images/companylogos'), $imageName);
 
-        $company = \App\Company::where('id', Auth::user()->company_id)->first();
+        $company = \App\Company::where('id', $this->getCompany(Auth::user()))->first();
         $company->logo = $imageName;
         $company->save();
 

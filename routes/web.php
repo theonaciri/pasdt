@@ -44,6 +44,9 @@ Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth
 Route::get('/logs/OverspeedToTelit/{pasdt_str}', 'LogController@convertOverspeedToTelit')->name('log.convert.over.to.telit');
 Route::get('/logs/TelitToOverspeed/{pasdt_str}', 'LogController@convertTelitToOverspeed')->name('log.convert.telit.to.over');
 
+/* NOTIFICATIONS */
+Route::post('/notif/{notif}/acknowledge', 'LogController@acknowledgeNotif')->name('notif.acknowledge');
+
 /* MODULE */
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
 Route::post('/module', 'ModuleController@postModule')->name('module.post');
