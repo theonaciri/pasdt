@@ -13,6 +13,8 @@
                 	<table id="adminTable" class="table stripe">
                         <thead>
                             <tr>
+                                <th scope="col">Logo</th>
+                                <th scope="col">Couleur</th>
                                 <th scope="col">Nom</th>
                                 <th scope="col">Utilisateurs</th>
                                 <th scope="col">Modules</th>
@@ -25,6 +27,16 @@
                             @else
                                 <tr data-id="{{$company->id}}">
                             @endif
+                                <td class="logo" style="cursor:pointer" title="Cliquer pour modifier le logo de {{$company->name}}">
+                                    @if (!empty($company->logo))
+                                        <img src="images/companylogos/{{$company->logo}}" height="39" alt="" />
+                                    @endif
+                                </td>
+                                <td class="colors" style="cursor:pointer" title="Cliquer pour modifier les couleurs de {{$company->name}}">
+                                    @if (!empty($company->colors))
+                                        <div style="width: 39px; height: 39px; border-radius: 5px; background-color: {{$company->colors}}"></div>
+                                    @endif
+                                </td>
                                 <td class="name" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">{{$company->name}}</td>
                                 <td class="button" title="Utilisateurs de {{$company->name}}">
                                     <button type="button" data-id="{{$company->id}}" title="Modifier" name="Modifier" class="btn btn-primary companybtn" data-toggle="modal" data-target="#companyUsersModal"><span class="oi oi-eye"></span></button>
@@ -36,7 +48,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <small class="form-text text-muted">cliquer sur un nom du tableau permet de voir les logs de ses modules.</small>
+                    <small class="form-text text-muted">Cliquer sur un nom du tableau permet de voir les logs de l'entreprise. Cliquer sur un logo ou une couleur permet de modifier ces valeurs.</small>
 				</div>
 			</div>
 		</div>
