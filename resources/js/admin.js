@@ -26,6 +26,12 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		$('body').css('background-color', $(this).val());
 	})
 
+	$('#adminTable td.logo').click(function() {
+		location.href="/client?company=" + $(this).parent().data('id') + "#customize-client";
+	});
+	$('#adminTable td.colors').click(function() {
+		location.href="/client?company=" + $(this).parent().data('id') + "#customize-client";
+	});
 	$('#adminTable td.name').click(function() {
 		location.href="/home?company=" + $(this).parent().data('id');
 	});

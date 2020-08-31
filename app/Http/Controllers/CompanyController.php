@@ -123,7 +123,7 @@ class CompanyController extends Controller
 */
         $colors = request()->colors;
         
-        $company = \App\Company::where('id', Auth::user()->company_id)->first();
+        $company = \App\Company::where('id', $this->getCompany(Auth::user()))->first();
         $company->colors = $colors;
         $company->save();
 
