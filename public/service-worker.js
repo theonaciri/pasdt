@@ -1,5 +1,6 @@
 var CACHE_NAME = 'pasdt-cache-v4';
 var urlsToCache = [
+  '/',
   '/consultation',
   '/css/app.css',
   '/js/app.js',
