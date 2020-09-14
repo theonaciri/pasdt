@@ -53,8 +53,12 @@ class ModuleController extends Controller
         ]);
     }
 
-    protected function is_user_allowed($user, $company_id) {
-        return ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
+    protected function isUserClient($user, $company_id) {
+        return ($this->isUserFromCompany($user, $company_id) && $user->is_client_company) || $user->su_admin;
+    }
+
+    protected function isUserFromCompany($user, $company_id) {
+        return ($user->company_id == $company_id) || $user->su_admin;
     }
 
     protected function getSessionTelit($force_reconnect = false) {
@@ -283,7 +287,7 @@ class ModuleController extends Controller
         $user = Auth::user();
         $module = new Module;
         $module->name = $request->name;
-        if ($this->is_user_allowed($user, $request->company_id)) {
+        if ($this->isUserClient($user, $request->company_id)) {
             $module->company_id = $request->company_id;
         }
         $module->telit_json = $request->telit_json;
@@ -303,7 +307,7 @@ class ModuleController extends Controller
     public function putModule(Request $request, Module $module) {
         $user = Auth::user();
         $module->name = $request->name;
-        if ($this->is_user_allowed($user, $module->company_id)) {
+        if ($this->isUserClient($user, $module->company_id)) {
             $module->update([
                 'name'=>$request->name,
                 'telit_json'=>$request->telit_json,
@@ -325,7 +329,7 @@ class ModuleController extends Controller
 
     public function deleteModule(Module $module) {
         $user = Auth::user();
-        if ($this->is_user_allowed($user, $module->company_id)) {
+        if ($this->isUserClient($user, $module->company_id)) {
             $module->delete();
             return response()->json($module);
         } else {
@@ -351,7 +355,7 @@ class ModuleController extends Controller
 
     public function getModule(\App\Module $module) {
         $user = Auth::user();
-        if ($this->is_user_allowed($user, $module->company_id)) {
+        if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
         } else {
             return abort(403, "Echec de l'authentification.");
@@ -365,7 +369,7 @@ class ModuleController extends Controller
 
     public function getModuleByModuleId(\App\Module $module) {
         $user = Auth::user();
-        if ($this->is_user_allowed($user, $module->company_id)) {
+        if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
         } else {
             return abort(403, "Echec de l'authentification.");
@@ -379,10 +383,21 @@ class ModuleController extends Controller
 
     public function getModuleJson(Module $module) {
         $user = Auth::user();
-        if ($this->is_user_allowed($user, $module->company_id)) {
+        if ($this->isUserFromCompany($user, $module->company_id)) {
             return response($module->telit_json);
         } else {
             return abort(403, "Echec de l'authentification pour récupérer les données JSON.");
         }
+    }
+
+    public function subscribeNotif(Module $module) {
+        $user = Auth::user();
+
+        $user->updatePushSubscription($endpoint, $key, $token, $contentEncoding);
+    }
+
+    public function unsubscribeNotif(Module $module) {
+         $user = Auth::user();
+         $user->deletePushSubscription($endpoint);
     }
 }
