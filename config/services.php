@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'ovh' => [
+        'domain' => env('MAIL_HOST'),
+        'username' => env('MAIL_USERNAME'),
+        'password' => env('MAIL_PASSWORD')
+    ],
+
 ];
