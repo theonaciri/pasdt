@@ -6,7 +6,6 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Réinitialisation de votre mot de passe') }}</div>
-
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -16,6 +15,9 @@
 
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
+                    @foreach ($errors->all() as $error)
+                        <p class="text-danger">{{ $error }}</p>
+                     @endforeach 
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse e-mail') }}</label>
