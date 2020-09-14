@@ -33,7 +33,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		location.href="/client?company=" + $(this).parent().data('id') + "#customize-client";
 	});
 	$('#adminTable td.name').click(function() {
-		location.href="/home?company=" + $(this).parent().data('id');
+		location.href="/consultation?company=" + $(this).parent().data('id');
 	});
 
 	$('.companybtn').click(function(e) {

@@ -18,13 +18,19 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Request $req)
+    {
+        return redirect('consultation');
+    }
+
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $req)
+    public function consultation(Request $req)
     {
+        redirect('consultation');
         $log = new LogController;
         //return view('home');
         return view('home', [
