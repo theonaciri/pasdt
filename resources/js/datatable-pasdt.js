@@ -83,9 +83,12 @@ function getData(data, callback, settings) {
     data.company = GetURLParameter("company");
     $.ajax({
       "url": "/logs/get",
-      "data": data
+      "data": data,
+      "timeout": 10000,
     }).done(function(data) {
       callback(data);
+    }).fail(function(data) {
+      $('#main-table_processing').hide("fast");
     });
   }
 } // getData
