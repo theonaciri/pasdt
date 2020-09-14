@@ -16,19 +16,7 @@
     <link rel="apple-touch-icon" href="/images/logo-192.png">
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
-    <script>
-        
-// Register service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-        .then((reg) => {
-          console.log('Service worker registered.', reg);
-        });
-  });
-}
 
-    </script>
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
@@ -129,9 +117,7 @@ if ('serviceWorker' in navigator) {
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    <a id="logoff-button" class="dropdown-item" href="{{ route('logout') }}">
                                         {{ __('Se déconnecter') }}
                                     </a>
 
@@ -150,6 +136,19 @@ if ('serviceWorker' in navigator) {
             @yield('content')
         </main>
     </div>
+    <script>
+                
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((reg) => {
+                  console.log('Service worker registered.', reg);
+                });
+          });
+        }
+
+    </script>
 </body>
 
 </html>

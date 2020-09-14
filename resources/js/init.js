@@ -11,7 +11,7 @@ define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_a
 		cookie.set('su_company', "2", {path: '/'})
 	} else if (location.pathname === "/consultation") {
 		cookie.remove('su_company');
-	}
+	}	
 
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -36,4 +36,17 @@ define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_a
     });
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
+
+	$('#logoff-button').click(function() {
+		event.preventDefault();
+       if(window.navigator && navigator.serviceWorker) {
+          	navigator.serviceWorker.getRegistrations()
+          	.then(function(registrations) {
+	            for(let registration of registrations) {
+	              registration.unregister();
+	            }
+          	});
+        }
+        document.getElementById('logout-form').submit();
+	})
 })
