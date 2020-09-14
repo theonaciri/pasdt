@@ -12,7 +12,7 @@ define([
     }
 }
 
-if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
+if (window.location.pathname !== "/consultation" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
 var cal_interval = flatpickr('#dateinterval_logtable', {
     mode: "range",

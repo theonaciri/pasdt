@@ -9,7 +9,7 @@ define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_a
 	if (typeof comp != 'undefined') {
 		console.log('::', comp);
 		cookie.set('su_company', "2", {path: '/'})
-	} else if (location.pathname === "/home") {
+	} else if (location.pathname === "/consultation") {
 		cookie.remove('su_company');
 	}
 

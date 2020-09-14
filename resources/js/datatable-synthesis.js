@@ -8,7 +8,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			.toUpperCase() + this.slice(1) : this;
 		}
 
-		if (window.location.pathname !== "/home" && window.location.pathname !== "/") return ;
+		if (window.location.pathname !== "/consultation" && window.location.pathname !== "/") return ;
 		/*
 		var cal_interval = flatpickr('#dateinterval_logtable', {
 			mode: "range",
