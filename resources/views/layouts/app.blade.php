@@ -6,12 +6,29 @@
     <meta name="description" content="suivi de logs PASDT">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!--<link rel="manifest" href="/manifest.webmanifest">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="PASDT PWA">
+    <link rel="apple-touch-icon" href="/images/logo-192.png">
+    <link rel="manifest" href="/manifest.webmanifest">
 
     <title>{{ config('app.name', 'PASDT') }}</title>
     <link rel="apple-touch-icon" href="/images/logo-192.png">
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
+    <script>
+        
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then((reg) => {
+          console.log('Service worker registered.', reg);
+        });
+  });
+}
+
+    </script>
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
@@ -23,13 +40,7 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
         <!--<script src="{{ asset('js/app2.js') }}" defer></script>-->
     @endif
-        <script src="/js/anychart-base.min.js" type="text/javascript" defer></script>
-        <script src="/js/anychart-stock.min.js" type="text/javascript" defer></script>
-        <script src="/js/anychart-ui.min.js" type="text/javascript" defer></script>
-        <script src="/js/anychart-exports.min.js" type="text/javascript" defer></script>
-        <script src="/js/anychart-locale-fr.min.js" type="text/javascript" defer></script>
-
-        <script src="/js/anychart-theme-dark_blue.min.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-bundle.js" type="text/javascript" defer></script>
         <!--<script src="/js/anychart-jquery.min.js" type="text/javascript" defer></script>-->
 
     <!-- Fonts -->
