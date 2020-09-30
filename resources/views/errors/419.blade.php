@@ -2,5 +2,4 @@
 
 @section('title', __('Page Expired'))
 @section('code', '419')
-<p>Fermez tous vos onglets PASDT afin que l'application puisse se mettre à jour.</p>
-@section('message', __('Page Expired'))
+@section('message', __("L'application vient de se mettre à jour, veuillez fermer tous vos onglets PASDT et relancer logs.pasdt.com"))
