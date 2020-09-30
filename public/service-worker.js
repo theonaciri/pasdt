@@ -1,4 +1,4 @@
-var CACHE_NAME = 'pasdt-cache-v4';
+var CACHE_NAME = 'pasdt-cache-v6';
 var urlsToCache = [
   '/',
   '/consultation',
@@ -19,6 +19,9 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
+  if ( event.request.url.indexOf( '/csrf' ) !== -1 ) {
+      return false;
+  }
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
