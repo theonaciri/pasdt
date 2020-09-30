@@ -71,4 +71,6 @@ Route::get('/modules/update', 'ModuleController@updateModules')->name('telit.mod
 Route::get('/telit-connections/{limit}', 'ModuleController@getTelitListConnections')->name('telit.connecion.list');
 Route::get('/save-telit-modules', 'ModuleController@saveTelitModules')->name('telit.save.modules');
 
+/* CSRF */
+Route::get('/csrf', "Auth\CSRFController@refresh");
 

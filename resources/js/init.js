@@ -48,5 +48,23 @@ define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_a
           	});
         }
         document.getElementById('logout-form').submit();
-	})
+	});
+
+	/* CSRF refresh for cached pages */
+	$.ajax({
+	    url: "/csrf",
+	    type: 'get',
+	    dataType: 'json',
+	    success: function (result) {
+	        $('meta[name="csrf-token"]').attr('content', result.token);
+	        $.ajaxSetup({
+	            headers: {
+	                'X-CSRF-TOKEN': result.token
+	            }
+	        });
+	    },
+	    error: function (xhr, status, error) {
+	        console.error(xhr, status, error);
+	    }
+	});
 })
