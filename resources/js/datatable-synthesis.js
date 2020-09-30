@@ -1,7 +1,7 @@
 define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
 		'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
 		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
-		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js'],
+		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
 	function(datatables, datatables_bs, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
 		String.prototype.capFirstLetter = function () {
 			return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
@@ -102,6 +102,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		dom: 'Blfrtip',
 		lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
 		pageLength: 10,
+		responsive: true,
 		buttons: [
 		{
 			extend: 'copyHtml5',
@@ -292,6 +293,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			}
 		});
 	});
+	new $.fn.dataTable.FixedHeader( table );
 	}
 	dataTablesEvents();
 	function dataTablesEvents() {

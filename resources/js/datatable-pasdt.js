@@ -1,7 +1,7 @@
 define([
   './components/datatable-fr', './components/color-event-assoc', 'datatables.net-bs4',
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
-  'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
+  'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
   function(datatablefr, arrayToSearch) {
 
     function GetURLParameter(e) {
@@ -100,6 +100,7 @@ function initTable() {
     lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
     pageLength: 10,
     dom: 'Blfrtip',
+    responsive: true,
     language: datatablefr,
     ajax: getData,
     order: [[ 0, "desc" ]],
@@ -162,6 +163,7 @@ function initTable() {
       }); /* / Dropdown */
     } // initComplete
   }); // table
+  new $.fn.dataTable.FixedHeader( table );
 }
 
 initTable();
