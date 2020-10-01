@@ -81,7 +81,7 @@
                               Uniquement les températures
                             </button>
                         </div>
-                        <table id="main-table" class="table table-bordered" style="width: 100% !important;">
+                        <table id="main-table" class="table table-bordered responsive nowrap" style="width: 100%">
                             
                         @if (isset($logs) && false)
                         <thead>

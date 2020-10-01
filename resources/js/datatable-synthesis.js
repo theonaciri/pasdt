@@ -103,6 +103,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
 		pageLength: 10,
 		responsive: true,
+		fixedHeader: true,
 		buttons: [
 		{
 			extend: 'copyHtml5',
@@ -293,9 +294,11 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			}
 		});
 	});
-	new $.fn.dataTable.FixedHeader( table );
 	}
 	dataTablesEvents();
+	if (window.loadedFromCache) {
+		table.ajax.reload( null, false );
+	}
 	function dataTablesEvents() {
 		$('#synthesis-table').on('click', '.openModuleModal', function(e) {
 			var $modmodal = $('#moduleModal');
