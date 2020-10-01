@@ -41,15 +41,15 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'show active' : '' }}" id="synthesis" role="tabpanel" aria-labelledby="synthesis-table">
                     <div class="container">
-                        <table id="synthesis-table" class="table table-bordered">
+                        <table id="synthesis-table" class="table table-bordered" style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th class="th-multiselect">Nom du module</th>
-                                    <th class="th-multiselect">Dernière anomalie</th>
-                                    <th>Date dernière anomalie</th>
-                                    <th>Dernière température</th>
-                                    <th>Date dernière temp.</th>
-                                    <th>Détails</th>
+                                    <th data-priority="1" class="th-multiselect">Nom du module</th>
+                                    <th data-priority="3" class="th-multiselect">Dernière anomalie</th>
+                                    <th data-priority="5">Date dernière anomalie</th>
+                                    <th data-priority="4">Dernière température</th>
+                                    <th data-priority="6">Date dernière temp.</th>
+                                    <th data-priority="2">Détails</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -86,12 +86,12 @@
                         @if (isset($logs) && false)
                         <thead>
                                 <tr>
-                                    <th class="th-date">Date</th>
-                                    <th class="th-multiselect" >Nom du module</th>
+                                    <th data-priority="2"class="th-date">Date</th>
+                                    <th data-priority="1"class="th-multiselect" >Nom du module</th>
                                     <!--<th>Client</th>-->
-                                    <th class="th-message">Message</th>
-                                    <th class="select-temp">Température</th>
-                                    <th>Batterie</th>
+                                    <th data-priority="4"class="th-message">Message</th>
+                                    <th data-priority="3"class="select-temp">Température</th>
+                                    <th data-priority="5">Batterie</th>
                                 </tr>
                             </thead>
                             <tbody>

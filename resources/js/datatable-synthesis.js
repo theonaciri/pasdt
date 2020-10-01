@@ -195,8 +195,8 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 	],
 	columnDefs: [ {
 		"targets": 5,
-		"orderable": false
-	} ],
+		"orderable": false,
+	}],
 	"columns": [
 		/* {"data": "id"},*/
 		{
@@ -330,7 +330,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		});
 		$('#synthesis-table').on('click', 'tr', function (e) {
 			var data = table.row( this ).data();
-			if (data && data.module_id && !$(e.target).is(".openModuleModal")) {
+			if (data && data.module_id && !$(e.target).is(".openModuleModal") && !$(e.target).is(".dtr-control")) {
 				$('#home-tab').click();
 				$('#module-name select').val([data.name]).change();
 			}
