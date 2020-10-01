@@ -101,6 +101,7 @@ function initTable() {
     pageLength: 10,
     dom: 'Blfrtip',
     responsive: true,
+    fixedHeader: true,
     language: datatablefr,
     ajax: getData,
     order: [[ 0, "desc" ]],
@@ -161,9 +162,13 @@ function initTable() {
         }
         select.selectpicker({actionsBox: true});
       }); /* / Dropdown */
+      setTimeout(function() {
+        if (window.loadedFromCache) {
+          table.ajax.reload( null, false );
+        }
+      }, 1);
     } // initComplete
   }); // table
-  new $.fn.dataTable.FixedHeader( table );
 }
 
 initTable();
