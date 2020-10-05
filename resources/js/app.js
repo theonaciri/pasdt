@@ -6,7 +6,7 @@
 
 
 //import "requirejs";
-require('./bootstrap');
+//require('./bootstrap'); in init.js
 //window.DataTable = require( 'datatables.net' );
 
 require('./init');

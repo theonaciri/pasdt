@@ -14,6 +14,7 @@ define([
 
 if (window.location.pathname !== "/consultation" && window.location.pathname !== "/") return ;
 var table, graphdata, active_module;
+window.logtable = table;
 var cal_interval = flatpickr('#dateinterval_logtable', {
     mode: "range",
     altInput: true,
@@ -162,11 +163,9 @@ function initTable() {
         }
         select.selectpicker({actionsBox: true});
       }); /* / Dropdown */
-      setTimeout(function() {
-        if (window.loadedFromCache) {
-          table.ajax.reload( null, false );
-        }
-      }, 1);
+      if (window.online) {
+        table.ajax.reload( null, false );
+      }
     } // initComplete
   }); // table
 }
