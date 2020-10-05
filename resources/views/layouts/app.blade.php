@@ -14,23 +14,6 @@
 
     <title>{{ config('app.name', 'PASDT') }}</title>
     <link rel="apple-touch-icon" href="/images/logo-192.png">
-    <!-- Scripts -->
-    <!-- <script src="/js/require.js"></script>-->
-
-    @if (Route::currentRouteName() == 'checkout')
-        <script src="https://js.stripe.com/v3/"></script>
-        <!--  <link rel="stylesheet" href="StripeElements.css"> -->
-        <!--<script src="{{ asset('js/checkout.js') }}" defer></script>-->
-    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || FALSE && (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
-        {{-- is IE 11 or below --}}
-        <script src="{{ asset('js/app.es5.js') }}" defer></script>
-    @else
-        <script src="{{ asset('js/app.js') }}" defer></script>
-        <!--<script src="{{ asset('js/app2.js') }}" defer></script>-->
-    @endif
-        <script src="/js/anychart-bundle.js" type="text/javascript" defer></script>
-        <!--<script src="/js/anychart-jquery.min.js" type="text/javascript" defer></script>-->
-
     <!-- Fonts -->
     <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
@@ -131,11 +114,25 @@
                 </div>
             </div>
         </nav>
-
+HEEIN
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+    <!-- Scripts -->
+    <!-- <script src="/js/require.js"></script>-->
+
+    @if (Route::currentRouteName() == 'checkout')
+        <script src="https://js.stripe.com/v3/"></script>
+        <!--  <link rel="stylesheet" href="StripeElements.css"> -->
+        <!--<script src="{{ asset('js/checkout.js') }}" defer></script>-->
+    @elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+        {{-- is IE 11 or below --}}
+        <script src="{{ asset('js/app.es5.js') }}" defer></script>
+    @else
+        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="/js/anychart-bundle.js" type="text/javascript" defer></script>
+    @endif
     <script>
                 
         // Register service worker

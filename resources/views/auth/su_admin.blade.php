@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="/" class="btn btn-secondary"   ><span class="oi oi-arrow-left"></span> Retour à l'analyse</a>
+<a href="/consultation" class="btn btn-secondary"   ><span class="oi oi-arrow-left"></span> Retour à l'analyse</a>
 <br>
 <br>
 <div class="container">

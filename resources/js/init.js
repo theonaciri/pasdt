@@ -1,4 +1,4 @@
-define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_annotated) {
+define(['js-cookie', './graphs-live-google-annotated', './bootstrap', 'bootstrap'], function(cookie, graph_annotated) {
 	window.getUrlParameter = function(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -62,9 +62,13 @@ define(['js-cookie', './graphs-live-google-annotated'], function(cookie, graph_a
 	                'X-CSRF-TOKEN': result.token
 	            }
 	        });
-	    },
-	    error: function (xhr, status, error) {
-	        console.error(xhr, status, error);
+	        if (window.synthtable) {
+	        	synthtable.ajax.reload(null, false);
+	        }
+	        if (window.logtable) {
+	        	logtable.ajax.reload(null, false);
+	        }
+	        window.online = true;
 	    }
 	});
 })

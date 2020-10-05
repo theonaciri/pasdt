@@ -1,8 +1,10 @@
 define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
 		'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
 		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
-		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
+		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',],
 	function(datatables, datatables_bs, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
+		var table;
+		window.synthtable = table;
 		String.prototype.capFirstLetter = function () {
 			return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
 			.toUpperCase() + this.slice(1) : this;
@@ -296,9 +298,9 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 	});
 	}
 	dataTablesEvents();
-	if (window.loadedFromCache) {
-		table.ajax.reload( null, false );
-	}
+    if (window.online) {
+      table.ajax.reload( null, false );
+    }
 	function dataTablesEvents() {
 		$('#synthesis-table').on('click', '.openModuleModal', function(e) {
 			var $modmodal = $('#moduleModal');
@@ -356,5 +358,5 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		}
 	}
 
-	setTimeout(_initTable, 1);
+	_initTable();
 });
