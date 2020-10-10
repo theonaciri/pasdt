@@ -3,7 +3,7 @@ const filesToCache = [
   'su_admin',
   'client',
   'register',
-  'fonts/open-iconic.woff',
+  'fonts/open-iconic.woff?3cf97837524dd7445e9d1462e3c4afe2',
   'images/loader.svg',
   'css/app.css',
   'css/anychart-ui.min.css',
