@@ -20,7 +20,10 @@ class HomeController extends Controller
 
     public function index(Request $req)
     {
-        return redirect('consultation');
+        $log = new LogController;
+        return view('consultation', [
+            "logs" => $log->getData($req, false),
+            "synth" => $log->getSynthesisData($req, false)]);
     }
 
     /**
