@@ -30,7 +30,6 @@ class HomeController extends Controller
      */
     public function consultation(Request $req)
     {
-        redirect('consultation');
         $log = new LogController;
         //return view('home');
         return view('home', [
