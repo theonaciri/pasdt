@@ -114,7 +114,7 @@ class CompanyController extends Controller
     public function setColorsPost()
     {
         if (!Auth::user()->company_id || !Auth::user()->is_client_company) {
-            return view('home');
+            return view('consultation');
         }
 /*
         request()->validate([

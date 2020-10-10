@@ -31,7 +31,7 @@ class ModuleController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
-            return view('home');
+            return view('consultation');
         }
         $companies = \App\Company::all();
         $modules = \App\Module::select("*")

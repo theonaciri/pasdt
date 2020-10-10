@@ -76,7 +76,7 @@ class RegisterController extends Controller
     {
         $user = Auth::user();
         if (!$user->su_admin) {
-            return view('home');
+            return view('consultation');
         }
         return User::create([
             'name' => $data['name'],
@@ -122,7 +122,7 @@ class RegisterController extends Controller
     {
         $user = Auth::user();
         if (!$user->su_admin) {
-            return view('home');
+            return view('consultation');
         }
         $companies = \App\Company::all();
         return view('auth.register', ['companies'=>$companies]);
