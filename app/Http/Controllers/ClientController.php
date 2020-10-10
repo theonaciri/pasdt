@@ -34,7 +34,7 @@ class ClientController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if (empty($user) || empty($user->company_id) || $user->company_id == 0) {
-            return view('home');
+            return view('consultation');
         }
         $su_company = $request->company ?? NULL;
         $id_company = $user->company_id;
@@ -43,7 +43,7 @@ class ClientController extends Controller
         }
         $company = \App\Company::where('id', $id_company)->first();
         if (empty($company)) {
-            return view('home');
+            return view('consultation');
         }
         $this->modules = \App\Module::where('company_id', $id_company)->get();
         //$modulesids = $this->modules->pluck('module_id')->toArray();
@@ -65,7 +65,7 @@ class ClientController extends Controller
           "notifs" => $notifs
         ]);
         /*} else {
-            return view('home');
+            return view('consultation');
         }*/
     }
 
@@ -81,12 +81,12 @@ class ClientController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
-            return view('home');
+            return view('consultation');
         }
         $companies = \App\Company::all();
         return view('auth/su_admin', ["companies"=>$companies]);
         /*} else {
-            return view('home');
+            return view('consultation');
         }*/
     }
     /**
@@ -101,12 +101,12 @@ class ClientController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
-            return view('home');
+            return view('consultation');
         }
         $companies = \App\Company::all();
         return view('auth/checkout', ["companies"=>$companies]);
         /*} else {
-            return view('home');
+            return view('consultation');
         }*/
 
     }    
@@ -123,7 +123,7 @@ class ClientController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
-            return view('home');
+            return view('consultation');
         }
         $companies = \App\Company::all();
         $customer = \Stripe\Customer::create([
@@ -150,14 +150,14 @@ class ClientController extends Controller
         $user = Auth::user();
         if ($user->company_id == 0) {
             dd('dead');
-            return redirect()->route('home', []);
+            return redirect()->route('consultation', []);
         }
         dd($usertoDelete->id);
         dd($usertoDelete);
         if ($user->is_client_company && $user->company_id == $usertoDelete->company_id) {
             $usertoDelete->delete();
         } else {
-            return redirect()->route('home', []);
+            return redirect()->route('consultation', []);
         }
         return redirect()->route('client', []);
     }
@@ -165,7 +165,7 @@ class ClientController extends Controller
     public function modifUser($usertoModif) {
         $authUser = Auth::user();
         if ($authUser->company_id == 0) {
-            return redirect()->route('home', []);
+            return redirect()->route('consultation', []);
         }
         $usertoModif = User::find($usertoModif);
         if ($authUser->is_client_company

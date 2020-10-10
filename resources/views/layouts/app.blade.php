@@ -36,7 +36,7 @@
     <div id="app" data-su_company="{{$_company->id}}">
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
-                    <a href="{{ url('home')}}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"><span class="oi oi-warning"></span></a>
+                    <a href="{{ url('consultation')}}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"><span class="oi oi-warning"></span></a>
                 <a class="navbar-brand" href="{{ url('/consultation') }}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre">
     @else
     <div id="app">

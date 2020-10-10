@@ -33,18 +33,18 @@ class AdminController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->company_id == 0) {
-            return view('home');
+            return view('consultation');
         }
         $company = \App\Company::where('id', $user->company_id)->first();
         if (empty($company)) {
-            return view('home');
+            return view('consultation');
         }
         $this->users = User::where('id', '!=', auth()->id())
                             ->where('company_id', Auth::user()->company_id)
                             ->get();
         return view('auth/admin', ["company"=>$company, "users"=>$this->users]);
         /*} else {
-            return view('home');
+            return view('consultation');
         }*/
     }
 
@@ -60,7 +60,7 @@ class AdminController extends Controller
         //if (Auth::user()->is_client_company) {
             // The current user can edit settings
         if ($user->su_admin !== 1) {
-            return view('home');
+            return view('consultation');
         }
         $companies = \App\Company::all();
         $list_modules = \App\Module::select('id', 'name')->whereNull('company_id')->get();
@@ -83,14 +83,14 @@ class AdminController extends Controller
         $user = Auth::user();
         if ($user->company_id == 0) {
             dd('dead');
-            return redirect()->route('home', []);
+            return redirect()->route('consultation', []);
         }
         dd($usertoDelete->id);
         dd($usertoDelete);
         if ($user->is_client_company && $user->company_id == $usertoDelete->company_id) {
             $usertoDelete->delete();
         } else {
-            return redirect()->route('home', []);
+            return redirect()->route('consultation', []);
         }
         return redirect()->route('admin', []);
     }

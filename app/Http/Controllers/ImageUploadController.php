@@ -26,7 +26,7 @@ class ImageUploadController extends Controller
     public function imageUploadPost()
     {
         if (!Auth::user()->company_id || !Auth::user()->is_client_company) {
-            return view('home');
+            return view('consultation');
         }
 
         request()->validate([
