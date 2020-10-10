@@ -18,11 +18,6 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $req)
-    {
-        return redirect('consultation');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -31,7 +26,6 @@ class HomeController extends Controller
     public function consultation(Request $req)
     {
         $log = new LogController;
-        //return view('home');
         return view('home', [
             "logs" => $log->getData($req, false),
             "synth" => $log->getSynthesisData($req, false)]);
