@@ -26,11 +26,13 @@ define(['js-cookie', './graphs-live-google-annotated', './bootstrap', 'bootstrap
     $('#graphs-live-tab').click( function () {
     	var module_names = $('#module-name .selectpicker').val();
         if (Array.isArray(module_names) && module_names.length) {
-          var mod_name = module_names[0];
-          var mod = presynths.find(function(m) {return m.name === mod_name});
-          if (typeof mod !== 'undefined') {
-          	$('#graphModuleSelect').val(mod.module_id).trigger('change');
-          }
+		  var mod_name = module_names[0];
+		  if (Array.isArray(presynths)) {
+			var mod = presynths.find(function(m) {return m.name === mod_name});
+			if (typeof mod !== 'undefined') {
+				$('#graphModuleSelect').val(mod.module_id).trigger('change');
+			}
+		  }
         }
      	graph_annotated.init();
     });

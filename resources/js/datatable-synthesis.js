@@ -10,7 +10,6 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			.toUpperCase() + this.slice(1) : this;
 		}
 
-		if (window.location.pathname !== "/consultation" && window.location.pathname !== "/") return ;
 		/*
 		var cal_interval = flatpickr('#dateinterval_logtable', {
 			mode: "range",
@@ -187,7 +186,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		$("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM à kk:mm:ss"));
 	},
 	language: datatablefr,
-	data: presynths,
+	data: typeof presynths !== 'undefined' && Array.isArray(presynths) ? presynths : [],
 	/*"ajax": {
 		//"url": "/json/data/dump.json",
 		"url": "/logs/synth" + (getUrlParameter('company') ? '?company=' + getUrlParameter('company') : ''),

@@ -48,6 +48,25 @@ self.addEventListener('activate', event => {
   );
 });
 
+function cleanResponse(response) {
+  const clonedResponse = response.clone();
+
+  // Not all browsers support the Response.body stream, so fall back to reading
+  // the entire body into memory as a blob.
+  const bodyPromise = 'body' in clonedResponse ?
+    Promise.resolve(clonedResponse.body) :
+    clonedResponse.blob();
+
+  return bodyPromise.then((body) => {
+    // new Response() is happy when passed either a stream or a Blob.
+    return new Response(body, {
+      headers: clonedResponse.headers,
+      status: clonedResponse.status,
+      statusText: clonedResponse.statusText,
+    });
+  });
+}
+
 self.addEventListener('fetch', event => {
   /*console.log('Fetch event for ', event.request.url);*/
   if (event.request.url.indexOf("csrf") !== -1) { return ;}
@@ -59,6 +78,11 @@ self.addEventListener('fetch', event => {
     caches.match(event.request)
     .then(response => {
       if (response) {
+        if (response.redirected) {
+          console.warn('redirected!', response);
+          response = cleanResponse(response);
+          console.warn('new response', response);
+        }
         /*console.log('Found ', event.request.url, ' in cache');*/
         return response;
       }
