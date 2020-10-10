@@ -114,7 +114,6 @@
                 </div>
             </div>
         </nav>
-HEEIN
         <main class="py-4">
             @yield('content')
         </main>
@@ -140,7 +139,7 @@ HEEIN
           window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
                 .then((reg) => {
-                  console.log('Service worker registered.', reg);
+                  /*console.log('Service worker registered.', reg);*/
                 });
           });
         }
