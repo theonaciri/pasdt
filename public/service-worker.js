@@ -1,5 +1,4 @@
-var CACHE = 'network-or-cache1';
-var PRECACHE = [
+const filesToCache = [
   'consultation',
   'su_admin',
   'client',
@@ -15,117 +14,70 @@ var PRECACHE = [
   'images/logo-192.png'
 ];
 
+const staticCacheName = 'pages-cache-v3';
 
-var CACHE_DYNAMIC_NAME, CACHE_CONTAINING_ERROR_MESSAGES;
-// On install, cache some resource.
-self.addEventListener('install', function(evt) {
-  console.log('The service worker is being installed.');
-
-  // Ask the service worker to keep installing until the returning promise
-  // resolves.
-  evt.waitUntil(precache());
-});
-
-// On fetch, use cache but update the entry with the latest contents
-// from the server.
-/*
-self.addEventListener('fetch', function(evt) {
-   if (evt.request.url.indexOf('/csrf') !== -1 ) {
-    return false;
-  }
-  console.log('The service worker is serving the asset:' + evt.request.url);
-  // Try network and if it fails, go for the cached copy.
-  evt.respondWith(fromNetwork(evt.request, 400).catch(function () {
-    return fromCache(evt.request);
-  }));
-});
-*/
-addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        if (response) {
-          return response;     // if valid response is found in cache return it
-        } else {
-          return fetch(event.request)     //fetch from internet
-            .then(function(res) {
-              return res;
-
-              if (event.request.url.indexOf('get?') !== -1) {
-                return res;
-              }
-              if (event.request.url.indexOf('temp?') !== -1) {
-                return res;
-              }
-
-              if (event.request.url.indexOf('csrf') !== -1) {
-                return res;
-              }
-              console.log('url=',event.request.url)
-              return caches.open(CACHE_DYNAMIC_NAME)
-                .then(function(cache) {
-                  console.log('caching ', event.request.url);
-                  console.log(CACHE_DYNAMIC_NAME);
-                  cache.put(event.request.url, res.clone());    //save the response for future
-                  return res;   // return the fetched data
-                })
-                
-            })
-            .catch(function(err) {       // fallback mechanism
-              return caches.open(CACHE_CONTAINING_ERROR_MESSAGES)
-                .then(function(cache) {
-                  return cache.match('/offline.html');
-                });
-            });
-        }
-      })
-  );
-});    
-
-// Open a cache and use `addAll()` with an array of assets to add all of them
-// to the cache. Return a promise resolving when all the assets are added.
-function precache() {
-  return caches.open(CACHE).then(function (cache) {
-    return cache.addAll(PRECACHE);
-  });
+function stripQueryStringAndHashFromPath(url) {
+  return url.split("?")[0].split("#")[0];
 }
 
-// Time limited network request. If the network fails or the response is not
-// served before timeout, the promise is rejected.
-function fromNetwork(request, timeout) {
-  return new Promise(function (fulfill, reject) {
-    // Reject in case of timeout.
-    var timeoutId = setTimeout(reject, timeout);
-    // Fulfill in case of success.
-    fetch(request).then(function (response) {
-      clearTimeout(timeoutId);
-      fulfill(response);
-    // Reject also if network fetch rejects.
-    }, reject);
-  });
-}
-
-// Open the cache where the assets were stored and search for the requested
-// resource. Notice that in case of no matching, the promise still resolves
-// but it does with `undefined` as value.
-function fromCache(request) {
-  return caches.open(CACHE).then(function (cache) {
-    return cache.match(request).then(function (matching) {
-      return matching || Promise.reject('no-match');
-    });
-  });
-}
-
-self.addEventListener('activate', (event) => {
-  var cacheKeeplist = ['CACHE'];
-
+self.addEventListener('install', event => {
+  /*console.log('Attempting to install service worker and cache static assets');*/
   event.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (cacheKeeplist.indexOf(key) === -1) {
-          return caches.delete(key);
-        }
-      }));
+    caches.open(staticCacheName)
+    .then(cache => {
+      return cache.addAll(filesToCache);
     })
   );
 });
+
+self.addEventListener('activate', event => {
+  /*console.log('Activating new service worker...');*/
+  const cacheWhitelist = [staticCacheName];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+self.addEventListener('fetch', event => {
+  /*console.log('Fetch event for ', event.request.url);*/
+  if (event.request.url.indexOf("csrf") !== -1) { return ;}
+  /*if (event.request.url.indexOf('fonts/') !== -1) {
+    event.request = new Request(stripQueryStringAndHashFromPath(event.request.url), event.request);
+    
+  }*/
+  event.respondWith(
+    caches.match(event.request)
+    .then(response => {
+      if (response) {
+        /*console.log('Found ', event.request.url, ' in cache');*/
+        return response;
+      }
+      /*console.log('Network request for ', event.request.url);*/
+      return fetch(event.request)
+      .then(response => {
+        /*if (response.status === 404) {
+          return caches.match('pages/404.html');
+        }*/
+        return caches.open(staticCacheName)
+        .then(cache => {
+          cache.put(event.request.url, response.clone());
+          return response;
+        });
+      });
+    })/*.catch(error => {
+      console.log('Error, ', error);
+      return caches.match('pages/offline.html');
+    })*/
+  );
+});
+
+
+
