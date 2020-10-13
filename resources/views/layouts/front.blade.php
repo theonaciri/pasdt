@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,18 +12,7 @@
     <meta name="apple-mobile-web-app-title" content="PASDT PWA">
     <link rel="apple-touch-icon" href="/images/logo-192.png">
     <link rel="manifest" href="/manifest.webmanifest">
-
     <title>{{ config('app.name', 'PASDT') }}</title>
-
-    <!-- Scripts -->
-    @if (Route::currentRouteName() == 'checkout')
-        <script src="https://js.stripe.com/v3/"></script>
-    @elseif (FALSE && preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
-        {{-- is IE 11 or below --}}
-        <script src="{{ asset('js/app.es5.js') }}" defer></script>
-    @else
-        <script src="{{ asset('js/app.js') }}" defer></script>
-    @endif
 
     <!-- Fonts -->
     <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -30,9 +20,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        
-	<style>
-        html, body {
+
+    <style>
+        html,
+        body {
             background-color: #e0ebeb;
             color: #636b6f;
             font-family: sans-serif;
@@ -69,7 +60,7 @@
             font-size: 84px;
         }
 
-        .links > a {
+        .links>a {
             color: #636b6f;
             padding: 0 25px;
             font-size: 13px;
@@ -82,39 +73,39 @@
         .m-b-md {
             margin-bottom: 30px;
         }
-		
-		.m-t-md {
+
+        .m-t-md {
             margin-top: 30px;
         }
-		
     </style>
-		
+
 </head>
 
 <body class="page mode-home">
     <div class="flex-center position-ref full-height">
-	
-		<div class="content">
-		
-			<div class="logo-client">
-			</div>
-	
-			<div class="title m-b-md">
-				Suivi du parc transfos PASDT
-			</div>
 
-			<main class="py-4">
-				@yield('content')
-			</main>
-			
-			<div class="links m-t-md">
-				<a href="https://pasdt.com">
-					<img src="images/logo-pasdt.png" >
-				</a>
-			</div>
-			
-		</div>	
-		
-    </div>	
+        <div class="content">
+
+            <div class="logo-client">
+            </div>
+
+            <div class="title m-b-md">
+                Suivi du parc transfos PASDT
+            </div>
+
+            <main class="py-4">
+                @yield('content')
+            </main>
+
+            <div class="links m-t-md">
+                <a href="https://pasdt.com">
+                    <img src="images/logo-pasdt.png">
+                </a>
+            </div>
+
+        </div>
+
+    </div>
 </body>
+
 </html>
