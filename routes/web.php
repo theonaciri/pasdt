@@ -35,6 +35,7 @@ Route::get('/company/{id}/users', 'CompanyController@getUsers')->name('company.u
 Route::get('/company/{id}/modules', 'CompanyController@getModules')->name('company.modules.get');
 Route::post('/company/{company}/module/{module}', 'CompanyController@linkModule')->name('company.module.link');
 Route::put('/company/{company}/module/{module}/unlink', 'CompanyController@unlinkModule')->name('company.module.unlink');
+Route::delete('/company/{company}', 'CompanyController@deleteCompany')->name('company.delete');
 
 /* LOGS */
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all');
@@ -72,4 +73,3 @@ Route::get('/save-telit-modules', 'ModuleController@saveTelitModules')->name('te
 
 /* CSRF */
 Route::get('/csrf', "Auth\CSRFController@refresh");
-
