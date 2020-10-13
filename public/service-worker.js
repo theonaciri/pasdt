@@ -24,6 +24,7 @@ function stripQueryStringAndHashFromPath(url) {
 
 self.addEventListener('install', event => {
   /*console.log('Attempting to install service worker and cache static assets');*/
+  self.skipWaiting();
   event.waitUntil(
     caches.open(staticCacheName)
       .then(cache => {
