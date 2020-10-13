@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;  
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Module;
@@ -19,25 +20,26 @@ class CompanyController extends Controller
         $this->middleware('auth');
     }
 
-   /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function setColors()
     {
-       return view('admin');
+        return view('admin');
     }
-    
+
     /**
-    * Returns JSON users of a company.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Returns JSON users of a company.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
 
-    protected function is_user_allowed($user, $company_id) {
+    protected function is_user_allowed($user, $company_id)
+    {
         return ($user->company_id == $company_id && $user->is_client_company) || $user->su_admin;
     }
 
@@ -50,13 +52,13 @@ class CompanyController extends Controller
         } else {
             abort(403, "Vous n'avez pas les droits d'accès aux utilisateurs de cette entreprise.");
         }
-    }   
+    }
 
     /**
-    * Returns JSON modules of a company.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Returns JSON modules of a company.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function getModules($company_id)
     {
@@ -70,10 +72,31 @@ class CompanyController extends Controller
     }
 
     /**
-    * Unlinks a module of a company.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Deletes a company if it is empty.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function deleteCompany($company_id)
+    {
+        $user = Auth::user();
+        if (!$user->su_admin) {
+            return abort(403, "Vous n'avez pas les droits d'accès à cette entreprise.");
+        }
+        $modules = Module::where('company_id', $company_id)->get();
+        $users = User::where('company_id', $company_id)->get();
+        if (count($users) || count($modules)) {
+            return response()->json(["error" => "error", "modules" => $modules, "users" => $users]);
+        }
+        \App\Company::destroy($company_id);
+        return response()->json(["ok" => "ok"]);
+    }
+
+    /**
+     * Unlinks a module of a company.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function unlinkModule(Request $req, Company $company, Module $module)
     {
@@ -88,10 +111,10 @@ class CompanyController extends Controller
     }
 
     /**
-    * Links a module of a company.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Links a module of a company.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function linkModule(Request $req, Company $company, Module $module)
     {
@@ -106,30 +129,30 @@ class CompanyController extends Controller
     }
 
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     public function setColorsPost()
     {
         if (!Auth::user()->company_id || !Auth::user()->is_client_company) {
             return view('consultation');
         }
-/*
+        /*
         request()->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 */
         $colors = request()->colors;
-        
+
         $company = \App\Company::where('id', $this->getCompany(Auth::user()))->first();
         $company->colors = $colors;
         $company->save();
 
         return back()
-            ->with('colorsuccess','Votre couleur a bien sauvegardée.')
-            ->with('colors',$colors)
+            ->with('colorsuccess', 'Votre couleur a bien sauvegardée.')
+            ->with('colors', $colors)
             ->with('company', $company);
     }
 }
