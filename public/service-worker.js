@@ -1,5 +1,4 @@
 const filesToCache = [
-  '/',
   'consultation',
   'login',
   'su_admin',
@@ -16,7 +15,7 @@ const filesToCache = [
   'images/logo-192.png'
 ];
 
-const staticCacheName = 'pages-cache-v4';
+const staticCacheName = 'pages-cache-v5';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
