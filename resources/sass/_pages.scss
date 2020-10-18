@@ -2,6 +2,13 @@ $screen-xxl: 1600px !default;
 .navbar-light .navbar-nav {
   color: rgb(80, 80, 80);
 }
+
+
+@media screen and (max-width: 335px) { 
+  .hide-xxs {
+    display: none;
+  }
+}
 #main-table {
 
   .th-multiselect {

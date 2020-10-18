@@ -23,7 +23,8 @@ class HomeController extends Controller
         $log = new LogController;
         return view('consultation', [
             "logs" => $log->getData($req, false),
-            "synth" => $log->getSynthesisData($req, false)]);
+            "synth" => $log->getSynthesisData($req, false),
+            "time" => time()]);
     }
 
     /**
@@ -36,7 +37,8 @@ class HomeController extends Controller
         $log = new LogController;
         return view('consultation', [
             "logs" => $log->getData($req, false),
-            "synth" => $log->getSynthesisData($req, false)]);
+            "synth" => $log->getSynthesisData($req, false),
+            "time" => time()]);
     }
 
     /**
