@@ -63,6 +63,7 @@
                                 </tr>
                             </tfoot>
                         </table>
+                      <p>Dernière actualisation&nbsp;:&nbsp;<span id="synth-date-sync"></span>.</p>
                     </div>
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                 </div>
@@ -72,7 +73,7 @@
                         <div id="date_filter" class="input-group">
                             <div class="date-interval-container row">
                               <input name="dateinterval" id="dateinterval_logtable" class="col-md-10"/>
-                              <button class="btn btn-secondary clear-cal col-md-2" title="Vider le calendrier">X</button>
+                              <button class="btn btn-secondary clear-cal col-md-2" title="Vider le calendrier"><span class="oi oi-x"></span></button>
                             </div>
                             <button type="button" class="btn togglebtn" data-toggle="button" aria-pressed="false" id="noday">
                               Uniquement les anomalies
@@ -136,7 +137,8 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <p>Le tableau est actualisé toutes les 5 minutes</p>
+                        <p>Le tableau est actualisé toutes les 5 minutes.
+                        <br>Dernière actualisation&nbsp;:&nbsp;<span id="logs-date-sync"></span>.</p>
                     </div>
                     <button class="color-modal-button btn btn-outline-info">Code couleurs</button>
                   </div>
@@ -238,6 +240,9 @@
   </div>
 </div>
 <script>
+@if (isset($time))
+var server_time = {!!$time!!};
+@endif
 @if (isset($logs))
 var prelogs = {!!json_encode($logs)!!};
 @endif

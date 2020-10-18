@@ -1,4 +1,4 @@
-define(['js-cookie', './graphs-live-google-annotated', './bootstrap', 'bootstrap'], function(cookie, graph_annotated) {
+define(['jquery', 'js-cookie', './graphs-live-google-annotated', './components/cache', './bootstrap', 'bootstrap'], function($, cookie, graph_annotated) {
 	window.getUrlParameter = function(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -23,7 +23,7 @@ define(['js-cookie', './graphs-live-google-annotated', './bootstrap', 'bootstrap
 		$("#colorModal").modal("show");
 	})
 
-    $('#graphs-live-tab').click( function () {
+    $('#graphs-live-tab').click(function () {
     	var module_names = $('#module-name .selectpicker').val();
         if (Array.isArray(module_names) && module_names.length) {
 		  var mod_name = module_names[0];
@@ -50,27 +50,5 @@ define(['js-cookie', './graphs-live-google-annotated', './bootstrap', 'bootstrap
           	});
         }
         document.getElementById('logout-form').submit();
-	});
-
-	/* CSRF refresh for cached pages */
-	$.ajax({
-	    url: "/csrf",
-	    type: 'get',
-	    dataType: 'json',
-	    success: function (result) {
-	        $('meta[name="csrf-token"]').attr('content', result.token);
-	        $.ajaxSetup({
-	            headers: {
-	                'X-CSRF-TOKEN': result.token
-	            }
-	        });
-	        if (window.synthtable) {
-	        	synthtable.ajax.reload(null, false);
-	        }
-	        if (window.logtable) {
-	        	logtable.ajax.reload(null, false);
-	        }
-	        window.online = true;
-	    }
 	});
 })

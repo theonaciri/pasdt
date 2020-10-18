@@ -56,6 +56,8 @@
                         @endif
                     @endif
                 </a>
+                <span id="disconnected-header" class="d-none" data-toggle="tooltip" data-placement="bottom" title="Les dernières données reçues sont affichées, actualisez la page pour rafraîchir les données."><span class="oi oi-warning"></span><small>&nbsp;<span class="hide-xxs">Vous êtes </span>déconnecté</small></span>
+                <span id="backonline-header" class="d-none"><span class="oi oi-check"></span><small>&nbsp;Connexion rétablie</small></span>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>

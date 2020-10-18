@@ -1,8 +1,8 @@
 define([
-  './components/datatable-fr', './components/color-event-assoc', 'datatables.net-bs4',
+  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', 'datatables.net-bs4',
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
-  function(datatablefr, arrayToSearch) {
+  function(datatablefr, arrayToSearch, moment) {
 
     function GetURLParameter(e) {
     for (var t = window.location.search.substring(1).split("&"), n = 0; n < t.length; n++) {
@@ -13,6 +13,7 @@ define([
 }
 
 var table, graphdata, active_module;
+var $logsDateSync = $('#logs-date-sync');
 window.logtable = table;
 var cal_interval = flatpickr('#dateinterval_logtable', {
     mode: "range",
@@ -85,10 +86,16 @@ function getData(data, callback, settings) {
       "url": "/logs/get",
       "data": data,
       "timeout": 10000,
-    }).done(function(data) {
+    }).done(function(data, a, e) {
+      var _date = e.getResponseHeader('date');
+      $logsDateSync.html(moment(_date.slice(_date.lastIndexOf(',') + 1)).calendar());
       callback(data);
+      var event = new CustomEvent("online", { detail: {request: "logs", data: data }});
+      document.dispatchEvent(event);
     }).fail(function(data) {
       $('#main-table_processing').hide("fast");
+      var event = new CustomEvent("offline", { detail: {request: "logs", data: data }});
+      document.dispatchEvent(event);
     });
   }
 } // getData
@@ -127,6 +134,9 @@ function initTable() {
     order: {!!json_encode($dt_info['order'])!!},*/
     initComplete: function(settings, json) {
       prelogs = null;
+      if (server_time) {
+        $logsDateSync.html(moment(server_time*1000).calendar());
+      }
       setInterval( function () {
         table.ajax.reload( null, false ); // user paging is not reset on reload
       }, 5 * 60000 );
@@ -162,9 +172,9 @@ function initTable() {
         }
         select.selectpicker({actionsBox: true});
       }); /* / Dropdown */
-      if (window.online) {
+      document.addEventListener("backonline", function(e) {
         table.ajax.reload( null, false );
-      }
+      });
     } // initComplete
   }); // table
 }
