@@ -1,6 +1,7 @@
 const filesToCache = [
+  '/',
   'consultation',
-  'login',
+  //'login',
   'su_admin',
   'client',
   'register',
@@ -17,7 +18,7 @@ const filesToCache = [
 
 var blacklist = ['/csrf', '/logs/'];
 
-const staticCacheName = 'pages-cache-v233';
+const staticCacheName = 'pages-cache-v8';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
@@ -36,18 +37,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   /*console.log('Activating new service worker...');*/
-  const cacheWhitelist = [staticCacheName];
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
+  unregister(event);
 });
 
 function cleanResponse(response) {
@@ -69,6 +59,23 @@ function cleanResponse(response) {
   });
 }
 
+function unregister(event) {
+  console.warn('unregister');
+  const cacheWhitelist = [staticCacheName];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+        );
+    })
+    );
+}
+
+
 self.addEventListener('fetch', event => {
   /*console.log('Fetch event for ', event.request.url);*/
   if (blacklist.find(element => event.request.url.indexOf(element) !== -1)) { return; }
@@ -76,6 +83,7 @@ self.addEventListener('fetch', event => {
     event.request = new Request(stripQueryStringAndHashFromPath(event.request.url), event.request);
     
   }*/
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -87,6 +95,11 @@ self.addEventListener('fetch', event => {
         }
         return fetch(event.request)
           .then(response => {
+            if (typeof response === 'undefined' || response.status === 403 || response.status === 419) {
+              console.warn('req', event.request, 'resp', response);
+              unregister(event);
+              return response;
+            }
             return caches.open(staticCacheName)
               .then(cache => {
                 console.log('saving to cache ', event.request.url);
