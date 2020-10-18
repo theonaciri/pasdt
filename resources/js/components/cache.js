@@ -1,14 +1,24 @@
-define(['jquery', './polyfill-dispatch-event',], function($) {
+define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], function($) {
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
 	$disconnectedText.tooltip({ trigger: "hover" });
+
     document.addEventListener("offline", function(e) {
-    	console.error('OFFLINE');
+    	console.error('OFFLINE', e);
     	window.offline = true;
     	$disconnectedText.removeClass("d-none").tooltip('show');
     	setTimeout(function() {
     		$disconnectedText.tooltip('hide');
     	}, 5000);
+    	if (e.detail.data.status === 403 || e.detail.data.status === 419) {
+    		navigator.serviceWorker.getRegistrations().then(function(registrations) {
+				for(let registration of registrations) {
+			 	registration.unregister()
+			} })
+			setTimeout(function() {
+    			window.location.href = "/login";
+			}, 2000)
+    	}
     });
 
     document.addEventListener("online", function(e) {

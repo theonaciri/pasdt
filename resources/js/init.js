@@ -17,6 +17,7 @@ define(['jquery', 'js-cookie', './graphs-live-google-annotated', './components/c
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 	  // e.target // newly activated tab
 	  //e.relatedTarget // previous active tab
+	  $('table.dataTable').DataTable().fixedHeader.adjust();
 	  localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	})
 	$('.color-modal-button').click(function() {
@@ -36,6 +37,8 @@ define(['jquery', 'js-cookie', './graphs-live-google-annotated', './components/c
         }
      	graph_annotated.init();
     });
+
+
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
 
