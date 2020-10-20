@@ -104,7 +104,7 @@ function initTable() {
   table = $('#main-table').DataTable({
     processing: true,
     serverSide: true,
-    lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
+    lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
     pageLength: 10,
     dom: 'Blfrtip',
     responsive: true,

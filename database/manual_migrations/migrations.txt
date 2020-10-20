@@ -14,3 +14,6 @@ new maxtemp int NULL
 .env
 TELIT_USERNAME
 TELIT_PASSWORD
+
+20/10/2020:
+ALTER TABLE `modules` ADD `temp_triggers` VARCHAR(255) NOT NULL AFTER `name`;
