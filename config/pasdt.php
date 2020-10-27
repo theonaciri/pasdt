@@ -11,7 +11,7 @@ return [
 		"TEMP_CRIT_HIGH" => 90,
 		"TEMP_DECREASE" => -20,
 		"TEMP_INCREASE" => 20,
-		"NO_LOG" => 7200 /* 2h */
+		"NO_LOG" => 3900 /* 1h05 */
 		/*"TOO_MANY_LOGS" => 60,*/
 	]
 ];
