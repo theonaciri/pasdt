@@ -237,8 +237,32 @@ class LogController extends Controller
         }
         $company_condition = $company > 0 ? "AND company_id = $company" : "";
 
-        // alerts without temps
-        $alerts_array = DB::select(DB::raw(<<<EOTSQL
+        // raw last alerts without temps for all modules
+        $alerts_array = $this::getLastModulesAlertArray($company_condition);
+        // raw last temps for all modules
+        $lastemps_array = $this::getLastModulesTempArray($company_condition, "");
+
+        //$res = array_merge($alerts_array, $lastemps_array);
+        foreach ($lastemps_array as $key => $temp) {
+            foreach ($alerts_array as $_key => $alert) {
+                if ($alert->module_id == $temp->module_id) { // temps with alerts
+                    $alert->maxtemp = $temp->maxtemp;
+                    $alert->temp_created_at = $temp->temp_created_at;
+                    break;
+                }
+                if ($_key === array_key_last($alerts_array)) { // temps without alerts
+                    array_push($alerts_array, $temp);
+                }
+            }
+        }
+        if ($tojson) {
+            return response()->json($alerts_array);
+        }
+        return $alerts_array;
+    }
+
+    public static function getLastModulesAlertArray($company_condition) {
+        return DB::select(DB::raw(<<<EOTSQL
             SELECT name, module_id, msg, maxtemp, logs.created_at FROM logs
             LEFT JOIN modules ON modules.module_id = logs.cardId 
             WHERE logs.id IN (
@@ -248,46 +272,21 @@ class LogController extends Controller
                 $company_condition
             GROUP BY modules.module_id)
 EOTSQL));
+    }
 
-        /*
-        $lastemps_array = DB::select(DB::raw(<<<EOTMAXSQL
-                    SELECT cardId, maxtemp
-                    FROM logs
-                    WHERE maxtemp IS NOT NULL AND maxtemp < 785 AND maxtemp > -99;
-EOTMAXSQL));
-*/
-
-
-        $lastemps_array = DB::select(DB::raw(<<<EOTSQL
+    public static function getLastModulesTempArray($company_condition, $notif_condition) {
+        return DB::select(DB::raw(<<<EOTSQL
             SELECT name, module_id, msg, maxtemp, logs.created_at AS temp_created_at FROM logs
             LEFT JOIN modules ON modules.module_id = logs.cardId
-            WHERE maxtemp IS NOT NULL AND maxtemp < 785 AND maxtemp > -99
+            WHERE maxtemp IS NOT NULL
+                AND maxtemp < 785 AND maxtemp > -99
                 AND logs.id IN (
-                SELECT MAX(L.id) FROM `logs` L
-                LEFT JOIN modules ON modules.module_id = L.cardId
+                    SELECT MAX(L.id) FROM `logs` L
+                    LEFT JOIN modules ON modules.module_id = L.cardId
                     $company_condition
-            GROUP BY modules.module_id)
+                    GROUP BY modules.module_id)
+                $notif_condition
 EOTSQL));
-
-            //$res = array_merge($alerts_array, $lastemps_array);
-            foreach ($lastemps_array as $key => $temp) {
-                foreach ($alerts_array as $_key => $alert) {
-                    if ($alert->module_id == $temp->module_id) { // temps with alerts
-                        $alert->maxtemp = $temp->maxtemp;
-                        $alert->temp_created_at = $temp->temp_created_at;
-                        break;
-                    }
-                    if ($_key === array_key_last($alerts_array)) { // temps without alerts
-                        array_push($alerts_array, $temp);
-                    }
-                }
-            }
-        if ($tojson) {
-            return response()->json($alerts_array);
-        } else {
-            return $alerts_array;
-        }
-        //return response()->json($othermodules);
     }
 
     /**
@@ -394,11 +393,11 @@ EOTSQL));
         */
     }
 
-    protected function newNotif($log, $type, $value) {
+    public static function newNotif($log, $type, $value) {
         $not = new Notification();
-        $not->log = $log['id'];
+        $not->log = $log['id'] ?? "";
         $not->type = $type;
-        $not->module = $log['cardId']; 
+        $not->module = $log['cardId'] ?? ""; 
         $not->value = $value;
         $not->save();
         return $not;
