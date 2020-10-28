@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Http\Controllers\LogController;
+
 class getLastModulesTemp extends Command
 {
     /**
@@ -45,7 +46,7 @@ EOTNOTIF;
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {
             echo($module->name . ":\t\t" . $module->temp_created_at . "\n");
-            LogController::newNotif(array("id" => "", "cardid" => $module->module_id), "NO_LOG", $module->temp_created_at);
+            LogController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
         }
     }
 }
