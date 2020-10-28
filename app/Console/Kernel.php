@@ -41,10 +41,11 @@ class Kernel extends ConsoleKernel
 AND logs.created_at <= DATE_SUB(NOW(),INTERVAL 70 MINUTE) 
                 AND module_id NOT IN (SELECT module FROM notifications WHERE type = 'NO_LOG' AND seen = 0)
 EOTNOTIF;
+        Log::info("Starting schedule.");
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {
             $schedule->call(function() use ($module) {
-                Log::info($module->name . ":\t\t" . $module->temp_created_at . "\n");
+                Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
                 LogController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
             })->everyMinute(); //hourly
         }
