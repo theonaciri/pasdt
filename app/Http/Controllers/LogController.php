@@ -366,7 +366,11 @@ EOTSQL));
         }*/
 
         /* DIFF TEMP */
-        $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100 ;
+        if (empty($lastemplog) || empty($lastemplog['maxtemp']) || empty($newlog['maxtemp']) || $newlog['maxtemp'] + $lastemplog['maxtemp'] == 0) {
+            $difftemp = 0;
+        } else {
+            $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100;
+        }
         if ($difftemp > config('pasdt.thresholds')['TEMP_INCREASE']) {
             $type = 'TEMP_INCREASE';
             $this->newNotif($newlog, $type, $newlog['maxtemp']);
