@@ -27,6 +27,7 @@ Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUs
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get');
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify');
+Route::get('/user/notifs/{seen?}', 'ClientController@APIgetNotifs')->name('users.get_notifs');
 
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');

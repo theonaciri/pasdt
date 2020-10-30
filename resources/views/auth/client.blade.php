@@ -10,9 +10,9 @@
                 <div class="card-body">
                     <table class="adminTable">
                         <thead>
-                                <tr>
-                                <th>Type</th>
+                            <tr>
                                 <th>Module</th>
+                                <th>Type</th>
                                 <th>Valeur</th>
                                 <th>Date</th>
                                 <th>Action</th>
@@ -25,10 +25,12 @@
                             @else
                                 <tr data-id="{{$notif->id}}">
                             @endif
-                                <td class="name">{{$notif->type}}</td>
-                                <td class="email">{{$notif->name}}</td>
+                                <td class="name">{{$notif->name}}</td>
+                                <td class="type">{{$notif->type}}</td>
                             @if(strpos($notif->type, 'TEMP') > -1)
                                 <td class="created_at">{{$notif->value}}&nbsp;°C</td>
+                            @elseif(strpos($notif->type, 'NO_LOG') > -1)
+                                <td class="created_at">Dernier log: {{$notif->value}}&nbsp;</td>
                             @else
                                 <td class="created_at">{{$notif->value}}&nbsp;V</td>
                             @endif

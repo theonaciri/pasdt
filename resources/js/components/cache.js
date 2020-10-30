@@ -17,7 +17,7 @@ define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], fun
 			} })
 			setTimeout(function() {
     			window.location.href = "/login";
-			}, 2000)
+			}, 1000)
     	}
     });
 
@@ -30,6 +30,7 @@ define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], fun
     	}
     	window.offline = false;
     });
+    
     document.addEventListener("backonline", function(e) {
     	if (e.detail.request === 'csrf') { return ;}
     	console.error('BACK ONLINE');
