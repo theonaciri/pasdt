@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Notification;
 
@@ -19,6 +20,31 @@ class NotificationController extends Controller
         $this->middleware('auth');
     }
 
+    public static function newNotif($log, $type, $value) {
+        $module_id = $log['cardId'] ?? "";
+        if (!empty($module_id)) {
+            $existing_not = Notification::where('module', '=', $module_id)
+                                        ->where('seen', '=', 0)
+                                        ->where('type', '=', $type)
+                                        ->orderByDesc('updated_at')
+                                        ->first();
+            if (!empty($existing_not)) {
+                $existing_not->log = $log['id'] ?? "";
+                $existing_not->occurences += 1;
+                $existing_not->value = $value;
+                $existing_not->save();
+                return $existing_not;
+            }
+        }
+        $not = new Notification();
+        $not->log = $log['id'] ?? "";
+        $not->type = $type;
+        $not->module = $module_id; 
+        $not->value = $value;
+        $not->save();
+        return $not;
+    }
+
     /**
      * Get notifs
      *
@@ -27,7 +53,7 @@ class NotificationController extends Controller
 
     public static function getNotifs($id_company, int $seen = 0, int $limit = 20) {
         if (!$id_company) return NULL;
-        return Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'notifications.created_at', 'notifications.updated_at')
+        return Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'occurences', 'resolved', 'notifications.created_at', 'notifications.updated_at')
             ->where('seen', $seen)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
             ->where('modules.company_id', $id_company)

@@ -46,7 +46,7 @@ EOTNOTIF;
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {
             echo($module->name . ":\t\t" . $module->temp_created_at . "\n");
-            LogController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
+            NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
         }
     }
 }

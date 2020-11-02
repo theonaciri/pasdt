@@ -46,7 +46,7 @@ EOTNOTIF;
         foreach ($modules as $module) {
             $schedule->call(function() use ($module) {
                 Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
-                LogController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
+                NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
             })->everyMinute(); //hourly
         }
     }

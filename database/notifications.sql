@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) NOT NULL,
   `log` int(11) NOT NULL,
-  `company` int(11) NOT NULL,
   `module` varchar(11) NOT NULL,
   `value` varchar(255) NOT NULL,
   `seen` tinyint(1) NOT NULL DEFAULT '0',
@@ -58,10 +57,12 @@ INSERT INTO `notifications` (`id`, `type`, `log`, `company`, `module`, `value`, 
 --
 -- Contraintes pour la table `notifications`
 --
+
+ALTER TABLE `notifications` ADD `resolved` INT NOT NULL DEFAULT '0' AFTER `seen`, ADD `occurences` INT NOT NULL DEFAULT '1' AFTER `resolved`;
+
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notif_text` FOREIGN KEY (`type`) REFERENCES `notif_text` (`type`);
 COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
