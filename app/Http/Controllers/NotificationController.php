@@ -35,6 +35,13 @@ class NotificationController extends Controller
             ->limit($limit)->get();
     }
 
+    public static function getNotifsCount($id_company, int $seen = 0) {
+        if (!$id_company) return NULL;
+        return Notification::where('seen', $seen)
+            ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
+            ->where('modules.company_id', $id_company)->count();
+    }
+
     /**
      * Show the application Su dashboard.
      *
@@ -50,5 +57,16 @@ class NotificationController extends Controller
           $id_company = $su_company;
         }
         return response()->json($this->getNotifs($id_company, $seen === "seen", 100));
+    }
+    public function APIgetNotifsCount(Request $request, $seen = '')
+    {
+        $user = Auth::user();
+        if (empty($user)) return abort(403);
+        $su_company = $request->company ?? NULL;
+        $id_company = $user->company_id;
+        if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
+          $id_company = $su_company;
+        }
+        return response()->json($this->getNotifsCount($id_company, $seen === "seen"));
     }
 }

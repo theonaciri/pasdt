@@ -2,9 +2,9 @@ define(['jquery'], function($) {
 
 	// get notifs
 	function getNotif() {
-		$.getJSON("/user/notifs")
+		$.getJSON("/notifs/count")
 		.done(function notifDone(n) {
-			$('.notif-counter').html(n.length);
+			$('.notif-counter').html(n);
 		})
 		.fail(function notifFail(d) {
 

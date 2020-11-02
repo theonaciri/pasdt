@@ -86,7 +86,6 @@ class ModuleController extends Controller
             return null;
         }
         config(['pasdt.telit.SESSION_ID' => $final]);
-        die();
         Storage::put(config('pasdt.telit.SESSION_ID_PATH'), $final);
         return $final;
     }
