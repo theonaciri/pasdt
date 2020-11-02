@@ -16,7 +16,7 @@ const filesToCache = [
   'images/logo-192.png'
 ];
 
-var blacklist = ['/csrf', '/logs/', '/user/notifs'];
+var blacklist = ['/csrf', '/logs/', '/notifs'];
 
 const staticCacheName = 'pages-cache-v10';
 
