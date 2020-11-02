@@ -14,7 +14,9 @@
                                 <th>Module</th>
                                 <th>Type</th>
                                 <th>Valeur</th>
+                                <th>Occurences</th>
                                 <th>Date</th>
+                                <th>&Eacute;tat</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -34,7 +36,9 @@
                             @else
                                 <td class="created_at">{{$notif->value}}&nbsp;V</td>
                             @endif
-                                <td class="updated_at">{{$notif->created_at}}</td>
+                                <td class="occurences">{{$notif->occurences}}</td>
+                                <td class="updated_at">{{$notif->updated_at}}</td>
+                                <td class="resolved">{!! $notif->resolved ? '<span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu"></span>' : '<span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title="En cours"></span>' !!}</td>
                                 <td class="button">
                                     <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn">Vu</button>
                                 </td>

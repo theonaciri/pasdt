@@ -17,3 +17,6 @@ TELIT_PASSWORD
 
 20/10/2020:
 ALTER TABLE `modules` ADD `temp_triggers` VARCHAR(255) NOT NULL AFTER `name`;
+02/11/2020:
+
+ALTER TABLE `notifications` ADD `resolved` INT NOT NULL DEFAULT '0' AFTER `seen`, ADD `occurences` INT NOT NULL DEFAULT '1' AFTER `resolved`;

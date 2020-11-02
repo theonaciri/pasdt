@@ -340,7 +340,7 @@ EOTSQL));
             } else {
                 $type = 'BATTERY_HIGH';
             }
-            $this->newNotif($newlog, $type, $newlog['vbat']);
+            NotificationController::newNotif($newlog, $type, $newlog['vbat']);
         }
         else if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_LOW']) {
             if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_CRIT_LOW']) {
@@ -348,7 +348,7 @@ EOTSQL));
             } else {
                 $type = 'BATTERY_LOW';
             }
-            $this->newNotif($newlog, $type, $newlog['vbat']);
+            NotificationController::newNotif($newlog, $type, $newlog['vbat']);
         }
 
         /* TEMP */
@@ -358,7 +358,7 @@ EOTSQL));
             } else {
                 $type = 'TEMP_HIGH';
             }
-            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
         }/*
         else if ($newlog['maxtemp'] != -99 && $newlog['maxtemp'] != 0 && $newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
             if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
@@ -366,7 +366,7 @@ EOTSQL));
             } else {
                 $type = 'TEMP_LOW';
             }
-            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
         }*/
 
         /* DIFF TEMP */
@@ -377,11 +377,11 @@ EOTSQL));
         }
         if ($difftemp > config('pasdt.thresholds')['TEMP_INCREASE']) {
             $type = 'TEMP_INCREASE';
-            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
         }
         else if ($difftemp < config('pasdt.thresholds')['TEMP_DECREASE']) {
             $type = 'TEMP_DECREASE';
-            $this->newNotif($newlog, $type, $newlog['maxtemp']);
+            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
         }
 
         /* DIFF TIME */
@@ -393,19 +393,9 @@ EOTSQL));
 
         if ($seconds > config('pasdt.thresholds')['NO_LOG']) {
             $type = 'NO_LOG';
-            $this->newNotif($newlog, $type, $newlog['created_at']);
+            NotificationController::newNotif($newlog, $type, $newlog['created_at']);
         }
         */
-    }
-
-    public static function newNotif($log, $type, $value) {
-        $not = new Notification();
-        $not->log = $log['id'] ?? "";
-        $not->type = $type;
-        $not->module = $log['cardId'] ?? ""; 
-        $not->value = $value;
-        $not->save();
-        return $not;
     }
 
     public function acknowledgeNotif(Notification $notif) {

@@ -18,7 +18,7 @@ const filesToCache = [
 
 var blacklist = ['/csrf', '/logs/', '/notifs'];
 
-const staticCacheName = 'pages-cache-v10';
+const staticCacheName = 'pages-cache-v12';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
