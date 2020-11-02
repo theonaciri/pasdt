@@ -1,4 +1,4 @@
-define(['jquery'], function() {
+define(['jquery', './components/notifs'], function($) {
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm("Retirer la surveillance de ce module ?")) return ;
 		var csrf = $("input[name='_token']").first().val();
@@ -22,6 +22,8 @@ define(['jquery'], function() {
 			data: {"_token": csrf}
 		}).done(function() {
 			$self.parent().parent().remove();
+			$counter =$('.notif-counter');
+			$counter.html(+$counter.html() -1);
 		});
 	});
 });

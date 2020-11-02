@@ -9,6 +9,7 @@ use App\Notification;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
+use App\Http\Controllers\NotificationController;
 
 class ClientController extends Controller
 {
@@ -51,7 +52,7 @@ class ClientController extends Controller
         $this->users = User::where('id', '!=', auth()->id())
                            ->where('company_id', $id_company)
                            ->get();
-        $notifs = $this->getNotifs($id_company);
+        $notifs = NotificationController::getNotifs($id_company);
         return view('auth/client', [
           "company" => $company,
           "modules" => $this->modules,
@@ -62,33 +63,6 @@ class ClientController extends Controller
         /*} else {
             return view('consultation');
         }*/
-    }
-
-    protected function getNotifs($id_company, int $seen = 0, int $limit = 20) {
-      if (!$id_company) return NULL;
-      return Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'notifications.created_at', 'notifications.updated_at')
-        ->where('seen', $seen)
-        ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
-        ->where('modules.company_id', $id_company)
-        ->orderBy('id', 'DESC')
-        ->limit($limit)->get();
-    }
-
-    /**
-     * Show the application Su dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function APIgetNotifs(Request $request, $seen = '')
-    {
-        $user = Auth::user();
-        if (empty($user)) return abort(403);
-        $su_company = $request->company ?? NULL;
-        $id_company = $user->company_id;
-        if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
-          $id_company = $su_company;
-        }
-        return response()->json($this->getNotifs($id_company, $seen === "seen", 100));
     }
 
     /**

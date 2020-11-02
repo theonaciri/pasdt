@@ -83,7 +83,9 @@
                             @endif
                             @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{$su_applied ? route('client', ['company' => $_company->id]) : route('client')}}">{{ __("Gérer mon parc") }}</a>
+                                    <a class="nav-link" href="{{$su_applied ? route('client', ['company' => $_company->id]) : route('client')}}">{{ __("Gérer mon parc") }}
+                                    <span class="badge badge-pill badge-danger notif-counter"></span>
+                                    <span class="sr-only">Notifications non lues</span></a>
                                 </li>
                             @endif
                             @if (Route::has('checkout') && Auth::user()->is_client_company === 1)
@@ -136,14 +138,14 @@
     @endif
     <script>
         // Register service worker
-        // if ('serviceWorker' in navigator) {
-        //   window.addEventListener('load', () => {
-        //     navigator.serviceWorker.register('/service-worker.js')
-        //         .then((reg) => {
-        //           /*console.log('Service worker registered.', reg);*/
-        //         });
-        //   });
-        // }
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((reg) => {
+                  /*console.log('Service worker registered.', reg);*/
+                });
+          });
+        }
     </script>
 </body>
 

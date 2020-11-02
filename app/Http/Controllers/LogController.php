@@ -323,8 +323,13 @@ EOTSQL));
     }
 
     protected function checkForAnomalities(PasdtLog $newlog, $module) {
-        if (empty($module))
+        if (empty($module)) {
             $module = Module::whereModuleId($newlog['cardId'])->first();
+            if (empty($module)) {
+                Log::info("===== WARNING ===== Couldn't find module for anomality check");
+                return;
+            }
+        }
         $lastemplog = PasdtLog::where('cardId', $module['module_id'])
                             ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->skip(1)->take(1)->first();
 
