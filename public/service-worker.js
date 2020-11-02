@@ -16,9 +16,9 @@ const filesToCache = [
   'images/logo-192.png'
 ];
 
-var blacklist = ['/csrf', '/logs/'];
+var blacklist = ['/csrf', '/logs/', '/user/notifs'];
 
-const staticCacheName = 'pages-cache-v9';
+const staticCacheName = 'pages-cache-v10';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];

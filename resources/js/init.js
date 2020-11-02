@@ -1,4 +1,4 @@
-define(['jquery', 'js-cookie', './graphs-live-google-annotated', './components/cache', './bootstrap', 'bootstrap'], function($, cookie, graph_annotated) {
+define(['jquery', 'js-cookie', './graphs-live-google-annotated', './components/cache', './components/notifs', './bootstrap', 'bootstrap'], function($, cookie, graph_annotated) {
 	window.getUrlParameter = function(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 	    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');

@@ -63,14 +63,14 @@ class ModuleController extends Controller
 
     protected function getSessionTelit($force_reconnect = false) {
         // curl --data-urlencode 'username=username' --data-urlencode 'password=password' 'https://api-de.devicewise.com/rest/auth/'
-        if (!$force_reconnect && !empty(env('TELIT_SESSION_ID'))) {
-            return env('TELIT_SESSION_ID');
-        } else if (!$force_reconnect && Storage::exists(env('TELIT_SESSION_ID_PATH'))) {
-            return Storage::get(env('TELIT_SESSION_ID_PATH'));
+        if (!$force_reconnect && !empty(config('pasdt.telit.SESSION_ID'))) {
+            return config('pasdt.telit.SESSION_ID');
+        } else if (!$force_reconnect && Storage::exists(config('pasdt.telit.SESSION_ID_PATH'))) {
+            return Storage::get(config('pasdt.telit.SESSION_ID_PATH'));
         } // else
         $arr=array(
-            'username' => env('TELIT_USERNAME'),
-            'password' => env('TELIT_PASSWORD')
+            'username' => config('pasdt.telit.USERNAME'),
+            'password' => config('pasdt.telit.PASSWORD')
          );
         $data_string = http_build_query($arr);
         $ch = curl_init();
@@ -85,9 +85,9 @@ class ModuleController extends Controller
             Log::info('Curl error: ' . curl_error($ch));
             return null;
         }
-        curl_close($ch);
-        config(['TELIT_SESSION_ID' => $final]);
-        Storage::put(env('TELIT_SESSION_ID_PATH'), $final);
+        config(['pasdt.telit.SESSION_ID' => $final]);
+        die();
+        Storage::put(config('pasdt.telit.SESSION_ID_PATH'), $final);
         return $final;
     }
 
