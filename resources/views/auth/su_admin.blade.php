@@ -252,7 +252,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Nom</th>
-                                    <th scope="col">Numéro de carte</th>
                                     <th scope="col">Numéro Telit</th>
                                     <th scope="col">Numéro de module</th>
                                     <th scope="col">Détails</th>
