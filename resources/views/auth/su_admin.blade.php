@@ -254,7 +254,7 @@
                                     <th scope="col">Nom</th>
                                     <th scope="col">Numéro Telit</th>
                                     <th scope="col">Numéro de module</th>
-                                    <th scope="col">Détails</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
