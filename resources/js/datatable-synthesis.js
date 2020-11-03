@@ -1,8 +1,8 @@
 define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
-		'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
+		'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter',
 		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
 		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',],
-	function(datatables, datatables_bs, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment) {
+	function(datatables, datatables_bs, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment, getURLParameter) {
 		var table;
 		var $logsDateSync = $('#synth-date-sync');
 		window.synthtable = table;
@@ -32,7 +32,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			callback({data:presynths});
 			firstinit = false;
 		} else {
-			var c = getUrlParameter('company');
+			var c = getURLParameter('company');
 			if (c) {
 				data.company = c;
 			}

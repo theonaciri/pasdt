@@ -97,7 +97,7 @@ EOTNOTIF;
 
     public static function getNotifsCount($id_company, int $seen = 0) {
         if (!$id_company) return NULL;
-        return Notification::where('seen', $seen)
+        return Notification::where('seen', $seen)->where('resolved', 0)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
             ->where('modules.company_id', $id_company)->count();
     }
