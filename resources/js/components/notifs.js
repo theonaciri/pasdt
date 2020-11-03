@@ -1,13 +1,9 @@
-define(['jquery'], function($) {
-
-	// get notifs
+define(['jquery', './getURLParameter'], function($, getURLParameter) {
 	function getNotif() {
-		$.getJSON("/notifs/count")
+		var admincomp = getURLParameter("company");
+		$.getJSON("/notifs/count" + (admincomp ? "?company=" + admincomp : ""))
 		.done(function notifDone(n) {
 			$('.notif-counter').html(n);
-		})
-		.fail(function notifFail(d) {
-
 		});
 	}
 	setInterval(getNotif, 5 * 60 * 1000);

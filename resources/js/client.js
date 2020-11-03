@@ -1,4 +1,5 @@
 define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
+	var adminconfirmed = false;
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm("Retirer la surveillance de ce module ?")) return ;
 		var csrf = $("input[name='_token']").first().val();
@@ -13,18 +14,23 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 		});
 	});
 	$('.vubtn').click(function() {
-		var $self = $(this);
-		var id = $self.parent().parent().data('id');
-		var csrf = $("input[name='_token']").first().val();
-		$.ajax({
-			url: "/notif/" + id + "/acknowledge",
-			type: "POST",
-			data: {"_token": csrf}
-		}).done(function() {
-			$self.parent().parent().remove();
-			$counter =$('.notif-counter');
-			$counter.html(+$counter.html() -1);
-		});
+		var su_company = $('#app').data('su_company');
+		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed
+			&& confirm("Masquer cette notification pour le client aussi ?"))) {
+			adminconfirmed = true;
+			var $self = $(this);
+			var id = $self.parent().parent().data('id');
+			var csrf = $("input[name='_token']").first().val();
+			$.ajax({
+				url: "/notif/" + id + "/acknowledge",
+				type: "POST",
+				data: {"_token": csrf}
+			}).done(function() {
+				$self.parent().parent().remove();
+				$counter =$('.notif-counter');
+				$counter.html(+$counter.html() -1);
+			});
+		}
 	});
 	var $nologs = $('.no_log.success');
 	$nologs.each(function() {

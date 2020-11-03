@@ -1,17 +1,8 @@
 define([
-  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', 'datatables.net-bs4',
+  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', 'datatables.net-bs4',
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
-  function(datatablefr, arrayToSearch, moment) {
-
-    function GetURLParameter(e) {
-    for (var t = window.location.search.substring(1).split("&"), n = 0; n < t.length; n++) {
-        var a = t[n].split("=");
-        if (a[0] == e)
-            return typeof a[1] === 'undefined' ? true : a[1];
-    }
-}
-
+  function(datatablefr, arrayToSearch, moment, getURLParameter) {
 var table, graphdata, active_module;
 var $logsDateSync = $('#logs-date-sync');
 window.logtable = table;
@@ -81,7 +72,7 @@ function getData(data, callback, settings) {
     cal_interval.selectedDates.forEach(function(d) {data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
     data.onlytemp = onlytemp;
     data.noday = noday;
-    data.company = GetURLParameter("company");
+    data.company = getURLParameter("company");
     $.ajax({
       "url": "/logs/get",
       "data": data,
