@@ -6,6 +6,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		var table;
 		var $logsDateSync = $('#synth-date-sync');
 		window.synthtable = table;
+		var firstinit = true;
 		String.prototype.capFirstLetter = function () {
 			return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
 			.toUpperCase() + this.slice(1) : this;
@@ -27,8 +28,9 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		});*/
 
 	function getData(data, callback, settings) {
-		if (presynths != null && typeof presynths === "object") {
+		if (presynths != null && typeof presynths === "object" && firstinit) {
 			callback({data:presynths});
+			firstinit = false;
 		} else {
 			var c = getUrlParameter('company');
 			if (c) {
@@ -156,8 +158,6 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		],
 		initComplete: function() {
 			/* Dropdown */
-      		presynths = null;
-
 		    if (server_time) {
 		        $logsDateSync.html(moment(server_time*1000).calendar());
 		    }

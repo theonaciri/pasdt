@@ -8,6 +8,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
 use App\Module;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\NotificationController;
 
 class Kernel extends ConsoleKernel
 {
@@ -37,10 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->call('App\Http\Controllers\ModuleController@updateModules')->dailyAt('9:00');
 
         /* UPDATE NO LOG RECEIVED */
-        $notif_condition = <<<EOTNOTIF
-AND logs.created_at <= DATE_SUB(NOW(),INTERVAL 70 MINUTE) 
-                AND module_id NOT IN (SELECT module FROM notifications WHERE type = 'NO_LOG' AND seen = 0)
-EOTNOTIF;
+        $notif_condition = NotificationController::getNoLogCondition();
         Log::info("Starting schedule.");
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {

@@ -22,23 +22,35 @@
                         </thead>
                         <tbody>
                             @foreach ($notifs as $notif)
-                            @if(strpos($notif->type, 'CRIT') > -1)
-                                <tr class="highlight" data-id="{{$notif->id}}">
+                            @if ($notif->resolved)
+                                <tr class="success {{strpos($notif->type, 'NO_LOG') > -1 ? 'no_log' : ''}}" data-id="{{$notif->id}}">
+                            @elseif (strpos($notif->type, 'CRIT') > -1 || strpos($notif->type, 'NO_LOG') > -1)
+                                <tr class="highlight {{strpos($notif->type, 'NO_LOG') > -1 ? 'no_log' : ''}}" data-id="{{$notif->id}}">
                             @else
                                 <tr data-id="{{$notif->id}}">
                             @endif
                                 <td class="name">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
                             @if(strpos($notif->type, 'TEMP') > -1)
-                                <td class="created_at">{{$notif->value}}&nbsp;°C</td>
+                                <td class="value">{{$notif->value}}&nbsp;°C</td>
                             @elseif(strpos($notif->type, 'NO_LOG') > -1)
-                                <td class="created_at">Dernier log: {{$notif->value}}&nbsp;</td>
+                                @if ($notif->resolved)
+                                <td class="value">Hors-ligne pendant <span class="moment-now d-none">{{$notif->value}}</span>&nbsp;</td>
+                                @else
+                                <td class="value">Dernier log: {{$notif->value}}&nbsp;</td>
+                                @endif
                             @else
-                                <td class="created_at">{{$notif->value}}&nbsp;V</td>
+                                <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
                                 <td class="occurences">{{$notif->occurences}}</td>
-                                <td class="updated_at">{{$notif->updated_at}}</td>
-                                <td class="resolved">{!! $notif->resolved ? '<span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu"></span>' : '<span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title="En cours"></span>' !!}</td>
+                                <td class="created_at">{{$notif->created_at}}</td>
+                                <td class="resolved">
+                                @if (!empty($notif->resolved) && $notif->resolved == 1)
+                                    <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu depuis le {{$notif->updated_at}}"></span>
+                                @else
+                                    <span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title="En cours depuis le {{$notif->created_at}}"></span>
+                                @endif
+                                </td>
                                 <td class="button">
                                     <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn">Vu</button>
                                 </td>

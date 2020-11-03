@@ -1,7 +1,7 @@
 define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], function($) {
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
-	$disconnectedText.tooltip({ trigger: "hover" });
+	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 
     document.addEventListener("offline", function(e) {
     	console.error('OFFLINE', e);

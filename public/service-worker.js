@@ -1,9 +1,9 @@
 const filesToCache = [
   '/',
   'consultation',
-  //'login',
-  'su_admin',
-  'client',
+    //'login',
+    //'su_admin',
+  //'client',
   'register',
   //'fonts/open-iconic.woff', // has bust, the font is auto loaded
   'images/loader.svg',
@@ -16,7 +16,7 @@ const filesToCache = [
   'images/logo-192.png'
 ];
 
-var blacklist = ['/csrf', '/logs/', '/notifs'];
+var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client'];
 
 const staticCacheName = 'pages-cache-v12';
 

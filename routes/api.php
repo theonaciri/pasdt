@@ -30,3 +30,5 @@ Route::middleware('auth:api')->get('/store-log', function (Request $request) {
 */
 //Route::middleware('auth:api')->post('/store-data', 'LogController@storeData')->name('store.log.post');
 Route::post('/log', 'LogController@storeData')->name('store.log.post');
+Route::post('/nolog', 'NotificationController@noData')->name('store.nolog.post');
+Route::get('/nolog', 'NotificationController@noData')->name('store.nolog.post');
