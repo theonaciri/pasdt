@@ -359,7 +359,7 @@ EOTSQL));
         }
 
         /* TEMP */
-        if (empty($newlog['maxtemp']) || in_array($newlog['maxtemp']), config('pasdt.thresholds')['NO_TEMP']) {
+        if (empty($newlog['maxtemp']) || in_array($newlog['maxtemp'], config('pasdt.thresholds')['NO_TEMP'])) {
             $type = 'NO_TEMP';
             NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
         } else {
