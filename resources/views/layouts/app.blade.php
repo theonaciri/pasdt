@@ -137,7 +137,7 @@
         <script src="/js/anychart-bundle.js" type="text/javascript" defer></script>
     @endif
     <script>
-        Register service worker
+        //Register service worker
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
