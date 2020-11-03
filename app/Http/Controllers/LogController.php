@@ -324,6 +324,37 @@ EOTSQL));
         return response()->json('{"ok": "ok"}');
     }
 
+    public function storeDataBatch(Request $request)
+    {
+        $this->authAPI($request);
+        $array = $request->json()->all();
+        foreach ($array as $key => $log) {
+            $module = null;
+            $log["cardId"] = $this->convertOverspeedToTelit($log["cardId"]);
+            $log["msg"] = json_encode($log["msg"]);
+            $log["options"] = json_encode($log["options"]);
+            $json = json_decode($log["options"]);
+            $log["maxtemp"] = isset($json->maxtemp) ? intval($json->maxtemp) : NULL;
+            $log["vbat"] = isset($json->vbat) ? $json->vbat : NULL;
+            $newlog = new PasdtLog();
+            $newlog->fill($log);
+            $newlog->save();
+
+            if (is_null(Module::where('module_id', '=', $log["cardId"])->first())) {
+                $module = new Module;
+                $module->name = '--';
+                $module->company_id = 1;
+                $module->telit_json = '{}';
+                $module->module_id = $log["cardId"];
+                $module->telit_id = '';
+                $module->save();
+            }
+            NotificationController::yesLog($log);
+            $this->checkForAnomalities($newlog, $module);
+        }
+        return response()->json('{"ok": "ok"}');
+    }
+
     protected function checkForAnomalities(PasdtLog $newlog, $module) {
         if (empty($module)) {
             $module = Module::whereModuleId($newlog['cardId'])->first();
