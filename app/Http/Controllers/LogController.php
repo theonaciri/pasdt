@@ -354,38 +354,44 @@ EOTSQL));
         }
 
         /* TEMP */
-        if ($newlog['maxtemp'] >= config('pasdt.thresholds')['TEMP_HIGH']) {
-            if ($newlog['maxtemp'] >= config('pasdt.thresholds')['TEMP_CRIT_HIGH']) {
-                $type = 'TEMP_CRIT_HIGH';
-            } else {
-                $type = 'TEMP_HIGH';
-            }
+        if (in_array($newlog['maxtemp']), config('pasdt.thresholds')['NO_TEMP']) {
+            $type = 'NO_TEMP';
             NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
-        }/*
-        else if ($newlog['maxtemp'] != -99 && $newlog['maxtemp'] != 0 && $newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
-            if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
-                $type = 'TEMP_CRIT_LOW';
-            } else {
-                $type = 'TEMP_LOW';
-            }
-            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
-        }*/
-
-        /* DIFF TEMP */
-        if (empty($lastemplog) || empty($lastemplog['maxtemp']) || empty($newlog['maxtemp']) || $newlog['maxtemp'] + $lastemplog['maxtemp'] == 0) {
-            $difftemp = 0;
         } else {
-            $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100;
-        }
-        if ($difftemp > config('pasdt.thresholds')['TEMP_INCREASE']) {
-            $type = 'TEMP_INCREASE';
-            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
-        }
-        else if ($difftemp < config('pasdt.thresholds')['TEMP_DECREASE']) {
-            $type = 'TEMP_DECREASE';
-            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
-        }
+            if ($newlog['maxtemp'] >= config('pasdt.thresholds')['TEMP_HIGH']) {
+                if ($newlog['maxtemp'] >= config('pasdt.thresholds')['TEMP_CRIT_HIGH']) {
+                    $type = 'TEMP_CRIT_HIGH';
+                } else {
+                    $type = 'TEMP_HIGH';
+                }
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            }
+            else if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
+                if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_CRIT_LOW']) {
+                    $type = 'TEMP_CRIT_LOW';
+                } else {
+                    $type = 'TEMP_LOW';
+                }
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            }
 
+            /* DIFF TEMP */
+            if (empty($lastemplog) || empty($lastemplog['maxtemp']) || empty($newlog['maxtemp']) || $newlog['maxtemp'] + $lastemplog['maxtemp'] == 0) {
+                $difftemp = 0;
+            } else {
+                $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100;
+            }
+            if ($difftemp > config('pasdt.thresholds')['TEMP_INCREASE']) {
+                $type = 'TEMP_INCREASE';
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            }
+            else if ($difftemp < config('pasdt.thresholds')['TEMP_DECREASE']) {
+                $type = 'TEMP_DECREASE';
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            }
+
+        }
+        
         /* DIFF TIME */
         /*
         $datetimenew = new DateTime($newlog['created_at']);
