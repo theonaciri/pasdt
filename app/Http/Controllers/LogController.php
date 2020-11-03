@@ -336,25 +336,30 @@ EOTSQL));
                             ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->skip(1)->take(1)->first();
 
         /* BATTERY */
-        if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_HIGH']) {
-            if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_CRIT_HIGH']) {
-                $type = 'BATTERY_CRIT_HIGH';
-            } else {
-                $type = 'BATTERY_HIGH';
-            }
+        if (empty($newlog['vbat'])) {
+            $type = 'NO_BATTERY';
             NotificationController::newNotif($newlog, $type, $newlog['vbat']);
-        }
-        else if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_LOW']) {
-            if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_CRIT_LOW']) {
-                $type = 'BATTERY_CRIT_LOW';
-            } else {
-                $type = 'BATTERY_LOW';
+        } else {
+            if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_HIGH']) {
+                if ($newlog['vbat'] >= config('pasdt.thresholds')['BATTERY_CRIT_HIGH']) {
+                    $type = 'BATTERY_CRIT_HIGH';
+                } else {
+                    $type = 'BATTERY_HIGH';
+                }
+                NotificationController::newNotif($newlog, $type, $newlog['vbat']);
             }
-            NotificationController::newNotif($newlog, $type, $newlog['vbat']);
+            else if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_LOW']) {
+                if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_CRIT_LOW']) {
+                    $type = 'BATTERY_CRIT_LOW';
+                } else {
+                    $type = 'BATTERY_LOW';
+                }
+                NotificationController::newNotif($newlog, $type, $newlog['vbat']);
+            }
         }
 
         /* TEMP */
-        if (in_array($newlog['maxtemp']), config('pasdt.thresholds')['NO_TEMP']) {
+        if (empty($newlog['maxtemp']) || in_array($newlog['maxtemp']), config('pasdt.thresholds')['NO_TEMP']) {
             $type = 'NO_TEMP';
             NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
         } else {
