@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\User;
 use App\Notification;
 
@@ -17,14 +18,20 @@ class NotificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
+    }
+
+    public function noData(Request $request) {
+        Log::info('no');
+        $n = $this->newNotif(array("id" => "", "cardId" => "1850-00029"), "NO_LOG", DB::raw("TIMESTAMPDIFF(SECOND,'2009-05-18','2009-07-29')"));
+        return response()->json(array("ok"=>"ok", "notif"=>$n));
     }
 
     public static function newNotif($log, $type, $value) {
         $module_id = $log['cardId'] ?? "";
         if (!empty($module_id)) {
             $existing_not = Notification::where('module', '=', $module_id)
-                                        ->where('seen', '=', 0)
+                                        ->where('resolved', '=', 0)
                                         ->where('type', '=', $type)
                                         ->orderByDesc('updated_at')
                                         ->first();
@@ -32,6 +39,7 @@ class NotificationController extends Controller
                 $existing_not->log = $log['id'] ?? "";
                 $existing_not->occurences += 1;
                 $existing_not->value = $value;
+                $existing_not->seen = 0;
                 $existing_not->save();
                 return $existing_not;
             }
@@ -43,6 +51,32 @@ class NotificationController extends Controller
         $not->value = $value;
         $not->save();
         return $not;
+    }
+
+    public static function yesLog($log) {
+        $module_id = $log['cardId'];
+        if (empty($module_id)) return NULL;
+        $nolognot = Notification::where('module', '=', $module_id)
+                                ->where('resolved', '=', 0)
+                                ->where('type', '=', 'NO_LOG')
+                                ->orderByDesc('updated_at')
+                                ->first();
+        if (!empty($nolognot)) {
+            $nolognot->log = $log['id'] ?? "";
+            $nolognot->resolved = 1;
+            $nolognot->seen = 0;
+            $nolognot->value = DB::raw("NOW()");
+            $nolognot->save();
+            return $nolognot;
+        }
+        return $nolognot;
+    }
+
+    public static function getNoLogCondition() {
+        return <<<EOTNOTIF
+                AND logs.created_at <= DATE_SUB(NOW(),INTERVAL 70 MINUTE) 
+                AND module_id NOT IN (SELECT module FROM notifications WHERE type = 'NO_LOG' AND resolved = 0)
+EOTNOTIF;
     }
 
     /**

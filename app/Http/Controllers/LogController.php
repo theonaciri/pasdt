@@ -318,6 +318,8 @@ EOTSQL));
             $module->save();
         }
 
+        NotificationController::yesLog($log);
+
         $this->checkForAnomalities($newlog, $module);
         return response()->json('{"ok": "ok"}');
     }

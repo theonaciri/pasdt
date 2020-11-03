@@ -1,4 +1,4 @@
-define(['jquery', './components/notifs'], function($) {
+define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm("Retirer la surveillance de ce module ?")) return ;
 		var csrf = $("input[name='_token']").first().val();
@@ -26,4 +26,11 @@ define(['jquery', './components/notifs'], function($) {
 			$counter.html(+$counter.html() -1);
 		});
 	});
+	var $nologs = $('.no_log.success');
+	$nologs.each(function() {
+		var created = moment($(this).children('.created_at').html());
+		var $updated = $(this).find('.moment-now');
+		$updated.html(moment.duration(moment($updated.html()).diff(created)).humanize())
+				.removeClass('d-none');
+	})
 });

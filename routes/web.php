@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 */
 
+Route::get('/nolog', 'NotificationController@noData')->name('store.nolog.post');
+Route::post('/nolog', 'NotificationController@noData')->name('store.nolog.post');
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('welcome');
 Route::get('/consultation', 'HomeController@consultation')->name('consultation');

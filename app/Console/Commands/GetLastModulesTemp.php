@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\NotificationController;
 
 class getLastModulesTemp extends Command
 {
@@ -39,10 +40,7 @@ class getLastModulesTemp extends Command
     public function handle()
     {
         /* if no log received last 1h10 minutes and if there's no NO_LOG notification unseen */
-        $notif_condition = <<<EOTNOTIF
-AND logs.created_at <= DATE_SUB(NOW(),INTERVAL 70 MINUTE) 
-                AND module_id NOT IN (SELECT module FROM notifications WHERE type = 'NO_LOG' AND seen = 0)
-EOTNOTIF;
+        $notif_condition = NotificationController::getNoLogCondition();
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {
             echo($module->name . ":\t\t" . $module->temp_created_at . "\n");
