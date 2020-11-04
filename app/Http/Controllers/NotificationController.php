@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\Notification;
+use App\Mail\ModuleAlert;
 
 class NotificationController extends Controller
 {
@@ -23,8 +25,38 @@ class NotificationController extends Controller
 
     public function noData(Request $request) {
         Log::info('no');
-        $n = $this->newNotif(array("id" => "", "cardId" => "1850-00029"), "NO_LOG", DB::raw("TIMESTAMPDIFF(SECOND,'2009-05-18','2009-07-29')"));
+        //$log = json_decode($request->getContent());
+        $n = $this->newNotif(array("id" => "", "cardId" => "1850-00060"), "NO_LOG", "2020-11-04 23:32:07");
         return response()->json(array("ok"=>"ok", "notif"=>$n));
+    }
+
+    private static function getUsersInfoFromNotif(Notification $notif) {
+        return DB::table("notifications AS n")
+                 ->join("modules AS m", "m.module_id", "=", "n.module")
+                 ->join("companies AS c", "c.id", "=", "m.company_id")
+                 ->join("users AS u", "u.company_id", "=", "c.id")
+                 ->select("u.name AS name", "u.email AS email", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.type", "n.value", "n.occurences", "n.updated_at")
+                 ->where('n.id', '=', $notif->id)
+                 ->get();
+    }
+/*
+    ^
+    SELECT u.name, u.email, c.name, m.name, n.module, n.type FROM `notifications` n
+    INNER JOIN `modules` m ON n.module = m.module_id
+    INNER JOIN `companies` c ON c.id = m.company_id
+    INNER JOIN `users` u ON u.company_id = c.id
+    WHERE n.id = $notif->id
+*/
+    public function renderMail(Notification $notif) {
+        $infos = $this->getUsersInfoFromNotif($notif);
+        return new ModuleAlert($infos[0]);
+    }
+
+    private static function sendNotifMail(Notification $notif) {
+        $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
+        foreach ($usersinfo as $key => $info) {
+            Mail::to($info)->send(new ModuleAlert($info));
+        }
     }
 
     public static function newNotif($log, $type, $value) {
@@ -41,6 +73,7 @@ class NotificationController extends Controller
                 $existing_not->value = $value;
                 $existing_not->seen = 0;
                 $existing_not->save();
+                //sendNotifMail($existing_not);
                 return $existing_not;
             }
         }
@@ -50,6 +83,7 @@ class NotificationController extends Controller
         $not->module = $module_id; 
         $not->value = $value;
         $not->save();
+        NotificationController::sendNotifMail($not);
         return $not;
     }
 

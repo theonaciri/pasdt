@@ -132,7 +132,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
             			</button>
             			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-primary telitmoduleunlinkbtn" data-company="${module.company_id}"><span class="oi oi-link-broken"></span></button>
             		</td>
-            	 </tr>`
+            	</tr>`
 	}
 
 	$('body').on("click", '.telitmoduleunlinkbtn', function (e) {

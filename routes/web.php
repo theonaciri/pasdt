@@ -31,8 +31,9 @@ Route::get('/users/get', 'AdminController@getUsers')->name('users.get');
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify');
 
 /* NOTIFICATIONS */
-Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')->name('users.get_notifs_count');
-Route::get('/notifs/{seen?}', 'NotificationController@APIgetNotifs')->name('users.get_notifs');
+Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')->name('notifs.get_notifs_count');
+Route::get('/notifs/{seen?}', 'NotificationController@APIgetNotifs')->name('notifs.get_notifs');
+Route::get('/notif/{notif}/renderMail', 'NotificationController@renderMail')->name('notifs.render_mail');
 
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
