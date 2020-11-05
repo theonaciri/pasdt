@@ -26,7 +26,7 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 				type: "POST",
 				data: {"_token": csrf}
 			}).done(function() {
-				if ($tr.hasClass('success')) {
+				if (!$tr.hasClass('success')) {
 					var $counter = $('.notif-counter');
 					var value = +$counter.html() -1;
 					$counter.html(value != 0 ? value : '');

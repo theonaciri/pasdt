@@ -134,7 +134,7 @@ EOTNOTIF;
             ->where('seen', $seen)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
             ->where('modules.company_id', $id_company)
-            ->orderBy('id', 'DESC')
+            ->orderBy('notifications.updated_at', 'DESC')
             ->limit($limit)->get();
     }
 
