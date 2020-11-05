@@ -2,10 +2,10 @@
 return [
 	"API_TOKEN" => env("API_TOKEN"),
 	"thresholds" => [
-		"BATTERY_LOW" => 12.8,
-		"BATTERY_CRIT_LOW" => 11.8,
+		"BATTERY_LOW" => 11.8,
+		"BATTERY_CRIT_LOW" => 10.8,
 		"BATTERY_HIGH" => 14.8,
-		"BATTERY_CRIT_HIGH" => 15.8,
+		"BATTERY_CRIT_HIGH" => 15.2,
 		"TEMP_LOW" => 5,
 		"TEMP_CRIT_LOW" => -5,
 		"TEMP_HIGH" => 80,
