@@ -49,6 +49,7 @@ class NotificationController extends Controller
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
         $is_admint = false;
         $is_adminf = false;
+        $is_adminff = false;
         // foreach ($usersinfo as $key => $info) {
         //     Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
         //     //Mail::to($info)->send(new ModuleAlert($info));
@@ -64,7 +65,12 @@ class NotificationController extends Controller
         if (count($usersinfo) && !$is_adminf) {
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
-            //Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
+            Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
+        }
+        if (count($usersinfo) && !$is_adminff) {
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
         }
     }
 
