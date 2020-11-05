@@ -36,7 +36,13 @@ class ModuleAlert extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.module-alert');
+        $subject = "PASDT: ";
+        $subject .= $this->i->type === "NO_LOG" ?
+        "Votre module " . $this->i->module_name . " a arrêté d'émettre" :
+        "Alerte " . (strpos($this->i->type, "BATTERY") !== false ? "batterie" : "température")
+                  . " du module " . $this->i->module_name;
+        return $this->markdown('emails.module-alert')
+                    ->subject($subject);
     }
 
     private static function time_ago($lastlog, $now)
@@ -53,25 +59,25 @@ class ModuleAlert extends Mailable
         $day = $hour * 24;
         $month = $day * 30;
 
-        if ($diff < 60) { //Under a min
+        if ($diff < 60) { // Under a min
             $round = $diff;
-            $timeago = $round . " seconde";
-        } else if ($diff < $hour) { //Under an hour
+            $timeago = $round . " secondes";
+        } else if ($diff < $hour * 2) { // Under two hours
             $round = round($diff / $min);
-            $timeago = $round . " minute";
-        } else if ($diff < $day) { //Under a day
+            $timeago = $round . " minutes";
+        } else if ($diff < $day * 2) { // Under two days
             $round = round($diff / $hour);
-            $timeago = $round . " heure";
-        } else if ($diff < $month) { //Under a day
+            $timeago = $round . " heures";
+        } else if ($diff < $month * 2) { // Under two months
             $round = round($diff / $day);
-            $timeago = $round . " jour";
+            $timeago = $round . " jours";
         } else {
             $round = round($diff / $month);
             $timeago = $round ." mois";
         }
-        if ($round > 1 && strpos($timeago, "mois") === false) {
+        /*if ($round > 1 && strpos($timeago, "mois") === false) {
             $timeago .= "s";
-        }
+        }*/
         return $timeago;
     }
 }

@@ -18,17 +18,20 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed
 			&& confirm("Masquer cette notification pour le client aussi ?"))) {
 			adminconfirmed = true;
-			var $self = $(this);
-			var id = $self.parent().parent().data('id');
+			var $tr = $(this).parent().parent();
+			var id = $tr.data('id');
 			var csrf = $("input[name='_token']").first().val();
 			$.ajax({
 				url: "/notif/" + id + "/acknowledge",
 				type: "POST",
 				data: {"_token": csrf}
 			}).done(function() {
-				$self.parent().parent().remove();
-				$counter =$('.notif-counter');
-				$counter.html(+$counter.html() -1);
+				if ($tr.hasClass('success')) {
+					var $counter = $('.notif-counter');
+					var value = +$counter.html() -1;
+					$counter.html(value != 0 ? value : '');
+				}
+				$tr.remove();
 			});
 		}
 	});

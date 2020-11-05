@@ -262,7 +262,7 @@
                         @endif
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> Il y a eu un problème avec votre image.
+                            <strong>Whoops!</strong> Il y a eu un problème avec vos couleurs.
                             <ul>
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
