@@ -8,7 +8,7 @@ le portail a détécté qu'il n'a plus reçu de données de votre module depuis 
 
 
 @else
-votre module a déclenché l'alerte {{ $i->crit ? "" : " __CRITIQUE__"}} suivante : __{{$i->type}}__
+votre module a déclenché l'alerte {{ $i->crit ? " __CRITIQUE__" : ""}} suivante : __{{$i->type}}__
 avec la valeur de
 __{{$i->value}}__
 @if (strpos($i->type, "TEMP") !== false)
