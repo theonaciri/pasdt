@@ -23,6 +23,23 @@ class NotificationController extends Controller
         //$this->middleware('auth');
     }
 
+    private static function getUserCompany($su_company = NULL, $store = false) {
+        $user = Auth::user();
+        if (empty($user)) return abort(403);
+        $id_company = $user->company_id;
+        if (!empty($user->su_admin) && $user->su_admin == 1) {
+            if (!empty($su_company)) {
+                $id_company = $su_company;
+            } else {
+                $id_company = -1;
+            }
+        }
+        if ($store) {
+            $this->user = $user;
+        }
+        return $id_company;
+    }
+
     public function noData(Request $request) {
         Log::info('no');
         //$log = json_decode($request->getContent());
@@ -134,48 +151,49 @@ EOTNOTIF;
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public static function getNotifs($id_company, int $seen = 0, int $limit = 20) {
+    public static function getNotifs(Request $request, int $seen = 0, int $limit = 20) {
+        $id_company = NotificationController::getUserCompany($request->company ?? NULL, false);
         if (!$id_company) return NULL;
+        if ($id_company === -1) {
+            $id_company = "%%";
+        }
         return Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'occurences', 'resolved', 'notifications.created_at', 'notifications.updated_at')
             ->where('seen', $seen)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
-            ->where('modules.company_id', $id_company)
+            ->where('modules.company_id', "LIKE", $id_company)
             ->orderBy('notifications.updated_at', 'DESC')
             ->limit($limit)->get();
     }
 
-    public static function getNotifsCount($id_company, int $seen = 0) {
+    public static function getNotifsCount(Request $request, int $seen = 0) {
+        $id_company = NotificationController::getUserCompany($request->company ?? NULL, false);
         if (!$id_company) return NULL;
+        if ($id_company === -1) {
+            $id_company = "%%";
+        }
         return Notification::where('seen', $seen)->where('resolved', 0)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
-            ->where('modules.company_id', $id_company)->count();
+            ->where('modules.company_id', "LIKE", $id_company)->count();
     }
 
     /**
-     * Show the application Su dashboard.
+     * Get notif content
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return JSON
      */
     public function APIgetNotifs(Request $request, $seen = '')
     {
-        $user = Auth::user();
-        if (empty($user)) return abort(403);
-        $su_company = $request->company ?? NULL;
-        $id_company = $user->company_id;
-        if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
-          $id_company = $su_company;
-        }
-        return response()->json($this->getNotifs($id_company, $seen === "seen", 100));
+        return response()->json($this->getNotifs($request, $seen === "seen", 100));
     }
+
+    /**
+     * Get notif count
+     *
+     * @return int
+     */
+
     public function APIgetNotifsCount(Request $request, $seen = '')
     {
-        $user = Auth::user();
-        if (empty($user)) return abort(403);
-        $su_company = $request->company ?? NULL;
-        $id_company = $user->company_id;
-        if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
-          $id_company = $su_company;
-        }
-        return response()->json($this->getNotifsCount($id_company, $seen === "seen"));
+        return response()->json($this->getNotifsCount($request, $seen === "seen"));
     }
 }

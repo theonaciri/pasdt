@@ -52,7 +52,7 @@ class ClientController extends Controller
         $this->users = User::where('id', '!=', auth()->id())
                            ->where('company_id', $id_company)
                            ->get();
-        $notifs = NotificationController::getNotifs($id_company);
+        $notifs = NotificationController::getNotifs($request);
         return view('auth/client', [
           "company" => $company,
           "modules" => $this->modules,
