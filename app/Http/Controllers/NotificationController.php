@@ -35,18 +35,11 @@ class NotificationController extends Controller
                  ->join("modules AS m", "m.module_id", "=", "n.module")
                  ->join("companies AS c", "c.id", "=", "m.company_id")
                  ->join("users AS u", "u.company_id", "=", "c.id")
-                 ->select("u.name AS name", "u.email AS email", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.type", "n.value", "n.occurences", "n.updated_at")
+                 ->select("u.name AS name", "u.email AS email", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.updated_at")
                  ->where('n.id', '=', $notif->id)
                  ->get();
     }
-/*
-    ^
-    SELECT u.name, u.email, c.name, m.name, n.module, n.type FROM `notifications` n
-    INNER JOIN `modules` m ON n.module = m.module_id
-    INNER JOIN `companies` c ON c.id = m.company_id
-    INNER JOIN `users` u ON u.company_id = c.id
-    WHERE n.id = $notif->id
-*/
+
     public function renderMail(Notification $notif) {
         $infos = $this->getUsersInfoFromNotif($notif);
         return new ModuleAlert($infos[0]);
@@ -54,8 +47,24 @@ class NotificationController extends Controller
 
     private static function sendNotifMail(Notification $notif) {
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
-        foreach ($usersinfo as $key => $info) {
-            Mail::to($info)->send(new ModuleAlert($info));
+        $is_admint = false;
+        $is_adminf = false;
+        // foreach ($usersinfo as $key => $info) {
+        //     Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+        //     //Mail::to($info)->send(new ModuleAlert($info));
+        //     if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
+        //     if ($info->email === "theo.naciri@gmail.com") $is_admint = true;
+        // }
+        //if (!$is_admint) Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($usersinfo[0]));
+        if (count($usersinfo) && !$is_admint) {
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
+        }
+        if (count($usersinfo) && !$is_adminf) {
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            //Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
         }
     }
 
@@ -73,7 +82,7 @@ class NotificationController extends Controller
                 $existing_not->value = $value;
                 $existing_not->seen = 0;
                 $existing_not->save();
-                //sendNotifMail($existing_not);
+                NotificationController::sendNotifMail($existing_not);
                 return $existing_not;
             }
         }

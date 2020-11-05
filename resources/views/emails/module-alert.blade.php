@@ -1,5 +1,6 @@
 @component('mail::message')
-<h1 style="text-align: center;">Nouvelle alerte{{ $i->crit ? "" : " critique"}} pour votre module<br>{{ $i->module_name }}</h1>
+<h1 style="text-align: center;">Nouvelle alerte{{ $i->crit ? " critique" : ""}} pour votre module<br>{{ $i->module_name }}</h1>
+<br>
 
 Le {{strftime("%A %e %B %Y à %Hh%M", strtotime($i->updated_at))}}
 @if ($i->type === "NO_LOG")
@@ -17,7 +18,7 @@ __V__.
 @endif
 @endif
 
-Une action {{ $i->crit ? "urgente " : "" }} de votre part sur site est sûrement nécessaire.
+Une action {{ $i->crit ? "urgente " : "" }} de votre part est sûrement nécessaire.
 
 @if (is_object($i->address))
 Localisation du module :
