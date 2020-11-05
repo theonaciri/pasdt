@@ -76,17 +76,17 @@ class NotificationController extends Controller
         //if (!$is_admint) Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($usersinfo[0]));
         if (count($usersinfo) && !$is_admint) {
             $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
             Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
         }
         if (count($usersinfo) && !$is_adminf) {
             $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
             Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
         }
         if (count($usersinfo) && !$is_adminff) {
             $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
             Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
         }
     }
