@@ -39,6 +39,11 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 	$logs.each(function() {
 		var created = moment($(this).children('.created_at').html());
 		var $updated = $(this).children('.updated_at');
-		$updated.html(moment.duration(moment($updated.html()).diff(created)).humanize())
+		if ($(this).hasClass('success')) {
+			var nowdate = moment($updated.html());
+		} else {
+			var nowdate = moment();
+		}
+		$updated.html(moment.duration(nowdate.diff(created)).humanize())
 	})
 });
