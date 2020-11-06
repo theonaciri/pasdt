@@ -317,9 +317,6 @@ EOTSQL));
             $module->telit_id = '';
             $module->save();
         }
-
-        NotificationController::yesLog($log);
-
         $this->checkForAnomalities($newlog, $module);
         return response()->json('{"ok": "ok"}');
     }
@@ -349,22 +346,17 @@ EOTSQL));
                 $module->telit_id = '';
                 $module->save();
             }
-            NotificationController::yesLog($log);
             $this->checkForAnomalities($newlog, $module);
         }
         return response()->json('{"ok": "ok"}');
     }
 
-    protected function checkForAnomalities(PasdtLog $newlog, $module) {
-        if (empty($module)) {
-            $module = Module::whereModuleId($newlog['cardId'])->first();
-            if (empty($module)) {
-                Log::info("===== WARNING ===== Couldn't find module for anomality check");
-                return;
-            }
-        }
-        $lastemplog = PasdtLog::where('cardId', $module['module_id'])
+    protected function checkForAnomalities(PasdtLog $newlog) {
+        $lastemplog = PasdtLog::where('cardId', $newlog['cardId'])
                             ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->skip(1)->take(1)->first();
+        $ongoingalerts = Notification::where('module', $newlog['cardId'])->where('resolved', 0)->get();
+        /* NO_LOG */
+        NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog->updated_at, ["NO_LOG"]);
 
         /* BATTERY */
         if (empty($newlog['vbat'])) {
@@ -377,6 +369,7 @@ EOTSQL));
                 } else {
                     $type = 'BATTERY_HIGH';
                 }
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_BATTERY", "BATTERY_LOW", "BATTERY_CRIT_LOW"]);
                 NotificationController::newNotif($newlog, $type, $newlog['vbat']);
             }
             else if ($newlog['vbat'] <= config('pasdt.thresholds')['BATTERY_LOW']) {
@@ -385,7 +378,10 @@ EOTSQL));
                 } else {
                     $type = 'BATTERY_LOW';
                 }
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_BATTERY", "BATTERY_HIGH", "BATTERY_CRIT_HIGH"]);
                 NotificationController::newNotif($newlog, $type, $newlog['vbat']);
+            } else {
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_BATTERY", "BATTERY_LOW", "BATTERY_CRIT_LOW", "BATTERY_HIGH", "BATTERY_CRIT_HIGH"]);
             }
         }
 
@@ -400,6 +396,7 @@ EOTSQL));
                 } else {
                     $type = 'TEMP_HIGH';
                 }
+                NotificationController::resolveOngoingNotifications($ongoingalerts,$newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW"]);
                 NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
             }
             else if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
@@ -408,7 +405,10 @@ EOTSQL));
                 } else {
                     $type = 'TEMP_LOW';
                 }
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW"]);
                 NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            } else {
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW", "TEMP_HIGH", "TEMP_CRIT_HIGH"]);
             }
 
             /* DIFF TEMP */
@@ -419,27 +419,17 @@ EOTSQL));
             }
             if ($difftemp > config('pasdt.thresholds')['TEMP_INCREASE']) {
                 $type = 'TEMP_INCREASE';
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_DECREASE"]);
                 NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
             }
             else if ($difftemp < config('pasdt.thresholds')['TEMP_DECREASE']) {
                 $type = 'TEMP_DECREASE';
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_INCREASE"]);
                 NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            } else {
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["TEMP_INCREASE", "TEMP_DECREASE"]);
             }
-
         }
-        
-        /* DIFF TIME */
-        /*
-        $datetimenew = new DateTime($newlog['created_at']);
-        $datetimeold = new DateTime($lastemplog['created_at']);
-        $interval = $datetimenew->diff($datetimeold);
-        $seconds = $interval->format('%s');
-
-        if ($seconds > config('pasdt.thresholds')['NO_LOG']) {
-            $type = 'NO_LOG';
-            NotificationController::newNotif($newlog, $type, $newlog['created_at']);
-        }
-        */
     }
 
     public function acknowledgeNotif(Notification $notif) {
