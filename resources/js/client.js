@@ -1,4 +1,5 @@
-define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
+define(['jquery', 'moment/moment', './components/getURLParameter', './components/notifs'],
+	function($, moment, getURLParameter) {
 	var adminconfirmed = false;
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm("Retirer la surveillance de ce module ?")) return ;
@@ -49,7 +50,9 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 
 	$('#notifTable .view-notif').on('click', function (e) {
 		var id = $(this).parent().parent().data('module_id');
+		var company = getURLParameter("company");
 		localStorage.setItem('opened-tab', 'home-tab');
-		window.location = "/consultation?moduleid=" + encodeURI(id);
+		window.location = "/consultation?moduleid=" + encodeURI(id)
+		+ (typeof company != 'undefined' ? "&company=" + company : "");
 	} );
 });
