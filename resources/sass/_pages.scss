@@ -282,10 +282,17 @@ table input, table select {
     border: 1px solid #333;
     padding: .5rem;
   }
+  td.resolved, td.button{
+    text-align: center;
+  }
   thead, tfoot {
     border: 1px solid #333;
     background-color: #333;
     color: #fff;
+    th {
+      padding-left: .5rem;
+      padding-right: .5rem;
+    }
   }
 }
 

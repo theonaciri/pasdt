@@ -74,21 +74,21 @@ class NotificationController extends Controller
         //     if ($info->email === "theo.naciri@gmail.com") $is_admint = true;
         // }
         //if (!$is_admint) Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($usersinfo[0]));
-        if (count($usersinfo) && !$is_admint) {
-            $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
-            Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
-        }
-        if (count($usersinfo) && !$is_adminf) {
-            $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
-            Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
-        }
-        if (count($usersinfo) && !$is_adminff) {
-            $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
-            Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
-        }
+        // if (count($usersinfo) && !$is_admint) {
+        //     $info = $usersinfo[0];
+        //     Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
+        //     Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
+        // }
+        // if (count($usersinfo) && !$is_adminf) {
+        //     $info = $usersinfo[0];
+        //     Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
+        //     Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
+        // }
+        // if (count($usersinfo) && !$is_adminff) {
+        //     $info = $usersinfo[0];
+        //     Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
+        //     Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
+        // }
     }
 
     public static function newNotif($log, $type, $value) {
@@ -119,23 +119,15 @@ class NotificationController extends Controller
         return $not;
     }
 
-    public static function yesLog($log) {
-        $module_id = $log['cardId'];
-        if (empty($module_id)) return NULL;
-        $nolognot = Notification::where('module', '=', $module_id)
-                                ->where('resolved', '=', 0)
-                                ->where('type', '=', 'NO_LOG')
-                                ->orderByDesc('updated_at')
-                                ->first();
-        if (!empty($nolognot)) {
-            $nolognot->log = $log['id'] ?? "";
-            $nolognot->resolved = 1;
-            $nolognot->seen = 0;
-            $nolognot->value = DB::raw("NOW()");
-            $nolognot->save();
-            return $nolognot;
+    public static function resolveOngoingNotifications($ongoingnotifs, $value, array $array_alerts_type) {
+        foreach ($ongoingnotifs as $key => $alert) {
+            if (in_array($alert->type, $array_alerts_type) && $alert->resolved == 0) {
+                $alert->resolved = 1;
+                $alert->seen = 0;
+                $alert->value = $value;
+                $alert->save();
+            }
         }
-        return $nolognot;
     }
 
     public static function getNoLogCondition() {

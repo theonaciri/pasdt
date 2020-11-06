@@ -8,13 +8,14 @@
             <div class="card">
                 <div class="card-header">{{ __("Dernières notifications") }}</div>
                 <div class="card-body">
-                    <table class="adminTable">
+                    <table id="notifTable" class="adminTable">
                         <thead>
                             <tr>
                                 <th>Module</th>
                                 <th>Type</th>
                                 <th>Valeur</th>
                                 <th>Occurences</th>
+                                <th>Durée</th>
                                 <th>Date</th>
                                 <th>&Eacute;tat</th>
                                 <th>Action</th>
@@ -32,7 +33,7 @@
                                 <td class="name">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
                             @if(strpos($notif->type, 'TEMP') > -1)
-                                <td class="value">{{$notif->value}}&nbsp;°C</td>
+                                <td class="value"><span class="moment-now d-none"><span class="oi oi-fire"></span> pendant {{$notif->value}}</span> {{$notif->value}}&nbsp;°C</td>
                             @elseif(strpos($notif->type, 'NO_LOG') > -1)
                                 @if ($notif->resolved)
                                 <td class="value">Hors-ligne pendant <span class="moment-now d-none">{{$notif->value}}</span>&nbsp;</td>
@@ -43,6 +44,7 @@
                                 <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
                                 <td class="occurences">{{$notif->occurences}}</td>
+                                <td class="updated_at">{{$notif->updated_at}}</td>
                                 <td class="created_at">{{$notif->created_at}}</td>
                                 <td class="resolved">
                                 @if (!empty($notif->resolved) && $notif->resolved == 1)
@@ -69,7 +71,7 @@
             <div class="card">
                 <div class="card-header">{{ __("Liste des utilisateurs de votre groupe") }} {{ $company->name }} </div>
                 <div class="card-body">
-                    <table id="adminTable" class="adminTable">
+                    <table id="userTable" class="adminTable">
                         <thead>
                             <tr>
                                 <th>Id</th>

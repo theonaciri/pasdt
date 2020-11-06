@@ -35,11 +35,10 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 			});
 		}
 	});
-	var $nologs = $('.no_log.success');
-	$nologs.each(function() {
+	var $logs = $('#notifTable > tbody > tr');
+	$logs.each(function() {
 		var created = moment($(this).children('.created_at').html());
-		var $updated = $(this).find('.moment-now');
+		var $updated = $(this).children('.updated_at');
 		$updated.html(moment.duration(moment($updated.html()).diff(created)).humanize())
-				.removeClass('d-none');
 	})
 });
