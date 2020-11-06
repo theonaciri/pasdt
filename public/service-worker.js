@@ -17,8 +17,9 @@ const filesToCache = [
 ];
 
 var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client'];
+var whitelist = ['fonts/open-iconic', 'images/companylogos'];
 
-const staticCacheName = 'pages-cache-v13';
+const staticCacheName = 'pages-cache-v14';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
@@ -102,8 +103,10 @@ self.addEventListener('fetch', event => {
             }
             return caches.open(staticCacheName)
               .then(cache => {
-                console.log('saving to cache ', event.request.url);
-                cache.put(event.request.url, response.clone());
+                if (whitelist.find(function(e) { return event.request.url.indexOf(e) !== -1 })) {
+                  console.log('saving to cache ', event.request.url);
+                  cache.put(event.request.url, response.clone());
+                }
                 return response;
               });
           });
