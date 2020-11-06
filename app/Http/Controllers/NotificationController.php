@@ -149,7 +149,7 @@ EOTNOTIF;
         if ($id_company === -1) {
             $id_company = "%%";
         }
-        return Notification::select('notifications.id', 'modules.name AS name', 'type', 'log', 'value', 'occurences', 'resolved', 'notifications.created_at', 'notifications.updated_at')
+        return Notification::select('notifications.id', 'modules.name AS name', 'modules.module_id AS module_id', 'type', 'log', 'value', 'occurences', 'resolved', 'notifications.created_at', 'notifications.updated_at')
             ->where('seen', $seen)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
             ->where('modules.company_id', "LIKE", $id_company)
