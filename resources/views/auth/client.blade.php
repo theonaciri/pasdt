@@ -24,11 +24,11 @@
                         <tbody>
                             @foreach ($notifs as $notif)
                             @if ($notif->resolved)
-                                <tr class="success {{strpos($notif->type, 'NO_LOG') > -1 ? 'no_log' : ''}}" data-id="{{$notif->id}}">
+                                <tr class="success" data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @elseif (strpos($notif->type, 'CRIT') > -1 || strpos($notif->type, 'NO_LOG') > -1)
-                                <tr class="highlight {{strpos($notif->type, 'NO_LOG') > -1 ? 'no_log' : ''}}" data-id="{{$notif->id}}">
+                                <tr class="highlight" data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @else
-                                <tr data-id="{{$notif->id}}">
+                                <tr data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @endif
                                 <td class="name">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
@@ -51,6 +51,7 @@
                                 </td>
                                 <td class="button">
                                     <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn">Vu</button>
+                                    <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-primary view-notif">Consulter</button>
                                 </td>
                             </tr>
                             @endforeach

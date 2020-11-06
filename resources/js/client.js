@@ -45,5 +45,11 @@ define(['jquery', 'moment/moment', './components/notifs'], function($, moment) {
 			var nowdate = moment();
 		}
 		$updated.html(moment.duration(nowdate.diff(created)).humanize())
-	})
+	});
+
+	$('#notifTable .view-notif').on('click', function (e) {
+		var id = $(this).parent().parent().data('module_id');
+		localStorage.setItem('opened-tab', 'home-tab');
+		window.location = "/consultation?moduleid=" + encodeURI(id);
+	} );
 });

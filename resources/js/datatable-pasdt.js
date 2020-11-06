@@ -1,8 +1,8 @@
-define([
+define(['jquery', 
   './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', 'datatables.net-bs4',
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
-  function(datatablefr, arrayToSearch, moment, getURLParameter) {
+  function($, datatablefr, arrayToSearch, moment, getURLParameter) {
 var table, graphdata, active_module;
 var $logsDateSync = $('#logs-date-sync');
 window.logtable = table;
@@ -124,6 +124,7 @@ function initTable() {
     /*columns: {!!json_encode($dt_info['labels'])!!},
     order: {!!json_encode($dt_info['order'])!!},*/
     initComplete: function(settings, json) {
+      var table = settings.oInstance.api();
       prelogs = null;
       if (server_time) {
         $logsDateSync.html(moment(server_time*1000).calendar());
@@ -154,14 +155,18 @@ function initTable() {
          }
         });
 
+        var geturlmoduleid = getURLParameter('moduleid');
         if (typeof presynths != 'undefined' && Array.isArray(presynths)) {
           presynths.forEach(function(d, j) {
                if (d != null && typeof d != 'undefined') {
-                   select.append('<option value="' + d.name + '">[' + d.module_id + '] ' + d.name + '</option>')
+                   select.append('<option value="' + d.name + '"'
+                    + (typeof geturlmoduleid != 'undefined' && geturlmoduleid === d.module_id ? "selected" : "")
+                    + '>[' + d.module_id + '] ' + d.name + '</option>')
                }
            });
         }
-        select.selectpicker({actionsBox: true});
+        geturlmoduleid = undefined;
+        select.selectpicker({actionsBox: true}).change();
       }); /* / Dropdown */
       document.addEventListener("backonline", function(e) {
         table.ajax.reload( null, false );
@@ -169,6 +174,5 @@ function initTable() {
     } // initComplete
   }); // table
 }
-
 initTable();
 });
