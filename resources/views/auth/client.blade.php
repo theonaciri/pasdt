@@ -35,11 +35,7 @@
                             @if(strpos($notif->type, 'TEMP') > -1)
                                 <td class="value"><span class="moment-now d-none"><span class="oi oi-fire"></span> pendant {{$notif->value}}</span> {{$notif->value}}&nbsp;°C</td>
                             @elseif(strpos($notif->type, 'NO_LOG') > -1)
-                                @if ($notif->resolved)
-                                <td class="value">Hors-ligne pendant <span class="moment-now d-none">{{$notif->value}}</span>&nbsp;</td>
-                                @else
                                 <td class="value">Dernier log: {{$notif->value}}&nbsp;</td>
-                                @endif
                             @else
                                 <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
