@@ -35,6 +35,7 @@ Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')-
 Route::get('/notifs/count_last/{seen?}', 'NotificationController@APIgetNotifsCountAndLast')->name('notifs.get_notifs_count_and_last');
 Route::get('/notifs/{seen?}', 'NotificationController@APIgetNotifs')->name('notifs.get_notifs');
 Route::get('/notif/{notif}/renderMail', 'NotificationController@renderMail')->name('notifs.render_mail');
+Route::post('/notif/{notif}/acknowledge', 'NotificationController@acknowledgeNotif')->name('notif.acknowledge');
 
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
@@ -52,9 +53,6 @@ Route::get('/logs/temp', 'LogController@getTempData')->name('log.get.temp');
 Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth');
 Route::get('/logs/OverspeedToTelit/{pasdt_str}', 'LogController@convertOverspeedToTelit')->name('log.convert.over.to.telit');
 Route::get('/logs/TelitToOverspeed/{pasdt_str}', 'LogController@convertTelitToOverspeed')->name('log.convert.telit.to.over');
-
-/* NOTIFICATIONS */
-Route::post('/notif/{notif}/acknowledge', 'NotificationController@acknowledgeNotif')->name('notif.acknowledge');
 
 /* MODULE */
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');
