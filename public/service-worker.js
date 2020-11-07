@@ -152,20 +152,20 @@ self.addEventListener('notificationclick', function(event) {
 }, false);
 
 
-self.registration.showNotification("Nouvelle notification " + last.last.type, {
-  badge: "https://logs.pasdt.com/images/logo-98.png",
-  icon: "https://logs.pasdt.com/images/logo-98.png",
-  body: last.type,
-  data : {
-    last: last.last,
-    csrf: "vaSnHqQqhI25dJfXN3oimVJfJt7cmdQbIapN7WtW"
-  },
-  requireInteraction: false,/* critique ? true : false;*/
-  actions: [{
-    action: "acknowledge",
-    title: "Vu"
-  },{
-    action: "see",
-    title: "Consulter"
-  }]
-});
+// self.registration.showNotification("Nouvelle notification " + last.last.type, {
+//   badge: "https://logs.pasdt.com/images/logo-98.png",
+//   icon: "https://logs.pasdt.com/images/logo-98.png",
+//   body: last.type,
+//   data : {
+//     last: last.last,
+//     csrf: "vaSnHqQqhI25dJfXN3oimVJfJt7cmdQbIapN7WtW"
+//   },
+//   requireInteraction: false,/* critique ? true : false;*/
+//   actions: [{
+//     action: "acknowledge",
+//     title: "Vu"
+//   },{
+//     action: "see",
+//     title: "Consulter"
+//   }]
+// });
