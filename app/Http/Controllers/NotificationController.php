@@ -58,6 +58,13 @@ class NotificationController extends Controller
     }
 
     public function renderMail(Notification $notif) {
+        $user = Auth::user();
+        /*if (empty($user) || empty($user->company_id)) abort(403, "Echec de l'authentification.");
+        if (!empty($user->su_admin) && $user->su_admin == 1) {
+        } else {
+            $company = $user->company_id;
+        }
+        $bool = Company::select('id')->join('module', )*/
         $infos = $this->getUsersInfoFromNotif($notif);
         return new ModuleAlert($infos[0]);
     }
@@ -73,28 +80,29 @@ class NotificationController extends Controller
         $is_admint = false;
         $is_adminf = false;
         $is_adminff = false;
-        // foreach ($usersinfo as $key => $info) {
-        //     Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
-        //     //Mail::to($info)->send(new ModuleAlert($info));
-        //     if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
-        //     if ($info->email === "theo.naciri@gmail.com") $is_admint = true;
-        // }
-        //if (!$is_admint) Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($usersinfo[0]));
-        // if (count($usersinfo) && !$is_admint) {
-        //     $info = $usersinfo[0];
-        //     Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
-        //     Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
-        // }
-        // if (count($usersinfo) && !$is_adminf) {
-        //     $info = $usersinfo[0];
-        //     Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
-        //     Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
-        // }
-        // if (count($usersinfo) && !$is_adminff) {
-        //     $info = $usersinfo[0];
-        //     Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
-        //     Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
-        // }
+        foreach ($usersinfo as $key => $info) {
+            Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
+            //Mail::to($info)->send(new ModuleAlert($info));
+            if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
+            if ($info->email === "theo.naciri@gmail.com") $is_admint = true;
+            if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
+        }
+        if (!$is_admint) Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($usersinfo[0]));
+        if (count($usersinfo) && !$is_admint) {
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
+            Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
+        }
+        if (count($usersinfo) && !$is_adminf) {
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
+            Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
+        }
+        if (count($usersinfo) && !$is_adminff) {
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
+            Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
+        }
     }
 
     public static function newNotif($log, $type, $value) {
