@@ -13,7 +13,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="toggleNotifStatus">
                                 <label class="form-check-label" for="toggleNotifStatus">
-                                    <span class="oi oi-bell"></span>&nbsp;Activer les notifications
+                                    <span class="oi oi-bell"></span>&nbsp;Activer les notifications (garder la page ouverte)
                                 </label>
                             </div>
                         </div>
