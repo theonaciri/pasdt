@@ -60,6 +60,6 @@ define(['jquery', './getURLParameter'], function($, getURLParameter) {
 			firstcall = false;
 		});
 	}
-	setInterval(getNotif, 5 * 1000);
+	setInterval(getNotif, 5 * 60 * 1000);
 	getNotif();
 });
