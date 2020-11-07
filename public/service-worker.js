@@ -19,7 +19,7 @@ const filesToCache = [
 var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client'];
 var whitelist = ['fonts/open-iconic', 'images/companylogos'];
 
-const staticCacheName = 'pages-cache-v14';
+const staticCacheName = 'pages-cache-v15';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
@@ -116,6 +116,56 @@ self.addEventListener('fetch', event => {
     })*/
   );
 });
+var last = {
+    notifcount: 169,
+    last: {
+      created_at: "2020-11-06T10:00:47.000000Z",
+      id: 162,
+      log: 20202,
+      module_id: "1850-00057",
+      name: "--",
+      occurences: 1,
+      resolved: 0,
+      type: "TEMP_INCREASE",
+      updated_at: "2020-11-06T10:00:47.000000Z",
+      value: "282"
+    }
+  };
+
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  console.warn(event);
+  if (event.action === 'acknowledge') {
+    console.warn('clicked vu');
+    var notifHeaders = new Headers({
+      "X-CSRF-TOKEN": event.notification.data.csrf
+    });
+    return fetch("/notif/" + event.notification.data.last[0].id + "/acknowledge", {
+      method: "POST",
+      headers: notifHeaders,
+      body: JSON.stringify({"_token": event.notification.data.csrf})
+    }).then(response => {console.warn('sent ok', response)});
+  } else {
+    // Main body of notification was clicked
+    clients.openWindow('/client');
+  }
+}, false);
 
 
-
+self.registration.showNotification("Nouvelle notification " + last.last.type, {
+  badge: "https://logs.pasdt.com/images/logo-98.png",
+  icon: "https://logs.pasdt.com/images/logo-98.png",
+  body: last.type,
+  data : {
+    last: last.last,
+    csrf: "vaSnHqQqhI25dJfXN3oimVJfJt7cmdQbIapN7WtW"
+  },
+  requireInteraction: false,/* critique ? true : false;*/
+  actions: [{
+    action: "acknowledge",
+    title: "Vu"
+  },{
+    action: "see",
+    title: "Consulter"
+  }]
+});

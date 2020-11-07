@@ -36,6 +36,56 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 			});
 		}
 	});
+	// var $toggleNotif = $('#toggleNotif');
+	// if ("Notification" in window && Notification.permission === "granted") {
+	// 	$toggleNotif.prop("disabled", true);
+	// }
+	// $toggleNotif.on('click', function() {
+	// 	// Let's check if the browser supports notifications
+	// 	if (!("Notification" in window)) {
+	// 		alert("Ce navigateur ne supporte pas les notifications.");
+	// 		return ;
+	// 	}
+
+	// 	// Let's check whether notification permissions have already been granted
+	// 	else if (Notification.permission === "granted") {
+	// 		$toggleNotif.prop("disabled", true);
+	// 	}
+
+	// 	// Otherwise, we need to ask the user for permission
+	// 	else if (Notification.permission !== "denied") {
+	// 		Notification.requestPermission().then(function (permission) {
+	// 			// If the user accepts, let's create a notification
+	// 			if (permission === "granted") {
+	// 				$toggleNotif.prop("disabled", true);
+	// 			}
+	// 		});
+	// 	}
+	// 	// At last, if the user has denied notifications, and you 
+	// 	// want to be respectful there is no need to bother them any more.
+	// });
+
+	$('#toggleNotifStatus').prop("checked", localStorage.getItem('notification-permission') === "granted")
+	.on('click', function toggleNotificationpermission(e) {
+		var input = e.target;
+		$('#notif-error').addClass('d-none');
+	    if (Notification.permission === 'granted') {
+	        localStorage.setItem('notification-permission', input.checked ? 'granted' : 'denied');
+	    } else if (Notification.permission === 'denied') {
+	        localStorage.setItem('notification-permission', 'denied');
+	        input.checked = false;
+			$('#notif-error').removeClass('d-none');
+	    } else if (Notification.permission === 'default') {
+	        Notification.requestPermission(function(choice) {
+	            if (choice === 'granted') {
+	                localStorage.setItem('notification-permission', input.checked ? 'granted' : 'denied');
+	            } else {
+	                localStorage.setItem('notification-permission', 'denied');
+	                input.checked = false;
+	            }
+	        });
+	    }
+	});
 	var $logs = $('#notifTable > tbody > tr');
 	$logs.each(function() {
 		var created = moment($(this).children('.created_at').html());

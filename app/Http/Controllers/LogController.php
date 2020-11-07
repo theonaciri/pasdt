@@ -432,12 +432,6 @@ EOTSQL));
         }
     }
 
-    public function acknowledgeNotif(Notification $notif) {
-        $notif->seen = true;
-        $notif->save();
-        return response()->json(['ok'=>'ok']);
-    }
-
     protected function authAPI(Request $request) {
         $token = $request->header('Api-Key');
         Log::info('AUTH APIKEY ' . $token);

@@ -9,6 +9,12 @@ $screen-xxl: 1600px !default;
     display: none;
   }
 }
+
+#notif-error {
+  margin-top: .5rem;
+  margin-bottom: 0;
+}
+
 #main-table {
 
   .th-multiselect {
