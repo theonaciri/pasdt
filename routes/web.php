@@ -32,6 +32,7 @@ Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.m
 
 /* NOTIFICATIONS */
 Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')->name('notifs.get_notifs_count');
+Route::get('/notifs/count_last/{seen?}', 'NotificationController@APIgetNotifsCountAndLast')->name('notifs.get_notifs_count_and_last');
 Route::get('/notifs/{seen?}', 'NotificationController@APIgetNotifs')->name('notifs.get_notifs');
 Route::get('/notif/{notif}/renderMail', 'NotificationController@renderMail')->name('notifs.render_mail');
 
@@ -53,7 +54,7 @@ Route::get('/logs/OverspeedToTelit/{pasdt_str}', 'LogController@convertOverspeed
 Route::get('/logs/TelitToOverspeed/{pasdt_str}', 'LogController@convertTelitToOverspeed')->name('log.convert.telit.to.over');
 
 /* NOTIFICATIONS */
-Route::post('/notif/{notif}/acknowledge', 'LogController@acknowledgeNotif')->name('notif.acknowledge');
+Route::post('/notif/{notif}/acknowledge', 'NotificationController@acknowledgeNotif')->name('notif.acknowledge');
 
 /* MODULE */
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all');

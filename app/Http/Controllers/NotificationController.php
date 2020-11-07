@@ -62,6 +62,12 @@ class NotificationController extends Controller
         return new ModuleAlert($infos[0]);
     }
 
+    public function acknowledgeNotif(Notification $notif) {
+        $notif->seen = true;
+        $notif->save();
+        return response()->json(['ok'=>'ok']);
+    }
+
     private static function sendNotifMail(Notification $notif) {
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
         $is_admint = false;
@@ -187,5 +193,18 @@ EOTNOTIF;
     public function APIgetNotifsCount(Request $request, $seen = '')
     {
         return response()->json($this->getNotifsCount($request, $seen === "seen"));
+    }
+    /**
+     * Get notif count
+     *
+     * @return int
+     */
+
+    public function APIgetNotifsCountAndLast(Request $request, $seen = '')
+    {
+        return response()->json(array(
+            "count"=> $this->getNotifsCount($request, $seen === "seen"),
+            "last" => $this->getNotifs($request, $seen === "seen", 1)
+        ));
     }
 }

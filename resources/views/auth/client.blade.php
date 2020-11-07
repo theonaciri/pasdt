@@ -6,7 +6,22 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">{{ __("Dernières notifications") }}</div>
+                <div class="card-header container">
+                    <div class="row">
+                        <div class="col">{{ __("Dernières alertes") }}</div>
+                        <div class="col" style="text-align:right">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="toggleNotifStatus">
+                                <label class="form-check-label" for="toggleNotifStatus">
+                                    <span class="oi oi-bell"></span>&nbsp;Activer les notifications
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 alert alert-danger d-none" id="notif-error" role="alert">
+                            Vous devez d'abord autoriser les notifications de votre navigateur.
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <table id="notifTable" class="adminTable">
                         <thead>

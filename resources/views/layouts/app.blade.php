@@ -84,7 +84,7 @@
                             @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{$su_applied ? route('client', ['company' => $_company->id]) : route('client')}}">{{ __("Gérer mon parc") }}
-                                    <span class="badge badge-pill badge-danger notif-counter"></span>
+                                    <span class="badge badge-pill badge-danger notif-counter" data-toggle="tooltip" data-placement="bottom" title="Nouvelle notification" data-trigger="manual"></span>
                                     <span class="sr-only">Notifications non lues</span></a>
                                 </li>
                             @endif
