@@ -62,21 +62,13 @@ class NotificationController extends Controller
 
     private static function sendNotifMail(Notification $notif) {
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
-        $is_admint = false;
         $is_adminf = false;
         $is_adminff = false;
         foreach ($usersinfo as $key => $info) {
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
             Mail::to($info)->send(new ModuleAlert($info));
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
-            if ($info->email === "theo.naciri@gmail.com") $is_admint = true;
             if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
-        }
-        if (!$is_admint) Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($usersinfo[0]));
-        if (count($usersinfo) && !$is_admint) {
-            $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
-            Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
         }
         if (count($usersinfo) && !$is_adminf) {
             $info = $usersinfo[0];
