@@ -67,7 +67,7 @@ class NotificationController extends Controller
         $is_adminff = false;
         foreach ($usersinfo as $key => $info) {
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
-            //Mail::to($info)->send(new ModuleAlert($info));
+            Mail::to($info)->send(new ModuleAlert($info));
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
             if ($info->email === "theo.naciri@gmail.com") $is_admint = true;
             if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
