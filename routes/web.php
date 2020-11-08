@@ -29,6 +29,7 @@ Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUs
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change')->middleware('auth');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middleware('auth');
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify')->middleware('auth');
+Route::post('/user/mailnotifs/{activation}', 'ClientController@toggleMailNotifs')->name('user.toggle.mail.notifs')->middleware('auth');
 
 /* NOTIFICATIONS */
 Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')->name('notifs.get_notifs_count')->middleware('auth');
