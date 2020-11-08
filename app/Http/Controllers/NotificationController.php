@@ -23,23 +23,6 @@ class NotificationController extends Controller
         //$this->middleware('auth');
     }
 
-    private static function getUserCompany($su_company = NULL, $store = false) {
-        $user = Auth::user();
-        if (empty($user)) return abort(403);
-        $id_company = $user->company_id;
-        if (!empty($user->su_admin) && $user->su_admin == 1) {
-            if (!empty($su_company)) {
-                $id_company = $su_company;
-            } else {
-                $id_company = -1;
-            }
-        }
-        if ($store) {
-            $this->user = $user;
-        }
-        return $id_company;
-    }
-
     public function noData(Request $request) {
         Log::info('no');
         //$log = json_decode($request->getContent());
@@ -52,21 +35,23 @@ class NotificationController extends Controller
                  ->join("modules AS m", "m.module_id", "=", "n.module")
                  ->join("companies AS c", "c.id", "=", "m.company_id")
                  ->join("users AS u", "u.company_id", "=", "c.id")
-                 ->select("u.name AS name", "u.email AS email", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.updated_at")
+                 ->select("u.name AS name", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.updated_at")
                  ->where('n.id', '=', $notif->id)
                  ->get();
     }
 
     public function renderMail(Notification $notif) {
-        $user = Auth::user();
-        /*if (empty($user) || empty($user->company_id)) abort(403, "Echec de l'authentification.");
-        if (!empty($user->su_admin) && $user->su_admin == 1) {
-        } else {
-            $company = $user->company_id;
-        }
-        $bool = Company::select('id')->join('module', )*/
+        $this->getSaveAuthCompany();
         $infos = $this->getUsersInfoFromNotif($notif);
-        return new ModuleAlert($infos[0]);
+        if ($this->company == -1) {
+            return new ModuleAlert($infos[0]);
+        }
+        foreach ($infos as $key => $mail) {
+            if ($this->user->id == $mail->user_id) {
+                return new ModuleAlert($mail);
+            }
+        }
+        return abort(403, "Vous n'avez pas le droit de consulter ce mail.");
     }
 
     public function acknowledgeNotif(Notification $notif) {
@@ -158,8 +143,7 @@ EOTNOTIF;
      */
 
     public static function getNotifs(Request $request, int $seen = 0, int $limit = 20) {
-        $id_company = NotificationController::getUserCompany($request->company ?? NULL, false);
-        if (!$id_company) return NULL;
+        $id_company = NotificationController::getAuthCompany(false);
         if ($id_company === -1) {
             $id_company = "%%";
         }
@@ -172,8 +156,7 @@ EOTNOTIF;
     }
 
     public static function getNotifsCount(Request $request, int $seen = 0) {
-        $id_company = NotificationController::getUserCompany($request->company ?? NULL, false);
-        if (!$id_company) return NULL;
+        $id_company = NotificationController::getAuthCompany(false);
         if ($id_company === -1) {
             $id_company = "%%";
         }

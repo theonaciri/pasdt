@@ -14,6 +14,17 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 			$self.parent().parent().remove();
 		});
 	});
+	$('.rendermailbtn').click(function() {
+		var $tr = $(this).parent().parent();
+		var id = $tr.data('id');
+		$.get("/notif/" + id + "/renderMail")
+			.done(function(mailhtml) {
+				$('#modalRenderMail').find('.bodymail').html(mailhtml);
+				$('#modalRenderMail').modal("show");
+			})
+			.fail(function() {
+			});
+	})
 	$('.vubtn').click(function() {
 		var su_company = $('#app').data('su_company');
 		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed

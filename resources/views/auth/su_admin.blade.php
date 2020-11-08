@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="/consultation" class="btn btn-secondary"><span class="oi oi-arrow-left"></span> Retour à l'analyse</a>
+<a href="/consultation" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
+    <span class="oi oi-arrow-left"></span> Retour à l'analyse générale
+</a>
 <br>
 <br>
 <div class="container">
@@ -28,17 +30,17 @@
                                 @else
                             <tr data-id="{{$company->id}}">
                                 @endif
-                                <td class="logo" style="cursor:pointer" title="Cliquer pour modifier le logo de {{$company->name}}">
+                                <td class="logo" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Modifier le logo de {{$company->name}}">
                                     @if (!empty($company->logo))
                                     <img src="images/companylogos/{{$company->logo}}" height="39" alt="" />
                                     @endif
                                 </td>
-                                <td class="colors" style="cursor:pointer" title="Cliquer pour modifier les couleurs de {{$company->name}}">
+                                <td class="colors" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Modifier les couleurs de {{$company->name}}">
                                     @if (!empty($company->colors))
                                     <div style="width: 39px; height: 39px; border-radius: 5px; background-color: {{$company->colors}}"></div>
                                     @endif
                                 </td>
-                                <td class="name" style="cursor:pointer" title="Cliquer pour voir les logs de {{$company->name}}">{{$company->name}}</td>
+                                <td class="name" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Voir les logs de {{$company->name}}">{{$company->name}}</td>
                                 <td class="button" title="Utilisateurs de {{$company->name}}">
                                     <button type="button" data-id="{{$company->id}}" title="Voir" name="Voir" class="btn btn-primary companybtn" data-toggle="modal" data-target="#companyUsersModal"><span class="oi oi-people"></span></button>
                                 </td>

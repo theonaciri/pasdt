@@ -75,6 +75,7 @@ $screen-xxl: 1600px !default;
     border-bottom: 1px solid #ced4da;
   }
 }
+
 .togglebtn {
   margin-left:.2rem;
   margin-right:.2rem;
@@ -302,6 +303,14 @@ table input, table select {
   }
 }
 
+#adminTable {
+  
+  .logo, .colors, .name {
+    &:hover {
+      box-shadow: 4px 4px 4px grey;
+    }
+  }
+}
 .organisme {
   padding-top: .5rem;
 }
@@ -331,4 +340,10 @@ tr.success {
 
 #graphModuleSelect option:disabled {
   background-color: #d5d5d5;
+}
+
+@media screen and (min-width: 576px) and (max-width: 992px) {
+  #modalRenderMail .modal-dialog.modal-lg {
+    max-width: max-content;
+  }  
 }

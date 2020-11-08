@@ -8,12 +8,12 @@
             <div class="card">
                 <div class="card-header container">
                     <div class="row">
-                        <div class="col">{{ __("Dernières alertes") }}</div>
-                        <div class="col" style="text-align:right">
+                        <div class="col-md-6">{{ __("Dernières alertes") }}</div>
+                        <div class="col-md-6" style="text-align:right">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="toggleNotifStatus">
                                 <label class="form-check-label" for="toggleNotifStatus">
-                                    <span class="oi oi-bell"></span>&nbsp;Activer les notifications (garder la page ouverte)
+                                    <span class="oi oi-bell"></span>&nbsp;Activer les notifications (garder l'onglet ouvert)
                                 </label>
                             </div>
                         </div>
@@ -65,8 +65,9 @@
                                 @endif
                                 </td>
                                 <td class="button">
-                                    <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn">Vu</button>
-                                    <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-primary view-notif">Consulter</button>
+                                    <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
+                                    <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-primary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                    <button type="button" title="Voir le mail généré" name="Voir le mail généré" class="btn btn-primary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -357,6 +358,21 @@
 </div>
 @endforeach
 
+
+<!-- Modal -->
+<div class="modal fade" id="modalRenderMail" tabindex="-1" role="dialog" aria-labelledby="modalRenderMail" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="renderMailTitle">Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="bodymail"></div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
