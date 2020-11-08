@@ -47,35 +47,17 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 			});
 		}
 	});
-	// var $toggleNotif = $('#toggleNotif');
-	// if ("Notification" in window && Notification.permission === "granted") {
-	// 	$toggleNotif.prop("disabled", true);
-	// }
-	// $toggleNotif.on('click', function() {
-	// 	// Let's check if the browser supports notifications
-	// 	if (!("Notification" in window)) {
-	// 		alert("Ce navigateur ne supporte pas les notifications.");
-	// 		return ;
-	// 	}
-
-	// 	// Let's check whether notification permissions have already been granted
-	// 	else if (Notification.permission === "granted") {
-	// 		$toggleNotif.prop("disabled", true);
-	// 	}
-
-	// 	// Otherwise, we need to ask the user for permission
-	// 	else if (Notification.permission !== "denied") {
-	// 		Notification.requestPermission().then(function (permission) {
-	// 			// If the user accepts, let's create a notification
-	// 			if (permission === "granted") {
-	// 				$toggleNotif.prop("disabled", true);
-	// 			}
-	// 		});
-	// 	}
-	// 	// At last, if the user has denied notifications, and you 
-	// 	// want to be respectful there is no need to bother them any more.
-	// });
-
+	$('#toggleMailStatus')
+	.on('click', function toggleMailpermission(e) {
+		var input = e.target;
+		$('#mail-error').addClass('d-none');
+	    $.post('/user/mailnotifs/' + (input.checked ? 1 : 0))
+	    .done(function(e) {
+	    }).fail(function(e) {
+	    	input.checked = !input.checked;
+			$('#mail-error').removeClass('d-none');
+	    })
+	});
 	$('#toggleNotifStatus').prop("checked", localStorage.getItem('notification-permission') === "granted")
 	.on('click', function toggleNotificationpermission(e) {
 		var input = e.target;

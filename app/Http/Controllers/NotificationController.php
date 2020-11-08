@@ -35,7 +35,7 @@ class NotificationController extends Controller
                  ->join("modules AS m", "m.module_id", "=", "n.module")
                  ->join("companies AS c", "c.id", "=", "m.company_id")
                  ->join("users AS u", "u.company_id", "=", "c.id")
-                 ->select("u.name AS name", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.updated_at")
+                 ->select("u.name AS name", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.updated_at")
                  ->where('n.id', '=', $notif->id)
                  ->get();
     }
@@ -47,7 +47,7 @@ class NotificationController extends Controller
             return new ModuleAlert($infos[0]);
         }
         foreach ($infos as $key => $mail) {
-            if ($this->user->id == $mail->user_id) {
+            if ($this->user->id == $mail->user_id && $mail->receive_mails) {
                 return new ModuleAlert($mail);
             }
         }

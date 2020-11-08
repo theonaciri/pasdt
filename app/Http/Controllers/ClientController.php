@@ -54,6 +54,7 @@ class ClientController extends Controller
                            ->get();
         $notifs = NotificationController::getNotifs($request);
         return view('auth/client', [
+          "user" => $user,
           "company" => $company,
           "modules" => $this->modules,
           "subscriptions" => $this->subscriptions,
@@ -104,8 +105,15 @@ class ClientController extends Controller
         /*} else {
             return view('consultation');
         }*/
+    }
 
-    }    
+    public function toggleMailNotifs(int $activation) {
+      $this->getSaveAuthCompany();
+      $this->user->receive_mails = $activation == 1;
+      $this->user->save();
+      return $this->user->receive_mails ? 1 : 0;
+    }
+
     /**
      * Show the application Su dashboard.
      *

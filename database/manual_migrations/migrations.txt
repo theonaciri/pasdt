@@ -20,3 +20,6 @@ ALTER TABLE `modules` ADD `temp_triggers` VARCHAR(255) NOT NULL AFTER `name`;
 02/11/2020:
 
 ALTER TABLE `notifications` ADD `resolved` INT NOT NULL DEFAULT '0' AFTER `seen`, ADD `occurences` INT NOT NULL DEFAULT '1' AFTER `resolved`;
+
+08/11/2020:
+ALTER TABLE `users` ADD `receive_mails` BOOLEAN NOT NULL DEFAULT FALSE AFTER `is_client_company`;

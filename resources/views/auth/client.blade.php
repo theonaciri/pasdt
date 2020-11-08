@@ -10,8 +10,14 @@
                     <div class="row">
                         <div class="col-md-6">{{ __("Dernières alertes") }}</div>
                         <div class="col-md-6" style="text-align:right">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="toggleNotifStatus">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="toggleMailStatus" {{ $user->receive_mails ? "checked" : "" }}>
+                                <label class="form-check-label" for="toggleMailStatus">
+                                    <span class="oi oi-envelope-closed"></span>&nbsp;Activer les mails
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="toggleNotifStatus">
                                 <label class="form-check-label" for="toggleNotifStatus">
                                     <span class="oi oi-bell"></span>&nbsp;Activer les notifications (garder l'onglet ouvert)
                                 </label>
@@ -19,6 +25,9 @@
                         </div>
                         <div class="col-12 alert alert-danger d-none" id="notif-error" role="alert">
                             Vous devez d'abord autoriser les notifications de votre navigateur.
+                        </div>
+                        <div class="col-12 alert alert-danger d-none" id="mail-error" role="alert">
+                            Votre compte est mal configuré, contactez l'administrateur.
                         </div>
                     </div>
                 </div>
@@ -66,8 +75,8 @@
                                 </td>
                                 <td class="button">
                                     <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
-                                    <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-primary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
-                                    <button type="button" title="Voir le mail généré" name="Voir le mail généré" class="btn btn-primary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
+                                    <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                    <button type="button" title="Voir le mail généré" name="Voir le mail généré" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
                                 </td>
                             </tr>
                             @endforeach
