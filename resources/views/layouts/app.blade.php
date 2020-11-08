@@ -36,8 +36,11 @@
     <div id="app" data-su_company="{{$_company->id}}">
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
-                    <a href="{{ url('consultation')}}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre"><span class="oi oi-warning"></span></a>
-                <a class="navbar-brand" href="{{ url('/consultation') }}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre"  alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre">
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('su_admin')}}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre" alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre">
+                    <span class="oi oi-warning"></span>&nbsp;
+                    <span class="oi oi-account-logout"></span>&nbsp;
+                </a>&nbsp;
+                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre" alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre">
     @else
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

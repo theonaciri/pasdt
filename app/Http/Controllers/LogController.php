@@ -23,28 +23,16 @@ class LogController extends Controller
         }
         return $req;
     }
-        /**
+    
+    /**
     * Server-side filtering
     **/
     public function getData(Request $request, bool $tojson = true) {
-        $su_company = $request->company ?? NULL;
-
         if (count($request->all()) === 0 || !$request["columns"]) {
             $request = $this->getDefaultData($request);
         }
-        $this->middleware('auth');
-        $user = Auth::user();
-        if (empty($user)) abort(403, "Echec de l'authentification.");
-        if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
-        if (!empty($user->su_admin) && $user->su_admin == 1) {
-            if (!empty($su_company)) {
-                $company = $su_company;
-            } else {
-                $company = '%';
-            }
-        } else {
-            $company = $user->company_id;
-        }
+        $company = $this->getSaveAuthCompany();
+        if ($company === -1) $company = "%";
         date_default_timezone_set('Europe/Paris');
         $primaryKey = 'id';
 
@@ -142,52 +130,26 @@ class LogController extends Controller
     */
 
     public function getAllData(Request $request) {
-        $this->middleware('auth');
-        $user = Auth::user();
-        if (empty($user)) abort(403, "Echec de l'authentification.");
-        if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
-        //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
-        $su_company = $request->company ?? NULL;
-        if (!empty($user->su_admin) && $user->su_admin == 1) {
-            if (!empty($su_company)) {
-                $company = $su_company;
-            } else {
-                $company = '%';
-            }
-        } else {
-            $company = $user->company_id;
-        }
-        if ($user->su_admin && is_null($su_company)) {
-            $logs = DB::table('logs')
-                ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
-                ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options',
-                         'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
-                         'modules.id as module_id', 'modules.name as module_name')
-                ->get();
-        } else {
-            $logs = DB::table('logs')
-                ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
-                ->where('modules.company_id' , '=', $company)
-                ->select('logs.id', 'cardId', 'msg', 'modules.telit_customer as customer', 'options',
-                         'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
-                         'modules.id as module_id', 'modules.name as module_name')
-                ->get();
-        }
-
+        $company = $this->getSaveAuthCompany();
+        $logs = DB::table('logs')
+            ->rightJoin('modules', 'modules.module_id', '=', 'logs.cardId')
+            ->when($company != -1, function($query) use ($company) {
+                $query->where('modules.company_id', $company);
+            })
+            ->select('logs.id', 'cardId','msg', 'modules.telit_customer as customer', 'options',
+                     'logs.created_at', 'logs.updated_at', 'logs.maxtemp', 'logs.vbat',
+                     'modules.id as module_id', 'modules.name as module_name')
+            ->get();
         return response()->json($logs);
     }
 
 
     public function getTempData(Request $request) {
-        $this->middleware('auth');
-        $user = Auth::user();
-        if (empty($user)) abort(403);
-
-        if (empty($user->company_id)) abort(403);
+        $company = $this->getSaveAuthCompany();
         $modules = Module::
             select('company_id', 'name', 'module_id')
-            ->when(!$user->su_admin, function($query) use ($user) {
-                $query->where('company_id', $user->company_id);
+            ->when($company != -1, function($query) use ($company) {
+                $query->where('company_id', $company);
             })
             ->orderBy('module_id', 'ASC')
             ->get()->toArray();
@@ -224,17 +186,7 @@ class LogController extends Controller
     */
 
     public function getSynthesisData(Request $request, bool $tojson = true) {
-        $this->middleware('auth');
-        $user = Auth::user();
-        if (empty($user)) abort(403);
-        //$su_company = !empty($_COOKIE['su_company']) ? intval($_COOKIE['su_company']) : NULL;
-
-        $company = $user->company;
-        if ($user->su_admin) {
-            $company = intval($request->company) ?? -1;
-        } else {
-            $company = intval($user->company->id) ?? -1;
-        }
+        $company = $this->getSaveAuthCompany();
         $company_condition = $company > 0 ? "AND company_id = $company" : "";
 
         // raw last alerts without temps for all modules

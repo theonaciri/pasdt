@@ -17,9 +17,9 @@ const filesToCache = [
 ];
 
 var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client'];
-var whitelist = ['fonts/open-iconic', 'images/companylogos'];
+var whitelist = ['fonts/open-iconic', 'images/'];
 
-const staticCacheName = 'pages-cache-v16';
+const staticCacheName = 'pages-cache-v16-+-';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
@@ -152,20 +152,24 @@ self.addEventListener('notificationclick', function(event) {
 }, false);
 
 
-// self.registration.showNotification("Nouvelle notification " + last.last.type, {
-//   badge: "https://logs.pasdt.com/images/logo-98.png",
-//   icon: "https://logs.pasdt.com/images/logo-98.png",
-//   body: last.type,
-//   data : {
-//     last: last.last,
-//     csrf: "vaSnHqQqhI25dJfXN3oimVJfJt7cmdQbIapN7WtW"
-//   },
-//   requireInteraction: false,/* critique ? true : false;*/
-//   actions: [{
-//     action: "acknowledge",
-//     title: "Vu"
-//   },{
-//     action: "see",
-//     title: "Consulter"
-//   }]
-// });
+// if (Notification.permission === 'granted') {
+//   setInterval(function() {
+//     self.registration.showNotification("Nouvelle notification " + last.last.type, {
+//       badge: "https://logs.pasdt.com/images/logo-98.png",
+//       icon: "https://logs.pasdt.com/images/logo-98.png",
+//       body: last.type,
+//       data : {
+//         last: last.last,
+//         csrf: "vaSnHqQqhI25dJfXN3oimVJfJt7cmdQbIapN7WtW"
+//       },
+//       requireInteraction: false,/* critique ? true : false;*/
+//       actions: [{
+//         action: "acknowledge",
+//         title: "Vu"
+//       },{
+//         action: "see",
+//         title: "Consulter"
+//       }]
+//     });
+//   }, 1000 * 60);
+// }
