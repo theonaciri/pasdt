@@ -145,7 +145,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 			type: "PUT",
 			data: { "_token": csrf }
 		}).done(function (e) {
-			$self.parent().parent().remove();
+			$self.parent().parent().parent().remove();
 			$('#selectLinkModule').append(`<option value="${e.id}">${e.name}</option>`);
 		});
 	});
@@ -175,7 +175,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var mod = company_modules.find(function (e) { return e.id == id });
 		if (typeof mod == 'undefined') return; // TODO: ERROR MSG
 
-		var modulename = $(this).parent().siblings('.name').html();
+		var modulename = $(this).parent().parent().siblings('.name').html();
 		var json = JSON.parse(mod.telit_json && mod.telit_json.length ? mod.telit_json : '{}');
 		var f = flatten(json);
 		var table = '<table><tr><th scope="col">Clé</th><th scope="col">Valeur</th></tr>';
@@ -197,7 +197,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var mod = company_modules.find(function (e) { return e.id == id });
 		if (typeof mod == 'undefined') return; // TODO: ERROR MSG
 
-		var modulename = $(this).parent().siblings('.name').html();
+		var modulename = $(this).parent().parent().siblings('.name').html();
 		$form = $('#editModule');
 		$form.find('#editmodulename').val(modulename);
 		$form.find('#edittelit_json').val(mod.telit_json);

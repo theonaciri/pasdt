@@ -43,7 +43,7 @@ class NotificationController extends Controller
     public function renderMail(Notification $notif) {
         $this->getSaveAuthCompany();
         $infos = $this->getUsersInfoFromNotif($notif);
-        if ($this->company == -1) {
+        if ($this->company == -1 && count($infos)) {
             return new ModuleAlert($infos[0]);
         }
         foreach ($infos as $key => $mail) {
