@@ -126,9 +126,11 @@
                                 <td class="created_at">{{$user->created_at}}</td>
                                 <td class="updated_at">{{$user->updated_at}}</td>
                                 @if ($self->su_admin)
-                                <td class="button"> 
-                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal">M</button>
-                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoquserbtn">X</button>
+                                <td class="button">
+                                    <div class="btn-group btn-vertical" role="group" aria-label="user buttons">
+                                        <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
+                                        <button type="button" title="Révoquer" name="Révoquer" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button>
+                                    </div>
                                 </td>
                                 @endif
                             </tr>
