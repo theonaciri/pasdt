@@ -304,6 +304,9 @@ EOTSQL));
     }
 
     protected function checkForAnomalities(PasdtLog $newlog) {
+        if ($newlog !== '["HOUR"]' && $newlog !== '["DAY"]') {
+            return ;
+        }
         $lastemplog = PasdtLog::where('cardId', $newlog['cardId'])
                             ->whereNotNull('maxtemp')->orderBy('id', 'DESC')->skip(1)->take(1)->first();
         $ongoingalerts = Notification::where('module', $newlog['cardId'])->where('resolved', 0)->get();
