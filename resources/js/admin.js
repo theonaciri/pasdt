@@ -126,12 +126,14 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
             		<td class="telit_id">${module.telit_id}</td>
             		<td class="module_id">${module.module_id}</td>
             		<td class="details">
-            			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal"><span class="oi oi-eye"></span></button>
-            			<button type="button" data-id="${module.id}" title="Modifier le module" name="Modifier le module" class="btn btn-primary telitmoduleeditbtn" data-company="${module.company_id}" data-toggle="modal" data-target="#editModuleModal">
-            				<span class="oi oi-pencil"></span>
-            			</button>
-            			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-primary telitmoduleunlinkbtn" data-company="${module.company_id}"><span class="oi oi-link-broken"></span></button>
-            		</td>
+	            		<div class="btn-group btn-vertical" role="group" aria-label="user buttons">
+	            			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal"><span class="oi oi-eye"></span></button>
+	            			<button type="button" data-id="${module.id}" title="Modifier le module" name="Modifier le module" class="btn btn-primary telitmoduleeditbtn" data-company="${module.company_id}" data-toggle="modal" data-target="#editModuleModal">
+	            				<span class="oi oi-pencil"></span>
+	            			</button>
+	            			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-danger telitmoduleunlinkbtn" data-company="${module.company_id}"><span class="oi oi-link-broken"></span></button>
+	            		</div>
+	            	</td>
             	</tr>`
 	}
 
