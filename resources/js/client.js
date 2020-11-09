@@ -16,7 +16,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		});
 	});
 	$('.rendermailbtn').click(function() {
-		var $tr = $(this).parent().parent();
+		var $tr = $(this).parent().parent().parent();
 		var id = $tr.data('id');
 		$.get("/notif/" + id + "/renderMail")
 			.done(function(mailhtml) {
@@ -28,7 +28,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	});
 	
 	$('.commentbtn').on('click', function() {
-		var $tr = $(this).parent().parent();
+		var $tr = $(this).parent().parent().parent();
 		openCommentModal($tr);
 	});
 	$('.comment').on('click', function() {
@@ -65,7 +65,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed
 			&& confirm("Masquer cette notification pour le client aussi ?"))) {
 			adminconfirmed = true;
-			var $tr = $(this).parent().parent();
+			var $tr = $(this).parent().parent().parent();
 			var id = $tr.data('id');
 			var csrf = $("input[name='_token']").first().val();
 			$.ajax({
@@ -128,7 +128,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	});
 
 	$('#notifTable .view-notif').on('click', function (e) {
-		var id = $(this).parent().parent().data('module_id');
+		var id = $(this).parent().parent().parent().data('module_id');
 		var company = getURLParameter("company");
 		localStorage.setItem('opened-tab', 'home-tab');
 		window.location = "/consultation?moduleid=" + encodeURI(id)
