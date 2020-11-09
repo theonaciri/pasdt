@@ -35,7 +35,7 @@ class NotificationController extends Controller
                  ->join("modules AS m", "m.module_id", "=", "n.module")
                  ->join("companies AS c", "c.id", "=", "m.company_id")
                  ->join("users AS u", "u.company_id", "=", "c.id")
-                 ->select("u.name AS name", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.updated_at")
+                 ->select("u.name AS name", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.resolved_at")
                  ->where('n.id', '=', $notif->id)
                  ->get();
     }
@@ -58,6 +58,26 @@ class NotificationController extends Controller
         $notif->seen = true;
         $notif->save();
         return response()->json(['ok'=>'ok']);
+    }
+
+    public function postComment(Notification $notif) {
+        $company = $this->getSaveAuthCompany();
+        $infos = $this->getUsersInfoFromNotif($notif);
+
+        if ($company == -1) {
+            $notif->comment = request('comment');
+            $notif->save();
+            return response()->json(["comment" => $notif->comment]);
+        }
+
+        foreach ($infos as $key => $mail) {
+            if ($this->user->id == $mail->user_id) {
+                $notif->comment = request('comment');
+                $notif->save();
+                return response()->json(["comment" => $notif->comment]);
+            }
+        }
+        return response()->json([], 403);
     }
 
     private static function sendNotifMail(Notification $notif) {
@@ -114,6 +134,7 @@ class NotificationController extends Controller
         foreach ($ongoingnotifs as $key => $alert) {
             if (in_array($alert->type, $array_alerts_type) && $alert->resolved == 0) {
                 $alert->resolved = 1;
+                $alert->resolved_at = DB::raw("NOW()");
                 $alert->seen = 0;
                 $alert->value = $value;
                 $alert->save();
@@ -139,7 +160,7 @@ EOTNOTIF;
         if ($id_company === -1) {
             $id_company = "%%";
         }
-        return Notification::select('notifications.id', 'modules.name AS name', 'modules.module_id AS module_id', 'type', 'log', 'value', 'occurences', 'resolved', 'notifications.created_at', 'notifications.updated_at')
+        return Notification::select('notifications.id', 'comment', 'modules.name AS name', 'modules.module_id AS module_id', 'type', 'log', 'value', 'occurences', 'resolved', 'notifications.created_at', 'notifications.resolved_at')
             ->where('seen', $seen)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
             ->where('modules.company_id', "LIKE", $id_company)

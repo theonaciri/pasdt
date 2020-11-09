@@ -37,6 +37,7 @@ Route::get('/notifs/count_last/{seen?}', 'NotificationController@APIgetNotifsCou
 Route::get('/notifs/{seen?}', 'NotificationController@APIgetNotifs')->name('notifs.get_notifs')->middleware('auth');
 Route::get('/notif/{notif}/renderMail', 'NotificationController@renderMail')->name('notifs.render_mail')->middleware('auth');
 Route::post('/notif/{notif}/acknowledge', 'NotificationController@acknowledgeNotif')->name('notif.acknowledge')->middleware('auth');
+Route::post('/notif/{notif}/comment', 'NotificationController@postComment')->name('notif.comment')->middleware('auth');
 
 /* COMPANY */
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post')->middleware('auth');

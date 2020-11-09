@@ -25,7 +25,7 @@ class ModuleAlert extends Mailable
         setlocale(LC_TIME, 'fr_FR.utf8','fra');
         date_default_timezone_set('Europe/Paris');
         if ($this->i->type == "NO_LOG") {
-            $this->i->diff = $this::time_ago($this->i->value, $this->i->updated_at);
+            $this->i->diff = $this::time_ago($this->i->value, $this->i->resolved_at);
         }
     }
 

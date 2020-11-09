@@ -38,11 +38,12 @@
                                 <th>Module</th>
                                 <th>Type</th>
                                 <th>Valeur</th>
+                                <th>Commentaire</th>
                                 <th>Occurences</th>
                                 <th>Durée</th>
                                 <th>Date</th>
                                 <th>&Eacute;tat</th>
-                                <th>Action</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,20 +64,26 @@
                             @else
                                 <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
+                                <td class="comment">
+                                    <span class="comment-text">{{$notif->comment}}</span>
+                                    <span class="oi oi-pencil"></span>
+                                </td>
                                 <td class="occurences">{{$notif->occurences}}</td>
-                                <td class="updated_at">{{$notif->updated_at}}</td>
+                                <td class="resolved_at">{{$notif->resolved_at}}</td>
                                 <td class="created_at">{{$notif->created_at}}</td>
                                 <td class="resolved">
                                 @if (!empty($notif->resolved) && $notif->resolved == 1)
-                                    <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu depuis le {{$notif->updated_at}}"></span>
+                                    <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu depuis le {{$notif->resolved_at}}"></span>
                                 @else
                                     <span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title="En cours depuis le {{$notif->created_at}}"></span>
                                 @endif
                                 </td>
                                 <td class="button">
-                                    <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
-                                    <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
-                                    <button type="button" title="Voir le mail généré" name="Voir le mail généré" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
+                                    <div class="btn-group btn-vertical" role="group" aria-label="Notif buttons">
+                                        <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
+                                        <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                        <button type="button" title="Voir le mail généré" name="Voir le mail généré" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -298,7 +305,7 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="color" name="colors" id="colors" class="form-control" value="{{ $company->colors }}">
+                                    <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}">
                                 </div>
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-success">Modifier les couleurs</button>
@@ -379,6 +386,40 @@
                 </button>
             </div>
             <div class="bodymail"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-labelledby="modalComment" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/notif//comment" id="commentform" method="post">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentTitle">&Eacute;diter le commentaire</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="container">
+                    <br>
+                    <div class="form-group">
+                        <label for="textarea-comment">Commentaire sur l'alerte</label>
+                        <textarea class="form-control" name="comment" id="comment" rows="2" maxlength="255"></textarea>
+                        <span id="count"></span>
+                    </div>
+                    <div class="col-12 alert alert-danger message-error d-none" role="alert">
+                        L'envoi du commentaire n'a pas fonctionné. Actualisez la page ou contactez l'administrateur.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-loader" hidden>
+                        <img src="/images/loader.svg" height="37">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;Enregistrer le commentaire</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

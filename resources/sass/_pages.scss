@@ -292,6 +292,11 @@ table input, table select {
   td.resolved, td.button{
     text-align: center;
   }
+  @media screen and (min-width: 1200px) {
+    td.button {
+      min-width: 148px;
+    }
+  }
   thead, tfoot {
     border: 1px solid #333;
     background-color: #333;
@@ -346,4 +351,19 @@ tr.success {
   #modalRenderMail .modal-dialog.modal-lg {
     max-width: max-content;
   }  
+}
+
+#notifTable {
+  .comment {
+    cursor: pointer;
+    &:hover {
+      .oi {
+        display: inline-block;
+      }
+    }
+    .oi {
+      width: 0;
+      display: none;
+    }
+  }
 }
