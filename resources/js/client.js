@@ -122,9 +122,9 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		var created = moment($(this).children('.created_at').html());
 		var $resolved = $(this).children('.resolved_at');
 		if ($(this).hasClass('success')) {
-			var nowdate = moment($resolved.html());
+			var nowdate = "Pendant " + moment($resolved.html());
 		} else {
-			var nowdate = moment();
+			var nowdate = "Depuis " + moment();
 		}
 		$resolved.html(moment.duration(nowdate.diff(created)).humanize())
 	});
