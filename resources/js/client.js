@@ -1,4 +1,5 @@
-define(['jquery', 'moment/moment', './components/getURLParameter', './components/notifs'],
+define(['jquery', 'moment/moment', './components/getURLParameter',
+		'./components/notifs', "./dependencies/jquery.ajaxSubmit"],
 	function($, moment, getURLParameter) {
 	var adminconfirmed = false;
 	$('.revoqmodulebtn').click(function (e) {
@@ -24,7 +25,41 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 			})
 			.fail(function() {
 			});
-	})
+	});
+	
+	$('.commentbtn').on('click', function() {
+		var $tr = $(this).parent().parent();
+		openCommentModal($tr);
+	});
+	$('.comment').on('click', function() {
+		var $tr = $(this).parent();
+		openCommentModal($tr);
+	});
+	function openCommentModal($tr) {
+		var id = $tr.data('id');
+		$('.message-error').addClass('d-none');
+		$('#modalComment').modal('show')
+						  .find('form').prop('action', "/notif/" + id + "/comment").attr('data-id', id)
+						  .find('textarea').val($tr.find('.comment-text').html());
+		setTextAreaCounter();
+	}
+	$('#commentform').ajaxSubmit({
+		success: function(e) {
+			$('.message-error').addClass('d-none');
+			$("#modalComment").modal('hide');
+			$('tr[data-id="' + $(this).attr('data-id') + '"] .comment-text').html(e.comment);
+		},
+		error: function(e) {
+			$('.message-error').removeClass('d-none');
+		}
+	});
+	/* textarea */
+	$("#comment").keyup(setTextAreaCounter);
+
+	function setTextAreaCounter() {
+		var length = $("#comment").val().length;
+	  	$("#count").text(length > 100 ? (255 - length) + " / 255" : "");
+	}
 	$('.vubtn').click(function() {
 		var su_company = $('#app').data('su_company');
 		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed
@@ -47,6 +82,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 			});
 		}
 	});
+
 	$('#toggleMailStatus')
 	.on('click', function toggleMailpermission(e) {
 		var input = e.target;
@@ -82,13 +118,13 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 	var $logs = $('#notifTable > tbody > tr');
 	$logs.each(function() {
 		var created = moment($(this).children('.created_at').html());
-		var $updated = $(this).children('.updated_at');
+		var $resolved = $(this).children('.resolved_at');
 		if ($(this).hasClass('success')) {
-			var nowdate = moment($updated.html());
+			var nowdate = moment($resolved.html());
 		} else {
 			var nowdate = moment();
 		}
-		$updated.html(moment.duration(nowdate.diff(created)).humanize())
+		$resolved.html(moment.duration(nowdate.diff(created)).humanize())
 	});
 
 	$('#notifTable .view-notif').on('click', function (e) {
@@ -97,5 +133,5 @@ define(['jquery', 'moment/moment', './components/getURLParameter', './components
 		localStorage.setItem('opened-tab', 'home-tab');
 		window.location = "/consultation?moduleid=" + encodeURI(id)
 		+ (typeof company != 'undefined' ? "&company=" + company : "");
-	} );
+	});
 });

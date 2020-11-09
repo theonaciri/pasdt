@@ -2,7 +2,7 @@
 <h1 style="text-align: center;">Nouvelle alerte{{ $i->crit ? " critique" : ""}} pour votre module<br>{{ $i->module_name }}</h1>
 <br>
 
-Le {{strftime("%A %e %B %Y à %Hh%M", strtotime($i->updated_at))}}
+Le {{strftime("%A %e %B %Y à %Hh%M", strtotime($i->resolved_at))}}
 @if ($i->type === "NO_LOG")
 le portail a détécté qu'il n'a plus reçu de données de votre module depuis __{{ $i->diff }}__, le __{{strftime("%A %e %B %Y à %Hh%M", strtotime($i->value))}}__.
 
