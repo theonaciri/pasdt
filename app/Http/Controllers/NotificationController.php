@@ -63,19 +63,23 @@ class NotificationController extends Controller
     public function postComment(Notification $notif) {
         $company = $this->getSaveAuthCompany();
         $infos = $this->getUsersInfoFromNotif($notif);
-
+        $ok = false;
         if ($company == -1) {
-            $notif->comment = request('comment');
-            $notif->save();
-            return response()->json(["comment" => $notif->comment]);
+            $ok = true;
         }
 
         foreach ($infos as $key => $mail) {
             if ($this->user->id == $mail->user_id) {
-                $notif->comment = request('comment');
-                $notif->save();
-                return response()->json(["comment" => $notif->comment]);
+                $ok = true;
             }
+        }
+        if ($ok) {
+            $notif->comment = request('comment');
+            if ($notif->resolved == 0) {
+                $notif->resolved_at = DB::raw("NOW()");
+            }
+            $notif->save();
+            return response()->json(["comment" => $notif->comment]);
         }
         return response()->json([], 403);
     }
@@ -108,7 +112,7 @@ class NotificationController extends Controller
             $existing_not = Notification::where('module', '=', $module_id)
                                         ->where('resolved', '=', 0)
                                         ->where('type', '=', $type)
-                                        ->orderByDesc('updated_at')
+                                        ->orderByDesc('resolved_at')
                                         ->first();
             if (!empty($existing_not)) {
                 $existing_not->log = $log['id'] ?? "";
@@ -164,7 +168,7 @@ EOTNOTIF;
             ->where('seen', $seen)
             ->leftJoin('modules', 'modules.module_id', '=', 'notifications.module')
             ->where('modules.company_id', "LIKE", $id_company)
-            ->orderBy('notifications.updated_at', 'DESC')
+            ->orderBy('notifications.resolved_at', 'DESC')
             ->limit($limit)->get();
     }
 
