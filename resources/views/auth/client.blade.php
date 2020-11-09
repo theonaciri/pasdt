@@ -40,8 +40,8 @@
                                 <th>Valeur</th>
                                 <th>Commentaire</th>
                                 <th>Occurences</th>
+                                <th>1<sup>ère</sup> occurence</th>
                                 <th>Durée</th>
-                                <th>Date</th>
                                 <th>&Eacute;tat</th>
                                 <th>Actions</th>
                             </tr>
@@ -60,7 +60,7 @@
                             @if(strpos($notif->type, 'TEMP') > -1)
                                 <td class="value"><span class="moment-now d-none"><span class="oi oi-fire"></span> pendant {{$notif->value}}</span> {{$notif->value}}&nbsp;°C</td>
                             @elseif(strpos($notif->type, 'NO_LOG') > -1)
-                                <td class="value">Dernier log: {{$notif->value}}&nbsp;</td>
+                                <td class="value">Dernier log: <span class="nolog-value">{{$notif->value}}</span></td>
                             @else
                                 <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
@@ -69,8 +69,8 @@
                                     <span class="oi oi-pencil"></span>
                                 </td>
                                 <td class="occurences">{{$notif->occurences}}</td>
-                                <td class="resolved_at">{{$notif->resolved_at}}</td>
-                                <td class="created_at">{{$notif->created_at}}</td>
+                                <td class="created_at" data-toggle="tooltip" data-placement="top" title="Première occurence le : {{$notif->created_at}}">{{$notif->created_at}}</td>
+                                <td class="resolved_at" data-toggle="tooltip" data-placement="top" title="{{$notif->resolved_at}}">{{$notif->resolved_at}}</td>
                                 <td class="resolved">
                                 @if (!empty($notif->resolved) && $notif->resolved == 1)
                                     <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu depuis le {{$notif->resolved_at}}"></span>

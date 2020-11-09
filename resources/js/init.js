@@ -1,4 +1,6 @@
-define(['jquery', 'js-cookie', './graphs-live-google-annotated', './components/cache', './components/notifs', './bootstrap', 'bootstrap'], function($, cookie, graph_annotated) {
+define(['jquery', 'js-cookie', './graphs-live-google-annotated',
+	'./components/cache', './components/notifs', './bootstrap', 'bootstrap', './components/strcap'],
+	function($, cookie, graph_annotated) {
 	var comp = $("#app").data("su_company");
 	if (typeof comp != 'undefined') {
 		cookie.set('su_company', "2", {path: '/'})
