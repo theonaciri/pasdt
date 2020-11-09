@@ -117,7 +117,6 @@ class NotificationController extends Controller
                 $existing_not->value = $value;
                 $existing_not->seen = 0;
                 $existing_not->save();
-                NotificationController::sendNotifMail($existing_not);
                 return $existing_not;
             }
         }
