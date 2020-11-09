@@ -119,7 +119,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	});
 	var $logs = $('#notifTable > tbody > tr');
 	$logs.each(function() {
-		var format = "DD/MM/YY [à] hh:mm";
+		var format = "DD/MM/YY [à] HH:mm";
 		var $created = $(this).children('.created_at');
 		var created = moment($created.html());
 		var $resolved = $(this).children('.resolved_at');
