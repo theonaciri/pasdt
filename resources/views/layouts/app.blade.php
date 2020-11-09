@@ -31,7 +31,7 @@
     @endif
     </style>
 </head>
-<body>
+<body {{!empty($user) && $user->su_admin == 1 ? 'admin=true' : ''}}>
     @if ($su_applied) 
     <div id="app" data-su_company="{{$_company->id}}">
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
