@@ -121,12 +121,14 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	$logs.each(function() {
 		var created = moment($(this).children('.created_at').html());
 		var $resolved = $(this).children('.resolved_at');
-		if ($(this).hasClass('success')) {
-			var nowdate = "Pendant " + moment($resolved.html());
+		var success = $(this).hasClass('success');
+		if (success) {
+			var nowdate = moment($resolved.html());
 		} else {
-			var nowdate = "Depuis " + moment();
+			var nowdate = moment();
 		}
-		$resolved.html(moment.duration(nowdate.diff(created)).humanize())
+		$resolved.html((success ? "Pendant " : "Depuis ")
+			+ moment.duration(nowdate.diff(created)).humanize())
 	});
 
 	$('#notifTable .view-notif').on('click', function (e) {
