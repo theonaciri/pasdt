@@ -75,9 +75,6 @@ class NotificationController extends Controller
         }
         if ($ok) {
             $notif->comment = request('comment');
-            if ($notif->resolved == 0) {
-                $notif->resolved_at = DB::raw("NOW()");
-            }
             $notif->save();
             return response()->json(["comment" => $notif->comment]);
         }

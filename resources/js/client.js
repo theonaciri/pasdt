@@ -119,9 +119,15 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	});
 	var $logs = $('#notifTable > tbody > tr');
 	$logs.each(function() {
-		var created = moment($(this).children('.created_at').html());
+		var format = "DD/MM/YY [à] hh:mm";
+		var $created = $(this).children('.created_at');
+		var created = moment($created.html());
 		var $resolved = $(this).children('.resolved_at');
 		var success = $(this).hasClass('success');
+		var $nologvalue = $(this).find('.nolog-value')
+		if ($nologvalue.length) {
+			$nologvalue.html("Le " + moment($nologvalue.html()).format(format));
+		}
 		if (success) {
 			var nowdate = moment($resolved.html());
 		} else {
@@ -129,6 +135,11 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		}
 		$resolved.html((success ? "Pendant " : "Depuis ")
 			+ moment.duration(nowdate.diff(created)).humanize())
+			.prop('title', success ? "Résolu le : " + nowdate.format(format) : "Toujours en cours")
+			.tooltip('_fixTitle');
+		$created.html(created.calendar({sameElse: "[Le] " + format}).capitalize())
+				.prop('title', "Première occurence le : " + created.format(format))
+				.tooltip('_fixTitle');
 	});
 
 	$('#notifTable .view-notif').on('click', function (e) {
