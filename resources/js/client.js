@@ -24,7 +24,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				$('#modalRenderMail').modal("show");
 			})
 			.fail(function(e) {
-			alert(JSON.parse(e.message) + (!$('body').data('admin') ? ""
+			alert(e.responseJSON.message + (!$('body').data('admin') ? ""
 					: " Aucun mail n'a été envoyé car cette entreprise n'a pas d'utilisateur."));
 			});
 	});
