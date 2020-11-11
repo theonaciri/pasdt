@@ -9,7 +9,7 @@ define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], fun
     	$disconnectedText.removeClass("d-none").tooltip('show');
     	setTimeout(function() {
     		$disconnectedText.tooltip('hide');
-    	}, 5000);
+    	}, 8000);
     	if (e.detail.data.status === 403 || e.detail.data.status === 419) {
     		navigator.serviceWorker.getRegistrations().then(function(registrations) {
 				for(let registration of registrations) {
