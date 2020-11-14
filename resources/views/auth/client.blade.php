@@ -8,26 +8,26 @@
             <div class="card">
                 <div class="card-header container">
                     <div class="row">
-                        <div class="col-md-6">{{ __("Dernières alertes") }}</div>
+                        <div class="col-md-6">@lang("Last alerts")</div>
                         <div class="col-md-6" style="text-align:right">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="toggleMailStatus" {{ $user->receive_mails ? "checked" : "" }}>
                                 <label class="form-check-label" for="toggleMailStatus">
-                                    <span class="oi oi-envelope-closed"></span>&nbsp;Activer les mails
+                                    <span class="oi oi-envelope-closed"></span>&nbsp;@lang("Activate mails")
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="toggleNotifStatus">
                                 <label class="form-check-label" for="toggleNotifStatus">
-                                    <span class="oi oi-bell"></span>&nbsp;Activer les notifications (garder l'onglet ouvert)
+                                    <span class="oi oi-bell"></span>&nbsp;@lang("Activate notifications (keep this tab open)")
                                 </label>
                             </div>
                         </div>
                         <div class="col-12 alert alert-danger d-none" id="notif-error" role="alert">
-                            Vous devez d'abord autoriser les notifications de votre navigateur.
+                            @lang("You must first autorise browser notifications.")
                         </div>
                         <div class="col-12 alert alert-danger d-none" id="mail-error" role="alert">
-                            Votre compte est mal configuré, contactez l'administrateur.
+                            @lang("Your account is badly configured, contact the administrator.")
                         </div>
                     </div>
                 </div>
@@ -35,15 +35,15 @@
                     <table id="notifTable" class="adminTable">
                         <thead>
                             <tr>
-                                <th>Module</th>
-                                <th>Type</th>
-                                <th>Valeur</th>
-                                <th>Commentaire</th>
-                                <th>Occurences</th>
-                                <th>1<sup>ère</sup> occurence</th>
-                                <th>Durée</th>
-                                <th>&Eacute;tat</th>
-                                <th>Actions</th>
+                                <th>@lang("Module")</th>
+                                <th>@lang("Type")</th>
+                                <th>@lang("Value")</th>
+                                <th>@lang("Comment")</th>
+                                <th>@lang("Occurences")</th>
+                                <th>@lang("1<sup>st</sup> occurence")</th>
+                                <th>@lang("Duration")</th>
+                                <th>@lang("State")</th>
+                                <th>@lang("Actions")</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,18 +98,18 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">{{ __("Liste des utilisateurs de votre groupe") }} {{ $company->name }} </div>
+                <div class="card-header">@lang("List of users of your group") {{ $company->name }} </div>
                 <div class="card-body">
                     <table id="userTable" class="adminTable">
                         <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Nom</th>
-                                <th>Mail</th>
-                                <th>Créé le</th>
-                                <th>Modifié le</th>
+                                <th>{{__("ID") }}</th>
+                                <th>@lang("Name")</th>
+                                <th>@lang("Mail")</th>
+                                <th>@lang("Created the")</th>
+                                <th>@lang("Modified the")</th>
                                 @if ($self->su_admin)
-                                <th>Actions</th>
+                                <th>@lang("Actions")</th>
                                 @endif
                             </tr>
                         </thead>
@@ -149,16 +149,16 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">{{ __("Liste des modules de votre groupe") }} </div>
+                <div class="card-header">@lang("List of modules of your group") </div>
                 <div class="card-body">
-                    <p>Pour ajouter la surveillance d'un module, contactez notre équipe.</p>
+                    <p>@lang("To add monitoring for a module, contact our team.")</p>
                     <table class="adminTable">
                         <thead>
                             <tr>
-                                <th>Numéro</th>
-                                <th>Nom</th>
-                                <th>Abonnement</th>
-                                <th>Actions</th>
+                                <th>@lang("ID")</th>
+                                <th>@lang("Name")</th>
+                                <th>@lang("Subscription")</th>
+                                <th>@lang("Actions")</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,23 +190,23 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">{{ __("Votre abonnement") }} </div>
+                <div class="card-header">@lang("Your subscription") </div>
                 <div class="card-body">
                     @if (true)
-                        <h4>{{ __("Actif") }}</h4>
+                        <h4>@lang("Active")</h4>
                     @else
-                        <a class="" href="checkout">Ajouter un abonnement</a>
+                        <a class="" href="checkout">@lang("Add a subscription")</a>
                     @endif
                     @if (false)
                     <table class="adminTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nom</th>
-                                <th>Status</th>
-                                <th>Abonnement</th>
-                                <th>Créé le</th>
-                                <th>Fini le</th>
+                                <th>@lang("ID")</th>
+                                <th>@lang("Name")</th>
+                                <th>@lang("Status")</th>
+                                <th>@lang("Subscription")</th>
+                                <th>@lang("Created the")</th>
+                                <th>@lang("Finished the")</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -219,7 +219,7 @@
                                 <td class="email">{{$sub->created_at}}</td>
                                 <td class="email">{{$sub->ends_at}}</td>
                                 <td class="button">
-                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#subModal_{{$sub->id}}">Facture</button>
+                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#subModal_{{$sub->id}}">@lang("Invoice")</button>
                                     <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
                                 </td>
                             </tr>
@@ -239,9 +239,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ __("Modifier le logo de ") }} {{ $company->name }} </div>
+                <div class="card-header">@lang("Change the logo of") {{ $company->name }} </div>
                 <div class="card-body">
-                    <h3>Logo actuel :</h3>
+                    <h3>@lang("Actual logo")</h3>
 
                     <img src="images/companylogos/{{ $company->logo }}" height="39">
                     <br>
@@ -256,7 +256,7 @@
                         @endif
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> Il y a eu un problème avec votre image.
+                            <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
                             <ul>
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -271,7 +271,7 @@
                                     <input type="file" name="image" class="form-control">
                                 </div>
                                 <div class="col-md-6">
-                                    <button type="submit" class="btn btn-success">Mettre à jour le logo</button>
+                                    <button type="submit" class="btn btn-success">@lang("Update the logo")</button>
                                 </div>
                             </div>
                         </form>
@@ -281,9 +281,9 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ __("Modifier les couleurs de ") }} {{ $company->name }} </div>
+                <div class="card-header">@lang("Modify the colors") @lang("of") {{ $company->name }} </div>
                 <div class="card-body">
-                    <h3>Couleurs actuelles :</h3>
+                    <h3>@lang("Current colors")</h3>
                     <br>
                     @if($self->is_client_company)
                         @if ($message = Session::get('colorsuccess'))
@@ -295,7 +295,7 @@
                         @endif
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> Il y a eu un problème avec vos couleurs.
+                            <strong>Whoops!</strong> @lang("There have been some problems with your colors.")
                             <ul>
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -310,7 +310,7 @@
                                     <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}">
                                 </div>
                                 <div class="col-md-6">
-                                    <button type="submit" class="btn btn-success">Modifier les couleurs</button>
+                                    <button type="submit" class="btn btn-success">@lang("Modify the colors")</button>
                                 </div>
                             </div>
                         </form>
@@ -382,7 +382,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="renderMailTitle">Mail</h5>
+                <h5 class="modal-title" id="renderMailTitle">@lang("Email")</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -399,7 +399,7 @@
             <form action="/notif//comment" id="commentform" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="commentTitle">&Eacute;diter le commentaire</h5>
+                    <h5 class="modal-title" id="commentTitle">@lang("Edit the comment")</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -407,19 +407,19 @@
                 <div class="container">
                     <br>
                     <div class="form-group">
-                        <label for="textarea-comment">Commentaire sur l'alerte</label>
+                        <label for="textarea-comment">@lang("Comment on the alert")</label>
                         <textarea class="form-control" name="comment" id="comment" rows="2" maxlength="255"></textarea>
                         <span id="count"></span>
                     </div>
                     <div class="col-12 alert alert-danger message-error d-none" role="alert">
-                        L'envoi du commentaire n'a pas fonctionné. Actualisez la page ou contactez l'administrateur.
+                        @lang("Failed to post your comment.")}} @lang("Refresh the page or contact the administrator.")}}
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="form-loader" hidden>
                         <img src="/images/loader.svg" height="37">
                     </div>
-                    <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;Enregistrer le commentaire</button>
+                    <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;@lang("Enregistrer le commentaire")</button>
                 </div>
             </form>
         </div>
@@ -431,7 +431,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Editer le compte</h5>
+                <h5 class="modal-title" id="ModalLabel"> @lang("Edit the account")</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -441,7 +441,7 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nom') }}</label>
+                        <label for="name" class="col-md-4 col-form-label text-md-right">@lang('Name') }}</label>
 
                         <div class="col-md-6">
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -455,7 +455,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse e-mail') }}</label>
+                        <label for="email" class="col-md-4 col-form-label text-md-right">@lang('E-Mail Address') }}</label>
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -469,7 +469,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Nouveau mot de passe') }}</label>
+                        <label for="password" class="col-md-4 col-form-label text-md-right">@lang('New Password') }}</label>
 
                         <div class="col-md-6">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -483,7 +483,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmation du mot de passe') }}</label>
+                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">@lang("Confirm Password") }}</label>
 
                         <div class="col-md-6">
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -491,8 +491,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" class="btn btn-primary">Sauvegarder les changements</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
+                    <button type="submit" class="btn btn-primary">@lang("Save")</button>
                 </div>
             </form>
         </div>

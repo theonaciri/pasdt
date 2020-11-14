@@ -11,13 +11,14 @@
         "php": "^7.3",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel-lang/lang": "~7.0",
         "laravel/cashier": "^12.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "pusher/pusher-php-server": "~4.0",
-        "syamsoul/laravel-datatable-ssp": "^2.3",
-        "guzzlehttp/guzzle": "^7.0.1"
+        "syamsoul/laravel-datatable-ssp": "^2.3"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
