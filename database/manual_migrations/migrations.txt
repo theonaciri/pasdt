@@ -25,3 +25,6 @@ ALTER TABLE `notifications` ADD `resolved` INT NOT NULL DEFAULT '0' AFTER `seen`
 ALTER TABLE `users` ADD `receive_mails` BOOLEAN NOT NULL DEFAULT FALSE AFTER `is_client_company`;
 ALTER TABLE `notifications` ADD `comment` VARCHAR(255) NOT NULL AFTER `occurences`;
 ALTER TABLE `notifications` ADD `resolved_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `comment`;
+
+14/11/2020:
+ALTER TABLE `users` ADD `locale` VARCHAR(15) NOT NULL DEFAULT 'fr' AFTER `remember_token`;

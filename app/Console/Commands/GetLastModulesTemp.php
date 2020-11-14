@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\NotificationController;
 
-class getLastModulesTemp extends Command
+class GetLastModulesTemp extends Command
 {
     /**
      * The name and signature of the console command.
