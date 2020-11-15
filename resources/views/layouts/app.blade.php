@@ -3,28 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="suivi de logs PASDT">
+    <meta name="description" content="@lang('Log monitoring') PASDT">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="PASDT PWA">
-    <link rel="apple-touch-icon" href="/images/logo-192.png">
-    <link rel="manifest" href="/manifest.webmanifest">
-
     <title>{{ config('app.name', 'PASDT') }}</title>
     <link rel="apple-touch-icon" href="/images/logo-192.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/images/logo-192.png">
+
     <!-- Fonts -->
-    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
     <link rel="stylesheet" href="/css/anychart-ui.min.css" defer/>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!--<link href="{{ asset('css/app2.css') }}" rel="stylesheet">-->
     
     <style>
-        @if(!empty($_company->colors))
+    @if(!empty($_company->colors))
         body {
             background-color: {{ $_company->colors }} 
         }
@@ -36,20 +33,20 @@
     <div id="app" data-su_company="{{$_company->id}}">
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
-                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('su_admin')}}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre" alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revennir à la vôtre">
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('su_admin')}}" title='@lang("You are taking control of another company. Click here to return to yours")' alt='@lang("You are taking control of another company. Click here to return to yours")'>
                     <span class="oi oi-warning"></span>&nbsp;
                     <span class="oi oi-account-logout"></span>&nbsp;
                 </a>&nbsp;
-                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre" alt="Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre">
+                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title='@lang("You are taking control of another company. Click here to return to yours")' alt='@lang("You are taking control of another company. Click here to return to yours")'>
     @else
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/consultation') }}" title="Retour à l'accueil">
+                <a class="navbar-brand" href="{{ url('/consultation') }}" title='@lang("Back to Home")'>
     @endif
                     @if (!empty($_company))
                         @if (!empty($_company->logo))
-                            <img src="images/companylogos/{{ $_company->logo }}" height="39" alt="Retour à l'accueil"/>
+                            <img src="images/companylogos/{{ $_company->logo }}" height="39" alt='@lang("Back to Home")' />
                         @endif
                         
                         @if ($_company->name )
@@ -59,13 +56,13 @@
                         @endif
                     @endif
                 </a>
-                <span id="disconnected-header" class="d-none" data-toggle="tooltip" data-placement="bottom" title="Les dernières données reçues sont affichées. Cliquez sur ce lien pour rafraîchir les données.">
+                <span id="disconnected-header" class="d-none" data-toggle="tooltip" data-placement="bottom" title='@lang("The latest data received is displayed. Click this link to refresh the data.")'>
                     <span class="oi oi-warning"></span>
-                    <small>&nbsp;<span class="hide-xxs">Vous êtes </span>déconnecté</small>
+                    <small>&nbsp;<span class="hide-xxs">@lang("You are </span>disconnected</small>")
                     &nbsp;
-                    <a href="/login" class="btn btn-primary">Se reconnecter</a>
+                    <a href="/login" class="btn btn-primary">@lang("Reconnect")</a>
                 </span>
-                <span id="backonline-header" class="d-none"><span class="oi oi-check"></span><small>&nbsp;Connexion rétablie</small></span>
+                <span id="backonline-header" class="d-none"><span class="oi oi-check"></span><small>&nbsp;@lang("Connection restored")</small></span>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -81,29 +78,30 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">@lang('Login')</a>
                             </li>
                         @else
                             @if (Route::has('register') && Auth::user()->su_admin)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __("Nouvel accès") }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">@lang("New access")</a>
                                 </li>
                             @endif
                             @if (Route::has('client') && Auth::user()->company_id != 0)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{$su_applied ? route('client', ['company' => $_company->id]) : route('client')}}">{{ __("Gérer mon parc") }}
-                                    <span class="badge badge-pill badge-danger notif-counter" data-toggle="tooltip" data-placement="bottom" title="Nouvelle notification" data-trigger="manual"></span>
-                                    <span class="sr-only">Notifications non lues</span></a>
+                                    <a class="nav-link" href="{{$su_applied ? route('client', ['company' => $_company->id]) : route('client')}}">@lang("Manage my fleet")
+                                        <span class="badge badge-pill badge-danger notif-counter" data-toggle="tooltip" data-placement="bottom" title='@lang("New notifications")' data-trigger="manual"></span>
+                                        <span class="sr-only">@lang("Unread notifications")</span>
+                                    </a>
                                 </li>
                             @endif
                             @if (Route::has('checkout') && Auth::user()->is_client_company === 1)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('checkout') }}">{{ __("Abonnement") }}</a>
+                                    <a class="nav-link" href="{{ route('checkout') }}">@lang("Subscription")</a>
                                 </li>
                             @endif
                             @if (Route::has('su_admin') && Auth::user()->su_admin === 1)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('su_admin') }}">{{ __("Configuration administrateur") }}</a>
+                                    <a class="nav-link" href="{{ route('su_admin') }}">@lang("Administrator configuration")</a>
                                 </li>
                             @endif
                             <li class="nav-item dropdown">
@@ -113,7 +111,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a id="logoff-button" class="dropdown-item" href="{{ route('logout') }}">
-                                        {{ __('Se déconnecter') }}
+                                        @lang("Disconnect")
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

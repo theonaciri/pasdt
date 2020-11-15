@@ -69,20 +69,20 @@
                                     <span class="oi oi-pencil"></span>
                                 </td>
                                 <td class="occurences">{{$notif->occurences}}</td>
-                                <td class="created_at" data-toggle="tooltip" data-placement="top" title="Première occurence le : {{$notif->created_at}}">{{$notif->created_at}}</td>
+                                <td class="created_at" data-toggle="tooltip" data-placement="top" title='@lang("First occurence the") {{$notif->created_at}}'>{{$notif->created_at}}</td>
                                 <td class="resolved_at" data-toggle="tooltip" data-placement="top" title="{{$notif->resolved_at}}">{{$notif->resolved_at}}</td>
                                 <td class="resolved">
                                 @if (!empty($notif->resolved) && $notif->resolved == 1)
-                                    <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title="Résolu depuis le {{$notif->resolved_at}}"></span>
+                                    <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title='@lang("Solved since the") {{$notif->resolved_at}}'></span>
                                 @else
-                                    <span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title="En cours depuis le {{$notif->created_at}}"></span>
+                                    <span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title='@lang("Ongoing since the") {{$notif->created_at}}'></span>
                                 @endif
                                 </td>
                                 <td class="button">
-                                    <div class="btn-group btn-vertical" role="group" aria-label="Notif buttons">
-                                        <button type="button" title="Vu" name="Vu" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
-                                        <button type="button" title="Voir les alertes associées" name="Voir les alertes associées" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
-                                        <button type="button" title="Voir le mail généré" name="Voir le mail généré" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
+                                    <div class="btn-group btn-vertical" role="group" aria-label='@lang("Notification buttons")'>
+                                        <button type="button" title='@lang("Seen")' name="seen" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
+                                        <button type="button" title='@lang("See the related alerts")' name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                        <button type="button" title='@lang("See the generated email")' name="see_gen_mail" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
                                     </div>
                                 </td>
                             </tr>
@@ -128,8 +128,8 @@
                                 @if ($self->su_admin)
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label="user buttons">
-                                        <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
-                                        <button type="button" title="Révoquer" name="Révoquer" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button>
+                                        <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
+                                        <button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button>
                                     </div>
                                 </td>
                                 @endif
@@ -172,8 +172,8 @@
                                 <td class="name">{{$module->name}}</td>
                                 <td class="email">{{$module->telit_ratePlan}}</td>
                                 <td class="button">
-                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal_{{$module->id}}">JSON</button>
-                                    <!--<button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
+                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal_{{$module->id}}">JSON</button>
+                                    <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
                                 </td>
                             </tr>
                             @endforeach
@@ -219,8 +219,8 @@
                                 <td class="email">{{$sub->created_at}}</td>
                                 <td class="email">{{$sub->ends_at}}</td>
                                 <td class="button">
-                                    <button type="button" title="Modifier" name="Modifier" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#subModal_{{$sub->id}}">@lang("Invoice")</button>
-                                    <button type="button" title="Révoquer" name="Révoquer" class="btn btn-primary revoqbtn">X</button>
+                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#subModal_{{$sub->id}}">@lang("Invoice")</button>
+                                    <button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqbtn">X</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -267,10 +267,10 @@
                         <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <input type="file" name="image" class="form-control">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <button type="submit" class="btn btn-success">@lang("Update the logo")</button>
                                 </div>
                             </div>
@@ -306,10 +306,10 @@
                         <form action="{{ $su_applied ? route('company.colors.post', ['company' => $_company->id]) : route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <button type="submit" class="btn btn-success">@lang("Modify the colors")</button>
                                 </div>
                             </div>
