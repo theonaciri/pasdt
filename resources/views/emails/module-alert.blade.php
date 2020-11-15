@@ -1,15 +1,14 @@
 @component('mail::message')
-<h1 style="text-align: center;">Nouvelle alerte{{ $i->crit ? " critique" : ""}} pour votre module<br>{{ $i->module_name }}</h1>
+<h1 style="text-align: center;">@lang($i->crit ? "New critical alert" : "New alert") @lang("for your module")<br>{{ $i->module_name }}</h1>
 <br>
 
-Le {{strftime("%A %e %B %Y à %Hh%M", strtotime($i->resolved_at))}}
+@lang("The") {{strftime("%A %e %B %Y " . __("at") . " %H" . __(":") . "%M", strtotime($i->resolved_at))}}
 @if ($i->type === "NO_LOG")
-le portail a détécté qu'il n'a plus reçu de données de votre module depuis __{{ $i->diff }}__, le __{{strftime("%A %e %B %Y à %Hh%M", strtotime($i->value))}}__.
-
+@lang("the portal has detected that it has not received any data from your module since") __{{ $i->diff }}__, @lang("the") __{{strftime("%A %e %B %Y " . __("at") . " %Hh%M", strtotime($i->value))}}__.
 
 @else
-votre module a déclenché l'alerte {{ $i->crit ? " __CRITIQUE__" : ""}} suivante : __{{$i->type}}__
-avec la valeur de
+@lang($i->crit ? "your module triggered the folllowing __CRITICAL__ alert:" : "your module triggered the folllowing alert:") __{{$i->type}}__
+@lang("with the value of") 
 __{{$i->value}}__
 @if (strpos($i->type, "TEMP") !== false)
 __°C__.
@@ -18,10 +17,10 @@ __V__.
 @endif
 @endif
 
-Une action {{ $i->crit ? "urgente " : "" }} de votre part est sûrement nécessaire.
+@lang($i->crit ? "You may need to intervene urgently" : "You may need to intervene").
 
 @if (is_object($i->address))
-Localisation du module :
+@lang("_Module location_")
 
 {{ $i->address->street ?? "" }}
 {{ $i->address->streetNumber ?? "" }}
@@ -32,10 +31,10 @@ Localisation du module :
 @endif
 
 @component('mail::button', ['url' => config('app.url') . '/client'])
-Consulter sur PASDT
+@lang("Consult on") PASDT
 @endcomponent
 
-Bien cordialement,
+@lang("Best regards"),
 
 {{ config('app.name') }}
 @endcomponent

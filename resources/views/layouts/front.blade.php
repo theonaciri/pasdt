@@ -56,10 +56,6 @@
             text-align: center;
         }
 
-        .title {
-            font-size: 84px;
-        }
-
         .links>a {
             color: #636b6f;
             padding: 0 25px;
@@ -77,20 +73,33 @@
         .m-t-md {
             margin-top: 30px;
         }
+
+        .title {
+            font-size: 74px;
+        }
+        
+        @media screen and (max-width: 992px) {
+            .title {
+                font-size: 30px;
+            }
+        }
+
+        @media screen and (min-width: 992px) and (max-width: 1200px) {
+            .title {
+                font-size: 50px;
+            }
+        }
     </style>
 
 </head>
 
 <body class="page mode-home">
     <div class="flex-center position-ref full-height">
-
-        <div class="content">
-
+        <div class="content container">
             <div class="logo-client">
             </div>
-
             <div class="title m-b-md">
-                Suivi du parc transfos PASDT
+                @lang("Monitoring of the transfo. fleet")
             </div>
 
             <main class="py-4">
@@ -102,10 +111,7 @@
                     <img src="images/logo-pasdt.png">
                 </a>
             </div>
-
         </div>
-
     </div>
 </body>
-
 </html>

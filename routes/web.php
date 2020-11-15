@@ -10,11 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
 
 Route::get('/nolog', 'NotificationController@noData')->name('store.nolog.post');
 Route::post('/nolog', 'NotificationController@noData')->name('store.nolog.post');
