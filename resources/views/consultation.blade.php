@@ -220,18 +220,18 @@
           <h5 class="modal-title">@lang("Temperature color code")</h5>
       </div>
       <div class="modal-body row color-div-container">
-          <div class="col-md-6 dt-red" title="Rouge">&gt; @lang("at") 90°C</div>
-          <div class="col-md-6 dt-orange" title="Orange">&gt; @lang("at") 80°C</div>
-          <div class="col-md-6 dt-green" title="Vert">&lt; @lang("at") 80°C</div>
+          <div class="col-md-6 dt-red" title="Rouge">&gt; @lang("than") 90°C</div>
+          <div class="col-md-6 dt-orange" title="Orange">&gt; @lang("than") 80°C</div>
+          <div class="col-md-6 dt-green" title="Vert">&lt; @lang("than") 80°C</div>
       </div>
 
       <div class="modal-header">
           <h5 class="modal-title">@lang("Battery color code")</h5>
       </div>
       <div class="modal-body row color-div-container">
-          <div class="col-md-6 dt-red" title="Rouge">&lt; @lang("at") 11V</div>
-          <div class="col-md-6 dt-orange" title="Orange">&lt; @lang("at") 12V</div>
-          <div class="col-md-6 dt-green" title="Vert">&gt; @lang("at") 12 V</div>
+          <div class="col-md-6 dt-red" title="Rouge">&lt; @lang("than") 11V</div>
+          <div class="col-md-6 dt-orange" title="Orange">&lt; @lang("than") 12V</div>
+          <div class="col-md-6 dt-green" title="Vert">&gt; @lang("than") 12 V</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>

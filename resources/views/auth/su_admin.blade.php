@@ -44,7 +44,7 @@
                                     {{$company->name}}
                                 </td>
                                 <td>
-                                    <button type="button" data-id="{{$company->id}}" title='@lang("see")' name="see" class="btn btn-primary companybtn" data-toggle="modal" data-target="#companyUsersModal">
+                                    <button type="button" data-id="{{$company->id}}" title='@lang("See")' name="see" class="btn btn-primary companybtn" data-toggle="modal" data-target="#companyUsersModal">
                                         <span class="oi oi-people"></span>
                                     </button>
                                 </td>
