@@ -1,6 +1,6 @@
 define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
 		'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter',
-		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
+		 /*'moment/locale/fr', */'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
 		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',],
 	function(datatables, datatables_bs, Graphs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment, getURLParameter) {
 		var table;
@@ -11,22 +11,6 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
 			.toUpperCase() + this.slice(1) : this;
 		}
-
-		/*
-		var cal_interval = flatpickr('#dateinterval_logtable', {
-			mode: "range",
-			altInput: true,
-			altFormat: "j F Y",
-			dateFormat: "d/m/Y",
-			maxDate: "today",
-			onChange: function() {
-			table.ajax.reload( null, false );
-		});
-
-		$('.clear-cal').on('click', function(e) {
-			cal_interval.clear();
-		});*/
-
 	function getData(data, callback, settings) {
 		if (presynths != null && typeof presynths === "object" && firstinit) {
 			callback({data:presynths});
@@ -54,80 +38,15 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		}
 	}
 	function _initTable() {
-		moment.locale('fr', {
-			months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
-			monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
-			monthsParseExact : true,
-			weekdays : 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
-			weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
-			weekdaysMin : 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
-			weekdaysParseExact : true,
-			longDateFormat : {
-				LT : 'HH:mm',
-				LTS : 'HH:mm:ss',
-				L : 'DD/MM/YYYY',
-				LL : 'D MMMM YYYY',
-				LLL : 'D MMMM YYYY HH:mm',
-				LLLL : 'dddd D MMMM YYYY HH:mm'
-			},
-			calendar : {
-				sameDay : '[Aujourd’hui à] LT',
-				nextDay : '[Demain à] LT',
-				nextWeek : 'dddd [à] LT',
-				lastDay : '[Hier à] LT',
-				lastWeek : 'dddd [dernier à] LT',
-				sameElse : 'L'
-			},
-			relativeTime : {
-				future : 'dans %s',
-				past : 'il y a %s',
-				s : 'quelques secondes',
-				m : 'une minute',
-				mm : '%d minutes',
-				h : 'une heure',
-				hh : '%d heures',
-				d : 'un jour',
-				dd : '%d jours',
-				M : 'un mois',
-				MM : '%d mois',
-				y : 'un an',
-				yy : '%d ans'
-			},
-			dayOfMonthOrdinalParse : /\d{1,2}(er|e)/,
-			ordinal : function (number) {
-				return number + (number === 1 ? 'er' : 'e');
-			},
-			meridiemParse : /PD|MD/,
-			isPM : function (input) {
-				return input.charAt(0) === 'M';
-			},
-	// In case the meridiem units are not separated around 12, then implement
-	// this function (look at locale/id.js for an example).
-	// meridiemHour : function (hour, meridiem) {
-	//     return /* 0-23 hour, given meridiem token and hour 1-12 */ ;
-	// },
-	meridiem : function (hours, minutes, isLower) {
-		return hours < 12 ? 'PD' : 'MD';
-	},
-	week : {
-		dow : 1, // Monday is the first day of the week.
-		doy : 4  // Used to determine first week of the year.
-	}
-	});
-	var now = moment();
-	/*
-		if (!$('#synthesis-table').is(':visible')) {
-		$('#synth-tab').one('click', _initTable);
-		console.warn('BB false');
-		return ;
-	}*/
-	/* Setup - add a text input to each footer cell */
-	$('#synthesis-table tfoot th').each(function() {
-		var title = $(this).text();
-		$(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
-	});
+		moment.locale(document.documentElement.getAttribute("lang"), moment_locale);
+		var now = moment();
+		/* Setup - add a text input to each footer cell */
+		$('#synthesis-table tfoot th').each(function() {
+			var title = $(this).text();
+			$(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
+		});
 
-	table = $('#synthesis-table').DataTable({
+		table = $('#synthesis-table').DataTable({
 		dom: 'Blfrtip',
 		lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
 		pageLength: 10,

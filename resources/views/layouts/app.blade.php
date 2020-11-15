@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ $locale }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,7 +58,10 @@
                 </a>
                 <span id="disconnected-header" class="d-none" data-toggle="tooltip" data-placement="bottom" title='@lang("The latest data received is displayed. Click this link to refresh the data.")'>
                     <span class="oi oi-warning"></span>
-                    <small>&nbsp;<span class="hide-xxs">@lang("You are </span>disconnected</small>")
+                    <small>&nbsp;
+                        <span class="hide-xxs">@lang("You are disconnected")</span>
+                        <span class="show-xxs">@lang("Disconnected")</span>
+                    </small>
                     &nbsp;
                     <a href="/login" class="btn btn-primary">@lang("Reconnect")</a>
                 </span>
@@ -128,18 +131,20 @@
             @yield('content')
         </main>
     </div>
+    
+        <script src="{{'/js/moment_locale/' . $locale . '.js'}}"></script>
+
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
-
     @if (Route::currentRouteName() == 'checkout')
         <script src="https://js.stripe.com/v3/"></script>
         <!--  <link rel="stylesheet" href="StripeElements.css"> -->
         <!--<script src="{{ asset('js/checkout.js') }}" defer></script>-->
     @elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
-        <script src="{{ asset('js/app.es5.js') }}" defer></script>
+        <script src="{{ asset('js/app.es5.js') }}"></script>
     @else
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}"></script>
         <script src="/js/anychart-bundle.js" type="text/javascript" defer></script>
     @endif
     <script>

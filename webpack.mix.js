@@ -38,7 +38,7 @@ mix.webpackConfig({
 });
 
 if (!mix.inProduction()) {
-  //mix.bundleAnalyzer();
+  mix.bundleAnalyzer();
   mix.js('resources/js/app.js', 'public/js')
      //.babel('public/js/app.js', 'public/js/app.es5.js')
      //.js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')

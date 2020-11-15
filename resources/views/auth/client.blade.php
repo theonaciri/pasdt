@@ -58,9 +58,18 @@
                                 <td class="name">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
                             @if(strpos($notif->type, 'TEMP') > -1)
-                                <td class="value"><span class="moment-now d-none"><span class="oi oi-fire"></span> pendant {{$notif->value}}</span> {{$notif->value}}&nbsp;°C</td>
+                                <td class="value">
+                                    <span class="moment-now d-none">
+                                        <span class="oi oi-fire"></span>
+                                        @lang("during") {{$notif->value}}
+                                    </span>
+                                    {{$notif->value}}&nbsp;°C
+                                </td>
                             @elseif(strpos($notif->type, 'NO_LOG') > -1)
-                                <td class="value">Dernier log: <span class="nolog-value">{{$notif->value}}</span></td>
+                                <td class="value">
+                                    @lang("Last log"):
+                                    <span class="nolog-value">{{$notif->value}}</span>
+                                </td>
                             @else
                                 <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
@@ -103,7 +112,7 @@
                     <table id="userTable" class="adminTable">
                         <thead>
                             <tr>
-                                <th>{{__("ID") }}</th>
+                                <th>@lang("ID")</th>
                                 <th>@lang("Name")</th>
                                 <th>@lang("Mail")</th>
                                 <th>@lang("Created the")</th>
@@ -188,7 +197,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">@lang("Your subscription") </div>
                 <div class="card-body">
@@ -227,6 +236,23 @@
                         </tbody>
                     </table>
                     @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">@lang("Change the language")</div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="language">@lang("Select language")</label>
+                            <select class="form-control" id="language">
+                                <option>🇫🇷 Français</option>
+                                <option>🇬🇧 🇺🇸 English</option>
+                                <option>🇮🇹 Italiano</option>
+                            </select>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -320,20 +346,6 @@
         </div>
     </div>
 </div>
-
-
-
-<br>
-
-<!-- Colors -->
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12">
-            
-        </div>
-    </div>
-</div>
-
 
 @foreach ($modules as $module)
 

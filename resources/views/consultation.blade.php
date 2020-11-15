@@ -27,7 +27,7 @@
                     <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">@lang("Summary of anomalies") PASDT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Analyse de logs</a>
+                    <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">@lang("Log analysis")</a>
                 </li>
                 <!--<li class="nav-item">
                     <a class="nav-link" id="graphs-tab" data-toggle="tab" href="#graphs" role="tab" aria-controls="graphs" aria-selected="false">Graphes</a>
@@ -54,7 +54,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class="th-multiselect">>@lang("Module name")</th>
+                                    <th class="th-multiselect">@lang("Module name")</th>
                                     <th class="th-multiselect">@lang("Last anomaly")</th>
                                     <th>@lang("Last anomaly date")</th>
                                     <th>@lang("Last temp.")</th>

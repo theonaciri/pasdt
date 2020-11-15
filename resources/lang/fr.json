@@ -10,15 +10,18 @@
     "New access": "Nouvel accès",
     "New notifications": "Nouvelles notifications",
     "Reconnect": "Se reconnecter",
+    "Monitoring of the transfo. fleet": "ivi du parc transfo.",
     "Unread notifications": "Notifications non lues",
     "The latest data received is displayed. Click this link to refresh the data.": "Les dernières données reçues sont affichées. Cliquez sur ce lien pour rafraîchir les données.",
     "You are taking control of another company. Click here to return to yours": "Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour revenir à la vôtre",
-    "You are </span>disconnected</small>": "Vous êtes </span>déconnecté</small>",
+    "You are disconnected": "Vous êtes déconnecté",
+    "Disconnected": "Déconnecté",
 
-    "========= Monitoring =========": "========= Monitoring =========",
+    "========= Monitoring =========": "========= Surveillance =========",
 
     "Battery": "Batterie",
     "Color code": "Code couleurs",
+    "Custom": "Custom",
     "Battery color code": "Code couleurs de la battery",
     "Dark blue": "Bleu sombre",
     "Date": "Date",
@@ -34,7 +37,7 @@
     "Logs": "Logs",
     "Logs color code": "Code couleurs des logs",
     "Gas fault": "Défaut gaz",
-    "Message":"Message",
+    "Message": "Message",
     "max. battery": "batterie max.",
     "min. temperature": "température min.",
     "Only anomalies": "Uniquement les anomalies",
@@ -66,6 +69,7 @@
     "Comment on the alert": "Commentaire sur l'alerte",
     "Created the": "Créé le",
     "Current colors": "Couleurs actuelles",
+    "during": "pendant",
     "Durée": "Duration",
     "Edit the comment": "&Eacute;diter le commentaire",
     "Edit the account": "Editer le compte",
@@ -75,13 +79,14 @@
     "ID": "Identifiant",
     "invoice": "Facture",
     "Last alerts": "Dernières alertes",
+    "Last log": "Dernier log",
     "List of users of your group": "Liste des utilisateurs de votre groupe",
     "List of modules of your group": "Liste des modules de votre groupe",
     "Modified the": "Modifi&eacute; le",
     "Modify": "Modifier",
     "Modify the colors": "Modifier les couleurs",
     "Number": "Num&eacute;ro",
-    "Module":"Module",
+    "Module": "Module",
     "Notification buttons": "Boutons notifications",
     "Occurences": "Occurences",
     "Ongoing since the": "En cours depuis le",
@@ -115,6 +120,7 @@
     "seconds": "secondes",
 
     "========= Mail =========": "========= Mail =========",
+
     "Best regards": "Bien cordialement",
     "Consult on": "Consulter sur",
     "New alert": "Nouvelle alerte",
@@ -129,6 +135,14 @@
     "with the value of": "avec la valeur de",
     "You may need to intervene": "Une action de votre part est sûrement nécessaire.",
     "You may need to intervene urgently": "Une action urgente de votre part est sûrement nécessaire.",
+
+    "========= Access =========": "========= Accès =========",
+
+    "New access": "Nouvel accès",
+    "Organization": "Organisme",
+    "Username": "Nom de l'utilisateur",
+    "Referral user": "Utilisateur référent",
+    "Create new access": "Créer le nouvel accès",
 
     "========= Admin =========": "========= Admin =========",
 
@@ -163,7 +177,7 @@
     "User list": "Liste d'utilisateurs",
     "Users": "Utilisateurs",
 
-    "========= Generic =========": "========= Generic =========",
+    "========= Generic =========": "========= Générique =========",
 
     "A fresh verification link has been sent to your email address.": "Un nouveau lien de vérification a été envoyé à votre adresse email.",
     "A new verification link has been sent to the email address you provided during registration.": "Un nouveau lien de vérification a été envoyé à l'adresse email que vous avez indiquée lors de votre inscription.",
