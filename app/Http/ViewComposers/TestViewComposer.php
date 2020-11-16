@@ -13,7 +13,8 @@ class TestViewComposer {
     	$modules = null;
         $su_applied = false;
         $user = Auth::User();
-        $locale = str_replace('_', '-', app()->getLocale());
+        $locale = $user->locale ?? str_replace('_', '-', app()->getLocale());
+        app()->setLocale($locale);
     	if ($user) {
             if ($user->su_admin && request()->company) {
                 $company = \App\Company::where('id', request()->company)->first();

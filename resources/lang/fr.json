@@ -64,6 +64,7 @@
     "Activate mails": "Activer les mails",
     "Activate notifications (keep this tab open)": "Activer les notifications (gardez cet onglet ouvert)",
     "Add a subscription": "Ajouter un abonnement",
+    "Change the language": "Changer la langue",
     "Change the logo of": "Changer le logo de",
     "Comment": "Commentaire",
     "Comment on the alert": "Commentaire sur l'alerte",
@@ -106,9 +107,9 @@
     "Update the logo": "Mettre à jour le logo",
     "You must first autorise browser notifications.": "Vous devez d'abord autoriser les notifications de votre navigateur.",
     "Your account is badly configured, contact the administrator.": "Votre compte est mal configuré, contactez l'administrateur.",
+    "Your language preferences have correctly been updated": "La langue du site a bien été changée.",
     "Your subscription": "Votre abonnement",
     "Value": "Valeur",
-
 
     "========= Datetime =========": "========= Datetime =========",
     ":": "h",

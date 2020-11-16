@@ -243,14 +243,19 @@
             <div class="card">
                 <div class="card-header">@lang("Change the language")</div>
                 <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="language">@lang("Select language")</label>
-                            <select class="form-control" id="language">
-                                <option>🇫🇷 Français</option>
-                                <option>🇬🇧 🇺🇸 English</option>
-                                <option>🇮🇹 Italiano</option>
+                    <form action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group md-8">
+                            <label for="locale">@lang("Select language")</label>
+                            <select class="form-control" id="locale" name="locale">
+                                <option value="fr" {{ $locale == 'fr' ? "selected" : ''}}>🇫🇷 Français</option>
+                                <option value="en" {{ $locale == 'en' ? "selected" : ''}}>🇬🇧 English</option>
+                                <option value="es" {{ $locale == 'es' ? "selected" : ''}}>🇪🇸 Español</option>
+                                <option value="it" {{ $locale == 'it' ? "selected" : ''}}>🇮🇹 Italiano</option>
                             </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <button type="submit" class="btn btn-success">@lang("Change the language")</button>
                         </div>
                     </form>
                 </div>

@@ -24,6 +24,7 @@ class Controller extends BaseController
             }
             return -1;
         }
+        App::setLocale($user->locale);
         return $user->company_id;
     }
 

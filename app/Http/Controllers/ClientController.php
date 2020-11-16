@@ -114,6 +114,19 @@ class ClientController extends Controller
       return $this->user->receive_mails ? 1 : 0;
     }
 
+    public function changeLocale() {
+      request()->validate([
+          'locale' => 'required',
+      ]);
+
+      $this->getSaveAuthCompany();
+      $this->user->locale = request()->locale;
+      $this->user->save();
+      return back()
+          ->with('success','La langue du site a bien été changée.')
+          ->with('locale',$this->user->locale);
+    }
+
     /**
      * Show the application Su dashboard.
      *
