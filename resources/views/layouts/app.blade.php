@@ -131,8 +131,9 @@
             @yield('content')
         </main>
     </div>
-    
+    @if ($locale && $locale != "en")
         <script src="{{'/js/moment_locale/' . $locale . '.js'}}"></script>
+    @endif
 
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->

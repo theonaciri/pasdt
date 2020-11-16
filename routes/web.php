@@ -25,6 +25,7 @@ Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('pas
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middleware('auth');
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify')->middleware('auth');
 Route::post('/user/mailnotifs/{activation}', 'ClientController@toggleMailNotifs')->name('user.toggle.mail.notifs')->middleware('auth');
+Route::post('/user/change_locale', 'ClientController@changeLocale')->name('user.change.locale')->middleware('auth');
 
 /* NOTIFICATIONS */
 Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')->name('notifs.get_notifs_count')->middleware('auth');

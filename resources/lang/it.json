@@ -64,6 +64,7 @@
     "Activate mails": "mail Attiva",
     "Activate notifications (keep this tab open)": "notifiche Attiva (mantenere questa scheda aperta)",
     "Add a subscription": "Aggiungere un abbonamento",
+    "Change the language": "Cambia la lingua",
     "Change the logo of": "Cambiare il logo di",
     "Comment": "Commento",
     "Comment on the alert": "Commento in allerta",
@@ -106,6 +107,7 @@
     "Update the logo": "Aggiornare il logo",
     "You must first autorise browser notifications.": "È necessario prima autorisé notifiche del browser.",
     "Your account is badly configured, contact the administrator.": "Il tuo account è mal configurato, contattare l'amministratore.",
+    "Your language preferences have correctly been updated": "Le tue preferenze di lingua sono state aggiornate correttamente.",
     "Your subscription": "Il tuo abbonamento",
     "Value": "Valore",
 

@@ -38,7 +38,10 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		}
 	}
 	function _initTable() {
-		moment.locale(document.documentElement.getAttribute("lang"), moment_locale);
+		var locale = document.documentElement.getAttribute("lang");
+		if (locale && locale != "en") {
+			moment.locale(locale, moment_locale);
+		}
 		var now = moment();
 		/* Setup - add a text input to each footer cell */
 		$('#synthesis-table tfoot th').each(function() {
