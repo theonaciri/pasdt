@@ -373,3 +373,13 @@ tr.success {
     }
   }
 }
+
+/* client */
+.submit-container {
+  min-height: 2rem;
+  position: relative;
+  .submit-lang {
+    position: absolute;
+    bottom: 0;
+  }
+}

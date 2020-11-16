@@ -103,6 +103,7 @@
         </div>
     </div>
 </div>
+<br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
@@ -242,20 +243,36 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">@lang("Change the language")</div>
-                <div class="card-body">
-                    <form action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
+                <div class="card-body container">
+                    @if ($message = Session::get('success-locale'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
+                    @endif
+                    @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                    <form class="row" action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group md-8">
-                            <label for="locale">@lang("Select language")</label>
+                        <div class="form-group col-md-8">
+                            <label for="locale">@lang("Select the language")</label>
                             <select class="form-control" id="locale" name="locale">
-                                <option value="fr" {{ $locale == 'fr' ? "selected" : ''}}>🇫🇷 Français</option>
-                                <option value="en" {{ $locale == 'en' ? "selected" : ''}}>🇬🇧 English</option>
-                                <option value="es" {{ $locale == 'es' ? "selected" : ''}}>🇪🇸 Español</option>
-                                <option value="it" {{ $locale == 'it' ? "selected" : ''}}>🇮🇹 Italiano</option>
+                                @foreach ($locales as $key => $loc)
+                                <option value="{{$key}}" {{ $locale == $key ? "selected" : ''}}>{{$loc}}</option>
+                                @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <button type="submit" class="btn btn-success">@lang("Change the language")</button>
+                        <div class="form-group col-md-4 submit-container">
+                            <button type="submit" class="btn btn-success submit-lang">@lang("Change the language")</button>
                         </div>
                     </form>
                 </div>
@@ -298,10 +315,10 @@
                         <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="form-group col-md-8">
                                     <input type="file" name="image" class="form-control">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="form-group col-md-4 submit-container">
                                     <button type="submit" class="btn btn-success">@lang("Update the logo")</button>
                                 </div>
                             </div>
@@ -337,10 +354,10 @@
                         <form action="{{ $su_applied ? route('company.colors.post', ['company' => $_company->id]) : route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="form-group col-md-8">
                                     <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="form-group col-md-4 submit-container">
                                     <button type="submit" class="btn btn-success">@lang("Modify the colors")</button>
                                 </div>
                             </div>

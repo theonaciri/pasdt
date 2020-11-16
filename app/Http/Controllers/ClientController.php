@@ -53,13 +53,15 @@ class ClientController extends Controller
                            ->where('company_id', $id_company)
                            ->get();
         $notifs = NotificationController::getNotifs($request);
+        $locales = array("fr"=>"🇫🇷 Français", "en"=>"🇬🇧 English", "es"=>"🇪🇸 Español", "it"=>"🇮🇹 Italiano");
         return view('auth/client', [
           "user" => $user,
           "company" => $company,
           "modules" => $this->modules,
           "subscriptions" => $this->subscriptions,
           "users" => $this->users,
-          "notifs" => $notifs
+          "notifs" => $notifs,
+          "locales"=> $locales
         ]);
         /*} else {
             return view('consultation');
@@ -122,8 +124,9 @@ class ClientController extends Controller
       $this->getSaveAuthCompany();
       $this->user->locale = request()->locale;
       $this->user->save();
+      app()->setLocale($this->user->locale);
       return back()
-          ->with('success','La langue du site a bien été changée.')
+          ->with('success-locale', __("Your language preferences have correctly been updated"))
           ->with('locale',$this->user->locale);
     }
 
