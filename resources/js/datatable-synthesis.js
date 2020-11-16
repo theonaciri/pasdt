@@ -38,8 +38,7 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 		}
 	}
 	function _initTable() {
-		var locale = document.documentElement.getAttribute("lang");
-		if (locale && locale != "en") {
+		if (typeof locale != "undefined" && locale != "en" && moment_locale) {
 			moment.locale(locale, moment_locale);
 		}
 		var now = moment();
@@ -141,7 +140,9 @@ define(['datatables.net', 'datatables.net-bs4', './graphs-chartjs', /*'pdfmake',
 			$("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM à kk:mm:ss"));
 			$("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM à kk:mm:ss"));
 		},
-		language: datatablefr,
+		language: (locale === "fr") ? datatablefr : {
+			url: locale == "en" ? "" : "/json/datatables_locales/" + locale + ".json"
+		},
 		"ajax": getData,
 		"order": [
 			[2, "desc"]

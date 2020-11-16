@@ -134,6 +134,9 @@
     @if ($locale && $locale != "en")
         <script src="{{'/js/moment_locale/' . $locale . '.js'}}"></script>
     @endif
+    <script>
+        var locale = "{{ $locale ?? 'en'}}";
+    </script>
 
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
