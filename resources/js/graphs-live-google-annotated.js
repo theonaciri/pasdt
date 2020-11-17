@@ -1,10 +1,11 @@
-define(["jquery", 'moment' /*, "anychart", "anychart-jquery"*/], function($, moment) {
+define(["jquery", 'moment', "./locales" /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
 window.chart = null;
 var $mod_select = $('#graphModuleSelect');
 var data = null;
 var theme = localStorage.getItem('graph-theme') || "defaultTheme";
 var active_module = localStorage.getItem('graph-active-module');
 var interval_var = null;
+var locale="es-es";
 
 function init() {
 	if (chart != null) return ; // only one init;
@@ -68,12 +69,12 @@ function setModuleSelect() {
 }
 
 function onDataReceive() {
-	$('#anychart').css("width", (window.innerWidth-100) + "px").css('height', (window.innerHeight -300) + "px")
+	$('#anychart').css("width", (window.innerWidth-30) + "px").css('height', (window.innerHeight -300) + "px")
 	if (chart != null) chart.dispose();
 	// set theme
 	anychart.theme(theme);
 	anychart.format.inputLocale('fr-fr');
-	anychart.format.outputLocale('fr-fr');
+	anychart.format.outputLocale(locale);
 	anychart.format.outputDateTimeFormat('dd MMM');
 
 
@@ -101,7 +102,7 @@ function onDataReceive() {
         .xGrid(true)
         .xMinorGrid(true)
         .legend().titleFormat(function () {
-        	return "Le " + new Date(this.value).toLocaleDateString("fr-FR", date_options);
+        	return lang("The") + " " + new Date(this.value).toLocaleDateString(locale, date_options);
 		})
 		.itemsFormat(function() {
 			return series.name() + ": " + this.value + "°C";
@@ -140,7 +141,7 @@ function onDataReceive() {
     var tooltipchart = chart.tooltip();
 	tooltipchart.titleFormat(function () {
 		var date = new Date(this.x);
-		var transformedDate =  date.toLocaleDateString("fr-FR", date_options);
+		var transformedDate =  date.toLocaleDateString(locale, date_options);
         return "Le " + transformedDate;
     });
 
@@ -156,7 +157,7 @@ function onDataReceive() {
 	// minimap
 	var series_minimap = chart.scroller().spline(mapping);
 	series_minimap.tooltip().format(function() {
-		return date.toLocaleDateString("fr-FR", date_options);
+		return date.toLocaleDateString(locale, date_options);
 	});
 
 

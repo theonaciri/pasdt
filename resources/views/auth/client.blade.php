@@ -38,7 +38,7 @@
                                 <th>@lang("Module")</th>
                                 <th>@lang("Type")</th>
                                 <th>@lang("Value")</th>
-                                <th>@lang("Comment")</th>
+                                <th>@lang("Commentary")</th>
                                 <th>@lang("Occurences")</th>
                                 <th>@lang("1<sup>st</sup> occurence")</th>
                                 <th>@lang("Duration")</th>
