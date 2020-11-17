@@ -266,9 +266,16 @@
                         <div class="form-group col-md-8">
                             <label for="locale">@lang("Select the language")</label>
                             <select class="form-control" id="locale" name="locale">
-                                @foreach ($locales as $key => $loc)
-                                <option value="{{$key}}" {{ $locale == $key ? "selected" : ''}}>{{$loc}}</option>
-                                @endforeach
+                                <optgroup label="{{ __('Fully supported languages') }}">
+                                    @foreach ($official_locales as $key => $loc)
+                                    <option value="{{$key}}" {{ $phplocale == $key ? "selected" : ''}}>{{$loc}}</option>
+                                    @endforeach
+                                </optgroup>
+                                <optgroup label="{{ __('Supported languages') }}">
+                                    @foreach ($locales as $key => $loc)
+                                    <option value="{{$key}}" {{ $phplocale == $key ? "selected" : ''}}>{{$loc}}</option>
+                                    @endforeach
+                                </optgroup>
                             </select>
                         </div>
                         <div class="form-group col-md-4 submit-container">

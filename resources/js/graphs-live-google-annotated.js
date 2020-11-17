@@ -1,11 +1,10 @@
-define(["jquery", 'moment', "./locales" /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
+define(["jquery", 'moment', "./lang" /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
 window.chart = null;
 var $mod_select = $('#graphModuleSelect');
 var data = null;
-var theme = localStorage.getItem('graph-theme') || "defaultTheme";
+var theme = localStorage.getItem('graph-theme') || "darkBlue";
 var active_module = localStorage.getItem('graph-active-module');
 var interval_var = null;
-var locale="es-es";
 
 function init() {
 	if (chart != null) return ; // only one init;

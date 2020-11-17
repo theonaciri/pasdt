@@ -27,4 +27,4 @@ ALTER TABLE `notifications` ADD `comment` VARCHAR(255) NOT NULL AFTER `occurence
 ALTER TABLE `notifications` ADD `resolved_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `comment`;
 
 14/11/2020:
-ALTER TABLE `users` ADD `locale` VARCHAR(15) NOT NULL DEFAULT 'fr' AFTER `remember_token`;
+ALTER TABLE `users` ADD `locale` VARCHAR(15) NOT NULL DEFAULT 'fr_FR' AFTER `remember_token`;

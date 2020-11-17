@@ -131,13 +131,13 @@
             @yield('content')
         </main>
     </div>
-    @if ($locale && $locale != "en")
-        <script src="{{'/js/moment_locale/' . $locale . '.js'}}"></script>
+    @if ($locale && $locale !== "en-us" && $locale !== "fr-fr")
+    <script src="{{ '/json/locales/anychart/' . $locale . '.js'}}"></script>
+    <script src="{{ '/json/locales/moment/' . $locale . '.js'}}"></script>
     @endif
     <script>
-        var locale = "{{ $locale ?? 'en'}}";
+        var locale = "{{ $locale ?? 'en-us'}}";
     </script>
-    <script src="/json/anychart_short_locales/es.js"></script>
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')

@@ -54,12 +54,12 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class="th-multiselect">@lang("Module name")</th>
-                                    <th class="th-multiselect">@lang("Last anomaly")</th>
-                                    <th>@lang("Last anomaly date")</th>
-                                    <th>@lang("Last temp.")</th>
-                                    <th>@lang("Last temp. date")</th>
-                                    <th>@lang("Details")</th>
+                                    <th class="th-multiselect"><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Module name') }}" /></th>
+                                    <th class="th-multiselect"><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Last anomaly') }}" /></th>
+                                    <th><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Last anomaly date') }}" /></th>
+                                    <th><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Last temp.') }}" /></th>
+                                    <th><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Last temp. date') }}" /></th>
+                                    <th><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Details') }}" /></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -148,8 +148,8 @@
                         <div class="form-group">
                         <label for="themeSelect">@lang("Theme")</label>
                         <select class="form-control" id="themeSelect">
-                          <option value="defaultTheme">@lang("Default")</option>
                           <option value="darkBlue">@lang("Dark blue")</option>
+                          <option value="defaultTheme">@lang("Light blue")</option>
                         </select>
                       </div>
                     </div>
