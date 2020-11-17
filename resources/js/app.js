@@ -21,9 +21,6 @@ require('./client');
 require('./admin');
 require('./register');
 
-//require('./graphs-chartjs.js');
-//require('./graphs-realtime-pasdt');
-//require('./graphs-realtime-plotly-pasdt');
 //window.Vue = require('vue');
 
 /**

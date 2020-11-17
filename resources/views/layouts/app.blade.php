@@ -137,7 +137,7 @@
     <script>
         var locale = "{{ $locale ?? 'en'}}";
     </script>
-
+    <script src="/json/anychart_short_locales/es.js"></script>
     <!-- Scripts -->
     <!-- <script src="/js/require.js"></script>-->
     @if (Route::currentRouteName() == 'checkout')
