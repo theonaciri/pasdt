@@ -53,7 +53,25 @@ class ClientController extends Controller
                            ->where('company_id', $id_company)
                            ->get();
         $notifs = NotificationController::getNotifs($request);
-        $locales = array("fr"=>"🇫🇷 Français", "en"=>"🇬🇧 English", "es"=>"🇪🇸 Español", "it"=>"🇮🇹 Italiano");
+        $official_locales = array("fr_FR" => "Français", "en_US" => "English", "es_ES" => "Español", "it_IT" => "Italiano");
+        $locales = array("ar_MA"=>"Arabic (Morocco)", "az_Cyrl_AZ"=>"Azerbaijani (Cyrillic, Azerbaijan)", "be_BY"=>"Belarusian (Belarus)",
+                         "bg_BG" => "Bulgarian", "bn_BD" => "Bengali (bangladesh)", "bs_CYRL_ba" => "Bosnian (Bosnia and Herzegovina)",
+                         "ca_ES" => "Catalan (Spain)", "cs_CZ" => "Czech (Czech Republic)", "cy_GB" => "Welsh (United Kingdom)",
+                         "da_DK" => "Danish (Denmark)", "de_CH" => "German (Switzerland)", "de_DE" => "German (Germany)",
+                         "el_GR" => "Greek (Greece)", "et_EE" => "Estonian (Estonia)", "eu_ES" => "Basque (Spain)", "fa_IR" => "Persian (Iran)",
+                         "fi_FI" => "Finnish (Finland)", "fil_PH" => "Filipino (Philippines)", "gl_ES" => "Galician (Spain)", "he_IL" => "Hebrew (Israel)",
+                         "hi_IN" => "Hindi (India)", "hr_HR" => "Croatian (Croatia)", "hu_HU" => "Hungarian (Hungary)", "hy_AM" => "Armenian (Armenia)",
+                         "id_ID" => "Indonesian (Indonesia)", "is_IS" => "Icelandic (Iceland)", "ja_JP" => "Japanese (Japan)", "ka_GE" => "Georgian (Georgia)",
+                         "kk" => "Kazakh (Kazakhstan)", "km_KH" => "Khmer (Cambodia)", "kn_IN" => "Kannada (India)", "ko_KR" => "Korean (South Korea)",
+                         "lt_LT" => "Lithuanian (Lithuania)", "lv_LV" => "Latvian (Latvia)", "mk_MK" => "Macedonian (Macedonia)", "mr_IN" => "Marathi (India)",
+                         "ms_MY" => "Malay (Malaysia)", "nb_NO" => "Norwegian Bokmål (Norway)", "ne_NP" => "Nepali (Nepal)", "nl_NL" => "Dutch (Netherlands)",
+                         "nn_NO" => "Norwegian Nynorsk (Norway)", "pl_PL" => "Polish (Poland)", "ps_AF" => "Pashto (Afghanistan)", "pt_BR" => "Portuguese (Brazil)",
+                         "pt_PT" => "Portuguese (Portugal)", "ro_RO" => "Romanian (Romania)", "ru_RU" => "Russian (Russia)","si_LK" => "Sinhala (Sri Lanka)",
+                         "sk_SK" => "Slovak (Slovakia)", "sl_SI" => "Slovenian (Slovenia)", "sq_AL" => "Albanian (Albania)", "sr_Cyrillic" => "Serbian (Cyrillic)",
+                         "sr_Latin" => "Servian (Latin)", "sv_SE" => "Swedish (Sweden)", "sw_KE" => "Swahili (Kenya)", "th_TH" => "Thai (Thailand)",
+                         "tr_TR" => "Turkish (Turkey)", "uk_UA" => "Ukrainian (Ukraine)", "ur_PK" => "Urdu (Pakistan)", "uz_CYRL_UZ" => "Uzbek (Cyrillic, Uzbekistan)",
+                         "uz_LATN_UZ" => "Uzbek (Latin, Uzbekistan)", "vi_VN" => "Vietnamese (Vietnam)", "zh_CN" => "Chinese (Simplified Han, China)",
+                         "zh_HK" => "Chinese (Simplified Han, Hong Kong SAR China)", "zh_TW" => "Chinese (Traditional Han, Taiwan)");
         return view('auth/client', [
           "user" => $user,
           "company" => $company,
@@ -61,7 +79,9 @@ class ClientController extends Controller
           "subscriptions" => $this->subscriptions,
           "users" => $this->users,
           "notifs" => $notifs,
-          "locales"=> $locales
+          "official_locales" => $official_locales,
+          "locales" => $locales,
+          "phplocale" => $user->locale
         ]);
         /*} else {
             return view('consultation');

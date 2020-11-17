@@ -1,28 +1,40 @@
 define(['jquery', 
-  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', 'datatables.net-bs4',
+  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', "./lang", 'datatables.net-bs4',  "./components/moment-fr",
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
-  function($, datatablefr, arrayToSearch, moment, getURLParameter) {
-var table, graphdata, active_module;
+  function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
+var table, graphdata, active_module, cal_interval;
 var $logsDateSync = $('#logs-date-sync');
 window.logtable = table;
-var cal_interval = flatpickr('#dateinterval_logtable', {
+var onlytemp = false; //localStorage.getItem('notemp') === "true";
+var noday = false; //localStorage.getItem('noday') === "true";
+
+function createCalendar() {
+  cal_interval = flatpickr('#dateinterval_logtable', {
     mode: "range",
     altInput: true,
     altFormat: "j F Y",
     dateFormat: "d/m/Y",
+    locale: locale.split("-")[0],
     maxDate: "today",
     onChange: function() {
       table.ajax.reload( null, false );
     }
-});
+  });
+  $('.clear-cal').on('click', function(e) {
+    cal_interval.clear();
+  });
+}
 
-$('.clear-cal').on('click', function(e) {
-  cal_interval.clear();
-});
+if (locale !== "en-us" && locale !== "fr-fr") {
+  $.ajaxSetup({ cache: true });
+  $.getScript('https://npmcdn.com/flatpickr/dist/l10n/' + locale.split('-')[0] + '.js')
+  .done(createCalendar);
+  $.ajaxSetup({ cache: false });
+} else {
+  createCalendar();
+}
 
-var onlytemp = false; //localStorage.getItem('notemp') === "true";
-var noday = false; //localStorage.getItem('noday') === "true";
 $("#noday").toggleClass('btn-dark', noday).on('click', function(e) {
   noday = !noday;
   if (onlytemp == noday == true) {
@@ -92,6 +104,11 @@ function getData(data, callback, settings) {
 } // getData
 
 function initTable() {
+  if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
+    moment.locale(locale.split("-")[0], moment_locale);
+  }
+        
+  $.ajaxSetup({ cache: true });
   table = $('#main-table').DataTable({
     processing: true,
     serverSide: true,
@@ -100,13 +117,15 @@ function initTable() {
     dom: 'Blfrtip',
     responsive: true,
     fixedHeader: true,
-    language: datatablefr,
+    language: (locale === "fr-fr") ? datatablefr : {
+      url: locale == "en-us" ? "" : "/json/locales/datatables/" + locale + ".json"
+    },
     ajax: getData,
     order: [[ 0, "desc" ]],
     buttons: [
       {
         extend: 'copyHtml5',
-        text: 'Copier',
+        text: lang("Copy"),
       },
       {
         extend: 'excel',
@@ -138,21 +157,21 @@ function initTable() {
       });
       /* Dropdown */
       this.api().columns([1]).every(function() {
-           var column = this;
-           var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
-             .appendTo($(column.footer()).empty())
-             .on('change', function() {
-               var val = $(this).val();
-               var count_before = table.page.info().recordsDisplay;
-               if (!val.length || val.length == 1 && !val[0].length) {
-                 column.search('', true, false).draw();
-         } else { // /!\ No escape security
-           column.search(val, true, false).draw();
-         }
-         var count_after = table.page.info().recordsDisplay;
-         if (count_before < 10 && count_after > count_before || count_after < 10) {
-           select.selectpicker('toggle');
-         }
+        var column = this;
+        var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
+          .appendTo($(column.footer()).empty())
+          .on('change', function() {
+            var val = $(this).val();
+            var count_before = table.page.info().recordsDisplay;
+            if (!val.length || val.length == 1 && !val[0].length) {
+              column.search('', true, false).draw();
+            } else { // /!\ No escape security
+              column.search(val, true, false).draw();
+            }
+            var count_after = table.page.info().recordsDisplay;
+            if (count_before < 10 && count_after > count_before || count_after < 10) {
+              select.selectpicker('toggle');
+            }
         });
 
         var geturlmoduleid = getURLParameter('moduleid');
@@ -166,13 +185,24 @@ function initTable() {
            });
         }
         geturlmoduleid = undefined;
-        select.selectpicker({actionsBox: true}).change();
+
+        if (locale === "fr-fr") {
+          select.selectpicker({actionsBox: true}).change();
+        } else {
+        $.ajaxSetup({ cache: true });
+          $.getScript('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.min.js')
+          .done(function() {
+            select.selectpicker({actionsBox: true}).change();
+          });
+          $.ajaxSetup({ cache: false });
+        }
       }); /* / Dropdown */
       document.addEventListener("backonline", function(e) {
         table.ajax.reload( null, false );
       });
     } // initComplete
   }); // table
+  $.ajaxSetup({ cache: false });
 }
 initTable();
 });

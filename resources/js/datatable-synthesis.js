@@ -1,16 +1,12 @@
-define(['datatables.net', 'datatables.net-bs4', /*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
-		'flat', './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter',
-		 /*'moment/locale/fr', */'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
+define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
+		/*'flat',*/ './components/datatable-fr', './components/color-event-assoc', './components/getURLParameter', "./lang", "./components/strcap",  "./components/moment-fr",
+		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
 		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',],
-	function(datatables, datatables_bs, /*pdfmake, pdfFonts, */flatten, datatablefr, arrayToSearch, moment, getURLParameter) {
+	function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch, getURLParameter, lang) {
 		var table;
 		var $logsDateSync = $('#synth-date-sync');
 		window.synthtable = table;
 		var firstinit = true;
-		String.prototype.capFirstLetter = function () {
-			return /[a-z]/.test(this.trim()[0]) ? this.trim()[0]
-			.toUpperCase() + this.slice(1) : this;
-		}
 	function getData(data, callback, settings) {
 		if (presynths != null && typeof presynths === "object" && firstinit) {
 			callback({data:presynths});
@@ -38,26 +34,22 @@ define(['datatables.net', 'datatables.net-bs4', /*'pdfmake', 'pdfmake/build/vfs_
 		}
 	}
 	function _initTable() {
-		if (typeof locale != "undefined" && locale != "en" && moment_locale) {
-			moment.locale(locale, moment_locale);
+		if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
+			moment.locale(locale.split("-")[0], moment_locale);
 		}
 		var now = moment();
 		/* Setup - add a text input to each footer cell */
-		$('#synthesis-table tfoot th').each(function() {
-			var title = $(this).text();
-			$(this).html('<input type="text" class="form-control" placeholder="Rechercher ' + title + '" />');
-		});
 
 		table = $('#synthesis-table').DataTable({
 		dom: 'Blfrtip',
-		lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Tous"]],
+		lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, lang("All")]],
 		pageLength: 10,
 		responsive: true,
 		fixedHeader: true,
 		buttons: [
 		{
 			extend: 'copyHtml5',
-			text: 'Copier',
+			text: lang("Copy"),
 		},
 		{
 			extend: 'excel',
@@ -137,11 +129,11 @@ define(['datatables.net', 'datatables.net-bs4', /*'pdfmake', 'pdfmake/build/vfs_
 			}
 			*/
 			$("td:nth-child(1)", row).attr("title", "Num PASDT & SIM: " + data.module_id + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
-			$("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM à kk:mm:ss"));
-			$("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM à kk:mm:ss"));
+			$("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM " + lang("à") + "kk:mm:ss"));
+			$("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM " + lang("à") + "kk:mm:ss"));
 		},
-		language: (locale === "fr") ? datatablefr : {
-			url: locale == "en" ? "" : "/json/datatables_locales/" + locale + ".json"
+		language: (locale === "fr-fr") ? datatablefr : {
+			url: locale == "en-us" ? "" : "/json/locales/datatables/" + locale + ".json"
 		},
 		"ajax": getData,
 		"order": [
@@ -175,7 +167,7 @@ define(['datatables.net', 'datatables.net-bs4', /*'pdfmake', 'pdfmake/build/vfs_
 					if (data == null) {
 						return '';
 					}
-					var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capFirstLetter();
+					var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capitalize();
 					if (msg === "Ack") return "Acquittement";
 					return msg;
 				},

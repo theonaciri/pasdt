@@ -4,18 +4,19 @@ namespace App\Http\ViewComposers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
+
 class TestViewComposer {
 
     public function compose(View $view) {
+        $locale = "en_US";
     	$company = null;
     	$modules = null;
         $su_applied = false;
         $user = Auth::User();
-        $locale = $user->locale ?? str_replace('_', '-', app()->getLocale());
-        app()->setLocale($locale);
     	if ($user) {
+            $locale = $user->locale;
+            app()->setLocale($locale);
             if ($user->su_admin && request()->company) {
                 $company = \App\Company::where('id', request()->company)->first();
                 $su_applied = true;
@@ -29,6 +30,6 @@ class TestViewComposer {
         	    ->with("self", $user)
         		->with("_modules", $modules)
                 ->with("su_applied", $su_applied)
-                ->with("locale", $locale);
+                ->with("locale", strtolower(str_replace('_', '-', $locale)));
     }
 }

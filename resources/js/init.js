@@ -1,24 +1,16 @@
-define(['jquery', 'js-cookie', './graphs-live-google-annotated',
-	'./components/cache', './components/notifs', './bootstrap', 'bootstrap', './components/strcap'],
-	function($, cookie, graph_annotated) {
-	var comp = $("#app").data("su_company");
-	if (typeof comp != 'undefined') {
-		cookie.set('su_company', "2", {path: '/'})
-	} else if (location.pathname === "/consultation") {
-		cookie.remove('su_company');
-	}	
-
-
+define(['jquery', 'js-cookie', './graphs-live-google-annotated', 'moment', /*'./dependencies/moment-fr.js',*/
+	'./components/cache', './components/notifs', './bootstrap', 'bootstrap'],
+	function($, cookie, graph_annotated, moment) {
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	  // e.target // newly activated tab
-	  //e.relatedTarget // previous active tab
-	  $('table.dataTable').DataTable().fixedHeader.adjust();
-	  localStorage.setItem('opened-tab', e.target.getAttribute('id'));
-	})
+		// e.target // newly activated tab
+		// e.relatedTarget // previous active tab
+		$('table.dataTable').DataTable().fixedHeader.adjust();
+		localStorage.setItem('opened-tab', e.target.getAttribute('id'));
+	});
+
 	$('.color-modal-button').click(function() {
 		$("#colorModal").modal("show");
-	})
-
+	});
     $('#graphs-live-tab').click(function () {
     	var module_names = $('#module-name .selectpicker').val();
         if (Array.isArray(module_names) && module_names.length) {
@@ -32,7 +24,6 @@ define(['jquery', 'js-cookie', './graphs-live-google-annotated',
         }
      	graph_annotated.init();
     });
-
 
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
