@@ -281,7 +281,10 @@ table input, table select {
         font-family: sans-serif;
       }
 
-
+.header-graph label {
+  margin-top: .5rem;
+  margin-bottom: 0;
+}
 #graphlive {
   width: 80vw;
 }

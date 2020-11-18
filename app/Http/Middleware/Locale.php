@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class Locale {
 
   const SESSION_KEY = 'locale';
-  const LOCALES = ['en', 'cs'];
+  const LOCALES = ['fr', 'en', 'cs'];
 
   public function handle(Request $request, Closure $next) {
     /** @var Session $session */
