@@ -1,4 +1,4 @@
-define(['jquery', './getURLParameter'], function($, getURLParameter) {
+define(['jquery', './getURLParameter', './components/lang'], function($, getURLParameter, lang) {
 	var firstcall = true;
 
 	function getNotificationPermission() {
@@ -17,7 +17,7 @@ define(['jquery', './getURLParameter'], function($, getURLParameter) {
 			previouscounter = +$notifcounter.html();
 			$notifcounter.html(n != 0 ? n : '');
 			if (!firstcall && n > previouscounter) {
-				var text = n - previouscounter > 1 ? "Nouvelles notifications" : "Nouvelle notification"
+				var text = n - previouscounter > 1 ? lang("New notification") : lang("New notifications")
 				$notifcounter.attr('title', text);
 				if (n == 0) return ;
 				$notifcounter.tooltip('show');
@@ -28,7 +28,7 @@ define(['jquery', './getURLParameter'], function($, getURLParameter) {
 				var not_options = {
 					badge: "https://logs.pasdt.com/images/logo-98.png",
 					icon: "https://logs.pasdt.com/images/logo-98.png",
-					body: "Une action de votre part est peut-être nécessaire",
+					body: lang("An action on your part may be needed."),
 					tag: "alert",
 					data : {
 						notifcount: n,
@@ -38,10 +38,10 @@ define(['jquery', './getURLParameter'], function($, getURLParameter) {
 					requireInteraction: false,/* critique ? true : false;*/
 					actions: [{
 						action: "acknowledge",
-						title: "Vu"
+						title: lang("Vu")
 					},{
 						action: "see",
-						title: "Consulter"
+						title: lang("Consulter")
 					}]
 				};
 				var types = "";
@@ -49,7 +49,7 @@ define(['jquery', './getURLParameter'], function($, getURLParameter) {
 					types += (i != 0 ? ", " : "") + data.last[i].type;
 				}
 
-				var not_title = "PASDT: Alerte" + (data.last.length > 1 ? "s " : " ") + types;
+				var not_title = "PASDT: " + (data.last.length > 1 ? "Alerts " : "Alert ") + types;
 
 				if (getNotificationPermission() === 'granted') {
 					navigator.serviceWorker.ready.then(function(registration) {

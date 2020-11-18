@@ -28,7 +28,7 @@ function createCalendar() {
 
 if (locale !== "en-us" && locale !== "fr-fr") {
   $.ajaxSetup({ cache: true });
-  $.getScript('https://npmcdn.com/flatpickr/dist/l10n/' + locale.split('-')[0] + '.js')
+  $.getScript('/json/locales/flatpickr/' + locale.split('-')[0] + '.js')
   .done(createCalendar);
   $.ajaxSetup({ cache: false });
 } else {
@@ -181,7 +181,7 @@ function initTable() {
           select.selectpicker({actionsBox: true}).change();
         } else {
         $.ajaxSetup({ cache: true });
-          $.getScript('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.min.js')
+          $.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
           .done(function() {
             select.selectpicker({actionsBox: true}).change();
           });

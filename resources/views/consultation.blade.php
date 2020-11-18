@@ -209,11 +209,11 @@
       </div>
       <div class="modal-body row color-div-container">
           <div class="col-md-6 dt-grey" title="Gris">@lang("Temperature fault") 1</div>
-          <div class="col-md-6 dt-red" title="Rouge">@lang("Temperature fault") 2</div>
-          <div class="col-md-6 dt-blue" title="Bleu">@lang("Pressure fault")</div>
-          <div class="col-md-6 dt-green" title="Vert">@lang("Gas fault")</div>
-          <div class="col-md-6 dt-black" title="Noir">@lang("Pressure fault") * @lang("Temperature fault") 1</div>
-          <div class="col-md-6 dt-black" title="Noir">@lang("Temperature fault") 1 * @lang("Temperature fault") 2</div>
+          <div class="col-md-6 dt-red" title="Rouge">@lang("defaut temperature") 2</div>
+          <div class="col-md-6 dt-blue" title="Bleu">@lang("defaut pression")</div>
+          <div class="col-md-6 dt-green" title="Vert">@lang("defaut gaz")</div>
+          <div class="col-md-6 dt-black" title="Noir">@lang("defaut pression") * @lang("defaut temperature") 1</div>
+          <div class="col-md-6 dt-black" title="Noir">@lang("defaut temperature") 1 * @lang("defaut temperature") 2</div>
           <div class="col-md-6 dt-black" title="Noir">@lang("Other")</div>
       </div>
       <div class="modal-header">

@@ -41,7 +41,7 @@ class ImageUploadController extends Controller
         $company->save();
 
         return back()
-            ->with('success','Votre image a bien été sauvegardée.')
+            ->with('success-logo', __("Your image have been saved."))
             ->with('image',$imageName)
             ->with('company', $company);
     }

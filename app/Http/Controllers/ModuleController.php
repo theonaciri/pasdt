@@ -314,7 +314,7 @@ class ModuleController extends Controller
                 'module_id'=>$request->pasdt_module_number
             ]);
         } else {
-            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+            abort(403);
         }
 
         return response()->json($module);
@@ -332,7 +332,7 @@ class ModuleController extends Controller
             $module->delete();
             return response()->json($module);
         } else {
-            return abort(403, "Echec de l'authentification.");
+            return abort(403);
         }
     }
 
@@ -357,7 +357,7 @@ class ModuleController extends Controller
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
         } else {
-            return abort(403, "Echec de l'authentification.");
+            return abort(403);
         }
     }
 
@@ -371,7 +371,7 @@ class ModuleController extends Controller
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
         } else {
-            return abort(403, "Echec de l'authentification.");
+            return abort(403);
         }
     }
 
@@ -385,7 +385,7 @@ class ModuleController extends Controller
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response($module->telit_json);
         } else {
-            return abort(403, "Echec de l'authentification pour récupérer les données JSON.");
+            return abort(403);
         }
     }
 

@@ -50,7 +50,7 @@ class CompanyController extends Controller
             $users = User::where('company_id', $company_id)->get();
             return response()->json($users);
         } else {
-            abort(403, "Vous n'avez pas les droits d'accès aux utilisateurs de cette entreprise.");
+            abort(403);
         }
     }
 
@@ -67,7 +67,7 @@ class CompanyController extends Controller
             $modules = Module::where('company_id', $company_id)->get();
             return response()->json($modules);
         } else {
-            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+            abort(403);
         }
     }
 
@@ -81,7 +81,7 @@ class CompanyController extends Controller
     {
         $user = Auth::user();
         if (!$user->su_admin) {
-            return abort(403, "Vous n'avez pas les droits d'accès à cette entreprise.");
+            return abort(403);
         }
         $modules = Module::where('company_id', $company_id)->get();
         $users = User::where('company_id', $company_id)->get();
@@ -106,7 +106,7 @@ class CompanyController extends Controller
             $module->save();
             return response()->json($module);
         } else {
-            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+            abort(403);
         }
     }
 
@@ -124,7 +124,7 @@ class CompanyController extends Controller
             $module->save();
             return response()->json($module);
         } else {
-            abort(403, "Vous n'avez pas les droits d'accès aux modules de cette entreprise.");
+            abort(403);
         }
     }
 
@@ -151,7 +151,7 @@ class CompanyController extends Controller
         $company->save();
 
         return back()
-            ->with('colorsuccess', 'Votre couleur a bien sauvegardée.')
+            ->with('colorsuccess', __("Your color choices have been saved."))
             ->with('colors', $colors)
             ->with('company', $company);
     }

@@ -27,8 +27,8 @@ define([], function() {
 				"Solved the : ": "Résolu le : ",
 				"Still ongoing": "Toujours en cours",
 				"Stop monitoring this module?": "Retirer la surveillance de ce module ?",
-				/* alerts */
-				/* admin */
+				/* Alerts */
+				/* Admin */
 				"Delete the account of ": "Supprimer le compte de ",
 				"Delete the company ": "Supprimer le groupe ",
 				"Details": "Détails",
@@ -43,6 +43,14 @@ define([], function() {
 				" to another group": " vers un autre groupe",
 				"Unlink the module": "Dissocier le module",
 				"Value": "Valeur"
+				/* Notifications */
+				"Alert": "Alerte",
+				"Alerts": "Alertes",
+				"An action on your part may be needed.": "Une action de votre part est peut-être nécessaire.",
+				"Consult": "Consulter",
+				"New notifications": "Nouvelles notifications",
+				"New notification": "Nouvelle notification",
+				"Seen": "Vu",
 			},
 			"es-es": {
 				"Absolución": "Acquittement",
@@ -81,6 +89,14 @@ define([], function() {
 				" to another group": " a otro grupo",
 				"Unlink the module": "Desvincular el módulo",
 				"Value": "Valor"
+				/* Notifications */
+				"Alert": "Alerta",
+				"Alerts": "Alertas",
+				"An action on your part may be needed.": "Tal vez sea necesaria alguna acción de su parte.",
+				"Consult": "Consultar",
+				"New notifications": "Notificaciones nuevas",
+				"New notification": "Nueva notificación",
+				"Seen": "Visto",
 			},
 			"it-it": {
 				"Assoluzione": "Acquittement",
@@ -119,6 +135,14 @@ define([], function() {
 				" to another group": " a otro grupo",
 				"Unlink the module": "Scollega il modulo",
 				"Value": "Valore"
+				/* Notifications */
+				"Alert": "Avviso",
+				"Alerts": "Avvisi",
+				"An action on your part may be needed.": "Forse è necessaria un'azione da parte tua.",
+				"Consult": "Consultare",
+				"New notifications": "nuova notifica",
+				"New notification": "nuove notifiche",
+				"Seen": "Vidi",
 			}
 		}
 		if (typeof locales[locale] === 'undefined' || typeof locales[locale][text] === "undefined") {
