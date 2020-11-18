@@ -42,7 +42,7 @@ define([], function() {
 				" these users": " ces utilisateurs",
 				" to another group": " vers un autre groupe",
 				"Unlink the module": "Dissocier le module",
-				"Value": "Valeur"
+				"Value": "Valeur",
 				/* Notifications */
 				"Alert": "Alerte",
 				"Alerts": "Alertes",
@@ -50,7 +50,7 @@ define([], function() {
 				"Consult": "Consulter",
 				"New notifications": "Nouvelles notifications",
 				"New notification": "Nouvelle notification",
-				"Seen": "Vu",
+				"Seen": "Vu"
 			},
 			"es-es": {
 				"Absolución": "Acquittement",
@@ -88,7 +88,7 @@ define([], function() {
 				" these users": " estos usuarios",
 				" to another group": " a otro grupo",
 				"Unlink the module": "Desvincular el módulo",
-				"Value": "Valor"
+				"Value": "Valor",
 				/* Notifications */
 				"Alert": "Alerta",
 				"Alerts": "Alertas",
@@ -96,7 +96,7 @@ define([], function() {
 				"Consult": "Consultar",
 				"New notifications": "Notificaciones nuevas",
 				"New notification": "Nueva notificación",
-				"Seen": "Visto",
+				"Seen": "Visto"
 			},
 			"it-it": {
 				"Assoluzione": "Acquittement",
@@ -134,7 +134,7 @@ define([], function() {
 				" these users": " questi utenti",
 				" to another group": " a otro grupo",
 				"Unlink the module": "Scollega il modulo",
-				"Value": "Valore"
+				"Value": "Valore",
 				/* Notifications */
 				"Alert": "Avviso",
 				"Alerts": "Avvisi",
@@ -142,7 +142,7 @@ define([], function() {
 				"Consult": "Consultare",
 				"New notifications": "nuova notifica",
 				"New notification": "nuove notifiche",
-				"Seen": "Vidi",
+				"Seen": "Vidi"
 			}
 		}
 		if (typeof locales[locale] === 'undefined' || typeof locales[locale][text] === "undefined") {

@@ -99,6 +99,7 @@
 "Modify the colors": "Modifier les couleurs",
 "Number": "Num&eacute;ro",
 "Module": "Module",
+"Modules": "Modules",
 "Notification buttons": "Boutons notifications",
 "Occurences": "Occurences",
 "Ongoing since the": "En cours depuis le",
@@ -202,6 +203,8 @@
 "Your color choices have been saved.": "Vos choix de couleurs ont bien été sauvegardés.",
 "You do not have the right to view this email.": "Vous n'avez pas le droit de consulter ce mail.",
 "Your image have been saved.": "Votre image a bien été sauvegardée.",
+"Your module :module_name has stopped emitting": "Votre module :module_name a arrêté d'émettre",
+"Your module :module_name has triggered a :alert alert": "Votre module :module_name a déclenché l'alerte :alert",
 
 "========= Generic =========": "========= Générique =========",
 "========= Generic =========": "========= Générique =========",

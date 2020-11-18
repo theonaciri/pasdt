@@ -1,4 +1,4 @@
-define(['jquery', './getURLParameter', './components/lang'], function($, getURLParameter, lang) {
+define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, lang) {
 	var firstcall = true;
 
 	function getNotificationPermission() {
