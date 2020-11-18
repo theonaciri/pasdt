@@ -180,7 +180,7 @@ function initTable() {
         if (locale === "fr-fr") {
           select.selectpicker({actionsBox: true}).change();
         } else {
-        $.ajaxSetup({ cache: true });
+          $.ajaxSetup({ cache: true });
           $.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
           .done(function() {
             select.selectpicker({actionsBox: true}).change();

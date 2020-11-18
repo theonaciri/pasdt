@@ -83,6 +83,9 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 				.appendTo($(column.footer()).empty())
 				.on('change', function() {
 					var val = $(this).val();
+					if (typeof table === "undefined") {
+						table = $('#synthesis-table').DataTable();
+					}
 					var count_before = table.page.info().recordsDisplay;
 					if (!val.length || val.length == 1 && !val[0].length) {
 						column.search('', true, false).draw();
@@ -117,7 +120,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 				return;
 			}
 			if (typeof data.msg != 'undefined' && data.msg != null) {
-				var foundValue = arrayToSearch.filter(obj=>data.msg.toLowerCase().indexOf(obj.name) > 0);
+				var foundValue = arrayToSearch.filter(function(obj) { return data.msg.toLowerCase().indexOf(obj.name.toLowerCase()) > 0});
 				if (foundValue.length) {
 					$(row).addClass(foundValue[foundValue.length -1].class);
 				}

@@ -121,7 +121,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter', "./components
 	}
 	var $logs = $('#notifTable > tbody > tr');
 	$logs.each(function() {
-		var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("à") + "] HH:mm";
+		var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("at") + "] HH:mm";
 		var $created = $(this).children('.created_at');
 		var created = moment($created.html());
 		var $resolved = $(this).children('.resolved_at');

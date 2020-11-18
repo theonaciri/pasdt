@@ -42,19 +42,7 @@ class LogController extends Controller
             }],
             ['db'=>'modules.name',  'dt'=>1],
             ['db'=>'msg',           'dt'=>2, 'formatter'=> function($value, $model) {
-                $msg = strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value)));
-                if ($msg === "ack")
-                    return __("Acquittal");
-                if ($this->user->locale === "fr_FR") return ucfirst($msg);
-                $this->getSaveAuthCompany();
-                // dd(app()->getLocale());
-                // if ($msg != "hour")
-                // dd(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "transformateur"],
-                //                     [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("transformateur")],
-                //                     $msg));
-                return ucfirst(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "defaut temperature", "transformateur"],
-                                    [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("defaut temperature"), __("transformateur")],
-                                    $msg));
+                return $this->filterMsg($value);
             }],
             ['db'=>'maxtemp',       'dt'=>3, 'formatter'=> function($value, $model) {
                 $t = intval($value);
@@ -215,6 +203,9 @@ class LogController extends Controller
                     array_push($alerts_array, $temp);
                 }
             }
+        }
+        foreach ($alerts_array as $key => $value) {
+            $value->msg = $this->filterMsg($value->msg);
         }
         if ($tojson) {
             return response()->json($alerts_array);
@@ -454,5 +445,15 @@ EOTSQL));
             }
         }
         return date(trim($srch), strtotime($originalDate));
+    }
+
+    protected function filterMsg(String $value) {
+        $msg = strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value)));
+        if ($msg === "ack")
+            return __("Acquittal");
+        if (app()->locale === "fr_FR") return ucfirst($msg);
+        return ucfirst(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "defaut temperature", "transformateur"],
+                            [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("defaut temperature"), __("transformateur")],
+                            $msg));
     }
 }
