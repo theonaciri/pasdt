@@ -1,4 +1,4 @@
-define(["jquery", 'moment', "./lang" /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
+define(["jquery", 'moment', "./components/lang" /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
 window.chart = null;
 var $mod_select = $('#graphModuleSelect');
 var data = null;

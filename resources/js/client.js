@@ -1,9 +1,9 @@
-define(['jquery', 'moment/moment', './components/getURLParameter',
+define(['jquery', 'moment/moment', './components/getURLParameter', "./components/lang", "./components/moment-fr",
 		'./components/notifs', "./dependencies/jquery.ajaxSubmit"],
-	function($, moment, getURLParameter) {
+	function($, moment, getURLParameter, lang) {
 	var adminconfirmed = false;
 	$('.revoqmodulebtn').click(function (e) {
-		if (!confirm("Retirer la surveillance de ce module ?")) return ;
+		if (!confirm(lang("Stop monitoring this module?"))) return ;
 		var csrf = $("input[name='_token']").first().val();
 		var $self = $(this);
 		$.ajax({
@@ -23,10 +23,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				$('#modalRenderMail').find('.bodymail').html(mailhtml);
 				$('#modalRenderMail').modal("show");
 			})
-			.fail(function(e) {
-			alert(e.responseJSON.message + (!$('body').data('admin') ? ""
-					: " Aucun mail n'a été envoyé car cette entreprise n'a pas d'utilisateur."));
-			});
+			.fail(function(e) { alert(e.responseJSON.message) });
 	});
 	
 	$('.commentbtn').on('click', function() {
@@ -65,7 +62,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	$('.vubtn').click(function() {
 		var su_company = $('#app').data('su_company');
 		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed
-			&& confirm("Masquer cette notification pour le client aussi ?"))) {
+			&& confirm(lang("Stop monitoring this module?")))) {
 			adminconfirmed = true;
 			var $tr = $(this).parent().parent().parent();
 			var id = $tr.data('id');
@@ -117,30 +114,33 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	        });
 	    }
 	});
+	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
+		moment.updateLocale(locale.split("-")[0], moment_locale);
+	}
 	var $logs = $('#notifTable > tbody > tr');
 	$logs.each(function() {
-		var format = "DD/MM/YY [à] HH:mm";
+		var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("à") + "] HH:mm";
 		var $created = $(this).children('.created_at');
 		var created = moment($created.html());
 		var $resolved = $(this).children('.resolved_at');
 		var success = $(this).hasClass('success');
 		var $nologvalue = $(this).find('.nolog-value')
 		if ($nologvalue.length) {
-			$nologvalue.html("Le " + moment($nologvalue.html()).format(format));
+			$nologvalue.html(lang("The") + " " + moment($nologvalue.html()).format(format));
 		}
 		if (success) {
 			var nowdate = moment($resolved.html());
 		} else {
 			var nowdate = moment();
 		}
-		$resolved.html((success ? "Pendant " : "Depuis ")
+		$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
 			+ moment.duration(nowdate.diff(created)).humanize())
-			.prop('title', success ? "Résolu le : " + nowdate.format(format) : "Toujours en cours")
+			.prop('title', success ? lang("Solved the : ") + nowdate.format(format) : lang("Still ongoing"))
 			.tooltip('_fixTitle');
-		$created.html(created.calendar({sameElse: "[Le] " + format}).capitalize())
-				.prop('title', "Première occurence le : " + created.format(format))
+		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize())
+				.prop('title', lang("First occurence the : ") + created.format(format))
 				.tooltip('_fixTitle');
-	});
+	});11
 
 	$('#notifTable .view-notif').on('click', function (e) {
 		var id = $(this).parent().parent().parent().data('module_id');

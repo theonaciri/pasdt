@@ -1,5 +1,5 @@
 define(['jquery', 
-  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', "./lang", 'datatables.net-bs4',  "./components/moment-fr",
+  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', "./components/lang", 'datatables.net-bs4',  "./components/moment-fr",
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
   function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
@@ -13,8 +13,8 @@ function createCalendar() {
   cal_interval = flatpickr('#dateinterval_logtable', {
     mode: "range",
     altInput: true,
-    altFormat: "j F Y",
-    dateFormat: "d/m/Y",
+    altFormat: locale === "en-us" ? "F j Y" : "j F Y",
+    dateFormat: locale === "en-us" ? "m/d/Y": "d/m/Y",
     locale: locale.split("-")[0],
     maxDate: "today",
     onChange: function() {
@@ -58,15 +58,6 @@ $("#notemp").toggleClass('btn-dark', onlytemp)
   table.ajax.reload( null, false );
 });
 
-/* old function ?
-function toggleAdvancedSearchButtons(e, notoggle) {
-  var toggle_ping_value = localStorage.getItem('nosearch') === "true";
-  toggle_ping_value = notoggle ? toggle_ping_value : !toggle_ping_value;
-  localStorage.setItem('nosearch', toggle_ping_value);
-  $(e.target).toggleClass('btn-dark', toggle_ping_value);
-  $('#date_filter, .dt-buttons').toggle(toggle_ping_value);
-}
-*/
 function filterColumn($this) {
   var i = $this.parent().attr('data-column');
   table.column( i ).search(
@@ -105,7 +96,7 @@ function getData(data, callback, settings) {
 
 function initTable() {
   if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
-    moment.locale(locale.split("-")[0], moment_locale);
+    moment.updateLocale(locale.split("-")[0], moment_locale);
   }
         
   $.ajaxSetup({ cache: true });

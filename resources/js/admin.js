@@ -1,4 +1,4 @@
-define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], function ($, flatten) {
+define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], function ($, lang, flatten) {
 	if (window.location.pathname.indexOf("admin") < 0) return;
 	var company_modules = [];
 	$('#edit-user-modal').on('shown.bs.modal', function (e) { })
@@ -7,7 +7,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var id = $(this).parent().siblings('.id').html();
 		var $p = $(this).parent();
 		var n = $p.siblings('.name').html();
-		if (confirm('Supprimer le compte de ' + n + ' ?')) {
+		if (confirm(lang("Delete the account of ") + n + ' ?')) {
 			location.href = '/user/delete/' + id;
 		}
 	});
@@ -42,7 +42,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		$.getJSON("/company/" + id + "/users", function (users) {
 			$mod = $('#companyUsersModal');
 			$mod.modal("show");
-			$mod.find('.modal-title').html("Liste d'utilisateurs de " + companyname);
+			$mod.find('.modal-title > span').html(companyname);
 
 			var htmlcontent = '';
 			for (var i = 0; i < users.length; i++) {
@@ -64,7 +64,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 			company_modules = _modules;
 			$mod = $('#companyModulesModal');
 			$mod.modal("show");
-			$mod.find('.modal-title').html("Liste de modules de " + companyname);
+			$mod.find('.modal-title > span').html(companyname);
 			$("#linkmodule").ajaxSubmit({
 				url: function () {
 					return '/company/' + company_id + '/module/' + $('#selectLinkModule').val();
@@ -86,7 +86,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var company_id = $(this).data('id');
 		var companyname = $(this).parent().siblings('.name').html();
 		$('#company_id').val(company_id);
-		if (confirm("Supprimer le groupe " + $("<div/>").html(companyname).text() + " ?")) {
+		if (confirm(lang("Delete the company ") + $("<div/>").html(companyname).text() + " ?")) {
 			$.ajax({
 				type: "DELETE",
 				url: "/company/" + company_id,
@@ -97,18 +97,14 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 				} else if (response.error) {
 					var err = "";
 					if (response.modules && response.modules.length) {
-						err += "Veuillez déplacer "
-							+ (response.modules.length === 1 ? "ce module" : "ces modules")
-							+ " dans un autre groupe :";
+						err += lang("Please move") + lang(response.modules.length === 1 ? " this module" : " these modules") + lang(" to another group");
 						for (var mod = 0; mod < response.modules.length; mod++) {
 							err += (!mod ? " " : ", ") + response.modules[mod].name;
 						}
 						err += ". ";
 					}
 					if (response.users && response.users.length) {
-						err += "Veuillez déplacer "
-							+ (response.users.length === 1 ? "cet utilisateur" : "ces utilisateurs")
-							+ " dans un autre groupe :";
+						err += lang("Please move") + lang(response.modules.length === 1 ? " this user" : " these users") + lang(" to another group");
 						for (var user = 0; user < response.users.length; user++) {
 							err += (!user ? " " : ", ") + response.users[user].name;
 						}
@@ -127,11 +123,11 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
             		<td class="module_id">${module.module_id}</td>
             		<td class="details">
 	            		<div class="btn-group btn-vertical" role="group" aria-label="user buttons">
-	            			<button type="button" data-id="${module.id}" title="Détails" name="Détails" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal"><span class="oi oi-eye"></span></button>
-	            			<button type="button" data-id="${module.id}" title="Modifier le module" name="Modifier le module" class="btn btn-primary telitmoduleeditbtn" data-company="${module.company_id}" data-toggle="modal" data-target="#editModuleModal">
+	            			<button type="button" data-id="${module.id}" title="${lang('Details')}" name="details" class="btn btn-primary telitmodulebtn" data-toggle="modal" data-target="#moduleModal"><span class="oi oi-eye"></span></button>
+	            			<button type="button" data-id="${module.id}" title="${lang('Modify the module')}" name="modify" class="btn btn-primary telitmoduleeditbtn" data-company="${module.company_id}" data-toggle="modal" data-target="#editModuleModal">
 	            				<span class="oi oi-pencil"></span>
 	            			</button>
-	            			<button type="button" data-id="${module.id}" title="Dé-lier le module" name="Dé-lier le module" class="btn btn-danger telitmoduleunlinkbtn" data-company="${module.company_id}"><span class="oi oi-link-broken"></span></button>
+	            			<button type="button" data-id="${module.id}" title="${lang('Unlink the module')}" name="unlink" class="btn btn-danger telitmoduleunlinkbtn" data-company="${module.company_id}"><span class="oi oi-link-broken"></span></button>
 	            		</div>
 	            	</td>
             	</tr>`
@@ -178,7 +174,7 @@ define(["jquery", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], fu
 		var modulename = $(this).parent().parent().siblings('.name').html();
 		var json = JSON.parse(mod.telit_json && mod.telit_json.length ? mod.telit_json : '{}');
 		var f = flatten(json);
-		var table = '<table><tr><th scope="col">Clé</th><th scope="col">Valeur</th></tr>';
+		var table = '<table><tr><th scope="col">' + lang("Key")  + '</th><th scope="col">' + lang("Value") + '</th></tr>';
 		for (p in f) {
 			table += `<tr><td>${p}</td><td>${f[p]}</td></tr>\n`;
 		}
