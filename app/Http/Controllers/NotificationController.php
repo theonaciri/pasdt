@@ -51,7 +51,7 @@ class NotificationController extends Controller
                 return new ModuleAlert($mail);
             }
         }
-        return abort(403, "Vous n'avez pas le droit de consulter ce mail.");
+        return abort(403, "Vous n'avez pas le droit de consulter ce mail." . ($this->user->su_admin == 1 ? "\nAucun mail n'a été envoyé car cette entreprise n'a pas d'utilisateur." : ""));
     }
 
     public function acknowledgeNotif(Notification $notif) {

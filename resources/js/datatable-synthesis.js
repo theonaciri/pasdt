@@ -1,5 +1,5 @@
 define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
-		/*'flat',*/ './components/datatable-fr', './components/color-event-assoc', './components/getURLParameter', "./lang", "./components/strcap",  "./components/moment-fr",
+		/*'flat',*/ './components/datatable-fr', './components/color-event-assoc', './components/getURLParameter', "./components/lang", "./components/strcap",  "./components/moment-fr",
 		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',/*'Buttons/js/buttons.print', 
 		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',],
 	function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch, getURLParameter, lang) {
@@ -35,7 +35,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 	}
 	function _initTable() {
 		if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
-			moment.locale(locale.split("-")[0], moment_locale);
+			moment.updateLocale(locale.split("-")[0], moment_locale);
 		}
 		var now = moment();
 		/* Setup - add a text input to each footer cell */
@@ -129,8 +129,8 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 			}
 			*/
 			$("td:nth-child(1)", row).attr("title", "Num PASDT & SIM: " + data.module_id + (data.telitId ? ' Num Telit: ' + data.telitId : ''));
-			$("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM " + lang("à") + "kk:mm:ss"));
-			$("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM " + lang("à") + "kk:mm:ss"));
+			$("td:nth-child(3)", row).attr("title", moment(data.created_at).format("dddd Do MMMM " + lang("to") + "kk:mm:ss").capitalize());
+			$("td:nth-child(5)", row).attr("title", moment(data.temp_created_at).format("dddd Do MMMM " + lang("to") + "kk:mm:ss").capitalize());
 		},
 		language: (locale === "fr-fr") ? datatablefr : {
 			url: locale == "en-us" ? "" : "/json/locales/datatables/" + locale + ".json"
@@ -147,7 +147,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 			/* {"data": "id"},*/
 			{
 				"data": "name",
-				"defaultContent": "<i>Pas de nom de module</i>",
+				"defaultContent": "<i>" + lang("No module name") + "</i>",
 				render: function ( data, type, row ) {
 					if (type === 'sort' || type === 'filter') {
 						return typeof row.name == 'string' && typeof row.module_id == 'string' ? row.module_id + ' - ' + row.name : '--';
@@ -168,10 +168,10 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 						return '';
 					}
 					var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capitalize();
-					if (msg === "Ack") return "Acquittement";
+					if (msg === "Ack") return lang("Acquittal");
 					return msg;
 				},
-				"defaultContent": "<i>Not set</i>"
+				"defaultContent": "<i>" + lang("Not set") + "</i>"
 			},
 			{
 				"data": "created_at", render: function(data, type, row) {
@@ -180,7 +180,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 						return row.created_at;
 					}
 					if (data == null) return '--';
-					var result = now.to(data);
+					var result = now.to(data).capitalize();
 					if (result == 'Invalid date') return '--';
 					return result;
 				},
@@ -195,7 +195,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 					if (maxtemp == null) return '--';
 					return String(maxtemp) + '°C';
 				},
-				"defaultContent": "<i>Temp invalide</i>",
+				"defaultContent": "<i>" + lang("Not set") + "</i>",
 				"type": "num"
 			},
 			{
@@ -208,15 +208,15 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 					if (data == null) return '--';
 					var result = now.to(data);
 					if (result == 'Invalid date') return '--';
-					return result + ' à ' + moment(data).format('kk[h]mm');
+					return result.capitalize() + ' ' + lang("to") + ' ' + moment(data).format('kk[h]mm');
 				},
-				"defaultContent": "<i>Not set</i>"
+				"defaultContent": "<i>" + lang("Not set") + "</i>"
 			},
 			{
 				"data": "action", render: function(data, type, row) {
 					return '<button class="btn btn-secondary openModuleModal">+</button>';
 				},
-				"defaultContent": "<i>Not set</i>"
+				"defaultContent": "<i>" + lang("Not set") + "</i>"
 			}
 			/*{"data": "options"},*/
 			/*{"data": "updated_at"},*/
@@ -266,8 +266,8 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 					$modmodal.find('.modal-map').html('');
 					//$modmodal.find('.modal-pre').html(table + "</table>");
 					$modmodal.find('.modal-address').html(
-						"<p><b>Adresse: </b> " + str_address + "</p>"
-						+ "<p><b>ID du module: </b> " + data.module_id + "</p>"
+						"<p><b>" + lang("Address") + " : </b> " + str_address + "</p>"
+						+ "<p><b>" + lang("Module ID") + " : </b> " + data.module_id + "</p>"
 						+ "<p><b>ID Telit: </b> " + module_data.iccid + "</p>"
 						+ (module_data.custom1 ? "<p><b>Custom1: </b> " + module_data.custom1 + "</p>" : '')
 						+ (module_data.custom2 ? "<p><b>Custom2: </b> " + module_data.custom2 + "</p>" : '')
