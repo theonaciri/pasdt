@@ -151,4 +151,12 @@ define(['jquery', 'moment/moment', './components/getURLParameter', "./components
 		window.location = "/consultation?moduleid=" + encodeURI(id)
 		+ (typeof company != 'undefined' ? "&company=" + company : "");
 	});
+	$('#localeform').on("submit", function() {
+		if ('serviceWorker' in navigator) {
+		    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+		    for(let registration of registrations) {
+		        registration.unregister()
+		    } })
+		}
+	})
 });

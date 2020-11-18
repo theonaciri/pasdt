@@ -143,7 +143,7 @@
                     <button class="color-modal-button btn btn-outline-info">@lang("Color code")</button>
                   </div>
                   <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
-                    <div class="row">
+                    <div class="row header-graph">
                       <div class="col col-md-3">
                         <div class="form-group">
                         <label for="themeSelect">@lang("Theme")</label>
@@ -153,7 +153,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col col-md-9">
+                    <div class="col col-md-9 header-graph">
                       <div class="form-group">
                         <label for="graphModuleSelect">@lang("Module")</label>
                         <select class="form-control" id="graphModuleSelect">

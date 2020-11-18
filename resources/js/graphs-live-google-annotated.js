@@ -1,4 +1,4 @@
-define(["jquery", 'moment', "./components/lang" /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
+define(["jquery", 'moment', "./components/lang", './components/strcap' /*, "anychart", "anychart-jquery"*/], function($, moment, lang) {
 window.chart = null;
 var $mod_select = $('#graphModuleSelect');
 var data = null;
@@ -92,7 +92,7 @@ function onDataReceive() {
 	chart = anychart.stock();
 	chart.animation(true);
 	chart.crosshair(true);
-	chart.title("Evolution des températures");
+	chart.title(lang("Evolution of temperatures"));
 
 	// create the plot
 	var plot = chart.plot(0);
@@ -141,12 +141,12 @@ function onDataReceive() {
 	tooltipchart.titleFormat(function () {
 		var date = new Date(this.x);
 		var transformedDate =  date.toLocaleDateString(locale, date_options);
-        return "Le " + transformedDate;
+        return lang("The") + " " + transformedDate;
     });
 
 	tooltip.format(function () {
 		var value = (this.value).toFixed(0);
-		return "Temp: " + value + "°C";
+		return lang("temperature").capitalize() + ": " + value + "°C";
 	});
 
 	// set Y axis label formatter

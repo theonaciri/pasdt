@@ -249,13 +249,6 @@
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>{{ $message }}</strong>
                     </div>
-                    <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
-                    <script>
-                        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                        for(let registration of registrations) {
-                            registration.unregister()
-                        } })
-                    </script>
                     @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -267,7 +260,7 @@
                         </ul>
                     </div>
                     @endif
-                    <form class="row" action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
+                    <form class="row" id="localeform" action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group col-md-8">
                             <label for="locale">@lang("Select the language")</label>
