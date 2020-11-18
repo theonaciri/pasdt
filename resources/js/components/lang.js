@@ -1,7 +1,10 @@
 define([], function() {
 	return function(text) {
 		if (typeof locale === "undefined") {
-			var locale = "en-us";
+			locale = document.documentElement.getAttribute('lang');
+			if (typeof locale === "undefined") {
+				var locale = "en-us";
+			}
 		}
 		var locales = {
 			"en-us": {
@@ -15,6 +18,7 @@ define([], function() {
 				"Acquittal": "Acquittement",
 				"Address": "Adresse",
 				"All": "Tous",
+				"at": "à",
 				"Copy": "Copier",
 				"During": "Pendant",
 				"First occurence the : ": "Première occurence le : ",
@@ -28,6 +32,14 @@ define([], function() {
 				"Still ongoing": "Toujours en cours",
 				"Stop monitoring this module?": "Retirer la surveillance de ce module ?",
 				/* Alerts */
+				"Acquittal": "Acquittement",
+				"alarme": "alarme",
+				"declenchement": "déclenchement",
+				"defaut gaz": "défaut gaz",
+				"defaut pression": "défaut pression",
+				"defaut temperature": "défaut de température",
+				"transformateur": "transformateur",
+				"temperature": "température",
 				/* Admin */
 				"Delete the account of ": "Supprimer le compte de ",
 				"Delete the company ": "Supprimer le groupe ",
@@ -56,13 +68,14 @@ define([], function() {
 				"Absolución": "Acquittement",
 				"Address": "Dirección",
 				"All": "Todas",
+				"at": "a",
 				"Copy": "Copiar",
 				"During": "Durante",
 				"First occurence the : ": "Primera aparición del : ",
 				"Module ID": "ID del módulo",
 				"No module name": "Sin nombre de módulo",
 				"Not set": "No establecido",
-				"The": "Té",
+				"The": "El",
 				"to": "al",
 				"Since": "Ya que",
 				"Solved the : ": "Resuelto el : ",
@@ -73,6 +86,7 @@ define([], function() {
 				"declenchement": "gatillo",
 				"defaut pression": "falla de presión",
 				"defaut gaz": "falla de gas",
+				"temperature": "temperatura",
 				"Transformateur": "Transformador",
 				/* admin */
 				"Delete the account of ": "¿Eliminar la cuenta de ",
@@ -102,6 +116,7 @@ define([], function() {
 				"Assoluzione": "Acquittement",
 				"Address": "Indirizzo",
 				"All": "Tutti",
+				"at": "a",
 				"Copy": "Copia",
 				"During": "Durante",
 				"First occurence the : ": "Prima occorrenza il : ",
@@ -119,6 +134,7 @@ define([], function() {
 				"declenchement": "grilletto",
 				"defaut pression": "difetto di pressione",
 				"defaut gaz": "guasto del gas",
+				"temperature": "temperatura",
 				"Transformateur": "Trasformatore",
 				/* admin */
 				"Delete the account of ": "Elimina il conto di ",
