@@ -208,7 +208,7 @@
           <h5 class="modal-title">@lang("Logs color code")</h5>
       </div>
       <div class="modal-body row color-div-container">
-          <div class="col-md-6 dt-grey" title="Gris">@lang("Temperature fault") 1</div>
+          <div class="col-md-6 dt-grey" title="Gris">@lang("defaut temperature") 1</div>
           <div class="col-md-6 dt-red" title="Rouge">@lang("defaut temperature") 2</div>
           <div class="col-md-6 dt-blue" title="Bleu">@lang("defaut pression")</div>
           <div class="col-md-6 dt-green" title="Vert">@lang("defaut gaz")</div>
