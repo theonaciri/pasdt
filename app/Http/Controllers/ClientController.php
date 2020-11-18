@@ -83,9 +83,6 @@ class ClientController extends Controller
           "locales" => $locales,
           "phplocale" => $user->locale
         ]);
-        /*} else {
-            return view('consultation');
-        }*/
     }
 
     /**

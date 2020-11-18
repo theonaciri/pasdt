@@ -100,7 +100,16 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 						select.append('<option value="' + val + '">' + val + '</option>')
 					}
 				});
-				select.selectpicker({actionsBox: true});
+				if (locale === "fr-fr") {
+		        	select.selectpicker({actionsBox: true}).change();
+		        } else {
+			        $.ajaxSetup({ cache: true });
+					$.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
+						.done(function() {
+						select.selectpicker({actionsBox: true}).change();
+					});
+			         $.ajaxSetup({ cache: false });
+		        }
 			});
 		},
 		createdRow: function rowColor( row, data, dataIndex) {
@@ -167,9 +176,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 					if (data == null) {
 						return '';
 					}
-					var msg = data.replace(/\"|\[|\]|/gi, '').replace(/,/gi, ' ').toLowerCase().capitalize();
-					if (msg === "Ack") return lang("Acquittal");
-					return msg;
+					return data;
 				},
 				"defaultContent": "<i>" + lang("Not set") + "</i>"
 			},

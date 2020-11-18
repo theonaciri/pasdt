@@ -35,7 +35,7 @@ class NotificationController extends Controller
                  ->join("modules AS m", "m.module_id", "=", "n.module")
                  ->join("companies AS c", "c.id", "=", "m.company_id")
                  ->join("users AS u", "u.company_id", "=", "c.id")
-                 ->select("u.name AS name", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.resolved_at")
+                 ->select("u.name AS name", "u.locale", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.resolved_at")
                  ->where('n.id', '=', $notif->id)
                  ->get();
     }
@@ -51,7 +51,7 @@ class NotificationController extends Controller
                 return new ModuleAlert($mail);
             }
         }
-        return abort(403, "Vous n'avez pas le droit de consulter ce mail." . ($this->user->su_admin == 1 ? "\nAucun mail n'a été envoyé car cette entreprise n'a pas d'utilisateur." : ""));
+        return abort(403, __("You do not have the right to view this email.") . ($this->user->su_admin == 1 ? "\n" . __("No mail was sent because this company does not have a user.") : ""));
     }
 
     public function acknowledgeNotif(Notification $notif) {
@@ -86,17 +86,20 @@ class NotificationController extends Controller
         $is_adminf = false;
         $is_adminff = false;
         foreach ($usersinfo as $key => $info) {
+            app()->setLocale($info->locale);
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
             Mail::to($info)->send(new ModuleAlert($info));
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
             if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
         }
         if (count($usersinfo) && !$is_adminf) {
+            app()->setLocale("fr-FR");
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
             Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
         }
         if (count($usersinfo) && !$is_adminff) {
+            app()->setLocale("fr-FR");
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
             Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));

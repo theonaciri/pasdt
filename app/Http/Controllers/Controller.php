@@ -16,15 +16,15 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected static function getCompany(User $user) {
-        if (empty($user)) abort(403, "Echec de l'authentification.");
-        if (empty($user->company_id)) abort(403, "Pas pu récupérer l'entreprise de l'utilisateur.");
+        if (empty($user)) abort(403, __("Authentication failed."));
+        if (empty($user->company_id)) abort(403, __("Unable to retrieve user's company information."));
+        app()->setLocale($user->locale);
         if (!empty($user->su_admin) && $user->su_admin == 1) {
             if (!empty(request()->company)) {
                 return request()->company;
             }
             return -1;
         }
-        App::setLocale($user->locale);
         return $user->company_id;
     }
 

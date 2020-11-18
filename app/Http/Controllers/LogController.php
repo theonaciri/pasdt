@@ -31,21 +31,30 @@ class LogController extends Controller
         if (count($request->all()) === 0 || !$request["columns"]) {
             $request = $this->getDefaultData($request);
         }
+        date_default_timezone_set('Europe/Paris');
         $company = $this->getSaveAuthCompany();
         if ($company === -1) $company = "%";
-        date_default_timezone_set('Europe/Paris');
         $primaryKey = 'id';
 
         $dt = [
             ['db'=>'created_at',    'dt'=>0, 'formatter'=> function($value, $model) {
-                return "Le " . date("d/m/y à H:i:s", strtotime($value));
+                return __("The") . " " . date($this->user->locale === "en_US" ? "m/d/y" : "d/m/y ", strtotime($value)) . __("at") . date(" H:i:s", strtotime($value));
             }],
             ['db'=>'modules.name',  'dt'=>1],
             ['db'=>'msg',           'dt'=>2, 'formatter'=> function($value, $model) {
-                $msg = ucfirst(strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value))));
-                if ($msg === "Ack")
-                    return "Acquittement";
-                return $msg;
+                $msg = strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value)));
+                if ($msg === "ack")
+                    return __("Acquittal");
+                if ($this->user->locale === "fr_FR") return ucfirst($msg);
+                $this->getSaveAuthCompany();
+                // dd(app()->getLocale());
+                // if ($msg != "hour")
+                // dd(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "transformateur"],
+                //                     [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("transformateur")],
+                //                     $msg));
+                return ucfirst(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "defaut temperature", "transformateur"],
+                                    [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("defaut temperature"), __("transformateur")],
+                                    $msg));
             }],
             ['db'=>'maxtemp',       'dt'=>3, 'formatter'=> function($value, $model) {
                 $t = intval($value);
@@ -393,11 +402,11 @@ EOTSQL));
         Log::info('IP ' . $request->ip());
         Log::info('CONTENT ' . $request->getContent());
         if (env('API_TOKEN', false) !== $token) {
-            abort(403, 'Action non authorisée.');
+            abort(403, __("Unauthorized action."));
         }
         $this->user = User::whereApiToken($token)->first();
         if (empty($this->user)) {
-            abort(403, "Echec de l'authentification.");
+            abort(403, __("Authentication failed."));
         }
     }
 
@@ -422,7 +431,7 @@ EOTSQL));
 
     public static function formatDateSearch($originalDate) {
         $originalDate = str_replace('h', ':', $originalDate);
-        $originalDate = str_replace(['à', ','], ' ', $originalDate);
+        $originalDate = str_replace(['à', __("at"), ','], ' ', $originalDate);
         $originalDate = str_replace('/', '-', $originalDate);
         $srch = "";
 

@@ -18,12 +18,14 @@ define(['jquery', 'moment/moment', './components/getURLParameter', "./components
 	$('.rendermailbtn').click(function() {
 		var $tr = $(this).parent().parent().parent();
 		var id = $tr.data('id');
+		var $modalrendermail = $('#modalRenderMail');
+		$modalrendermail.find('.bodymail').html('<div class="container"><div class="row"><div class="col-4 mx-auto text-center"><img src="/images/loader.svg" height="100"></div><div></div>');
 		$.get("/notif/" + id + "/renderMail")
 			.done(function(mailhtml) {
-				$('#modalRenderMail').find('.bodymail').html(mailhtml);
-				$('#modalRenderMail').modal("show");
+				$modalrendermail.find('.bodymail').html(mailhtml);
 			})
-			.fail(function(e) { alert(e.responseJSON.message) });
+			.fail(function(e) { $modalrendermail.find('.bodymail').html(e.responseJSON.message) });
+		$modalrendermail.modal("show");
 	});
 	
 	$('.commentbtn').on('click', function() {

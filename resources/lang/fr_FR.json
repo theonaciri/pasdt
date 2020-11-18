@@ -17,6 +17,16 @@
 "You are disconnected": "Vous êtes déconnecté",
 "Disconnected": "Déconnecté",
 
+"========= Logs =========": "========= Logs =========",
+
+"Acquittal": "Acquittement",
+"alarme": "alarme",
+"declenchement": "déclenchement",
+"defaut gaz": "défaut gaz",
+"defaut pression": "Défaut pression",
+"defaut temperature": "Défaut de température",
+"transformateur": "transformateur",
+
 "========= Monitoring =========": "========= Surveillance =========",
 
 "Battery": "Batterie",
@@ -38,14 +48,12 @@
 "Log analysis": "Analyse de logs",
 "Logs": "Logs",
 "Logs color code": "Code couleurs des logs",
-"Gas fault": "Défaut gaz",
 "Message": "Message",
 "max. battery": "batterie max.",
 "min. temperature": "température min.",
 "Only anomalies": "Uniquement les anomalies",
 "Only temperatures": "Uniquement les températures",
 "Other": "Autre",
-"Pressure fault": "Défaut de pression",
 "Search": "Rechercher",
 "Search by": "Rechercher par",
 "Search by date": "Rechercher par date",
@@ -53,7 +61,6 @@
 "Supported languages": "Langues prises en charge",
 "than": "que",
 "Temperature color code": "Code couleurs de la température",
-"Temperature fault": "Défaut Température",
 "Temperature graphs": "Graphes de température",
 "Temperature": "Température",
 "Theme": "Thème",
@@ -125,6 +132,8 @@
 "minutes": "minutes",
 "months": "mois",
 "seconds": "secondes",
+"The": "Le",
+"the": "le",
 
 "========= Mail =========": "========= Mail =========",
 
@@ -133,15 +142,15 @@
 "New alert": "Nouvelle alerte",
 "New critical alert": "Nouvelle alerte critique",
 "for your module": "pour votre module",
-"_Module location_": "_Localisation du module_",
-"The": "Le",
-"the": "le",
-"the portal has detected that it has not received data from your module since": "le portail a détécté qu'il n'a plus reçu de données de votre module depuis",
+"Module location": "Localisation du module",
+"the portal has detected that it has not received any data from your module since": "le portail a détécté qu'il n'a plus reçu de données de votre module depuis",
 "your module triggered the following __CRITICAL__ alert:": "votre module a déclenché l'alerte __CRITIQUE__ suivante:",
 "your module triggered the following alert:": "votre module a déclenché l'alerte suivante:",
 "with the value of": "avec la valeur de",
 "You may need to intervene": "Une action de votre part est sûrement nécessaire.",
 "You may need to intervene urgently": "Une action urgente de votre part est sûrement nécessaire.",
+"Your module :module_name has stopped emitting": "Votre module :module_name a arrêté d'émettre",
+"Your module :module_name has triggered a :alert alert": "Votre module :module_name a déclenché une alerte :alert",
 
 "========= Access =========": "========= Accès =========",
 
@@ -184,6 +193,17 @@
 "User list": "Liste d'utilisateurs",
 "Users": "Utilisateurs",
 
+"========= Messages =========": "========= Messages =========",
+
+"Authentication failed.": "Echec de l'authentification.",
+"No mail was sent because this company does not have a user.": "Aucun mail n'a été envoyé car cette entreprise n'a pas d'utilisateur.",
+"Unable to retrieve user's company information.": "Impossible de récupérer les informations sur la société de l'utilisateur.",
+"Unauthorized action.": "Acción no autorizada.",
+"Your color choices have been saved.": "Vos choix de couleurs ont bien été sauvegardés.",
+"You do not have the right to view this email.": "Vous n'avez pas le droit de consulter ce mail.",
+"Your image have been saved.": "Votre image a bien été sauvegardée.",
+
+"========= Generic =========": "========= Générique =========",
 "========= Generic =========": "========= Générique =========",
 
 "A fresh verification link has been sent to your email address.": "Un nouveau lien de vérification a été envoyé à votre adresse email.",

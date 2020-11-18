@@ -38,9 +38,11 @@ class ModuleAlert extends Mailable
     {
         $subject = "PASDT: ";
         $subject .= $this->i->type === "NO_LOG" ?
-        "Votre module " . $this->i->module_name . " a arrêté d'émettre" :
-        "Alerte " . (strpos($this->i->type, "BATTERY") !== false ? "batterie" : "température")
-                  . " du module " . $this->i->module_name;
+        __("Your module :module_name has stopped emitting", ["module_name" => $this->i->module_name]) :
+        __("Your module :module_name has triggered a :alert alert",
+            ["module_name" => $this->i->module_name,
+             "alert" => (strpos($this->i->type, "BATTERY") !== false ? __("Battery") : __("Temperature"))
+            ]);
         return $this->markdown('emails.module-alert')
                     ->subject($subject);
     }

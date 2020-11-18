@@ -250,6 +250,12 @@
                         <strong>{{ $message }}</strong>
                     </div>
                     <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
+                    <script>
+                        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for(let registration of registrations) {
+                            registration.unregister()
+                        } })
+                    </script>
                     @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -428,7 +434,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="bodymail"></div>
+            <div class="modal-body bodymail"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
+            </div>
         </div>
     </div>
 </div>

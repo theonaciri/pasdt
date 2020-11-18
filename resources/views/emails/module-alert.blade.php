@@ -19,8 +19,8 @@ __V__.
 
 @lang($i->crit ? "You may need to intervene urgently" : "You may need to intervene").
 
-@if (is_object($i->address))
-@lang("_Module location_")
+@if (!empty($i->address))
+<span style="text-decoration: underline;">@lang("Module location"):</span>
 
 {{ $i->address->street ?? "" }}
 {{ $i->address->streetNumber ?? "" }}
