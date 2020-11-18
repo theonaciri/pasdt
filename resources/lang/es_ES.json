@@ -14,7 +14,8 @@
 "Unread notifications": "notificaciones no leídas",
 "The latest data received is displayed. Click this link to refresh the data.": "Se muestran los últimos datos recibidos. Haga clic en este enlace para actualizar los datos .",
 "You are taking control of another company. Click here to return to yours": "Usted está tomando el control de Comentarios otra compañía. Haga clic aquí para volver a la suya",
-"You are </span>disconnected</small>": "Estás </span>desconectado</small>",
+"You are disconnected": "Estás desconectado",
+"Disconnected": "Desconectado",
 
 "========= Logs =========": "========= Logs =========",
 
@@ -71,6 +72,11 @@
 "Actions": "Comportamiento",
 "Active": "Activo",
 "Actual logo": "logotipo real",
+"Activate mails": "Activar correos",
+"Activate notifications (keep this tab open)": "Activar notificaciones (mantener esta pestaña abierta)",
+"Add a subscription": "Agregar una suscripción",
+"Change the language": "Cambia la lingua",
+"Change the logo of": "Cambiare il logo di",
 "Commentary": "Commento",
 "Comment on the alert": "Commento en la alarma",
 "Created the": "Creado té",
@@ -93,6 +99,7 @@
 "Modify the colors": "Modificar los colores",
 "Number": "Número",
 "Module": "Módulo",
+"Modules": "Módulos",
 "Notification buttons": "botones de notificación",
 "Occurences": "Ocurrencias",
 "Ongoing since the": "En curso desde el",
@@ -118,6 +125,7 @@
 "Value": "Valor",
 
 "========= Datetime =========": "========= Hora =========",
+
 ":": ":",
 "at": "a las",
 "days": "dias",
@@ -142,6 +150,8 @@
 "with the value of": "con el valor de",
 "You may need to intervene": "Es posible que tenga que intervenir",
 "You may need to intervene urgently": "Puede que tenga que intervenir con urgencia",
+"Your module :module_name has stopped emitting": "Su módulo :module_name ha dejado de emitir",
+"Your module :module_name has triggered a :alert alert": "Su módulo :module_name activó una alerta :alert",
 
 "========= Access =========": "========= Acceso =========",
 
@@ -371,8 +381,9 @@
 "We were unable to find a registered user with this email address.": "No pudimos encontrar un usuario registrado con esta dirección de correo electrónico.",
 "We won't ask for your password again for a few hours.": "No pediremos su contraseña de nuevo por unas horas.",
 "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.": "Cuando la autenticación de dos factores esté habilitada, le pediremos un token aleatorio seguro durante la autenticación. Puede recuperar este token desde la aplicación Google Authenticator de su teléfono.",
-"Whoops!": "¡Vaya!",
 "Whoops! Something went wrong.": "¡Vaya! Algo salió mal",
+"Whoops!": "¡Vaya!",
+"Whoops, something went wrong on our servers.": "¡Vaya! Algo salió mal en nuestros servidores.",
 "You are logged in!": "¡Ya iniciaste sesión!",
 "You are receiving this email because we received a password reset request for your account.": "Ha recibido este mensaje porque se solicitó un restablecimiento de contraseña para su cuenta.",
 "You have enabled two factor authentication.": "Has habilitado la autenticación de dos factores.",
