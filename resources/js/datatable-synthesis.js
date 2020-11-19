@@ -104,12 +104,12 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 					}
 				});
 				if (locale === "fr-fr") {
-		        	select.selectpicker({actionsBox: true}).change();
+		        	select.selectpicker({actionsBox: true});
 		        } else {
 			        $.ajaxSetup({ cache: true });
 					$.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
 						.done(function() {
-						select.selectpicker({actionsBox: true}).change();
+						select.selectpicker({actionsBox: true});
 					});
 			         $.ajaxSetup({ cache: false });
 		        }
