@@ -91,7 +91,7 @@ class NotificationController extends Controller
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
             try {
                 Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
-            } catch ($e) {
+            } catch (Exception $e) {
                 Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
             }
             return ;
@@ -101,7 +101,7 @@ class NotificationController extends Controller
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
             try {
                 Mail::to($info)->send(new ModuleAlert($info));
-            } catch ($e) {
+            } catch (Exception $e) {
                 Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
             }
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
@@ -113,7 +113,7 @@ class NotificationController extends Controller
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
             try {
                 Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
-            } catch ($e) {
+            } catch (Exception $e) {
                 Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
             }
         }
