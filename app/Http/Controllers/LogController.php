@@ -38,7 +38,7 @@ class LogController extends Controller
 
         $dt = [
             ['db'=>'created_at',    'dt'=>0, 'formatter'=> function($value, $model) {
-                return __("The") . " " . date($this->user->locale === "en_US" ? "m/d/y" : "d/m/y ", strtotime($value)) . __("at") . date(" H:i:s", strtotime($value));
+                return __("The") . " " . date($this->user->locale === "en_US" ? "m/d/y " : "d/m/y ", strtotime($value)) . __("at") . date(" H:i:s", strtotime($value));
             }],
             ['db'=>'modules.name',  'dt'=>1],
             ['db'=>'msg',           'dt'=>2, 'formatter'=> function($value, $model) {
