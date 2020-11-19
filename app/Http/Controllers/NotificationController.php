@@ -123,7 +123,7 @@ class NotificationController extends Controller
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
             try {
                 Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
-            } catch ($e) {
+            } catch (Exception $e) {
                 Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
             }
         }
