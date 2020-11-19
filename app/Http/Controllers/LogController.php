@@ -452,7 +452,7 @@ EOTSQL));
         if ($msg === "ack")
             return __("Acquittal");
         if (app()->locale === "fr_FR") return ucfirst($msg);
-        return ucfirst(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "defaut temperature", "Transformateur"],
+        return ucfirst(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "defaut temperature", "transformateur"],
                             [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("defaut temperature"), __("Transformateur")],
                             $msg));
     }
