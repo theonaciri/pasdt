@@ -103,7 +103,11 @@ class NotificationController extends Controller
                 Mail::to($info)->send(new ModuleAlert($info));
             } catch (Exception $e) {
                 Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
-            }
+                if( count( Mail::failures() ) > 0 ) {
+                    $failures[] = Mail::failures()[0];
+                    dd($failures);
+                }
+            }   
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
             if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
         }
