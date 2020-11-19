@@ -131,7 +131,7 @@ define([], function() {
 				"Since": "Per",
 				"Still ongoing": "Ancora in corso",
 				"Solved the : ": "Risolto il : ",
-				"Stop monitoring this module?":"Rimuovere il monitoraggio da questo modulo?",
+				"Stop monitoring this module?": "Rimuovere il monitoraggio da questo modulo?",
 				/* alerts */
 				"alarme": "Allarmami",
 				"declenchement": "grilletto",

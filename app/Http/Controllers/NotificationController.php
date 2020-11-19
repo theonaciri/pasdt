@@ -85,10 +85,25 @@ class NotificationController extends Controller
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
         $is_adminf = false;
         $is_adminff = false;
+        if (config('app.debug') == true) {
+            app()->setLocale("fr-FR");
+            $info = $usersinfo[0];
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
+            try {
+                Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
+            } catch ($e) {
+                Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
+            }
+            return ;
+        }
         foreach ($usersinfo as $key => $info) {
             app()->setLocale($info->locale);
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
-            Mail::to($info)->send(new ModuleAlert($info));
+            try {
+                Mail::to($info)->send(new ModuleAlert($info));
+            } catch ($e) {
+                Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
+            }
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
             if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
         }
@@ -96,13 +111,21 @@ class NotificationController extends Controller
             app()->setLocale("fr-FR");
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
-            Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
+            try {
+                Mail::to("f.lefevre@pasdt.com")->send(new ModuleAlert($info));
+            } catch ($e) {
+                Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
+            }
         }
         if (count($usersinfo) && !$is_adminff) {
             app()->setLocale("fr-FR");
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "fpelletier@logicom-informatique.com" . " with value " . $notif->value);
-            Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
+            try {
+                Mail::to("fpelletier@logicom-informatique.com")->send(new ModuleAlert($info));
+            } catch ($e) {
+                Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
+            }
         }
     }
 
