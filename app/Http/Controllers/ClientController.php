@@ -53,10 +53,10 @@ class ClientController extends Controller
                            ->where('company_id', $id_company)
                            ->get();
         $notifs = NotificationController::getNotifs($request);
-        $official_locales = array("en_US" => "English", "es_ES" => "Español", "fr_FR" => "Français",
-                                  "de_DE" => "German (Germany)", "nl_NL" => "Dutch (Netherlands)", "it_IT" => "Italiano");
+        $official_locales = array("en_US" => "English (US)", "es_ES" => "Español (Spain)", "fr_FR" => "Français (France)",
+                                  "de_DE" => "Deutsche (Germany)", "nl_NL" => "Dutch (Netherlands)", "it_IT" => "Italiano (Italy)");
         $locales = array("ar_MA"=>"Arabic (Morocco)", "az_Cyrl_AZ"=>"Azerbaijani (Cyrillic, Azerbaijan)", "be_BY"=>"Belarusian (Belarus)",
-                         "bg_BG" => "Bulgarian", "bn_BD" => "Bengali (bangladesh)", "bs_CYRL_ba" => "Bosnian (Bosnia and Herzegovina)",
+                         "bg_BG" => "Bulgarian (Bulgaria)", "bn_BD" => "Bengali (bangladesh)", "bs_CYRL_ba" => "Bosnian (Bosnia and Herzegovina)",
                          "ca_ES" => "Catalan (Spain)", "cs_CZ" => "Czech (Czech Republic)", "cy_GB" => "Welsh (United Kingdom)",
                          "da_DK" => "Danish (Denmark)", "de_CH" => "German (Switzerland)",
                          "el_GR" => "Greek (Greece)", "et_EE" => "Estonian (Estonia)", "eu_ES" => "Basque (Spain)", "fa_IR" => "Persian (Iran)",
