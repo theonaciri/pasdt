@@ -47,7 +47,7 @@ class NotificationController extends Controller
             return new ModuleAlert($infos[0]);
         }
         foreach ($infos as $key => $mail) {
-            if ($this->user->id == $mail->user_id && $mail->receive_mails) {
+            if ($this->user->id == $mail->user_id) {
                 return new ModuleAlert($mail);
             }
         }
@@ -88,7 +88,7 @@ class NotificationController extends Controller
         if (true || config('app.debug') == true) {
             app()->setLocale("fr-FR");
             $info = $usersinfo[0];
-            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "f.lefevre@pasdt.com" . " with value " . $notif->value);
+            Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
             try {
                 Mail::to("theo.naciri@gmail.com")->send(new ModuleAlert($info));
             } catch (Exception $e) {
