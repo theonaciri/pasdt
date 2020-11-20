@@ -4,7 +4,6 @@ const filesToCache = [
     //'login',
     //'su_admin',
   //'client',
-  'register',
   //'fonts/open-iconic.woff', // has bust, the font is auto loaded
   'images/loader.svg',
   'css/app.css',
@@ -16,10 +15,10 @@ const filesToCache = [
   'images/logo-192.png'
 ];
 
-var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client'];
+var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client', '/register'];
 var whitelist = ['fonts/open-iconic', 'images/', 'json/locales/'];
 
-const staticCacheName = 'pages-cache-v20.1';
+const staticCacheName = 'pages-cache-v20.2';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
