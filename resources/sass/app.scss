@@ -1,0 +1,19 @@
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import '../css/datatables-bootstrap4.css';
+@import './open-iconic-bootstrap.scss';
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@import '~bootstrap-select/dist/css/bootstrap-select.min';
+@import '~datatables.net-responsive-bs4/css/responsive.bootstrap4.min';
+@import '~datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min';
+
+@import 'globals';
+
+@import 'btn-group-resp';
+@import 'pages';

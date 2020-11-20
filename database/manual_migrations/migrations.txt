@@ -1,0 +1,30 @@
+database migrations
+14/01/2020:
+modules : 
+default value for all dates : current
+new telit_custom3
+new telit_custom4	
+
+
+15/01/2020:
+logs
+new maxtemp int NULL
+
+16/01/2020:
+.env
+TELIT_USERNAME
+TELIT_PASSWORD
+
+20/10/2020:
+ALTER TABLE `modules` ADD `temp_triggers` VARCHAR(255) NOT NULL AFTER `name`;
+02/11/2020:
+
+ALTER TABLE `notifications` ADD `resolved` INT NOT NULL DEFAULT '0' AFTER `seen`, ADD `occurences` INT NOT NULL DEFAULT '1' AFTER `resolved`;
+
+08/11/2020:
+ALTER TABLE `users` ADD `receive_mails` BOOLEAN NOT NULL DEFAULT FALSE AFTER `is_client_company`;
+ALTER TABLE `notifications` ADD `comment` VARCHAR(255) NOT NULL AFTER `occurences`;
+ALTER TABLE `notifications` ADD `resolved_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `comment`;
+
+14/11/2020:
+ALTER TABLE `users` ADD `locale` VARCHAR(15) NOT NULL DEFAULT 'fr_FR' AFTER `remember_token`;
