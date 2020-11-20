@@ -66,7 +66,6 @@ define([], function() {
 				"Seen": "Vu"
 			},
 			"es-es": {
-				"Acquittal": "Absolución",
 				"Address": "Dirección",
 				"All": "Todas",
 				"at": "a",
@@ -84,12 +83,15 @@ define([], function() {
 				"Still ongoing": "Aún en curso",
 				"Stop monitoring this module?": "¿Eliminar la supervisión de este módulo?",
 				/* alerts */
+				"Acquittal": "Absolución",
 				"alarme": "alarma",
 				"declenchement": "gatillo",
 				"defaut pression": "falla de presión",
 				"defaut gaz": "falla de gas",
+				"defaut temperature": "falla de temperatura",
 				"temperature": "temperatura",
 				"Transformateur": "Transformador",
+				"temperature": "temperatura",
 				/* admin */
 				"Delete the account of ": "¿Eliminar la cuenta de ",
 				"Delete the company ": "¿Eliminar grupo ",
@@ -115,7 +117,6 @@ define([], function() {
 				"Seen": "Visto"
 			},
 			"it-it": {
-				"Acquittal": "Assoluzione",
 				"Address": "Indirizzo",
 				"All": "Tutti",
 				"at": "a",
@@ -133,12 +134,15 @@ define([], function() {
 				"Solved the : ": "Risolto il : ",
 				"Stop monitoring this module?": "Rimuovere il monitoraggio da questo modulo?",
 				/* alerts */
+				"Acquittal": "Assoluzione",
 				"alarme": "Allarmami",
 				"declenchement": "grilletto",
 				"defaut pression": "difetto di pressione",
 				"defaut gaz": "guasto del gas",
+				"defaut temperature": "guasto del temperatura",
 				"temperature": "temperatura",
 				"Transformateur": "Trasformatore",
+				"temperature": "temperatura",
 				/* admin */
 				"Delete the account of ": "Elimina il conto di ",
 				"Delete the company ": "Rimuovere gruppo Ab ",
@@ -164,7 +168,6 @@ define([], function() {
 				"Seen": "Vidi"
 			},
 			"de-de": {
-				"Acquittal": "Freispruch",
 				"Address": "Adresse",
 				"All": "Alles",
 				"at": "beim",
@@ -182,10 +185,12 @@ define([], function() {
 				"Still ongoing": "Noch nicht abgeschlossen",
 				"Stop monitoring this module?": "Überwachung dieses Moduls beenden?",
 				/* alerts */
+				"Acquittal": "Freispruch",
 				"alarme": "alarme",
 				"declenchement": "Deklenchement",
 				"defaut pression": "defaut pression",
 				"defaut gaz": "defaut gaz",
+				"defaut gaz": "defaut temperatur",
 				"temperature": "Temperatur",
 				"Transformateur": "Transformateur",
 				/* admin */
@@ -213,7 +218,6 @@ define([], function() {
 				"Seen": "Geseheno"
 			},
 			"nl-nl": {
-				"Acquittal": "Vrijspraak",
 				"Address": "Adres",
 				"All": "Alle",
 				"at": "Bij",
@@ -231,11 +235,13 @@ define([], function() {
 				"Still ongoing": "Nog steeds aan de gang",
 				"Stop monitoring this module?": "Stoppen met het monitoren van deze module?",
 				/* alerts */
+				"Acquittal": "Vrijspraak",
 				"alarme": "schrik",
 				"declenchement": "declinatie",
 				"defaut pression": "defaut druk",
 				"defaut gaz": "defaut gas",
-				"temperature": "temperatuur-",
+				"defaut gaz": "defaut temperatuur",
+				"temperature": "temperatuur",
 				"Transformateur": "Transformateur",
 				/* admin */
 				"Delete the account of ": "Verwijder het account van",
