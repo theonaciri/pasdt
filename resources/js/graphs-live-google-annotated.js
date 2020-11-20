@@ -1,11 +1,13 @@
 //const { forEach } = require("jszip");
-define(["jquery", 'moment', "./components/lang" /*, "anychart", "anychart-jquery"*/], function ($, moment, lang) {
+define(["jquery", 'moment', "./components/lang", "./dependencies/lagrange" /*, "anychart", "anychart-jquery"*/],
+	function ($, moment, lang, lagrange) {
 	window.chart = null;
 	var $mod_select = $('#graphModuleSelect');
 	var data = null;
 	var theme = localStorage.getItem('graph-theme') || "darkBlue";
 	var active_module = localStorage.getItem('graph-active-module');
 	var interval_var = null;
+	console.log(lagrange);
 
 	function init() {
 		if (chart != null) return; // only one init;
