@@ -85,8 +85,8 @@ class NotificationController extends Controller
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
         $is_adminf = false;
         $is_adminff = false;
-        if (true || config('app.debug') == true) {
-            app()->setLocale("fr-FR");
+        if (config('app.debug') == true) {
+            app()->setLocale("fr_FR");
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
             try {
