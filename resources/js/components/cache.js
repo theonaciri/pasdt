@@ -1,4 +1,5 @@
 define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], function($) {
+    if (window.location.pathname.indexOf("password")) return ;
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
 	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });

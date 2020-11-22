@@ -13,9 +13,13 @@
 
 Route::get('/nolog', 'NotificationController@noData')->name('store.nolog.post');
 Route::post('/nolog', 'NotificationController@noData')->name('store.nolog.post');
-Auth::routes();
+
+Route::group(['middleware' => ['locale']], function() {
+	Auth::routes();
+});
+
 Route::get('/', 'HomeController@index')->name('welcome');
-Route::get('/consultation', 'HomeController@consultation')->name('consultation')->middleware('auth');;
+Route::get('/consultation', 'HomeController@consultation')->name('consultation')->middleware('auth');
 
 /* USER */
 Route::get('/client', 'ClientController@index')->name('client');

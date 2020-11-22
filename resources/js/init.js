@@ -28,9 +28,9 @@ define(['jquery', 'js-cookie', './graphs-live-google-annotated', 'moment', /*'./
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
 
-	$('#logoff-button').click(function() {
+	$('#logoff-button, #reconnect-button').click(function(event) {
 		event.preventDefault();
-       if(window.navigator && navigator.serviceWorker) {
+       	if(window.navigator && navigator.serviceWorker) {
           	navigator.serviceWorker.getRegistrations()
           	.then(function(registrations) {
 	            for(let registration of registrations) {
