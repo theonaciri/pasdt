@@ -99,15 +99,17 @@ class NotificationController extends Controller
         foreach ($usersinfo as $key => $info) {
             app()->setLocale($info->locale);
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
-            try {
-                Mail::to($info)->send(new ModuleAlert($info));
-            } catch (Exception $e) {
-                Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
-                if( count( Mail::failures() ) > 0 ) {
-                    $failures[] = Mail::failures()[0];
-                    dd($failures);
+            if ($info->receive_mails == 1) {
+                try {
+                    Mail::to($info)->send(new ModuleAlert($info));
+                } catch (Exception $e) {
+                    Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
+                    if( count( Mail::failures() ) > 0 ) {
+                        $failures[] = Mail::failures()[0];
+                        dd($failures);
+                    }
                 }
-            }   
+            }
             if ($info->email === "f.lefevre@pasdt.com") $is_adminf = true;
             if ($info->email === "fpelletier@logicom-informatique.com") $is_adminff = true;
         }
