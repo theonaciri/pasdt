@@ -142,7 +142,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter', "./components
 		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize())
 				.prop('title', lang("First occurence the : ") + created.format(format))
 				.tooltip('_fixTitle');
-	});11
+	});
 
 	$('#notifTable .view-notif').on('click', function (e) {
 		var id = $(this).parent().parent().parent().data('module_id');

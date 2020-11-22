@@ -13,6 +13,8 @@ use App\Http\Controllers\NotificationController;
 
 class ClientController extends Controller
 {
+    const OFFICIAL_LOCALES = '{"en_US":"English (US)","es_ES":"Espa\u00f1ol (Spain)","fr_FR":"Fran\u00e7ais (France)","de_DE":"Deutsche (Germany)","nl_NL":"Dutch (Netherlands)","it_IT":"Italiano (Italy)"}';
+    const LOCALES = '{"ar_MA":"Arabic (Morocco)","az_Cyrl_AZ":"Azerbaijani (Cyrillic, Azerbaijan)","be_BY":"Belarusian (Belarus)","bg_BG":"Bulgarian (Bulgaria)","bn_BD":"Bengali (bangladesh)","bs_CYRL_ba":"Bosnian (Bosnia and Herzegovina)","ca_ES":"Catalan (Spain)","cs_CZ":"Czech (Czech Republic)","cy_GB":"Welsh (United Kingdom)","da_DK":"Danish (Denmark)","de_CH":"German (Switzerland)","el_GR":"Greek (Greece)","et_EE":"Estonian (Estonia)","eu_ES":"Basque (Spain)","fa_IR":"Persian (Iran)","fi_FI":"Finnish (Finland)","fil_PH":"Filipino (Philippines)","gl_ES":"Galician (Spain)","he_IL":"Hebrew (Israel)","hi_IN":"Hindi (India)","hr_HR":"Croatian (Croatia)","hu_HU":"Hungarian (Hungary)","hy_AM":"Armenian (Armenia)","id_ID":"Indonesian (Indonesia)","is_IS":"Icelandic (Iceland)","ja_JP":"Japanese (Japan)","ka_GE":"Georgian (Georgia)","kk":"Kazakh (Kazakhstan)","km_KH":"Khmer (Cambodia)","kn_IN":"Kannada (India)","ko_KR":"Korean (South Korea)","lt_LT":"Lithuanian (Lithuania)","lv_LV":"Latvian (Latvia)","mk_MK":"Macedonian (Macedonia)","mr_IN":"Marathi (India)","ms_MY":"Malay (Malaysia)","nb_NO":"Norwegian Bokm\u00e5l (Norway)","ne_NP":"Nepali (Nepal)","nn_NO":"Norwegian Nynorsk (Norway)","pl_PL":"Polish (Poland)","ps_AF":"Pashto (Afghanistan)","pt_BR":"Portuguese (Brazil)","pt_PT":"Portuguese (Portugal)","ro_RO":"Romanian (Romania)","ru_RU":"Russian (Russia)","si_LK":"Sinhala (Sri Lanka)","sk_SK":"Slovak (Slovakia)","sl_SI":"Slovenian (Slovenia)","sq_AL":"Albanian (Albania)","sr_Cyrillic":"Serbian (Cyrillic)","sr_Latin":"Servian (Latin)","sv_SE":"Swedish (Sweden)","sw_KE":"Swahili (Kenya)","th_TH":"Thai (Thailand)","tr_TR":"Turkish (Turkey)","uk_UA":"Ukrainian (Ukraine)","ur_PK":"Urdu (Pakistan)","uz_CYRL_UZ":"Uzbek (Cyrillic, Uzbekistan)","uz_LATN_UZ":"Uzbek (Latin, Uzbekistan)","vi_VN":"Vietnamese (Vietnam)","zh_CN":"Chinese (Simplified Han, China)","zh_HK":"Chinese (Simplified Han, Hong Kong SAR China)","zh_TW":"Chinese (Traditional Han, Taiwan)"}';
     /**
      * Create a new controller instance.
      *
@@ -53,26 +55,6 @@ class ClientController extends Controller
                            ->where('company_id', $id_company)
                            ->get();
         $notifs = NotificationController::getNotifs($request);
-        $official_locales = array("en_US" => "English (US)", "es_ES" => "Español (Spain)", "fr_FR" => "Français (France)",
-                                  "de_DE" => "Deutsche (Germany)", "nl_NL" => "Dutch (Netherlands)", "it_IT" => "Italiano (Italy)");
-        $locales = array("ar_MA"=>"Arabic (Morocco)", "az_Cyrl_AZ"=>"Azerbaijani (Cyrillic, Azerbaijan)", "be_BY"=>"Belarusian (Belarus)",
-                         "bg_BG" => "Bulgarian (Bulgaria)", "bn_BD" => "Bengali (bangladesh)", "bs_CYRL_ba" => "Bosnian (Bosnia and Herzegovina)",
-                         "ca_ES" => "Catalan (Spain)", "cs_CZ" => "Czech (Czech Republic)", "cy_GB" => "Welsh (United Kingdom)",
-                         "da_DK" => "Danish (Denmark)", "de_CH" => "German (Switzerland)",
-                         "el_GR" => "Greek (Greece)", "et_EE" => "Estonian (Estonia)", "eu_ES" => "Basque (Spain)", "fa_IR" => "Persian (Iran)",
-                         "fi_FI" => "Finnish (Finland)", "fil_PH" => "Filipino (Philippines)", "gl_ES" => "Galician (Spain)", "he_IL" => "Hebrew (Israel)",
-                         "hi_IN" => "Hindi (India)", "hr_HR" => "Croatian (Croatia)", "hu_HU" => "Hungarian (Hungary)", "hy_AM" => "Armenian (Armenia)",
-                         "id_ID" => "Indonesian (Indonesia)", "is_IS" => "Icelandic (Iceland)", "ja_JP" => "Japanese (Japan)", "ka_GE" => "Georgian (Georgia)",
-                         "kk" => "Kazakh (Kazakhstan)", "km_KH" => "Khmer (Cambodia)", "kn_IN" => "Kannada (India)", "ko_KR" => "Korean (South Korea)",
-                         "lt_LT" => "Lithuanian (Lithuania)", "lv_LV" => "Latvian (Latvia)", "mk_MK" => "Macedonian (Macedonia)", "mr_IN" => "Marathi (India)",
-                         "ms_MY" => "Malay (Malaysia)", "nb_NO" => "Norwegian Bokmål (Norway)", "ne_NP" => "Nepali (Nepal)",
-                         "nn_NO" => "Norwegian Nynorsk (Norway)", "pl_PL" => "Polish (Poland)", "ps_AF" => "Pashto (Afghanistan)", "pt_BR" => "Portuguese (Brazil)",
-                         "pt_PT" => "Portuguese (Portugal)", "ro_RO" => "Romanian (Romania)", "ru_RU" => "Russian (Russia)","si_LK" => "Sinhala (Sri Lanka)",
-                         "sk_SK" => "Slovak (Slovakia)", "sl_SI" => "Slovenian (Slovenia)", "sq_AL" => "Albanian (Albania)", "sr_Cyrillic" => "Serbian (Cyrillic)",
-                         "sr_Latin" => "Servian (Latin)", "sv_SE" => "Swedish (Sweden)", "sw_KE" => "Swahili (Kenya)", "th_TH" => "Thai (Thailand)",
-                         "tr_TR" => "Turkish (Turkey)", "uk_UA" => "Ukrainian (Ukraine)", "ur_PK" => "Urdu (Pakistan)", "uz_CYRL_UZ" => "Uzbek (Cyrillic, Uzbekistan)",
-                         "uz_LATN_UZ" => "Uzbek (Latin, Uzbekistan)", "vi_VN" => "Vietnamese (Vietnam)", "zh_CN" => "Chinese (Simplified Han, China)",
-                         "zh_HK" => "Chinese (Simplified Han, Hong Kong SAR China)", "zh_TW" => "Chinese (Traditional Han, Taiwan)");
         return view('auth/client', [
           "user" => $user,
           "company" => $company,
@@ -80,8 +62,8 @@ class ClientController extends Controller
           "subscriptions" => $this->subscriptions,
           "users" => $this->users,
           "notifs" => $notifs,
-          "official_locales" => $official_locales,
-          "locales" => $locales,
+          "official_locales" => json_decode($this::OFFICIAL_LOCALES),
+          "locales" => json_decode($this::LOCALES),
           "phplocale" => $user->locale
         ]);
     }
@@ -134,14 +116,16 @@ class ClientController extends Controller
       return $this->user->receive_mails ? 1 : 0;
     }
 
-    public function changeLocale() {
+    public function changeLocale(Request $request) {
       request()->validate([
           'locale' => 'required',
       ]);
 
       $this->getSaveAuthCompany();
-      $this->user->locale = request()->locale;
+      $this->user->locale = substr(request()->locale, 0, 11);
       $this->user->save();
+      $session = $request->getSession();
+      $session->put('locale', $this->user->locale);
       app()->setLocale($this->user->locale);
       return back()
           ->with('success-locale', __("Your language preferences have correctly been updated"))

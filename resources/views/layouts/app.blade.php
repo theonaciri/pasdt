@@ -63,7 +63,7 @@
                         <span class="show-xxs">@lang("Disconnected")</span>
                     </small>
                     &nbsp;
-                    <a href="/login" class="btn btn-primary">@lang("Reconnect")</a>
+                    <a href="/login" class="btn btn-primary" id="reconnect-button">@lang("Reconnect")</a>
                 </span>
                 <span id="backonline-header" class="d-none"><span class="oi oi-check"></span><small>&nbsp;@lang("Connection restored")</small></span>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

@@ -136,9 +136,7 @@ class CompanyController extends Controller
 
     public function setColorsPost()
     {
-        if (!Auth::user()->company_id || !Auth::user()->is_client_company) {
-            return view('consultation');
-        }
+        $this->getSaveAuthCompany();
         /*
         request()->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -146,7 +144,7 @@ class CompanyController extends Controller
 */
         $colors = request()->colors;
 
-        $company = \App\Company::where('id', $this->getCompany(Auth::user()))->first();
+        $company = \App\Company::where('id', $this->company == -1 ? $this->user->company_id : $this->company)->first();
         $company->colors = $colors;
         $company->save();
 
