@@ -65,6 +65,10 @@
 "Temperature": "Temperatuur",
 "Theme": "Thema",
 "This table is refreshed every 5 minutes.": "Deze tafel wordt elke 5 minuten ververst.",
+"Legend": "Legende",
+"Normal temperature": "Normale temperatuur",
+"High temperature": "Hoge temperatuur",
+"Critically high temperature": "Kritisch hoge temperatuur",
 
 "========= Client =========": "========= Klant =========",
 
