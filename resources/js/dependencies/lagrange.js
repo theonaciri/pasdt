@@ -11,10 +11,10 @@ define([], function() {
  * l.changePoint(index, 0.5, 0.1);
  * console.log(l.valueOf(0.1));
  */
-return Lagrange = function(x1, y1, x2, y2) {
+window.Lagrange = function(data_x, data_y) {
 	
-	this.xs = [x1, x2];
-	this.ys = [y1, y2];
+	this.xs = data_x;
+	this.ys = data_y;
 	this.ws = [];
 	this._updateWeights();
 }
