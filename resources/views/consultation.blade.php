@@ -32,7 +32,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">@lang("Temperature graphs")</a>
                 </li>
-            </ul>
+            </ul> <!-- ul -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'show active' : '' }}" id="synthesis" role="tabpanel" aria-labelledby="synthesis-table">
                     <div class="container">
@@ -59,9 +59,9 @@
                             </tfoot>
                         </table>
                         <p>@lang("Last refresh")&nbsp;:&nbsp;<span id="synth-date-sync"></span>.</p>
+                        <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#colorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
                     </div>
-                    <button class="color-modal-button btn btn-outline-info">@lang("Color code")</button>
-                </div>
+                </div> <!-- Synth tab -->
                 <div class="tab-pane fade {{ request('tab') === 'home' ? 'show active' : '' }}" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="container">
                         <div id="date_filter" class="input-group">
@@ -134,135 +134,137 @@
                             @lang("This table is refreshed every 5 minutes.")
                             <br>@lang("Last refresh")&nbsp;:&nbsp;<span id="logs-date-sync"></span>.
                         </p>
-                        </div>
-                        <button class="color-modal-button btn btn-outline-info">@lang("Color code")</button>
                     </div>
-                    <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
-                        <div class="row header-graph">
-                            <div class="col col-md-3">
-                                <div class="form-group">
-                                    <label for="themeSelect">@lang("Theme")</label>
-                                    <select class="form-control" id="themeSelect">
-                                        <option value="darkBlue">@lang("Dark blue")</option>
-                                        <option value="defaultTheme">@lang("Light blue")</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col col-md-9">
-                                <div class="form-group">
-                                    <label for="graphModuleSelect">@lang("Module")</label>
-                                    <select class="form-control" id="graphModuleSelect"></select>
-                                </div>
+                </div> <!-- Home tab -->
+                <div class="tab-pane fade {{ request('tab') === 'graphs-live' ? 'show active' : '' }}" id="graphs-live" role="tabpanel" aria-labelledby="graphs-live-tab">
+                    <div class="row header-graph">
+                        <div class="col col-md-3">
+                            <div class="form-group">
+                                <label for="themeSelect">@lang("Theme")</label>
+                                <select class="form-control" id="themeSelect">
+                                    <option value="darkBlue">@lang("Dark blue")</option>
+                                    <option value="defaultTheme">@lang("Light blue")</option>
+                                </select>
                             </div>
                         </div>
-                        <div id="anychart" style="width: 640px; height: 480px;"></div>
-                        <div>
-                            <br>
-                            <div class="container">
-                                <div class="row align-items-start" style="margin-left: -30px">
-                                    <div class="col-md-4">
-                                        <div class="card">
-                                            <div class="card-header container">
-                                                <div class="row">
-                                                    <div class="col-md-6">@lang("Legend")</div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") (&lt;&nbsp;60&nbsp;°C)</p>
-                                                <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") (&lt;&nbsp;75&nbsp;°C)</p>
-                                                <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") (&gt;=&nbsp;75&nbsp;°C)</p>
-                                            </div>
-                                        </div> <!-- card -->
-                                    </div>
-                                </div>
+                        <div class="col col-md-9">
+                            <div class="form-group">
+                                <label for="graphModuleSelect">@lang("Module")</label>
+                                <select class="form-control" id="graphModuleSelect"></select>
                             </div>
                         </div>
-                    </div> <!-- graph-live -->
-                </div>
+                    </div>
+                    <div id="anychart" style="width: 640px; height: 480px;"></div>
+                    <br>
+                    <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#moduleGraphColorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
+                </div> <!-- graph-live tab -->
+            </div> <!-- Tab content -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="moduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="moduleModalLabel">@lang("Telit Module")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-primary toggle-map">@lang("Show on the map")</button>
+                <div class="modal-map"></div>
+                <br>
+                <hr>
+                <br>
+                <div class="modal-pre"></div>
+                <div class="modal-address"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
             </div>
         </div>
     </div>
+</div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="moduleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="moduleModalLabel">@lang("Telit Module")</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <button class="btn btn-primary toggle-map">@lang("Show on the map")</button>
-                        <div class="modal-map"></div>
-                        <br>
-                        <hr>
-                        <br>
-                        <div class="modal-pre"></div>
-                        <div class="modal-address"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
-                    </div>
-                </div>
+<!-- Modal Graph color code -->
+<div class="modal fade" id="moduleGraphColorModal" tabindex="-1" role="dialog" aria-labelledby="moduleGraphColorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="moduleGraphColorModalLabel">@lang("Legend")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") (&lt;&nbsp;60&nbsp;°C)</p>
+                <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") (&lt;&nbsp;75&nbsp;°C)</p>
+                <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") (&gt;=&nbsp;75&nbsp;°C)</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
             </div>
         </div>
+    </div>
+</div>
 
 
-        <div class="modal fade" id="colorModal" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="colorModalLabel">@lang("Color code")</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-header">
-                        <h5 class="modal-title">@lang("Logs color code")</h5>
-                    </div>
-                    <div class="modal-body row color-div-container">
-                        <div class="col-md-6 dt-grey" title="Gris">@lang("defaut temperature") 1</div>
-                        <div class="col-md-6 dt-red" title="Rouge">@lang("defaut temperature") 2</div>
-                        <div class="col-md-6 dt-blue" title="Bleu">@lang("defaut pression")</div>
-                        <div class="col-md-6 dt-green" title="Vert">@lang("defaut gaz")</div>
-                        <div class="col-md-6 dt-black" title="Noir">@lang("defaut pression") * @lang("defaut temperature") 1</div>
-                        <div class="col-md-6 dt-black" title="Noir">@lang("defaut temperature") 1 * @lang("defaut temperature") 2</div>
-                        <div class="col-md-6 dt-black" title="Noir">@lang("Other")</div>
-                    </div>
-                    <div class="modal-header">
-                        <h5 class="modal-title">@lang("Temperature color code")</h5>
-                    </div>
-                    <div class="modal-body row color-div-container">
-                        <div class="col-md-6 dt-red" title="Rouge">&gt; @lang("than") 90°C</div>
-                        <div class="col-md-6 dt-orange" title="Orange">&gt; @lang("than") 80°C</div>
-                        <div class="col-md-6 dt-green" title="Vert">&lt; @lang("than") 80°C</div>
-                    </div>
+<div class="modal fade" id="colorModal" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="colorModalLabel">@lang("Color code")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">@lang("Logs color code")</h5>
+            </div>
+            <div class="modal-body row color-div-container">
+                <div class="col-md-6 dt-grey" title="Gris">@lang("defaut temperature") 1</div>
+                <div class="col-md-6 dt-red" title="Rouge">@lang("defaut temperature") 2</div>
+                <div class="col-md-6 dt-blue" title="Bleu">@lang("defaut pression")</div>
+                <div class="col-md-6 dt-green" title="Vert">@lang("defaut gaz")</div>
+                <div class="col-md-6 dt-black" title="Noir">@lang("defaut pression") * @lang("defaut temperature") 1</div>
+                <div class="col-md-6 dt-black" title="Noir">@lang("defaut temperature") 1 * @lang("defaut temperature") 2</div>
+                <div class="col-md-6 dt-black" title="Noir">@lang("Other")</div>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">@lang("Temperature color code")</h5>
+            </div>
+            <div class="modal-body row color-div-container">
+                <div class="col-md-6 dt-red" title="Rouge">&gt; @lang("than") 90°C</div>
+                <div class="col-md-6 dt-orange" title="Orange">&gt; @lang("than") 80°C</div>
+                <div class="col-md-6 dt-green" title="Vert">&lt; @lang("than") 80°C</div>
+            </div>
 
-                    <div class="modal-header">
-                        <h5 class="modal-title">@lang("Battery color code")</h5>
-                    </div>
-                    <div class="modal-body row color-div-container">
-                        <div class="col-md-6 dt-red" title="Rouge">&lt; @lang("than") 11V</div>
-                        <div class="col-md-6 dt-orange" title="Orange">&lt; @lang("than") 12V</div>
-                        <div class="col-md-6 dt-green" title="Vert">&gt; @lang("than") 12 V</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
-                    </div>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title">@lang("Battery color code")</h5>
+            </div>
+            <div class="modal-body row color-div-container">
+                <div class="col-md-6 dt-red" title="Rouge">&lt; @lang("than") 11V</div>
+                <div class="col-md-6 dt-orange" title="Orange">&lt; @lang("than") 12V</div>
+                <div class="col-md-6 dt-green" title="Vert">&gt; @lang("than") 12 V</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
             </div>
         </div>
-        <script>
-            @if (isset($time))
-            var server_time = {!!$time!!};
-            @endif
-            @if (isset($logs))
-            var prelogs = {!!json_encode($logs)!!};
-            @endif
-            @if (isset($synth))
-            var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
-            @endif
-        </script>
-        @endsection
+    </div>
+</div>
+<script>
+    @if (isset($time))
+    var server_time = {!!$time!!};
+    @endif
+    @if (isset($logs))
+    var prelogs = {!!json_encode($logs)!!};
+    @endif
+    @if (isset($synth))
+    var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
+    @endif
+</script>
+@endsection

@@ -8,9 +8,6 @@ define(['jquery', 'js-cookie', './graphs-live-google-annotated', 'moment', /*'./
 		localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	});
 
-	$('.color-modal-button').click(function() {
-		$("#colorModal").modal("show");
-	});
     $('#graphs-live-tab').click(function () {
     	var module_names = $('#module-name .selectpicker').val();
         if (Array.isArray(module_names) && module_names.length) {
