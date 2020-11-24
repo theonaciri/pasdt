@@ -68,7 +68,7 @@ function setModuleSelect() {
 }
 
 function onDataReceive() {
-	$('#anychart').css("width", (window.innerWidth-50) + "px").css('height', (window.innerHeight -300) + "px")
+	$('#anychart').css("width", (window.innerWidth-30) + "px").css('height', (window.innerHeight -300) + "px")
 	if (chart != null) chart.dispose();
 	// set theme
 	anychart.theme(theme);
