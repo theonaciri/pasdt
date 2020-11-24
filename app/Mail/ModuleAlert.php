@@ -22,7 +22,8 @@ class ModuleAlert extends Mailable
         $this->i = $infos;
         $this->i->crit = strpos($this->i->type, "CRIT") !== false;
         $this->i->address = json_decode($this->i->address);
-        setlocale(LC_TIME, 'fr_FR.utf8','fra');
+        //setlocale(LC_TIME, 'fr_FR.utf8','fra');
+        setlocale(LC_ALL, $this->i->locale . '.utf8');
         date_default_timezone_set('Europe/Paris');
         if ($this->i->type == "NO_LOG") {
             $this->i->diff = $this::time_ago($this->i->value, $this->i->resolved_at);

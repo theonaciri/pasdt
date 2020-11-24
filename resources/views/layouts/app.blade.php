@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="{{ $locale }}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="@lang('Log monitoring') PASDT">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="@lang('Log monitoring') PASDT" />
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="PASDT PWA">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="PASDT PWA" />
     <title>{{ config('app.name', 'PASDT') }}</title>
-    <link rel="apple-touch-icon" href="/images/logo-192.png">
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="apple-touch-icon" href="/images/logo-192.png">
+    <link rel="apple-touch-icon" href="/images/logo-192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/images/logo-192.png" />
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="/css/anychart-ui.min.css" defer/>
+    <link rel="stylesheet" href="/css/anychart-ui.min.css" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     
     <style>
     @if(!empty($_company->colors))
@@ -149,7 +149,7 @@
         <script src="{{ asset('js/app.es5.js') }}"></script>
     @else
         <script src="{{ asset('js/app.js') }}"></script>
-        <script src="/js/anychart-bundle.js" type="text/javascript" defer></script>
+        <script src="/js/anychart-bundle.js" defer></script>
     @endif
     <script>
         // Register service worker

@@ -65,6 +65,10 @@
 "Temperature": "Température",
 "Theme": "Thème",
 "This table is refreshed every 5 minutes.": "Ce tableau est actualisé toutes les 5 minutes.",
+"Legend": "Légende",
+"Normal temperature": "Température normale",
+"High temperature": "Température haute",
+"Critically high temperature": "Température critiquement haute",
 
 "========= Client =========": "========= Client =========",
 
