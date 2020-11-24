@@ -44,6 +44,7 @@ class NotificationController extends Controller
         $this->getSaveAuthCompany();
         $infos = $this->getUsersInfoFromNotif($notif);
         if ($this->company == -1 && count($infos)) {
+            $infos[0]->locale = $this->user->locale;
             return new ModuleAlert($infos[0]);
         }
         foreach ($infos as $key => $mail) {
@@ -97,7 +98,6 @@ class NotificationController extends Controller
             return ;
         }
         foreach ($usersinfo as $key => $info) {
-            app()->setLocale($info->locale);
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
             if ($info->receive_mails == 1) {
                 try {
