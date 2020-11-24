@@ -168,9 +168,9 @@
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") </p>
-                                                <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") </p>
-                                                <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") </p>
+                                                <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") ( < 60 °C)</p>
+                                                <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") ( < 75 °C)</p>
+                                                <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") ( >= 75 °C)</p>
                                             </div>
                                         </div> <!-- card -->
                                     </div>
