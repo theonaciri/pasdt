@@ -2,9 +2,9 @@
 <h1 style="text-align: center;">@lang($i->crit ? "New critical alert" : "New alert") @lang("for your module")<br>{{ $i->module_name }}</h1>
 <br>
 
-@lang("The") {{strftime("%A %e %B %Y " . __("at") . " %H" . __(":") . "%M", strtotime($i->resolved_at))}}
+@lang("The") {{ $i->resolved_date . " " . __("at") . " " . $i->resolved_time }}
 @if ($i->type === "NO_LOG")
-@lang("the portal has detected that it has not received any data from your module since") __{{ $i->diff }}__, @lang("the") __{{strftime("%A %e %B %Y " . __("at") . " %Hh%M", strtotime($i->value))}}__.
+@lang("the portal has detected that it has not received any data from your module since") __{{ $i->diff }}__, @lang("the") __{{ $i->value_date . " " . __("at") . " " . $i->value_time }}__.
 
 @else
 @lang($i->crit ? "your module triggered the following __CRITICAL__ alert:" : "your module triggered the following alert:") __{{$i->type}}__

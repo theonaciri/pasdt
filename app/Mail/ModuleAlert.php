@@ -23,10 +23,19 @@ class ModuleAlert extends Mailable
         $this->i->crit = strpos($this->i->type, "CRIT") !== false;
         $this->i->address = json_decode($this->i->address);
         //setlocale(LC_TIME, 'fr_FR.utf8','fra');
-        setlocale(LC_ALL, $this->i->locale . '.utf8');
+        app()->setLocale($this->i->locale);
         date_default_timezone_set('Europe/Paris');
+        $fmt = new \IntlDateFormatter($this->i->locale, NULL, NULL);
+        $fmt->setPattern('d MMMM yyyy');
         if ($this->i->type == "NO_LOG") {
             $this->i->diff = $this::time_ago($this->i->value, $this->i->resolved_at);
+            $this->i->value_date = $fmt->format(new \DateTime($this->i->value));
+        }
+        $this->i->resolved_date = $fmt->format(new \DateTime($this->i->resolved_at));
+        $fmt->setPattern('HH' . __(':') . 'mm'); 
+        $this->i->resolved_time = $fmt->format(new \DateTime($this->i->resolved_at));
+        if ($this->i->type == "NO_LOG") {
+            $this->i->value_time = $fmt->format(new \DateTime($this->i->value));
         }
     }
 
