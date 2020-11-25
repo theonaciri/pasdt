@@ -118,7 +118,7 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 					value: "average",
 					x : "created_at"
 				})
-			).name("Average").stroke(colorForAverage);
+			).name(lang("Average")).stroke(colorForAverage);
 
 			var series = plot.spline(mapping)
 				.name(getModuleFromId(active_module).name)
