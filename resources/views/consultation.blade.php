@@ -270,10 +270,10 @@
     @endif
     }
     try {
-        var presynths = JSON.parse(sessionStorage.getItem("presynths"));
+        var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
     } catch (e) {
     @if (isset($synth))
-        var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
+        
     @endif
     }
 </script>

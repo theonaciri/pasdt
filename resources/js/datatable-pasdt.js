@@ -67,21 +67,21 @@ function filterColumn($this) {
 
 function getData(_data, callback, settings) {
   if (prelogs != null && typeof prelogs === "object" && _data.draw === 1) {
-    console.warn('IF: ', _data);
-    callback(prelogs);
+    //console.warn('IF: ', _data);
+    //callback(prelogs);
   } else if (aggressive_cache && _data.draw === 2 && _data.search.value == ""
         && !_data.columns.find(e => e.search.value != "") && _data.start == 0
         && moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "minutes") < 5
         && sessionStorage.getItem("prelogs")) {
     // enter if diff between now and lastonline > 5 mins. If no lastonline, make it so lastonline is 10 mins
     // moment().diff(moment(sessionStorage.getItem("lastonline") || moment().subtract(10, 'minutes'))
-    console.warn('Else if: Received log too soon', _data);
+    // console.warn('Else if: Received log too soon', _data);
     var data = JSON.parse(sessionStorage.getItem("prelogs"));
     $logsDateSync.html(moment(sessionStorage.getItem("lastonline") || server_time * 1000).calendar());
     data.draw = 2;
     callback(data);
   } else {
-    console.warn('Else: ', _data);
+    // console.warn('Else: ', _data);
     _data.interval = [];
     cal_interval.selectedDates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
     _data.onlytemp = onlytemp;
@@ -101,7 +101,7 @@ function getData(_data, callback, settings) {
       document.dispatchEvent(event);
       if (_data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
         data.draw = 1;
-        console.warn('storing', data);
+        // console.warn('storing', data);
         sessionStorage.setItem("prelogs", JSON.stringify(data));
         sessionStorage.setItem("lastonline", received_date.toJSON());
       }
@@ -157,7 +157,7 @@ function initTable() {
         $logsDateSync.html(moment(server_time*1000).calendar());
       }
       setInterval( function () {
-        console.warn('relog');
+        //console.warn('relog');
         table.ajax.reload( null, false ); // user paging is not reset on reload
       }, 5 * 60000 );
 
@@ -211,7 +211,7 @@ function initTable() {
         });
       }); /* / Dropdown */
       document.addEventListener("backonline", function(e) {
-        console.warn('back online');
+        //console.warn('back online');
         table.ajax.reload( null, false );
       });
     } // initComplete
