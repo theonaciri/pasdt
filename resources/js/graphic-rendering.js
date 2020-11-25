@@ -128,15 +128,16 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 			//window.series = series;
 
 			function colorForAverage() {
-				const d = new Date(this.x);
-				const last_date = new Date(data.temps[data.temps.length - 1].created_at);
 				let color = 'DodgerBlue';
 				let dash = 'solid';
+				if(this.x){
+				const d = new Date(this.x);
+				const last_date = new Date(data.temps[data.temps.length - 1].created_at);
 				// change the line style for estimated datas
 				if (d > last_date) {
 					color = 'cyan';
 					dash = '5 5';
-				}
+				}}
 				return {
 					color: color,
 					dash: dash
@@ -173,8 +174,9 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 			});
 
 			tooltip.format(function () {
+				if (this.value){
 				var value = (this.value).toFixed(0);
-				return "Temp: " + value + "°C";
+				return "Temp: " + value + "°C";}
 			});
 
 			// set Y axis label formatter
@@ -190,8 +192,9 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 			//Preset zoom option
 			const startdate = moment().subtract(1, "month").format("YYYY-MM-DD");
 			const now = moment().add(days_estimated, 'days').format("YYYY-MM-DD");
-			chart.selectRange(startdate, now);
-
+			const last_date = moment(data.temps[data.temps.length-1].created_at).format("YYYY-MM-DD");
+			if(startdate < last_date)
+				chart.selectRange(startdate, now);
 
 			// create range picker
 			// var rangePicker = anychart.ui.rangePicker();
