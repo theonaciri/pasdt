@@ -162,6 +162,9 @@ class LogController extends Controller
                     //->whereBetween('created_at', [$from, $to])
                     ->whereIn('cardId', $modules_list)
                     ->whereNotNull('maxtemp')
+                    ->when(!empty($request->input('modules')), function($query) use ($request){
+                        $query->where('cardId', $request->input('modules'));
+                    })
                     ->where('maxtemp', '!=', '-99')
                     ->where('maxtemp', '!=', '785')
                     ->orderBy('created_at', 'ASC')
