@@ -5,43 +5,92 @@ define(['moment'], function (moment) {
 	 * data = [{value : number, x : date()}]
 	 * days = number (of projected days wanted)
 	 */
-	return function getRegressiveCurve(data, days) {
-		const coeff = regLin(data.map(({ maxtemp }) => maxtemp));
-		const timeCoeff = getUnitOfTime(data, days);
-		
-		let tabResult = [];
+	return function getRegressiveCurve(data, days_before, days_after) {
+		let tabResult = data;
 
-		for (let index = 0; index < data.length; index++) {
-			tabResult.push({
-				created_at: data[index].created_at,
-				maxtemp: data[index].maxtemp,
-				average: (Math.round((coeff.a * index + coeff.b) * 100) / 100)
+		const last_data = getValuesOfLastDays(data, days_before);
+
+		const tared_data = getTaredDate(last_data);
+
+		const coeff = regLin(tared_data);
+		
+		//calculate average for existing datas
+		for (let index = tabResult.length-1; index > tabResult.length - last_data.length; index--) {
+			let average = (Math.round((coeff.a * tared_data[index + last_data.length - tabResult.length].x + coeff.b) * 100) / 100);
+			tabResult[index] = ({
+				created_at: tabResult[index].created_at,
+				maxtemp: tabResult[index].maxtemp,
+				average: average
 			})
 		}
+		
+		const unit_of_time = getUnitOfTime(last_data, days_after)/1000;
 
+		const number_of_values_projected = getNumberOfValuesProjected(unit_of_time, days_after);
+		
+		//calculate average for projected datas
 		let estimated_data = [];
-		for (let i = 0; i < timeCoeff.nb; i++) {
+		
+		for (let i = 1; i <= number_of_values_projected; i++) {
 
-			const tempMax = 250;
-			const tempMin = -50;
-			let calculatedTemps = (Math.round((coeff.a * (data.length + i) + coeff.b) * 100) / 100) > tempMax ?
-				tempMax : ((Math.round((coeff.a * (data.length + i) + coeff.b) * 100) / 100) < tempMin) ?
-					tempMin : (Math.round((coeff.a * (data.length + i) + coeff.b) * 100) / 100);
+			let offset = i * unit_of_time; // in second
+
+			const temp_max = 250;
+			const temp_min = -50;
+
+			let calculatedTemps = Math.round((coeff.a * (tared_data[tared_data.length-1].x + offset) + coeff.b) * 100) / 100;
+
+			calculatedTemps = (calculatedTemps > temp_max) ? temp_max : 
+			(calculatedTemps < temp_min) ? temp_min : 
+			calculatedTemps;
 
 			let dateTime = new Date();
-			const last_date = new Date(data[data.length - 1].created_at);
-			dateTime.setTime(last_date.getTime() + (i + 1) * timeCoeff.ut)
+			const last_date = new Date(last_data[last_data.length - 1].created_at);
+			dateTime.setTime(last_date.getTime() + offset * 1000) // "*1000" convert in milliseconds
 			let transformedDate = moment(dateTime).format("YYYY-MM-DD HH:mm:ss");
 
 			estimated_data.push({
-				//average: calculatedTemps,
 				average: calculatedTemps,
 				created_at: transformedDate
 			})
 		}
-
+		
 		tabResult = tabResult.concat(estimated_data);
 		return tabResult;
+	}
+
+	function getTaredDate(last_data){
+		
+		const start_date = new Date(last_data[0].created_at);
+		const tare = start_date.getTime();
+
+		let result = [];
+		let calculated_date;
+	
+		for (let index = 0; index < last_data.length; index++) {
+			calculated_date = ((new Date(last_data[index].created_at)).getTime() - tare) / 1000; // "/1000" convert in second
+			result[index] = {
+				x : calculated_date,
+				y : last_data[index].maxtemp
+			}
+		}
+		return result;
+	}
+
+	function getValuesOfLastDays(data, days_before){
+		const stopdate = moment(data[data.length-1].created_at).subtract(days_before, "days").format("YYYY-MM-DD");
+		let last_data = [];
+		let i = data.length - 1;
+		let current_date;
+
+		do
+		{
+			last_data.unshift(data[i]);
+			current_date = moment(data[i].created_at).format("YYYY-MM-DD");
+			i--;
+		}while(current_date > stopdate && i > 0)
+
+		return last_data;
 	}
 
 	function getUnitOfTime(data, days) {
@@ -61,14 +110,18 @@ define(['moment'], function (moment) {
 			// end_date = last_date;
 		}
 
-		//milliseconds * second * minutes * hours * days (projected on "x" days)
-		let nb_val_calculated = (Math.round(1000 * 60 * 60 * 24 * days / unit_of_time)) < 500 ?
-			(Math.round(1000 * 60 * 60 * 24 * days / unit_of_time)) : 500;
-
-		return { nb: nb_val_calculated, ut: unit_of_time }; //end_date;
+		return unit_of_time;
 	}
 
-	function regLin(points_y) {
+	function getNumberOfValuesProjected (unit_of_time, days){
+		//second * minutes * hours * days (projected on "x" days)
+		let nb_val_calculated = (Math.round(60 * 60 * 24 * days / unit_of_time)) < 500 ?
+			(Math.round(60 * 60 * 24 * days / unit_of_time)) : 500;
+
+		return nb_val_calculated;
+	}
+
+	function regLin(points_xy) {
 		// Ajuste une droite d'équation a*x + b sur les points (x, y) par la méthode
 		// des moindres carrés.
 
@@ -84,16 +137,16 @@ define(['moment'], function (moment) {
 		let x2_sum = 0;
 		let y_sum = 0;
 		let xy_sum = 0;
-		try {
+		try { 
 			// # calcul des sommes
-			for (let index = 0; index < points_y.length; index++) {
-				x_sum += index;
-				x2_sum += index ** 2;
-				y_sum += points_y[index];
-				xy_sum += index * points_y[index];
+			for (let index = 0; index < points_xy.length; index++) {
+				x_sum += points_xy[index].x;
+				x2_sum += points_xy[index].x ** 2;
+				y_sum += points_xy[index].y;
+				xy_sum += points_xy[index].x * points_xy[index].y;
 			}
 			// # nombre de points
-			npoints = points_y.length;
+			npoints = points_xy.length;
 			// # calcul des paramétras
 			const a = (npoints * xy_sum - x_sum * y_sum) / (npoints * x2_sum - x_sum ** 2);
 			const b = (x2_sum * y_sum - x_sum * xy_sum) / (npoints * x2_sum - x_sum ** 2);
@@ -101,6 +154,7 @@ define(['moment'], function (moment) {
 			return { a: a, b: b };
 		} catch (error) {
 			console.log(error);
+			console.log("May be an overload in regressive curve calculation")
 		}
 	}
 

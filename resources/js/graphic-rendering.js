@@ -6,7 +6,8 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 		var theme = localStorage.getItem('graph-theme') || "darkBlue";
 		var active_module = localStorage.getItem('graph-active-module');
 		var interval_var = null;
-		const days_estimated = 3;
+		const days_before = 30;
+		const days_after = 3;
 		
 		function init() {
 			if (chart != null) return; // only one init;
@@ -83,7 +84,7 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 			var dataTable = anychart.data.table('created_at');
 
 			// get regressiveCurve
-			const tempsWithAverage = regressiveCurve(data.temps, days_estimated);
+			const tempsWithAverage = regressiveCurve(data.temps, days_before, days_after);
 
 			// add data
 			dataTable.addData(tempsWithAverage);
@@ -190,11 +191,10 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 			});
 
 			//Preset zoom option
-			const startdate = moment().subtract(1, "month").format("YYYY-MM-DD");
-			const now = moment().add(days_estimated, 'days').format("YYYY-MM-DD");
 			const last_date = moment(data.temps[data.temps.length-1].created_at).format("YYYY-MM-DD");
-			if(startdate < last_date)
-				chart.selectRange(startdate, now);
+			const start_date = moment(last_date).subtract(days_before, "days").format("YYYY-MM-DD");
+			const end_date = moment(last_date).add(days_after, 'days').format("YYYY-MM-DD");
+			chart.selectRange(start_date, end_date);
 
 			// create range picker
 			// var rangePicker = anychart.ui.rangePicker();
