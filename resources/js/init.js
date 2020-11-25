@@ -1,4 +1,4 @@
-define(['jquery', 'js-cookie', './graphs-live-google-annotated', 'moment', /*'./dependencies/moment-fr.js',*/
+define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencies/moment-fr.js',*/
 	'./components/cache', './components/notifs', './bootstrap', 'bootstrap'],
 	function($, cookie, graph_annotated, moment) {
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

@@ -203,6 +203,8 @@
                 <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") (&lt;&nbsp;60&nbsp;°C)</p>
                 <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") (&lt;&nbsp;75&nbsp;°C)</p>
                 <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") (&gt;=&nbsp;75&nbsp;°C)</p>
+                <p><span class="dot" style="background-color:DodgerBlue"></span> @lang("Average")</p>
+                <p><span class="dot" style="background-color:cyan"></span> @lang("Projection")</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
