@@ -260,11 +260,19 @@
     @if (isset($time))
     var server_time = {!!$time!!};
     @endif
+    try {
+        var prelogs = JSON.parse(sessionStorage.getItem("prelogs"));
+    } catch (e) {
     @if (isset($logs))
-    var prelogs = {!!json_encode($logs)!!};
+        var prelogs = {!!json_encode($logs)!!};
     @endif
+    }
+    try {
+        var presynths = JSON.parse(sessionStorage.getItem("presynths"));
+    } catch (e) {
     @if (isset($synth))
-    var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
+        var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
     @endif
+    }
 </script>
 @endsection
