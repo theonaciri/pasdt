@@ -8,6 +8,7 @@ var $logsDateSync = $('#logs-date-sync');
 window.logtable = table;
 var onlytemp = false; //localStorage.getItem('notemp') === "true";
 var noday = false; //localStorage.getItem('noday') === "true";
+var aggressive_cache = true;
 
 function createCalendar() {
   cal_interval = flatpickr('#dateinterval_logtable', {
@@ -64,28 +65,46 @@ function filterColumn($this) {
       $this.val()).draw();
 }
 
-function getData(data, callback, settings) {
-  if (prelogs != null && typeof prelogs === "object") {
+function getData(_data, callback, settings) {
+  if (prelogs != null && typeof prelogs === "object" && _data.draw === 1) {
+    console.warn('IF: ', _data);
     callback(prelogs);
-    if (prelogs != null && typeof prelogs === "object" && prelogs.draw) {
-      prelogs.draw = +prelogs.draw +1;
-    }
+  } else if (aggressive_cache && _data.draw === 2 && _data.search.value == ""
+        && !_data.columns.find(e => e.search.value != "") && _data.start == 0
+        && moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "minutes") < 5
+        && sessionStorage.getItem("prelogs")) {
+    // enter if diff between now and lastonline > 5 mins. If no lastonline, make it so lastonline is 10 mins
+    // moment().diff(moment(sessionStorage.getItem("lastonline") || moment().subtract(10, 'minutes'))
+    console.warn('Else if: Received log too soon', _data);
+    var data = JSON.parse(sessionStorage.getItem("prelogs"));
+    $logsDateSync.html(moment(sessionStorage.getItem("lastonline") || server_time * 1000).calendar());
+    data.draw = 2;
+    callback(data);
   } else {
-    data.interval = [];
-    cal_interval.selectedDates.forEach(function(d) {data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
-    data.onlytemp = onlytemp;
-    data.noday = noday;
-    data.company = getURLParameter("company");
+    console.warn('Else: ', _data);
+    _data.interval = [];
+    cal_interval.selectedDates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
+    _data.onlytemp = onlytemp;
+    _data.noday = noday;
+    _data.company = getURLParameter("company");
     $.ajax({
       "url": "/logs/get",
-      "data": data,
+      "data": _data,
       "timeout": 10000,
     }).done(function(data, a, e) {
       var _date = e.getResponseHeader('date');
-      $logsDateSync.html(moment(_date.slice(_date.lastIndexOf(',') + 1)).calendar());
+      var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
+      console.log('received at ', received_date);
+      $logsDateSync.html(received_date.calendar());
       callback(data);
       var event = new CustomEvent("online", { detail: {request: "logs", data: data }});
       document.dispatchEvent(event);
+      if (_data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
+        data.draw = 1;
+        console.warn('storing', data);
+        sessionStorage.setItem("prelogs", JSON.stringify(data));
+        sessionStorage.setItem("lastonline", received_date.toJSON());
+      }
     }).fail(function(data) {
       $('#main-table_processing').hide("fast");
       var event = new CustomEvent("offline", { detail: {request: "logs", data: data }});
@@ -131,8 +150,6 @@ function initTable() {
       }, 
       'csvHtml5'
     ],
-    /*columns: {!!json_encode($dt_info['labels'])!!},
-    order: {!!json_encode($dt_info['order'])!!},*/
     initComplete: function(settings, json) {
       var table = settings.oInstance.api();
       prelogs = null;
@@ -140,6 +157,7 @@ function initTable() {
         $logsDateSync.html(moment(server_time*1000).calendar());
       }
       setInterval( function () {
+        console.warn('relog');
         table.ajax.reload( null, false ); // user paging is not reset on reload
       }, 5 * 60000 );
 
@@ -154,11 +172,8 @@ function initTable() {
           .on('change', function() {
             var val = $(this).val();
             var count_before = table.page.info().recordsDisplay;
-            if (!val.length || val.length == 1 && !val[0].length) {
-              column.search('', true, false).draw();
-            } else { // /!\ No escape security
-              column.search(val, true, false).draw();
-            }
+            // /!\ No escape security
+            column.search(!val.length || val.length == 1 && !val[0].length ? "" : val, true, false).draw();
             var count_after = table.page.info().recordsDisplay;
             if (count_before < 10 && count_after > count_before || count_after < 10) {
               select.selectpicker('toggle');
@@ -176,19 +191,27 @@ function initTable() {
            });
         }
         geturlmoduleid = undefined;
-
-        if (locale === "fr-fr") {
-          select.selectpicker({actionsBox: true}).change();
-        } else {
-          $.ajaxSetup({ cache: true });
-          $.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
-          .done(function() {
-            select.selectpicker({actionsBox: true}).change();
-          });
-          $.ajaxSetup({ cache: false });
-        }
+        table
+        .on( 'init.dt', function() {
+            //show nothing
+            setTimeout(function(){
+                //show element
+                console.log('access to: ', $(this) );
+                if (locale === "fr-fr") {
+                  select.selectpicker({actionsBox: true}).change();
+                } else {
+                  $.ajaxSetup({ cache: true });
+                  $.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
+                  .done(function() {
+                    select.selectpicker({actionsBox: true}).change();
+                  });
+                  $.ajaxSetup({ cache: false });
+                }
+            }, 0);
+        });
       }); /* / Dropdown */
       document.addEventListener("backonline", function(e) {
+        console.warn('back online');
         table.ajax.reload( null, false );
       });
     } // initComplete
