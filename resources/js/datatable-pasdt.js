@@ -68,7 +68,7 @@ function filterColumn($this) {
 function getData(_data, callback, settings) {
   if (prelogs != null && typeof prelogs === "object" && _data.draw === 1) {
     //console.warn('IF: ', _data);
-    //callback(prelogs);
+    callback(prelogs);
   } else if (aggressive_cache && _data.draw === 2 && _data.search.value == ""
         && !_data.columns.find(e => e.search.value != "") && _data.start == 0
         && moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "minutes") < 5
