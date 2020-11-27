@@ -52,8 +52,7 @@ class ClientController extends Controller
         $this->modules = Module::select('module_id', 'name', 'telit_ratePlan', 'telit_json', 'telit_status')
                                ->where('company_id', $id_company)
                                ->get();
-        //$modulesids = $this->modules->pluck('module_id')->toArray();
-        $this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();
+        /*$this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();*/
         $this->users = User::where('id', '!=', auth()->id())
                            ->where('company_id', $id_company)
                            ->get();
@@ -62,7 +61,6 @@ class ClientController extends Controller
           "user" => $user,
           "company" => $company,
           "modules" => $this->modules,
-          "subscriptions" => $this->subscriptions,
           "users" => $this->users,
           "notifs" => $notifs,
           "official_locales" => json_decode($this::OFFICIAL_LOCALES),

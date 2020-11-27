@@ -390,28 +390,6 @@
     </div>
 </div>
 
-
-@foreach ($subscriptions as $sub)
-
-<!-- Modal -->
-<div class="modal fade" id="subModal_{{$sub->id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubLabel_{{$sub->id}}" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalSubLabel_{{$sub->id}}">JSON</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <pre>
-{{$sub}}
-            </pre>
-        </div>
-    </div>
-</div>
-@endforeach
-
-
 <!-- Modal -->
 <div class="modal fade" id="modalRenderMail" tabindex="-1" role="dialog" aria-labelledby="modalRenderMail" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
