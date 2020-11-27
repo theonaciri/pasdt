@@ -7,7 +7,7 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 		var active_module = localStorage.getItem('graph-active-module');
 		var interval_var = null;
 		const days_before = 30;
-		const days_after = 3;
+		const days_after = 30;
 		
 		function init() {
 			if (chart != null) return; // only one init;
@@ -131,14 +131,19 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 			function colorForAverage() {
 				let color = 'DodgerBlue';
 				let dash = 'solid';
-				if(this.x){
-				const d = new Date(this.x);
-				const last_date = new Date(data.temps[data.temps.length - 1].created_at);
-				// change the line style for estimated datas
-				if (d > last_date) {
+
+				if (this.x){
 					color = 'cyan';
-					dash = '5 5';
-				}}
+					if (this.value >= 60 && this.value < 75) color = '#ecef17';
+					else if (this.value > 75) color = '#ee4237';
+					const d = new Date(this.x);
+					const last_date = new Date(data.temps[data.temps.length - 1].created_at);
+					// change the line style for estimated datas
+					if (d > last_date) {
+						color = color;
+						dash = '5 5';
+					}
+				}
 				return {
 					color: color,
 					dash: dash

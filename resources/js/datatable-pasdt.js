@@ -8,7 +8,7 @@ var $logsDateSync = $('#logs-date-sync');
 window.logtable = table;
 var onlytemp = false; //localStorage.getItem('notemp') === "true";
 var noday = false; //localStorage.getItem('noday') === "true";
-var aggressive_cache = true;
+const aggressive_cache = true;
 
 function createCalendar() {
   cal_interval = flatpickr('#dateinterval_logtable', {
@@ -67,21 +67,17 @@ function filterColumn($this) {
 
 function getData(_data, callback, settings) {
   if (prelogs != null && typeof prelogs === "object" && _data.draw === 1) {
-    //console.warn('IF: ', _data);
     callback(prelogs);
   } else if (aggressive_cache && _data.draw === 2 && _data.search.value == ""
         && !_data.columns.find(e => e.search.value != "") && _data.start == 0
         && moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "minutes") < 5
         && sessionStorage.getItem("prelogs")) {
-    // enter if diff between now and lastonline > 5 mins. If no lastonline, make it so lastonline is 10 mins
-    // moment().diff(moment(sessionStorage.getItem("lastonline") || moment().subtract(10, 'minutes'))
-    // console.warn('Else if: Received log too soon', _data);
+    // enter here if diff between now and lastonline < 5 mins
     var data = JSON.parse(sessionStorage.getItem("prelogs"));
     $logsDateSync.html(moment(sessionStorage.getItem("lastonline") || server_time * 1000).calendar());
     data.draw = 2;
     callback(data);
   } else {
-    // console.warn('Else: ', _data);
     _data.interval = [];
     cal_interval.selectedDates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
     _data.onlytemp = onlytemp;
@@ -94,12 +90,11 @@ function getData(_data, callback, settings) {
     }).done(function(data, a, e) {
       var _date = e.getResponseHeader('date');
       var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
-      console.log('received at ', received_date);
       $logsDateSync.html(received_date.calendar());
       callback(data);
       var event = new CustomEvent("online", { detail: {request: "logs", data: data }});
       document.dispatchEvent(event);
-      if (_data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
+      if (!_data.company && _data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
         data.draw = 1;
         // console.warn('storing', data);
         sessionStorage.setItem("prelogs", JSON.stringify(data));
@@ -152,7 +147,6 @@ function initTable() {
     ],
     initComplete: function(settings, json) {
       var table = settings.oInstance.api();
-      prelogs = null;
       if (server_time) {
         $logsDateSync.html(moment(server_time*1000).calendar());
       }
@@ -196,7 +190,6 @@ function initTable() {
             //show nothing
             setTimeout(function(){
                 //show element
-                console.log('access to: ', $(this) );
                 if (locale === "fr-fr") {
                   select.selectpicker({actionsBox: true}).change();
                 } else {

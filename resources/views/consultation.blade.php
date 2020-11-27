@@ -47,6 +47,25 @@
                                     <th data-priority="2">@lang("Details")</th>
                                 </tr>
                             </thead>
+                            @if (isset($synth))
+                            <tbody>
+                            @foreach ($synth as $s)
+                                @if($loop->even)
+                                <tr role="row" class="even">
+                                @else
+                                <tr role="row" class="odd">
+                                @endif
+                                    <td class="sorting_1">{{$s->name ?? ""}}</td>
+                                    <td>{{$s->msg ?? ""}}</td>
+                                    <td>{{$s->created_at ?? ""}}</td>
+                                    <td>{{$s->maxtemp ?? ""}}</td>
+                                    <td>{{$s->temp_created_at ?? ""}}</td>
+                                    <td><button class="btn btn-secondary openModuleModal">+</button></td>
+                                </tr>
+                                @break($loop->index === 9)
+                            @endforeach
+                            </tbody>
+                            @endif
                             <tfoot>
                                 <tr>
                                     <th class="th-multiselect"><input type="text" class="form-control" placeholder="{{ __('Search') . ' ' . __('Module name') }}" /></th>
@@ -203,8 +222,8 @@
                 <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") (&lt;&nbsp;60&nbsp;°C)</p>
                 <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") (&lt;&nbsp;75&nbsp;°C)</p>
                 <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") (&gt;=&nbsp;75&nbsp;°C)</p>
-                <p><span class="dot" style="background-color:DodgerBlue"></span> @lang("Average")</p>
-                <p><span class="dot" style="background-color:cyan"></span> @lang("Projection")</p>
+                <p><span class="dot" style="background-color:DodgerBlue"></span> @lang(":days last days average", ["days" => 30]) </p>
+                <p><span class="dot" style="background-color:cyan"></span> @lang("Projection :days days in the future", ["days" => 30]) </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
@@ -262,19 +281,20 @@
     @if (isset($time))
     var server_time = {!!$time!!};
     @endif
-    try {
-        var prelogs = JSON.parse(sessionStorage.getItem("prelogs"));
-    } catch (e) {
+
+    var prelogs, presynths = null;
     @if (isset($logs))
-        var prelogs = {!!json_encode($logs)!!};
+        var prelogs = null || {!!json_encode($logs)!!};
     @endif
-    }
     try {
-        var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
-    } catch (e) {
+        var prelogs = JSON.parse(sessionStorage.getItem("prelogs")) || prelogs;
+    } catch (e) {}
+
     @if (isset($synth))
-        
+        var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
     @endif
-    }
+    try {
+        var presynths = JSON.parse(sessionStorage.getItem("presynths")) || presynths;
+    } catch (e) {}
 </script>
 @endsection

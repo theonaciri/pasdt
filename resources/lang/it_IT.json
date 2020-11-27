@@ -70,6 +70,20 @@
 "High temperature": "Alta temperatura",
 "Critically high temperature": "Temperatura criticamente alta",
 
+"========= Graph ==========": "========= Graph ==========",
+
+":days last days average": "Media su :day giorni",
+"Average": "Media",
+"Critically high temperature": "Temperatura criticamente alta",
+"Dark blue": "Blu scuro",
+"High temperature": "Alta temperatura",
+"Legend": "Leggenda",
+"Light blue": "Chiaro",
+"Normal temperature": "Temperatura normale",
+"Projection": "Proiezione",
+"Projection :days days in the future": "Screening :day giorni in futuro",
+"Theme": "Tema",
+
 "========= Client =========": "========= Client =========",
 
 "1<sup>st</sup> occurence": "1<sup>er</sup> occorrenza",
