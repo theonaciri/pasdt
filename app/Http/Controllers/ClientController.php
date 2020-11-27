@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
+use App\Module;
 use App\Notification;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,9 @@ class ClientController extends Controller
         if (empty($company)) {
             return view('consultation');
         }
-        $this->modules = \App\Module::where('company_id', $id_company)->get();
+        $this->modules = Module::select('module_id', 'name', 'telit_ratePlan', 'telit_json', 'telit_status')
+                               ->where('company_id', $id_company)
+                               ->get();
         //$modulesids = $this->modules->pluck('module_id')->toArray();
         $this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();
         $this->users = User::where('id', '!=', auth()->id())

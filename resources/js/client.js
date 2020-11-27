@@ -1,6 +1,7 @@
-define(['jquery', 'moment/moment', './components/getURLParameter', "./components/lang", "./components/moment-fr",
+define(['jquery', 'moment/moment', './components/getURLParameter',
+		"./components/syntaxHighlight", "./components/lang", "./components/moment-fr",
 		'./components/notifs', "./dependencies/jquery.ajaxSubmit"],
-	function($, moment, getURLParameter, lang) {
+	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm(lang("Stop monitoring this module?"))) return ;
@@ -54,6 +55,20 @@ define(['jquery', 'moment/moment', './components/getURLParameter', "./components
 			$('.message-error').removeClass('d-none');
 		}
 	});
+
+	/* json modal*/
+	$('#jsonModal').on('show.bs.modal', function (e) {
+  		var id = $(e.relatedTarget).parent().siblings(".id").html();
+  		var $this = $(this);
+  		$.getJSON("/module/" + id + "/json")
+  		.done(function(telit_json) {
+  			$this.find('pre').html(syntaxHighlight(JSON.stringify(telit_json, null, 2)));
+  		})
+  		.fail(function(e) {
+  			$this.find('pre').html(lang("JSON data missing"));
+  		});
+	});
+
 	/* textarea */
 	$("#comment").keyup(setTextAreaCounter);
 

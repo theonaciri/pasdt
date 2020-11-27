@@ -14,8 +14,9 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/images/logo-192.png" />
 
-    <!-- Fonts -->
+    @if (Route::currentRouteName() == 'consultation')
     <link rel="stylesheet" href="/css/anychart-ui.min.css" />
+    @endif
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
@@ -33,20 +34,20 @@
     <div id="app" data-su_company="{{$_company->id}}">
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
-                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('su_admin')}}" title='@lang("You are taking control of another company. Click here to return to yours")' alt='@lang("You are taking control of another company. Click here to return to yours")'>
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('su_admin')}}" title='{{ ("You are taking control of another company. Click here to return to yours") }}' alt='@lang("You are taking control of another company. Click here to return to yours")'>
                     <span class="oi oi-warning"></span>&nbsp;
                     <span class="oi oi-account-logout"></span>&nbsp;
                 </a>&nbsp;
-                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title='@lang("You are taking control of another company. Click here to return to yours")' alt='@lang("You are taking control of another company. Click here to return to yours")'>
+                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title='{{ ("You are taking control of another company. Click here to return to yours") }}' alt='@lang("You are taking control of another company. Click here to return to yours")'>
     @else
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/consultation') }}" title='@lang("Back to Home")'>
+                <a class="navbar-brand" href="{{ url('/consultation') }}" title='{{ __("Back to Home") }}'>
     @endif
                     @if (!empty($_company))
                         @if (!empty($_company->logo))
-                            <img src="images/companylogos/{{ $_company->logo }}" height="39" alt='@lang("Back to Home")' />
+                            <img src="images/companylogos/{{ $_company->logo }}" height="39" alt='{{ __("Back to Home") }}' />
                         @endif
                         
                         @if ($_company->name )
@@ -149,6 +150,8 @@
         <script src="{{ asset('js/app.es5.js') }}"></script>
     @else
         <script src="{{ asset('js/app.js') }}"></script>
+    @endif
+    @if (Route::currentRouteName() == 'consultation')
         <script src="/js/anychart-bundle.js" defer></script>
     @endif
     <script>

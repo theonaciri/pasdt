@@ -5,6 +5,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive',
 		'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
 function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch, getURLParameter, lang) {
+	if (location.pathname !== "/consultation") return ;
 	var table;
 	var $logsDateSync = $('#synth-date-sync');
 	window.synthtable = table;
@@ -272,13 +273,13 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		document.addEventListener("backonline", function(e) {
 			table.ajax.reload( null, false );
 		});
-		var minutes_offline = moment().diff(moment(sessionStorage.getItem("lastsynthonline") || server_time * 1000), "minutes");
+		var seconds_offline = moment().diff(moment(sessionStorage.getItem("lastsynthonline") || server_time * 1000), "seconds");
 		setTimeout(function() { // Lancer au plus tard dans 5 mins.
 			table.ajax.reload( null, false );
 			setInterval( function () { // Boucle reload de 5min
 				table.ajax.reload( null, false );
 			}, 5 * 60000 );
-		}, Math.max(5 - minutes_offline, 0) * 60000);
+		}, Math.max(5 * 60 - seconds_offline, 0) * 1000);
 	}
 
 	dataTablesEvents();

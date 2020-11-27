@@ -356,9 +356,8 @@ class ModuleController extends Controller
         $user = Auth::user();
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
-        } else {
-            return abort(403);
         }
+            return abort(403);
     }
 
     /**
@@ -370,9 +369,8 @@ class ModuleController extends Controller
         $user = Auth::user();
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
-        } else {
-            return abort(403);
         }
+        return abort(403);
     }
 
     /**
@@ -384,14 +382,12 @@ class ModuleController extends Controller
         $user = Auth::user();
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response($module->telit_json);
-        } else {
-            return abort(403);
         }
+        return abort(403);
     }
 
     public function subscribeNotif(Module $module) {
         $user = Auth::user();
-
         $user->updatePushSubscription($endpoint, $key, $token, $contentEncoding);
     }
 
