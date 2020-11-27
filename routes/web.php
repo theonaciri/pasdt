@@ -63,7 +63,7 @@ Route::put('/module/{module}', 'ModuleController@putModule')->name('module.put')
 Route::delete('/module/{module}', 'ModuleController@deleteModule')->name('module.delete')->middleware('auth');
 Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get')->middleware('auth');
 Route::get('/module/module_id/{module:module_id}', 'ModuleController@getModuleByModuleId')->name('module.getByModuleId')->middleware('auth');
-Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json')->middleware('auth');
+Route::get('/module/{module:module_id}/json', 'ModuleController@getModuleJson')->name('module.get.json')->middleware('auth');
 Route::get('/module', 'ModuleController@index')->name('module')->middleware('auth');
 
 /* CHECKOUT */

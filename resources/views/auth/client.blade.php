@@ -182,7 +182,7 @@
                                 <td class="name">{{$module->name}}</td>
                                 <td class="email">{{$module->telit_ratePlan}}</td>
                                 <td class="button">
-                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal_{{$module->id}}">JSON</button>
+                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal">JSON</button>
                                     <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
                                 </td>
                             </tr>
@@ -375,25 +375,20 @@
     </div>
 </div>
 
-@foreach ($modules as $module)
-
 <!-- Modal -->
-<div class="modal fade" id="jsonModal_{{$module->id}}" tabindex="-1" role="dialog" aria-labelledby="ModalJSONLabel_{{$module->id}}" aria-hidden="true">
+<div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="ModalJSONLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalJSONLabel_{{$module->id}}">JSON</h5>
+                <h5 class="modal-title" id="ModalJSONLabel">JSON</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <pre>
-{{$module->telit_json}}
-            </pre>
+            <pre></pre>
         </div>
     </div>
 </div>
-@endforeach
 
 
 @foreach ($subscriptions as $sub)
@@ -450,7 +445,7 @@
                 <div class="container">
                     <br>
                     <div class="form-group">
-                        <label for="textarea-comment">@lang("Comment on the alert")</label>
+                        <label for="textarea-comment">{{__("Comment on the alert")}}</label>
                         <textarea class="form-control" name="comment" id="comment" rows="2" maxlength="255"></textarea>
                         <span id="count"></span>
                     </div>
@@ -460,7 +455,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-loader" hidden>
-                        <img src="/images/loader.svg" height="37">
+                        <img src="/images/loader.svg" height="37" width="37">
                     </div>
                     <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;@lang("Enregistrer le commentaire")</button>
                 </div>
@@ -484,7 +479,7 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">@lang('Name') }}</label>
+                        <label for="name" class="col-md-4 col-form-label text-md-right">@lang('Name')</label>
 
                         <div class="col-md-6">
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -498,7 +493,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">@lang('E-Mail Address') }}</label>
+                        <label for="email" class="col-md-4 col-form-label text-md-right">@lang('E-Mail Address')</label>
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -512,7 +507,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">@lang('New Password') }}</label>
+                        <label for="password" class="col-md-4 col-form-label text-md-right">@lang('New Password')</label>
 
                         <div class="col-md-6">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -526,7 +521,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">@lang("Confirm Password") }}</label>
+                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">@lang("Confirm Password")</label>
 
                         <div class="col-md-6">
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">

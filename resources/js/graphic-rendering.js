@@ -1,5 +1,6 @@
 define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curve" /*, "anychart", "anychart-jquery"*/],
 	function ($, moment, lang, regressiveCurve) {
+		if (location.pathname !== "/consultation") return ;
 		window.chart = null;
 		var $mod_select = $('#graphModuleSelect');
 		var data = null;

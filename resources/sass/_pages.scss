@@ -388,3 +388,9 @@ tr.success {
   border-radius: 50%;
   display: inline-block;
 }
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: #227d20; }
+.number { color: #8a2796; }
+.boolean { color: #20417d; }
+.null { color: #4c207d; }
+.key { color: #ce3030; }
