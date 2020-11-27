@@ -5,7 +5,7 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive',
 		'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
 function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch, getURLParameter, lang) {
-	if (location.pathname !== "/consultation") return ;
+	if (location.pathname !== "/consultation" && location.pathname !== "/") return ;
 	var table;
 	var $logsDateSync = $('#synth-date-sync');
  	var $reload_btn = $('#synthesis .force-refresh-button');

@@ -3,7 +3,7 @@ define(['jquery',
   /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
 function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
-  if (location.pathname !== "/consultation") return ;
+  if (location.pathname !== "/consultation" && location.pathname !== "/") return ;
   var table, graphdata, active_module, cal_interval;
   var $logsDateSync = $('#logs-date-sync');
   var $reload_btn = $('#home .force-refresh-button');

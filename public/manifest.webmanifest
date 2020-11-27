@@ -1,12 +1,36 @@
 {
-  "manifest_version": 1,
-  "version": "1",
+  "manifest_version": 2,
+  "version": "2",
   "default_locale": "fr",
   "name": "PASDT Consultation de logs",
   "short_name": "PASDT Consultation",
   "description": "PASDT - Consultation de logs",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#3E4EB8",
-  "theme_color": "#2F3BA2"
+  "theme_color": "#2F3BA2",
+  "icons": [
+    {
+      "src": "/images/maskable-192-icon.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/maskable-512-icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Gérer mon parc",
+      "short_name": "Gérer parc",
+      "description": "Voir les dernières notifications et gérer mes modules",
+      "url": "/client?source=pwa",
+      "icons": [{ "src": "/images/svg/go-right.png", "sizes": "48x48 72x72 96x96 128x128 256x256" }]
+    }
+  ]
 }

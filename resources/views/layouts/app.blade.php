@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="@lang('Log monitoring') PASDT" />
+    <meta name="theme-color" content="#2F3BA2">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
