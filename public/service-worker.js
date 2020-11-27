@@ -18,7 +18,11 @@ const filesToCache = [
 var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client', '/register', '/module/'];
 var whitelist = ['fonts/open-iconic', 'images/', 'json/locales/'];
 
+<<<<<<< HEAD
 const staticCacheName = 'pages-cache-v24.4.2';
+=======
+const staticCacheName = 'pages-cache-v22.5';
+>>>>>>> 0271cdb... manifest-icons
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];

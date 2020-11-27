@@ -8,7 +8,11 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+<<<<<<< HEAD
   "background_color": "#448aff",
+=======
+  "background_color": "#3E4EB8",
+>>>>>>> 0271cdb... manifest-icons
   "theme_color": "#2F3BA2",
   "icons": [
     {
