@@ -31,5 +31,5 @@ Route::middleware('auth:api')->get('/store-log', function (Request $request) {
 //Route::middleware('auth:api')->post('/store-data', 'LogController@storeData')->name('store.log.post');
 Route::post('/log', 'LogController@storeData')->name('store.log.post');
 Route::post('/logbatch', 'LogController@storeDataBatch')->name('store.logbatch.post');
-Route::post('/nolog', 'NotificationController@noData')->name('api.store.nolog.post');
-Route::get('/nolog', 'NotificationController@noData')->name('api.get.nolog.post');
+// Route::post('/nolog', 'NotificationController@noData')->name('api.store.nolog.post');
+// Route::get('/nolog', 'NotificationController@noData')->name('api.get.nolog.post');
