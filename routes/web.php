@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/nolog', 'NotificationController@noData')->name('get.nolog.post');
-Route::post('/nolog', 'NotificationController@noData')->name('store.nolog.post');
+// Route::get('/nolog', 'NotificationController@noData')->name('get.nolog.post');
+// Route::post('/nolog', 'NotificationController@noData')->name('store.nolog.post');
 
 Route::group(['middleware' => ['locale']], function() {
 	Auth::routes();
