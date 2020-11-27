@@ -29,12 +29,10 @@
 
 "========= Monitoring =========": "========= Surveillance =========",
 
-"Average": "Moyenne",
 "Battery": "Batterie",
 "Color code": "Code couleurs",
 "Custom": "Custom",
 "Battery color code": "Code couleurs de la battery",
-"Dark blue": "Bleu sombre",
 "Date": "Date",
 "Default": "Défaut",
 "Details": "Détails",
@@ -45,7 +43,6 @@
 "Last refresh": "Dernière actualisation",
 "Last temp.": "Dernière temp.",
 "Last temp. date": "Date de dernière temp.",
-"Light blue": "Clair",
 "Log analysis": "Analyse de logs",
 "Logs": "Logs",
 "Logs color code": "Code couleurs des logs",
@@ -64,12 +61,21 @@
 "Temperature color code": "Code couleurs de la température",
 "Temperature graphs": "Graphes de température",
 "Temperature": "Température",
-"Theme": "Thème",
 "This table is refreshed every 5 minutes.": "Ce tableau est actualisé toutes les 5 minutes.",
-"Legend": "Légende",
-"Normal temperature": "Température normale",
-"High temperature": "Température haute",
+
+"========= Graph ==========": "========= Graph ==========",
+
+":days last days average": "Moyenne sur :days jours",
+"Average": "Moyenne",
 "Critically high temperature": "Température critiquement haute",
+"Dark blue": "Bleu sombre",
+"High temperature": "Température haute",
+"Legend": "Légende",
+"Light blue": "Clair",
+"Normal temperature": "Température normale",
+"Projection": "Projection",
+"Projection :days days in the future": "Projection :days jours dans le futur",
+"Theme": "Thème",
 
 "========= Client =========": "========= Client =========",
 

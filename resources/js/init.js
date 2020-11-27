@@ -8,7 +8,7 @@ define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencie
 		localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	});
 
-    $('#graphs-live-tab').click(function () {
+    $('#graphs-live-tab').on("click", function () {
     	var module_names = $('#module-name .selectpicker').val();
         if (Array.isArray(module_names) && module_names.length) {
 		  var mod_name = module_names[0];
@@ -25,7 +25,7 @@ define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencie
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 	$('#' + opened_tab).click();
 
-	$('#logoff-button, #reconnect-button').click(function(event) {
+	$('#logoff-button, #reconnect-button').on("click", function(event) {
 		event.preventDefault();
        	if(window.navigator && navigator.serviceWorker) {
           	navigator.serviceWorker.getRegistrations()
