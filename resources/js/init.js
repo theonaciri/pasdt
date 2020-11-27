@@ -23,7 +23,7 @@ define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencie
     });
 
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
-	$('#' + opened_tab).click();
+	document.getElementById(opened_tab).click();
 
 	$('#logoff-button, #reconnect-button').on("click", function(event) {
 		event.preventDefault();

@@ -66,46 +66,40 @@ function filterColumn($this) {
 }
 
 function getData(_data, callback, settings) {
-  if (prelogs != null && typeof prelogs === "object" && _data.draw === 1) {
+  var lastonline = sessionStorage.getItem("lastonline");
+  if (_data.draw === 1 && prelogs != null && typeof prelogs === "object"
+      && _data.search.value == "" && !_data.columns.find(e => e.search.value != "")
+      && _data.start == 0) {
+    $logsDateSync.html(moment(lastonline || server_time * 1000).calendar());
     callback(prelogs);
-  } else if (aggressive_cache && _data.draw === 2 && _data.search.value == ""
-        && !_data.columns.find(e => e.search.value != "") && _data.start == 0
-        && moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "minutes") < 5
-        && sessionStorage.getItem("prelogs")) {
-    // enter here if diff between now and lastonline < 5 mins
-    var data = JSON.parse(sessionStorage.getItem("prelogs"));
-    $logsDateSync.html(moment(sessionStorage.getItem("lastonline") || server_time * 1000).calendar());
-    data.draw = 2;
-    callback(data);
-  } else {
-    _data.interval = [];
-    cal_interval.selectedDates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
-    _data.onlytemp = onlytemp;
-    _data.noday = noday;
-    _data.company = getURLParameter("company");
-    $.ajax({
-      "url": "/logs/get",
-      "data": _data,
-      "timeout": 10000,
-    }).done(function(data, a, e) {
-      var _date = e.getResponseHeader('date');
-      var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
-      $logsDateSync.html(received_date.calendar());
-      callback(data);
-      var event = new CustomEvent("online", { detail: {request: "logs", data: data }});
-      document.dispatchEvent(event);
-      if (!_data.company && _data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
-        data.draw = 1;
-        // console.warn('storing', data);
-        sessionStorage.setItem("prelogs", JSON.stringify(data));
-        sessionStorage.setItem("lastonline", received_date.toJSON());
-      }
-    }).fail(function(data) {
-      $('#main-table_processing').hide("fast");
-      var event = new CustomEvent("offline", { detail: {request: "logs", data: data }});
-      document.dispatchEvent(event);
-    });
+    return ;
   }
+  _data.interval = [];
+  cal_interval.selectedDates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
+  _data.onlytemp = onlytemp;
+  _data.noday = noday;
+  _data.company = getURLParameter("company");
+  $.ajax({
+    "url": "/logs/get",
+    "data": _data,
+    "timeout": 10000,
+  }).done(function(data, a, e) {
+    var _date = e.getResponseHeader('date');
+    var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
+    $logsDateSync.html(received_date.calendar());
+    callback(data);
+    var event = new CustomEvent("online", { detail: {request: "logs", data: data }});
+    document.dispatchEvent(event);
+    if (!_data.company && _data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
+      data.draw = 1;
+      sessionStorage.setItem("prelogs", JSON.stringify(data));
+      sessionStorage.setItem("lastonline", received_date.toJSON());
+    }
+  }).fail(function(data) {
+    $('#main-table_processing').hide("fast");
+    var event = new CustomEvent("offline", { detail: {request: "logs", data: data }});
+    document.dispatchEvent(event);
+  });
 } // getData
 
 function initTable() {
@@ -147,14 +141,6 @@ function initTable() {
     ],
     initComplete: function(settings, json) {
       var table = settings.oInstance.api();
-      if (server_time) {
-        $logsDateSync.html(moment(server_time*1000).calendar());
-      }
-      setInterval( function () {
-        //console.warn('relog');
-        table.ajax.reload( null, false ); // user paging is not reset on reload
-      }, 5 * 60000 );
-
       $('#main-table tfoot input').on( 'keyup', function () {
         filterColumn($(this));
       });
@@ -167,7 +153,9 @@ function initTable() {
             var val = $(this).val();
             var count_before = table.page.info().recordsDisplay;
             // /!\ No escape security
-            column.search(!val.length || val.length == 1 && !val[0].length ? "" : val, true, false).draw();
+            if (val.length > 1) {
+              column.search(val, true, false).draw();
+            }
             var count_after = table.page.info().recordsDisplay;
             if (count_before < 10 && count_after > count_before || count_after < 10) {
               select.selectpicker('toggle');
@@ -203,13 +191,23 @@ function initTable() {
             }, 0);
         });
       }); /* / Dropdown */
-      document.addEventListener("backonline", function(e) {
-        //console.warn('back online');
-        table.ajax.reload( null, false );
-      });
     } // initComplete
   }); // table
   $.ajaxSetup({ cache: false });
+  autoReload();
 }
+
+function autoReload() {
+  document.addEventListener("backonline", function(e) {
+    table.ajax.reload( null, false );
+  });
+  var minutes_offline = moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "minutes");
+  setTimeout(function() { // Lancer au plus tard dans 5 mins.
+    setInterval( function () { // Boucle reload de 5min
+      table.ajax.reload( null, false );
+    }, 5 * 60000 );
+  }, Math.max(5 - minutes_offline, 0) * 60000);
+}
+
 initTable();
 });
