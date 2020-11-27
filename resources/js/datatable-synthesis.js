@@ -265,16 +265,21 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 				}
 			});
 		});
-		if (moment().diff(moment(sessionStorage.getItem("lastsynthonline") || server_time * 1000), "minutes") >= 5) {
-	        table.ajax.reload( null, false );
-		}
-	    document.addEventListener("backonline", function(e) {
-	        table.ajax.reload( null, false );
-	    });
-		setInterval( function () {
-	        table.ajax.reload( null, false ); // user paging is not reset on reload
-	    }, 5 * 60000 );
+		autoReload();
+	} /* initTable */
+
+	function autoReload() {
+		document.addEventListener("backonline", function(e) {
+			table.ajax.reload( null, false );
+		});
+		var minutes_offline = moment().diff(moment(sessionStorage.getItem("lastsynthonline") || server_time * 1000), "minutes");
+		setTimeout(function() { // Lancer au plus tard dans 5 mins.
+			setInterval( function () { // Boucle reload de 5min
+				table.ajax.reload( null, false );
+			}, 5 * 60000 );
+		}, Math.max(5 - minutes_offline, 0) * 60000);
 	}
+
 	dataTablesEvents();
 
 	function dataTablesEvents() {
