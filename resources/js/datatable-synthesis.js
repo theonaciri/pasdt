@@ -274,6 +274,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		});
 		var minutes_offline = moment().diff(moment(sessionStorage.getItem("lastsynthonline") || server_time * 1000), "minutes");
 		setTimeout(function() { // Lancer au plus tard dans 5 mins.
+			table.ajax.reload( null, false );
 			setInterval( function () { // Boucle reload de 5min
 				table.ajax.reload( null, false );
 			}, 5 * 60000 );
