@@ -20,5 +20,6 @@ npm-debug.log
 yarn-error.log
 composer.lock
 debug.log
+composer.lock
 *~
 #*#
