@@ -6,6 +6,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
   if (location.pathname !== "/consultation") return ;
   var table, graphdata, active_module, cal_interval;
   var $logsDateSync = $('#logs-date-sync');
+  var $reload_btn = $('#home .force-refresh-button');
   window.logtable = table;
   var onlytemp = false; //localStorage.getItem('notemp') === "true";
   var noday = false; //localStorage.getItem('noday') === "true";
@@ -96,6 +97,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
         sessionStorage.setItem("prelogs", JSON.stringify(data));
         sessionStorage.setItem("lastonline", received_date.toJSON());
       }
+      hideReloadBtn();
     }).fail(function(data) {
       $('#main-table_processing').hide("fast");
       var event = new CustomEvent("offline", { detail: {request: "logs", data: data }});
@@ -198,11 +200,32 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
     autoReload();
   }
 
+  $reload_btn.on('click', function() {
+    table.ajax.reload(null, false);
+    hideReloadBtn();
+  })
+
+  function hideReloadBtn() {
+    $reload_btn.css("opacity", "0").attr('disabled', true);
+    setTimeout(function() {
+      $reload_btn.css("opacity", "1").attr('disabled', false);
+    }, 60000);
+  }
+
   function autoReload() {
     document.addEventListener("backonline", function(e) {
       table.ajax.reload( null, false );
     });
     var seconds_offline = moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "seconds");
+    
+    if (seconds_offline >= 60) {
+      $reload_btn.css("opacity", "1").attr('disabled', false);
+    } else {
+      setTimeout(function() {
+        $reload_btn.css("opacity", "1").attr('disabled', false);
+      }, Math.min(60 - seconds_offline) * 1000);
+    }
+
     setTimeout(function() { // Lancer au plus tard dans 5 mins.
       table.ajax.reload( null, false );
       setInterval( function () { // Boucle reload de 5min
