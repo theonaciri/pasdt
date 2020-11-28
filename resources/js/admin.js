@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"],
 	function ($, lang, flatten) {
 		if (window.location.pathname.indexOf("admin") < 0) return;
@@ -21,6 +22,86 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 					}
 					htmlcontent += '</td><td class="name" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="' + lang("Modify the logo") + ' ' + lang("of") + ' ' + company.name + '">' + company.name + '</td><td><button type="button" data-id="' + company.id.toString() + '" title="' + lang("See") + '" name="see" class="btn btn-primary companybtn" data-toggle="modal" data-target="#companyUsersModal"><span class="oi oi-people"></span></button></td><td><button type="button" data-id="' + company.id.toString() + '" title="' + lang("Modify") + '" name="modify" class="btn btn-primary companymodulesbtn" data-toggle="modal" data-target="#company-modules-modal"><span class="oi oi-box"></span></button></td><td><button type="button" data-id="' + company.id.toString() + '" title="' + lang("Delete") + '" name="delete" class="btn btn-danger companydeletebtn" data-toggle="modal" data-target="#company-delete-modal"><span class="oi oi-circle-x"></span></button></td></tr>';
 					$('#adminTable tbody').append(htmlcontent);
+=======
+define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], function ($, lang, flatten) {
+	if (window.location.pathname.indexOf("admin") < 0) return;
+	var company_modules = [];
+	$('#edit-user-modal').on('shown.bs.modal', function (e) { })
+
+	$('.revoqbtn').click(function (e) {
+		var id = $(this).parent().siblings('.id').html();
+		var $p = $(this).parent();
+		var n = $p.siblings('.name').html();
+		if (confirm(lang("Delete the account of ") + n + ' ?')) {
+			location.href = '/user/delete/' + id;
+		}
+	});
+
+	$('.modifbtn').click(function (e) {
+		var $p = $(this).parent();
+		var id = $p.siblings('.id').html();
+		$('#name').val($p.siblings('.name').html());
+		$('#email').val($p.siblings('.email').html());
+		//$('#name').val($p.siblings('.name').html());
+
+	});
+
+
+	$('#colors').on('change', function (e) {
+		$('body').css('background-color', $(this).val());
+	})
+
+	$('#adminTable td.logo').click(function () {
+		location.href = "/client?company=" + $(this).parent().data('id') + "#customize-client";
+	});
+	$('#adminTable td.colors').click(function () {
+		location.href = "/client?company=" + $(this).parent().data('id') + "#customize-client";
+	});
+	$('#adminTable td.name').click(function () {
+		location.href = "/consultation?company=" + $(this).parent().data('id');
+	});
+
+	$('.companybtn').click(function (e) {
+		var id = $(this).data('id');
+		var companyname = $(this).parent().siblings('.name').html();
+		$.getJSON("/company/" + id + "/users", function (users) {
+			$mod = $('#companyUsersModal');
+			$mod.modal("show");
+			$mod.find('.modal-title > span').html(companyname);
+
+			var htmlcontent = '';
+			for (var i = 0; i < users.length; i++) {
+				htmlcontent +=
+					`<tr ${users[i].is_client_company ? 'class="highlight"' : ''}>
+            		<td class="name">${users[i].name}</td>
+					<td class="email">${users[i].email}</td>
+					<td>
+                    	<button type="button" data-id="${users[i].id}" title='@lang("Delete")' name="delete" class="btn userdeletebtn"><span class="oi oi-circle-x"></span></button>
+                    </td>
+				 <tr>`
+				 
+			}
+			$mod.find('tbody').html(htmlcontent);
+		})
+	});
+
+	$('.companymodulesbtn').click(function (e) {
+		var company_id = $(this).data('id');
+		var companyname = $(this).parent().siblings('.name').html();
+		$('#company_id').val(company_id);
+		$.getJSON("/company/" + company_id + "/modules", function (_modules) {
+			company_modules = _modules;
+			$mod = $('#companyModulesModal');
+			$mod.modal("show");
+			$mod.find('.modal-title > span').html(companyname);
+			$("#linkmodule").ajaxSubmit({
+				url: function () {
+					return '/company/' + company_id + '/module/' + $('#selectLinkModule').val();
+				},
+				success: function (e) {
+					$(this).find(`option[value="${$('#selectLinkModule').val()}"]`).remove();
+					$('#moduleTable tbody').append(moduleTableTr(e));
+>>>>>>> 2408656... front done, back in progress
 				}
 			});
 		});

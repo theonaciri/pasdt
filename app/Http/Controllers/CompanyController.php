@@ -79,6 +79,10 @@ class CompanyController extends Controller
 
     public function createCompany(Request $request)
     {
+<<<<<<< HEAD
+=======
+        dd($request);
+>>>>>>> 2408656... front done, back in progress
         $user = Auth::user();
         if (!$user->su_admin) {
             return abort(403);
@@ -90,7 +94,11 @@ class CompanyController extends Controller
             route('image.upload.post', ['company' => $company->id]);
         }
 
+<<<<<<< HEAD
         return response($company, 201); //json(["ok" => "ok"]);
+=======
+        return response()->json(["ok" => "ok"]);
+>>>>>>> 2408656... front done, back in progress
     }
 
     /**
