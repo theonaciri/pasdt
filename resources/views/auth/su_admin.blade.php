@@ -10,6 +10,7 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
+<<<<<<< HEAD
                 <div class="card-header row align-items-end">
                     <div class="col text-left">@lang("List of companies")</div>
                     <div class="col text-right">
@@ -17,6 +18,11 @@
                             <span class="oi oi-plus"></span>&nbsp;@lang("Add company")
                         </button>
                     </div>
+=======
+                <div class="card-header row">
+                    <div class="col text-left align-bottom">@lang("List of companies")</div>
+                    <div class="col text-right"><button type="button" class="btn btn-light" title='@lang("Add")' name="addCompany" data-toggle="modal" data-target="#addCompanyModal">@lang("Add company") <span class="oi oi-plus"></span></button></div>
+>>>>>>> 2408656... front done, back in progress
                 </div>
                 <div class="card-body">
                     <table id="adminTable" class="table stripe">
@@ -196,11 +202,18 @@
 -->
 
 <!-- Modal -->
+<<<<<<< HEAD
 <div class="modal fade" id="createCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="createCompany" method="POST" action="{{ route('company.create') }}">
             @csrf
+=======
+<div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="createCompany" method="POST" action="{{ route('company.create') }}">
+>>>>>>> 2408656... front done, back in progress
                 <!-- rajouter controle admin -->
                 <div class="modal-header">
                     <h5 class="modal-title">@lang("Add company")</h5>
@@ -227,11 +240,19 @@
                         <label for="color" class="col-md-3 col-form-label text-md-right">@lang("Color")</label>
                         <input type="color" name="colors" id="colors" class="col-md-8 form-control" value="#f8fafc">
                     </div>
+<<<<<<< HEAD
 <!-- 
                     <div class="row">
                         <label for="image" class="col-md-3 col-form-label text-md-right">@lang("Logo")</label>
                         <input type="file" name="image" class="col">
                     </div> -->
+=======
+
+                    <div class="row">
+                        <label for="image" class="col-md-3 col-form-label text-md-right">@lang("Logo")</label>
+                        <input type="file" name="image" class="col">
+                    </div>
+>>>>>>> 2408656... front done, back in progress
                 </div>
                 <div class="modal-footer">
                     <input class="btn btn-primary" type="submit" value='@lang("Add company")'>
