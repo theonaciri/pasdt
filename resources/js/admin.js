@@ -1,7 +1,15 @@
-define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], function ($, lang, flatten) {
+define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"], 
+function ($, lang, flatten) {
 	if (window.location.pathname.indexOf("admin") < 0) return;
 	var company_modules = [];
 	$('#edit-user-modal').on('shown.bs.modal', function (e) { })
+
+	// $(document).ready(function() { 
+		// bind 'myForm' and provide a simple callback function 
+		$('#createCompany').ajaxForm(function(e) {
+			alert("Company created !"); 
+		}); 
+	// }); 
 
 	$('.revoqbtn').click(function (e) {
 		var id = $(this).parent().siblings('.id').html();

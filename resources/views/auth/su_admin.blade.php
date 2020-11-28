@@ -12,7 +12,11 @@
             <div class="card">
                 <div class="card-header row">
                     <div class="col text-left align-bottom">@lang("List of companies")</div>
-                    <div class="col text-right"><button type="button" class="btn btn-light" title='@lang("Add")' name="addCompany" data-toggle="modal" data-target="#addCompanyModal">@lang("Add company") <span class="oi oi-plus"></span></button></div>
+                    <div class="col text-right">
+                        <button type="button" class="btn btn-light" title='@lang("Add")' name="addCompany" data-toggle="modal" data-target="#createCompanyModal">
+                            @lang("Add company") <span class="oi oi-plus"></span>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table id="adminTable" class="table stripe">
@@ -192,7 +196,7 @@
 -->
 
 <!-- Modal -->
-<div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<div class="modal fade" id="createCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="createCompany" method="POST" action="{{ route('company.create') }}">
