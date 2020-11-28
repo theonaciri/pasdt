@@ -16,12 +16,16 @@
                                     <span class="oi oi-envelope-closed"></span>&nbsp;@lang("Activate mails")
                                 </label>
                             </div>
+
+                            @if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+                            @else
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="toggleNotifStatus">
                                 <label class="form-check-label" for="toggleNotifStatus">
                                     <span class="oi oi-bell"></span>&nbsp;@lang("Activate notifications (keep this tab open)")
                                 </label>
                             </div>
+                            @endif
                         </div>
                         <div class="col-12 alert alert-danger d-none" id="notif-error" role="alert">
                             @lang("You must first autorise browser notifications.")
@@ -242,8 +246,8 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">@lang("Change the language")</div>
-                <div class="card-body container">
+                <div class="card-header">@lang("Select the language")</div>
+                <div class="card-body">
                     @if ($message = Session::get('success-locale'))
                     <div class="alert alert-success alert-block">
                         <button type="button" class="close" data-dismiss="alert">×</button>
@@ -260,11 +264,10 @@
                         </ul>
                     </div>
                     @endif
-                    <form class="row" id="localeform" action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
+                    <form id="localeform" action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group col-md-8">
-                            <label for="locale">@lang("Select the language")</label>
-                            <select class="form-control" id="locale" name="locale">
+                        <div class="input-group">
+                            <select class="custom-select" id="inputGroupSelect04" aria-label="@lang('Select the language')">
                                 <optgroup label="{{ __('Fully supported languages') }}">
                                     @foreach ($official_locales as $key => $loc)
                                     <option value="{{$key}}" {{ $phplocale == $key ? "selected" : ''}}>{{$loc}}</option>
@@ -276,9 +279,9 @@
                                     @endforeach
                                 </optgroup>
                             </select>
-                        </div>
-                        <div class="form-group col-md-4 submit-container">
-                            <button type="submit" class="btn btn-success submit-lang">@lang("Change the language")</button>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-success submit-lang">@lang("Change the language")</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -297,39 +300,40 @@
                 <div class="card-body">
                     <h3>@lang("Actual logo")</h3>
 
-                    <img src="images/companylogos/{{ $company->logo }}" height="39">
+                    <img src="images/companylogos/{{ $company->logo }}" height="39" alt="client logo">
                     <br>
                     <br>
-                    @if($self->is_client_company)
-                        @if ($message = Session::get('success'))
-                        <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
-                        @endif
-                        @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                        <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    <input type="file" name="image" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4 submit-container">
-                                    <button type="submit" class="btn btn-success">@lang("Update the logo")</button>
-                                </div>
-                            </div>
-                        </form>
+                @if($self->is_client_company)
+                    @if ($message = Session::get('success'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
                     @endif
+                    @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                    <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="compnay-logo-input" aria-describedby="inputGroupFileAddon04">
+                                <label class="custom-file-label" for="compnay-logo-input">@lang("Choose file")</label>
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="button" id="inputGroupFileAddon04">@lang("Update the logo")</button>
+                            </div>
+                        </div>
+                    </form>
+                @endif
                 </div>
             </div>
         </div>
@@ -359,13 +363,10 @@
                         @endif
                         <form action="{{ $su_applied ? route('company.colors.post', ['company' => $_company->id]) : route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}">
-                                </div>
-                                <div class="form-group col-md-4 submit-container">
-                                    <button type="submit" class="btn btn-success">@lang("Modify the colors")</button>
-                                </div>
+                            <div class="input-group mb-3">
+                                <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}" placeholder="@lang('Modify the colors')" aria-label="@lang('Modify the colors')">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="submit">@lang("Modify the colors")</button>
                             </div>
                         </form>
                     @endif

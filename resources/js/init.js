@@ -19,7 +19,9 @@ define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencie
 			}
 		  }
         }
-     	graph_annotated.init();
+        if (location.pathname === "/consultation" || location.pathname === "/") {
+     		graph_annotated.init();
+        }
     });
 
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
