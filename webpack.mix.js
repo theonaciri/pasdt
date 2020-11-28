@@ -37,8 +37,9 @@ mix.webpackConfig({
 
 if (!mix.inProduction()) {
   require('laravel-mix-bundle-analyzer');
-  //mix.bundleAnalyzer();
+  mix.bundleAnalyzer();
   mix.js('resources/js/app.js', 'public/js')
+  mix.js('resources/js/extra-monitoring.js', 'public/js')
      //.babel('public/js/app.js', 'public/js/app.es5.js')
      //.js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
      //.js('resources/js/checkout.js', 'public/js')
@@ -49,9 +50,12 @@ if (!mix.inProduction()) {
 } else {
   //require('laravel-mix-polyfill');
   mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
-  mix.js(['resources/js/dependencies/polyfills/find.js', 'resources/js/dependencies/polyfills/dispatch-event.js', 'resources/js/app.js'], 'public/js/app.es5.js')
+     .js('resources/js/extra-monitoring.js', 'public/js')
+     .babel('public/js/extra-monitoring.js', 'public/js/extra-monitoring.es5.js')
+     .sass('resources/sass/app.scss', 'public/css')
+     .js(['resources/js/dependencies/polyfills/find.js', 'resources/js/dependencies/polyfills/dispatch-event.js', 'resources/js/app.js'], 'public/js/app.es5.js')
      .babel('public/js/app.es5.js', 'public/js/app.es5.js')
+     
 }
 /*
 

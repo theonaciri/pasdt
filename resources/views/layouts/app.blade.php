@@ -14,11 +14,6 @@
     <link rel="apple-touch-icon" href="/images/logo-192.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/images/logo-192.png" />
-
-    @if (Route::currentRouteName() == 'consultation')
-    <link rel="stylesheet" href="/css/anychart-ui.min.css" />
-    @endif
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     
@@ -149,12 +144,8 @@
     @elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
         <script src="{{ asset('js/app.es5.js') }}"></script>
-        <script src="/js/anychart-bundle.js"></script>
     @else
         <script src="{{ asset('js/app.js') }}"></script>
-        @if (Route::currentRouteName() == 'consultation' || Route::currentRouteName() == 'welcome')
-            <script src="/js/anychart-bundle.js" defer></script>
-        @endif
     @endif
     <script>
         // Register service worker
