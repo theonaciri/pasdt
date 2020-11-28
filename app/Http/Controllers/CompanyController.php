@@ -90,7 +90,7 @@ class CompanyController extends Controller
             route('image.upload.post', ['company' => $company->id]);
         }
 
-        return response()->json(["ok" => "ok"]);
+        return response($company, 201); //json(["ok" => "ok"]);
     }
 
     /**
