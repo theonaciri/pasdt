@@ -27,7 +27,7 @@
                     <a class="nav-link {{ (empty(request('tab')) || request('tab') === 'synthesis') ? 'active' : '' }}" id="synth-tab" data-toggle="tab" href="#synthesis" role="tab" aria-controls="synthesis" aria-selected="true">@lang("Summary of anomalies") PASDT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">@lang("Log analysis")</a>
+                    <a class="nav-link {{ request('tab') === 'home' ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="false">@lang("Log analysis")</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request('tab') === 'graph-lives' ? 'active' : '' }}" id="graphs-live-tab" data-toggle="tab" href="#graphs-live" role="tab" aria-controls="graphs-live" aria-selected="false">@lang("Temperature graphs")</a>
@@ -184,6 +184,10 @@
                             </div>
                         </div>
                     </div>
+                    @if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+                    <p>Le graph n'est pas disponible sur Internet Explorer, utilisez Firefox, Chrome ou Safari.</p>
+                    @endif
+
                     <div id="anychart" style="width: 640px; height: 480px;"></div>
                     <br>
                     <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#moduleGraphColorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
