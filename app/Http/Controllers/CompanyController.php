@@ -79,7 +79,6 @@ class CompanyController extends Controller
 
     public function createCompany(Request $request)
     {
-        dd($request);
         $user = Auth::user();
         if (!$user->su_admin) {
             return abort(403);
