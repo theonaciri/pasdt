@@ -19,6 +19,7 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 
 			//})
 		}
+		return { init: init, "a": "ok" };
 		$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
 		$('#themeSelect').on('change', function () {
 			// recreate chart to reset theme
@@ -279,5 +280,5 @@ define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curv
 		}
 		*/
 
-		return { init: init };
+		return { init: init, "a": "ok" };
 	});

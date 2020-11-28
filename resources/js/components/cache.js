@@ -1,4 +1,4 @@
-define(['jquery', './polyfill-dispatch-event', '../bootstrap', 'bootstrap'], function($) {
+define(['jquery', '../bootstrap', 'bootstrap'], function($) {
     if (window.location.pathname.indexOf("password")) return ;
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
