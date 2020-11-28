@@ -376,6 +376,7 @@
                         <strong>{{ $message }}</strong>
                     </div>
                     <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
+<<<<<<< HEAD
                     @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -387,6 +388,19 @@
                         </ul>
                     </div>
                     @endif
+=======
+                    @endif
+                    @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+>>>>>>> fe96494... compat IE + css input client
                     <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group">

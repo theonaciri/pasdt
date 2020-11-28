@@ -19,10 +19,14 @@ var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client', '/registe
 var whitelist = ['fonts/open-iconic', 'images/', 'json/locales/'];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const staticCacheName = 'pages-cache-v24.4.2';
 =======
 const staticCacheName = 'pages-cache-v22.5';
 >>>>>>> 0271cdb... manifest-icons
+=======
+const staticCacheName = 'pages-cache-v22.6';
+>>>>>>> fe96494... compat IE + css input client
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];

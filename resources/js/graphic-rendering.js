@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 define(["jquery", 'moment', "./components/getURLParameter", "./components/lang", "./dependencies/regressive-curve" /*, "anychart", "anychart-jquery"*/],
 function ($, moment, getURLParameter, lang, regressiveCurve) {
+=======
+define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curve" /*, "anychart", "anychart-jquery"*/],
+function ($, moment, lang, regressiveCurve) {
+>>>>>>> fe96494... compat IE + css input client
 	window.chart = null;
 	var $mod_select = $('#graphModuleSelect');
 	var data = null;
@@ -8,7 +13,11 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	var interval_var = null;
 	const days_before = 30;
 	const days_after = 30;
+<<<<<<< HEAD
 	var t = new URLSearchParams(location.search);
+=======
+	
+>>>>>>> fe96494... compat IE + css input client
 	function init() {
 		if (chart != null) return; // only one init;
 
@@ -41,6 +50,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 	function setModuleSelect() {
 		if ($mod_select.val() !== null) return; // already initialized
+<<<<<<< HEAD
 		var pre_selected = getURLParameter("moduleid") || false;
 		var selected = "";
 
@@ -59,12 +69,32 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 				}
 		});
 
+=======
+		var first_selected = false;
+
+		//disable empty module (in select list)
+		presynths.forEach(element => {
+			$mod_select.append('<option value="' + element.module_id + '"'
+				+ (!element.temp_created_at ?
+					' disabled' :
+					(!first_selected ? ' selected' : '')
+				)
+				+ '>'
+				+ element.module_id + ' - ' + element.name + "</option>");
+			first_selected = true;
+		});
+
+>>>>>>> fe96494... compat IE + css input client
 		//enabled first (in select list)
 		$mod_select.children('option:disabled').each((index, item) => {
 			$(item).appendTo($mod_select);
 		});
 
+<<<<<<< HEAD
 		active_module = $mod_select.val();
+=======
+		active_module = $mod_select.children('option:not([disabled]):first').val();
+>>>>>>> fe96494... compat IE + css input client
 		$mod_select.on('change', function () {
 			active_module = $mod_select.val();
 			localStorage.setItem('graph-active-module', active_module);
