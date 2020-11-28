@@ -328,11 +328,15 @@ define([], function() {
 			"You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen"
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dda75a5... locale js singleton
 	}
 	if (typeof locale === "undefined") {
 		var locale = document.documentElement.getAttribute('lang');
 		if (typeof locale === "undefined") {
 			var locale = "en-us";
+<<<<<<< HEAD
 =======
 		var locales = {
 			"en-us": {
@@ -663,6 +667,8 @@ define([], function() {
 				"You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen"
 			}
 >>>>>>> af32d41... fix tranlate
+=======
+>>>>>>> dda75a5... locale js singleton
 		}
 	}
 	return function(text) {

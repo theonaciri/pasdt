@@ -20,6 +20,7 @@ var whitelist = ['fonts/open-iconic', 'images/', 'json/locales/'];
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const staticCacheName = 'pages-cache-v24.4.2';
 =======
 const staticCacheName = 'pages-cache-v22.5';
@@ -27,6 +28,9 @@ const staticCacheName = 'pages-cache-v22.5';
 =======
 const staticCacheName = 'pages-cache-v22.6';
 >>>>>>> fe96494... compat IE + css input client
+=======
+const staticCacheName = 'pages-cache-v24.32';
+>>>>>>> dda75a5... locale js singleton
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];

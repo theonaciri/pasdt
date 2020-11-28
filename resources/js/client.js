@@ -201,6 +201,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
 		moment.updateLocale(locale.split("-")[0], moment_locale);
 	}
+	
 	var $logs = $('#notifTable > tbody > tr');
 	
 	$logs.each(function() {
@@ -221,7 +222,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
 			+ moment.duration(nowdate.diff(created)).humanize())
 			.prop('title', success ? lang("Solved the : ") + nowdate.format(format) : lang("Still ongoing"))
-			.tooltip('_fixTitle');
+			.toggleNotificationpermission('_fixTitle');
 		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize())
 				.prop('title', lang("First occurence the : ") + created.format(format))
 				.tooltip('_fixTitle');
