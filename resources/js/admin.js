@@ -49,8 +49,12 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 				htmlcontent +=
 					`<tr ${users[i].is_client_company ? 'class="highlight"' : ''}>
             		<td class="name">${users[i].name}</td>
-            		<td class="email">${users[i].email}</td>
-            	 <tr>`
+					<td class="email">${users[i].email}</td>
+					<td>
+                    	<button type="button" data-id="${users[i].id}" title='@lang("Delete")' name="delete" class="btn userdeletebtn"><span class="oi oi-circle-x"></span></button>
+                    </td>
+				 <tr>`
+				 
 			}
 			$mod.find('tbody').html(htmlcontent);
 		})

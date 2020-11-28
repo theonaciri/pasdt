@@ -72,6 +72,29 @@ class CompanyController extends Controller
     }
 
     /**
+     * add a company.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function createCompany(Request $request)
+    {
+        dd($request);
+        $user = Auth::user();
+        if (!$user->su_admin) {
+            return abort(403);
+        }
+
+        $company = Company::create(['name' => $request->name, 'colors' => $request->colors, 'admin_id' => $user->id]);
+
+        if (!empty($request->image)) {
+            route('image.upload.post', ['company' => $company->id]);
+        }
+
+        return response()->json(["ok" => "ok"]);
+    }
+
+    /**
      * Deletes a company if it is empty.
      *
      * @return \Illuminate\Http\Response

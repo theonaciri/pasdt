@@ -40,6 +40,7 @@ Route::post('/notif/{notif}/acknowledge', 'NotificationController@acknowledgeNot
 Route::post('/notif/{notif}/comment', 'NotificationController@postComment')->name('notif.comment')->middleware('auth');
 
 /* COMPANY */
+Route::post('/createCompany', 'CompanyController@createCompany')->name('company.create')->middleware('auth');
 Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post')->middleware('auth');
 Route::post('set-company-colors', 'CompanyController@setColorsPost')->name('company.colors.post')->middleware('auth');
 Route::get('/company/{id}/users', 'CompanyController@getUsers')->name('company.users.get')->middleware('auth');

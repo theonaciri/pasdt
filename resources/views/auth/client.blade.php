@@ -288,9 +288,10 @@
 </div>
 <br>
 
-<!-- IMG UPLOAD -->
+
 <div class="container" id="customize-client">
     <div class="row justify-content-center">
+        <!-- IMG UPLOAD -->
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">@lang("Change the logo of") {{ $company->name }} </div>
@@ -333,6 +334,7 @@
                 </div>
             </div>
         </div>
+        <!-- COLOR UPDATE -->
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">@lang("Modify the colors") @lang("of") {{ $company->name }} </div>

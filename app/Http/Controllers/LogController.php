@@ -454,7 +454,7 @@ EOTSQL));
         $msg = strtolower(str_replace(',', ' ', str_replace(['[', ']', '"'], '', $value)));
         if ($msg === "ack")
             return __("Acquittal");
-        if (app()->locale === "fr_FR") return ucfirst($msg);
+        if (app()->getLocale() === "fr_FR") return ucfirst($msg);
         return ucfirst(str_replace(["alarme", "declenchement", "defaut pression", "defaut gaz", "defaut temperature", "transformateur"],
                             [__("alarme"), __("declenchement"), __("defaut pression"), __("defaut gaz"), __("defaut temperature"), __("Transformateur")],
                             $msg));

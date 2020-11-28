@@ -10,7 +10,10 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">@lang("List of companies") </div>
+                <div class="card-header row">
+                    <div class="col text-left align-bottom">@lang("List of companies")</div>
+                    <div class="col text-right"><button type="button" class="btn btn-light" title='@lang("Add")' name="addCompany" data-toggle="modal" data-target="#addCompanyModal">@lang("Add company") <span class="oi oi-plus"></span></button></div>
+                </div>
                 <div class="card-body">
                     <table id="adminTable" class="table stripe">
                         <thead>
@@ -189,6 +192,54 @@
 -->
 
 <!-- Modal -->
+<div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="createCompany" method="POST" action="{{ route('company.create') }}">
+                <!-- rajouter controle admin -->
+                <div class="modal-header">
+                    <h5 class="modal-title">@lang("Add company")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row ">
+                        <label for="name" class="col-md-3 col-form-label text-md-right">@lang("Name")</label>
+
+                        <div class="col-md-8">
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete=" " autofocus>
+
+                            @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row m-3">
+                        <label for="color" class="col-md-3 col-form-label text-md-right">@lang("Color")</label>
+                        <input type="color" name="colors" id="colors" class="col-md-8 form-control" value="#f8fafc">
+                    </div>
+
+                    <div class="row">
+                        <label for="image" class="col-md-3 col-form-label text-md-right">@lang("Logo")</label>
+                        <input type="file" name="image" class="col">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input class="btn btn-primary" type="submit" value='@lang("Add company")'>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">@lang("Cancel")</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="companyUsersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -208,6 +259,13 @@
                 <tbody>
 
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <a href="{{ url('/register') }}" id="btnAddUser" class="btn btn-primary btn-block">@lang("Add user")</a>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
