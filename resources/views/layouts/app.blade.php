@@ -144,8 +144,15 @@
     @elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
         {{-- is IE 11 or below --}}
         <script src="{{ asset('js/app.es5.js') }}"></script>
+        <script src="/js/anychart-bundle.js"></script>
     @else
         <script src="{{ asset('js/app.js') }}"></script>
+<<<<<<< HEAD
+=======
+        @if (Route::currentRouteName() == 'consultation' || Route::currentRouteName() == 'welcome')
+            <script src="/js/anychart-bundle.js" defer></script>
+        @endif
+>>>>>>> fe96494... compat IE + css input client
     @endif
     <script>
         // Register service worker
