@@ -196,6 +196,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="createCompany" method="POST" action="{{ route('company.create') }}">
+            @csrf
                 <!-- rajouter controle admin -->
                 <div class="modal-header">
                     <h5 class="modal-title">@lang("Add company")</h5>
