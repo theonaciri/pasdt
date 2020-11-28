@@ -12,8 +12,11 @@
             <div class="card">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 323dcc8... MAJ des lang
+=======
+>>>>>>> 377cf86... front done, back in progress
                 <div class="card-header row align-items-end">
                     <div class="col text-left">@lang("List of companies")</div>
                     <div class="col text-right">
@@ -25,7 +28,11 @@
                 <div class="card-header row">
                     <div class="col text-left align-bottom">@lang("List of companies")</div>
                     <div class="col text-right"><button type="button" class="btn btn-light" title='@lang("Add")' name="addCompany" data-toggle="modal" data-target="#addCompanyModal">@lang("Add company") <span class="oi oi-plus"></span></button></div>
+<<<<<<< HEAD
 >>>>>>> 2408656... front done, back in progress
+=======
+>>>>>>> 8ccefad... front done, back in progress
+>>>>>>> 377cf86... front done, back in progress
                 </div>
                 <div class="card-body">
                     <table id="adminTable" class="table stripe">
@@ -216,7 +223,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="createCompany" method="POST" action="{{ route('company.create') }}">
+<<<<<<< HEAD
 >>>>>>> 2408656... front done, back in progress
+=======
+>>>>>>> 8ccefad... front done, back in progress
+>>>>>>> 377cf86... front done, back in progress
                 <!-- rajouter controle admin -->
                 <div class="modal-header">
                     <h5 class="modal-title">@lang("Add company")</h5>
@@ -255,7 +266,11 @@
                         <label for="image" class="col-md-3 col-form-label text-md-right">@lang("Logo")</label>
                         <input type="file" name="image" class="col">
                     </div>
+<<<<<<< HEAD
 >>>>>>> 2408656... front done, back in progress
+=======
+>>>>>>> 8ccefad... front done, back in progress
+>>>>>>> 377cf86... front done, back in progress
                 </div>
                 <div class="modal-footer">
                     <input class="btn btn-primary" type="submit" value='@lang("Add company")'>

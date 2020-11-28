@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"],
 =======
+=======
+>>>>>>> 377cf86... front done, back in progress
 define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap",
 		"./components/delete-user"],
 >>>>>>> 622e31f... delete user.js modulé
@@ -106,7 +109,11 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 				success: function (e) {
 					$(this).find(`option[value="${$('#selectLinkModule').val()}"]`).remove();
 					$('#moduleTable tbody').append(moduleTableTr(e));
+<<<<<<< HEAD
 >>>>>>> 2408656... front done, back in progress
+=======
+>>>>>>> 8ccefad... front done, back in progress
+>>>>>>> 377cf86... front done, back in progress
 				}
 			});
 		});
