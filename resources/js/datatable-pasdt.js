@@ -1,7 +1,9 @@
 define(['jquery', 
-  './components/datatable-fr', './components/color-event-assoc', 'moment/moment', './components/getURLParameter', "./components/lang", 'datatables.net-bs4',  "./components/moment-fr",
-  /*'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',*/
-  'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js', 'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
+  './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
+  './components/getURLParameter', "./components/lang", 'datatables.net-bs4',  "./components/moment-fr",
+  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',
+  'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',
+  'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
 function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
   if (location.pathname !== "/consultation" && location.pathname !== "/") return ;
   var table, graphdata, active_module, cal_interval;
@@ -13,6 +15,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
   const aggressive_cache = true;
 
   function createCalendar() {
+    flatpickr.localize(flatpickr_fr);
     cal_interval = flatpickr('#dateinterval_logtable', {
       mode: "range",
       altInput: true,
@@ -27,17 +30,26 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
     $('.clear-cal').on('click', function(e) {
       cal_interval.clear();
     });
+    $(".date-interval-container .form-control.input").click();
   }
-
-  if (locale !== "en-us" && locale !== "fr-fr") {
-    $.ajaxSetup({ cache: true });
-    $.getScript('/json/locales/flatpickr/' + locale.split('-')[0] + '.js')
-    .done(createCalendar);
-    $.ajaxSetup({ cache: false });
-  } else {
-    createCalendar();
-  }
-
+  $("#dateinterval_logtable").one('click', function() {
+    var ie = '';
+    if (window.document.documentMode) {
+      ie = '.es5'; // detect IE browser
+    }
+      $.ajaxSetup({ cache: true });
+      if (locale === "en-us" || locale === "fr-fr") {
+        $.getScript('/js/extra-monitoring' + ie + '.js').done(createCalendar)
+      } else {
+        $.when(
+          $.getScript('/json/locales/flatpickr/' + locale.split('-')[0] + '.js'),
+          $.getScript('/js/extra-monitoring.' + ie + '.js'),
+          $.Deferred(function( deferred ){
+              $( deferred.resolve );
+          })).done(createCalendar);
+      }
+  });
+  $.ajaxSetup({ cache: false });
   $("#noday").toggleClass('btn-dark', noday).on('click', function(e) {
     noday = !noday;
     if (onlytemp == noday == true) {
@@ -77,7 +89,8 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
       return ;
     }
     _data.interval = [];
-    cal_interval.selectedDates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
+    var selected_dates = cal_interval ? cal_interval.selectedDates : [];
+    selected_dates.forEach(function(d) {_data.interval.push(flatpickr.formatDate(new Date(d), "Y-m-d"))});
     _data.onlytemp = onlytemp;
     _data.noday = noday;
     _data.company = getURLParameter("company");

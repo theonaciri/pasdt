@@ -9,19 +9,31 @@ define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencie
 	});
 
     $('#graphs-live-tab').on("click", function () {
-    	var module_names = $('#module-name .selectpicker').val();
-        if (Array.isArray(module_names) && module_names.length) {
-		  var mod_name = module_names[0];
-		  if (Array.isArray(presynths)) {
-			var mod = presynths.find(function(m) {return m.name === mod_name});
-			if (typeof mod !== 'undefined') {
-				$('#graphModuleSelect').val(mod.module_id).trigger('change');
-			}
-		  }
-        }
-        if (location.pathname === "/consultation" || location.pathname === "/") {
+   //  	var module_names = $('#module-name .selectpicker').val();
+   //      if (Array.isArray(module_names) && module_names.length) {
+		 //  var mod_name = module_names[0];
+		 //  if (Array.isArray(presynths)) {
+			// var mod = presynths.find(function(m) {return m.name === mod_name});
+			// if (typeof mod !== 'undefined') {
+			// 	$('#graphModuleSelect').val(mod.module_id).trigger('change');
+			// }
+		 //  }
+   //      }
+		$.ajaxSetup({cache: true});
+
+  		$.getScript("/js/anychart-bundle.js")
+  		.done(function() {
      		graph_annotated.init();
-        }
+  		});
+		
+		var cssLink = $("<link>");
+		$("head").append(cssLink); //IE hack: append before setting href
+		cssLink.attr({
+		  	rel:  "stylesheet",
+		  	type: "text/css",
+		  	href: "/css/anychart-ui.min.css"
+		});
+  		$.ajaxSetup({cache: false});
     });
 
 	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
