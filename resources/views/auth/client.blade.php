@@ -163,7 +163,18 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">@lang("List of modules of your group") </div>
+                <div class="card-header container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @lang("List of modules of your group")
+                        </div>
+                        @if($user->su_admin)
+                        <div class="col-md-6" style="text-align:right">
+                            <button class="btn btn-primary"><span class="oi oi-map-marker"></span>&nbsp; Tout voir sur la carte</button>
+                        </div>
+                        @endif
+                    </div>
+                </div>
                 <div class="card-body">
                     <p>@lang("To add monitoring for a module, contact our team.")</p>
                     <table class="adminTable">
@@ -198,7 +209,48 @@
         </div>
     </div>
 </div>
+@if ($user->su_admin)
 <br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">@lang("Monthly reports") </div>
+                <div class="card-body">
+                    <table class="adminTable">
+                        <thead>
+                            <tr>
+                                <th>@lang("Month")</th>
+                                <th>@lang("Filename")</th>
+                                <th>@lang("Actions")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="id">@lang("November")</td>
+                                <td class="name">pasdt-report-nav-2020.pdf</td>
+                                <td class="button">
+                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal"><span class="oi oi-data-transfer-download"></span>&nbsp;@lang("Download")</button>
+                                    <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="id">@lang("October")</td>
+                                <td class="name">pasdt-report-oct-2020.pdf</td>
+                                <td class="button">
+                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal"><span class="oi oi-data-transfer-download"></span>&nbsp;@lang("Download")</button>
+                                    <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+@endif
 
 <div class="container">
     <div class="row justify-content-center">

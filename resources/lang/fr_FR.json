@@ -137,6 +137,15 @@
 "Your subscription": "Votre abonnement",
 "Value": "Valeur",
 
+"========= Client report =========": "========= Client report =========",
+
+"Filename": "Nom du fichier",
+"Month": "Mois",
+"Monthly reports": "Rapports mensuels",
+"November": "Novembre",
+"October": "Octobre",
+"Download": "Télécharger",
+
 "========= Datetime =========": "========= Datetime =========",
 
 ":": ":",
