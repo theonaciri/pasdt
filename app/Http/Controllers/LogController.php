@@ -395,7 +395,7 @@ EOTSQL));
         Log::info('AUTH APIKEY ' . $token);
         Log::info('IP ' . $request->ip());
         Log::info('CONTENT ' . $request->getContent());
-        if (env('API_TOKEN', false) !== $token) {
+        if (config('pasdt.API_TOKEN') !== $token) {
             abort(403, __("Unauthorized action."));
         }
         $this->user = User::whereApiToken($token)->first();

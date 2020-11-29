@@ -140,6 +140,7 @@ class ClientController extends Controller
      */
     public function addSub(Request $req)
     {
+      return ;
         $user = Auth::user();
         \Stripe\Stripe::setApiKey(env("STRIPE_SECRET"));
         //if (Gate::allows('company-admin')) {
