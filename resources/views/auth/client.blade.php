@@ -222,7 +222,11 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 @if (false)
+=======
+@if ($user->id == 18)
+>>>>>>> 6ef6355... restored cache
 <br>
 <div class="container">
     <div class="row justify-content-center">
