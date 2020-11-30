@@ -46,16 +46,18 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 			//find input email and put last value
 			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
 			$input_email[0].value = $user_email.html();
-		});
-
-		$("#modifyUserForm").ajaxSubmit({
-			success: function (e) {
-				$('#edit-user-modal').modal('hide');
-				$user_name.html(e.name);
-				$user_email.html(e.email);
-				const update_at = moment(e.updated_at).format("YYYY-MM-DD HH:mm:ss");
-				$user_update.html(update_at);
-			}
+			$("#modifyUserForm").ajaxSubmit({
+				success: function (e) {
+					$inputs.each((index, input) => {
+						$(input)[0].value = '';
+					})
+					$('#edit-user-modal').modal('hide');
+					$user_name.html(e.name);
+					$user_email.html(e.email);
+					const update_at = moment(e.updated_at).format("YYYY-MM-DD HH:mm:ss");
+					$user_update.html(update_at);
+				}
+			});
 		});
 	});
 	
