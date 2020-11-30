@@ -10,8 +10,8 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header row">
-                    <div class="col text-left align-bottom">@lang("List of companies")</div>
+                <div class="card-header row align-items-end">
+                    <div class="col text-left">@lang("List of companies")</div>
                     <div class="col text-right">
                         <button type="button" class="btn btn-light" title='@lang("Add")' name="addCompany" data-toggle="modal" data-target="#createCompanyModal">
                             @lang("Add company") <span class="oi oi-plus"></span>

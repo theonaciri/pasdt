@@ -73,7 +73,7 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
             		<td class="name">${users[i].name}</td>
 					<td class="email">${users[i].email}</td>
 					<td>
-                    	<a href="/client?company=` + id + `#user` + users[i].id + `"><button type="button" data-id="${users[i].id}" title='` + lang("Modify") + ' ' + lang("or") + ' ' + lang("delete") + `' name="delete" class="btn userdeletebtn"><span class="oi oi-pencil"></span> <span class="oi oi-circle-x"></span></button></a>
+                    	<a href="/client?company=` + id + `#user` + users[i].id + `"><button type="button" data-id="${users[i].id}" title='` + lang("Modify or delete") +`' name="delete" class="btn userdeletebtn"><span class="oi oi-pencil"></span> <span class="oi oi-circle-x"></span></button></a>
                     </td>
 				 <tr>`
 
