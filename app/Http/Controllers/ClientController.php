@@ -192,9 +192,9 @@ class ClientController extends Controller
             return redirect()->route('consultation', []);
         }
         $usertoModif = User::find($usertoModif);
-        if ($authUser->is_client_company
+        if (($authUser->is_client_company
           && $authUser->company_id 
-          == $usertoModif->company_id) {
+          == $usertoModif->company_id) || $authUser->su_admin) {
             $usertoModif->name = request('name');
             $usertoModif->email = request('email');
             $usertoModif->password = Hash::make(request('password'));

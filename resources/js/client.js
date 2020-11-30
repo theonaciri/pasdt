@@ -28,6 +28,26 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 			.fail(function(e) { $modalrendermail.find('.bodymail').html(e.responseJSON.message) });
 		$modalrendermail.modal("show");
 	});
+
+	$('.modif-btn-user').click( (e) => {
+		const $elt = $(e.currentTarget);
+		const $elt_tr = $elt.parents().eq(2);
+		const user_id = $elt_tr.children("td.id").html();
+		const user_name = $elt_tr.children("td.name").html();
+		const user_email = $elt_tr.children("td.email").html();
+		console.log(user_id, user_name, user_email);
+		$('#edit-user-modal').ready(() => {
+			const $form = $('#modifyUserForm');
+			$form.attr('action', '/users/modify/' + user_id.toString());
+			const $inputs = $form.find('input');
+			//find input name and put last value
+			const $input_name = $.grep($inputs, function(e){ return e.id == "name"; });
+			$input_name[0].value = user_name;
+			//find input email and put last value
+			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
+			$input_email[0].value = user_email;
+		})
+	});
 	
 	$('.commentbtn').on('click', function() {
 		var $tr = $(this).parent().parent().parent();
