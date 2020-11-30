@@ -173,14 +173,14 @@ class ClientController extends Controller
     public function deleteUser($usertoDelete) {
         $user = Auth::user();
         $usertoDelete = User::find($usertoDelete);
-        if ($user->company_id == 0) {
+        if ($user->company_id == 0 || !$usertoDelete) {
             // dd('dead');
             return redirect()->route('consultation', []);
         }
         // ddd($usertoDelete->id);
         // ddd($usertoDelete->company_id);
         if (($user->is_client_company && $user->company_id == $usertoDelete->company_id) || $user->su_admin) {
-            $usertoDelete->delete();
+            $usertoDelete->forceDelete();
         } else {
             return redirect()->route('consultation', []);
         }
