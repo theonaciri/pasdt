@@ -170,15 +170,16 @@ class ClientController extends Controller
         return response()->json($subscription);
     }
 
-    public function deleteUser(\App\User $usertoDelete) {
+    public function deleteUser($usertoDelete) {
         $user = Auth::user();
+        $usertoDelete = User::find($usertoDelete);
         if ($user->company_id == 0) {
-            dd('dead');
+            // dd('dead');
             return redirect()->route('consultation', []);
         }
-        dd($usertoDelete->id);
-        dd($usertoDelete);
-        if ($user->is_client_company && $user->company_id == $usertoDelete->company_id) {
+        // ddd($usertoDelete->id);
+        // ddd($usertoDelete->company_id);
+        if (($user->is_client_company && $user->company_id == $usertoDelete->company_id) || $user->su_admin) {
             $usertoDelete->delete();
         } else {
             return redirect()->route('consultation', []);
