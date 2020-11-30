@@ -54,15 +54,22 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		const $elt = $(e.currentTarget);
 		const $elt_tr = $elt.parents().eq(2);
 		const user_id = $elt_tr.children("td.id").html();
+<<<<<<< HEAD
 		const $user_name = $elt_tr.children("td.name");
 		const $user_email = $elt_tr.children("td.email");
 		const $user_update = $elt_tr.children("td.updated_at");
+=======
+		const user_name = $elt_tr.children("td.name").html();
+		const user_email = $elt_tr.children("td.email").html();
+		console.log(user_id, user_name, user_email);
+>>>>>>> 3c92c31... modify user
 		$('#edit-user-modal').ready(() => {
 			const $form = $('#modifyUserForm');
 			$form.attr('action', '/users/modify/' + user_id.toString());
 			const $inputs = $form.find('input');
 			//find input name and put last value
 			const $input_name = $.grep($inputs, function(e){ return e.id == "name"; });
+<<<<<<< HEAD
 			$input_name[0].value = $user_name.html();
 			//find input email and put last value
 			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
@@ -80,6 +87,13 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				}
 			});
 		});
+=======
+			$input_name[0].value = user_name;
+			//find input email and put last value
+			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
+			$input_email[0].value = user_email;
+		})
+>>>>>>> 3c92c31... modify user
 	});
 	
 	$('.commentbtn').on('click', function() {
