@@ -409,8 +409,12 @@ define([], function() {
 				"Are you sure" : "Êtes-vous sûr",
 				"Modify" : "Modifier",
 				"Or" : "Ou",
+<<<<<<< HEAD
 				"Modify or delete" : "Modifier ou supprimer",
 				"You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur"
+=======
+				"Modify or delete" : "Modifier ou supprimer"
+>>>>>>> 323dcc8... MAJ des lang
 			},
 			"es-es": {
 				"Address": "Dirección",
@@ -474,8 +478,12 @@ define([], function() {
 				"Are you sure" : "Estás seguro",
 				"Modify" : "Modificar",
 				"Or" : "O",
+<<<<<<< HEAD
 				"Modify or delete" : "Modificar o eliminar",
 				"You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario"
+=======
+				"Modify or delete" : "Modificar o eliminar"
+>>>>>>> 323dcc8... MAJ des lang
 			},
 			"it-it": {
 				"Address": "Indirizzo",
@@ -539,8 +547,12 @@ define([], function() {
 				"Are you sure" : "Sei sicuro",
 				"Modify" : "Modificare",
 				"Or" : "O",
+<<<<<<< HEAD
 				"Modify or delete" : "Modifica o elimina",
 				"You are about to permanently delete this user" : "Stai per eliminare definitivamente questo utente"
+=======
+				"Modify or delete" : "Modifica o elimina"
+>>>>>>> 323dcc8... MAJ des lang
 			},
 			"de-de": {
 				"Address": "Adresse",
@@ -601,8 +613,12 @@ define([], function() {
 				"Are you sure" : "Bist du sicher",
 				"Modify" : "Ändern",
 				"Or" : "Oder",
+<<<<<<< HEAD
 				"Modify or delete" : "Ändern oder löschen",
 				"You are about to permanently delete this user" : "Sie sind dabei, diesen Benutzer dauerhaft zu löschen"
+=======
+				"Modify or delete" : "Ändern oder löschen"
+>>>>>>> 323dcc8... MAJ des lang
 			},
 			"nl-nl": {
 				"Address": "Adres",
@@ -663,8 +679,12 @@ define([], function() {
 				"Are you sure" : "Weet je zeker dat",
 				"Modify" : "Aanpassen",
 				"Or" : "Of",
+<<<<<<< HEAD
 				"Modify or delete" : "Wijzig of verwijder",
 				"You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen"
+=======
+				"Modify or delete" : "Wijzig of verwijder"
+>>>>>>> 323dcc8... MAJ des lang
 			}
 >>>>>>> af32d41... fix tranlate
 =======

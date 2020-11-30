@@ -11,6 +11,9 @@
         <div class="col-12">
             <div class="card">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 323dcc8... MAJ des lang
                 <div class="card-header row align-items-end">
                     <div class="col text-left">@lang("List of companies")</div>
                     <div class="col text-right">
