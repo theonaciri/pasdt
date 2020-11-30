@@ -65,7 +65,7 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 				$mod = $('#companyUsersModal');
 				$mod.modal("show");
 				$mod.find('.modal-title > span').html(companyname);
-
+				console.log(users)
 				var htmlcontent = '';
 				for (var i = 0; i < users.length; i++) {
 					htmlcontent +=
@@ -73,7 +73,7 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
             		<td class="name">${users[i].name}</td>
 					<td class="email">${users[i].email}</td>
 					<td>
-                    	<button type="button" data-id="${users[i].id}" title='@lang("Delete")' name="delete" class="btn userdeletebtn"><span class="oi oi-circle-x"></span></button>
+                    	<a href="/client?company=` + id + `#user` + users[i].id + `"><button type="button" data-id="${users[i].id}" title='` + lang("Modify") + ' ' + lang("or") + ' ' + lang("delete") + `' name="delete" class="btn userdeletebtn"><span class="oi oi-pencil"></span> <span class="oi oi-circle-x"></span></button></a>
                     </td>
 				 <tr>`
 
