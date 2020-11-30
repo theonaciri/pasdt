@@ -4,6 +4,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 
+<<<<<<< HEAD
 	$(".deleteLink").click((e) => {
 		e.preventDefault();
 		if (confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")){
@@ -22,6 +23,10 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 			});
 		}
 
+=======
+	$("#deleteLink").click(() => {
+		return confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")
+>>>>>>> af32d41... fix tranlate
 	});
 
 	$('.revoqmodulebtn').click(function (e) {

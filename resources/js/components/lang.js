@@ -410,11 +410,16 @@ define([], function() {
 				"Modify" : "Modifier",
 				"Or" : "Ou",
 <<<<<<< HEAD
+<<<<<<< HEAD
 				"Modify or delete" : "Modifier ou supprimer",
 				"You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur"
 =======
 				"Modify or delete" : "Modifier ou supprimer"
 >>>>>>> 323dcc8... MAJ des lang
+=======
+				"Modify or delete" : "Modifier ou supprimer",
+				"You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur"
+>>>>>>> af32d41... fix tranlate
 			},
 			"es-es": {
 				"Address": "Dirección",
@@ -479,11 +484,16 @@ define([], function() {
 				"Modify" : "Modificar",
 				"Or" : "O",
 <<<<<<< HEAD
+<<<<<<< HEAD
 				"Modify or delete" : "Modificar o eliminar",
 				"You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario"
 =======
 				"Modify or delete" : "Modificar o eliminar"
 >>>>>>> 323dcc8... MAJ des lang
+=======
+				"Modify or delete" : "Modificar o eliminar",
+				"You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario"
+>>>>>>> af32d41... fix tranlate
 			},
 			"it-it": {
 				"Address": "Indirizzo",
@@ -548,11 +558,16 @@ define([], function() {
 				"Modify" : "Modificare",
 				"Or" : "O",
 <<<<<<< HEAD
+<<<<<<< HEAD
 				"Modify or delete" : "Modifica o elimina",
 				"You are about to permanently delete this user" : "Stai per eliminare definitivamente questo utente"
 =======
 				"Modify or delete" : "Modifica o elimina"
 >>>>>>> 323dcc8... MAJ des lang
+=======
+				"Modify or delete" : "Modifica o elimina",
+				"You are about to permanently delete this user" : "Stai per eliminare definitivamente questo utente"
+>>>>>>> af32d41... fix tranlate
 			},
 			"de-de": {
 				"Address": "Adresse",
@@ -614,11 +629,16 @@ define([], function() {
 				"Modify" : "Ändern",
 				"Or" : "Oder",
 <<<<<<< HEAD
+<<<<<<< HEAD
 				"Modify or delete" : "Ändern oder löschen",
 				"You are about to permanently delete this user" : "Sie sind dabei, diesen Benutzer dauerhaft zu löschen"
 =======
 				"Modify or delete" : "Ändern oder löschen"
 >>>>>>> 323dcc8... MAJ des lang
+=======
+				"Modify or delete" : "Ändern oder löschen",
+				"You are about to permanently delete this user" : "Sie sind dabei, diesen Benutzer dauerhaft zu löschen"
+>>>>>>> af32d41... fix tranlate
 			},
 			"nl-nl": {
 				"Address": "Adres",
@@ -680,11 +700,16 @@ define([], function() {
 				"Modify" : "Aanpassen",
 				"Or" : "Of",
 <<<<<<< HEAD
+<<<<<<< HEAD
 				"Modify or delete" : "Wijzig of verwijder",
 				"You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen"
 =======
 				"Modify or delete" : "Wijzig of verwijder"
 >>>>>>> 323dcc8... MAJ des lang
+=======
+				"Modify or delete" : "Wijzig of verwijder",
+				"You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen"
+>>>>>>> af32d41... fix tranlate
 			}
 >>>>>>> af32d41... fix tranlate
 =======
