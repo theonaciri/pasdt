@@ -1,5 +1,5 @@
 define(['jquery', '../bootstrap', 'bootstrap'], function($) {
-    if (window.location.pathname.indexOf("password")) return ;
+    if (window.location.pathname.indexOf("password") != -1) return ;
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
 	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
