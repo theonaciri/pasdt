@@ -4,7 +4,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 
-	$("#deleteLink").click(() => {
+	$(".deleteLink").click(() => {
 		return confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")
 	});
 
