@@ -33,20 +33,30 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		const $elt = $(e.currentTarget);
 		const $elt_tr = $elt.parents().eq(2);
 		const user_id = $elt_tr.children("td.id").html();
-		const user_name = $elt_tr.children("td.name").html();
-		const user_email = $elt_tr.children("td.email").html();
-		console.log(user_id, user_name, user_email);
+		const $user_name = $elt_tr.children("td.name");
+		const $user_email = $elt_tr.children("td.email");
+		const $user_update = $elt_tr.children("td.updated_at");
 		$('#edit-user-modal').ready(() => {
 			const $form = $('#modifyUserForm');
 			$form.attr('action', '/users/modify/' + user_id.toString());
 			const $inputs = $form.find('input');
 			//find input name and put last value
 			const $input_name = $.grep($inputs, function(e){ return e.id == "name"; });
-			$input_name[0].value = user_name;
+			$input_name[0].value = $user_name.html();
 			//find input email and put last value
 			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
-			$input_email[0].value = user_email;
-		})
+			$input_email[0].value = $user_email.html();
+		});
+
+		$("#modifyUserForm").ajaxSubmit({
+			success: function (e) {
+				$('#edit-user-modal').modal('hide');
+				$user_name.html(e.name);
+				$user_email.html(e.email);
+				const update_at = moment(e.updated_at).format("YYYY-MM-DD HH:mm:ss");
+				$user_update.html(update_at);
+			}
+		});
 	});
 	
 	$('.commentbtn').on('click', function() {
