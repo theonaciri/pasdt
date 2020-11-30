@@ -27,6 +27,7 @@ Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middlewar
 Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUser')->middleware('auth');
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change')->middleware('auth');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middleware('auth');
+// if users.modify is change, need to change "$form.attr('action', '/users/modify/' + user_id.toString());" in client.js
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify')->middleware('auth');
 Route::post('/user/mailnotifs/{activation}', 'ClientController@toggleMailNotifs')->name('user.toggle.mail.notifs')->middleware('auth');
 Route::post('/user/change_locale', 'ClientController@changeLocale')->name('user.change.locale')->middleware('auth');

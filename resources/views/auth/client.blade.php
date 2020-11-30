@@ -142,7 +142,7 @@
                                 @if ($self->su_admin)
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label="user buttons">
-                                        <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
+                                        <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn modif-btn-user" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
                                         <button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button>
                                     </div>
                                 </td>
@@ -515,7 +515,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ route('users.modify', ['user'=>10]) }}">
+            <form method="POST" id="modifyUserForm" action="{{ route('users.modify', ['user'=>10]) }}">
                 @csrf
                 <div class="modal-body">
 
