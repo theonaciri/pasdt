@@ -148,6 +148,7 @@
                                         <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn modif-btn-user" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                                         <a class="btn btn-danger deleteLink" href="{{route('deleteUser', ['usertoDelete' => $user->id])}}">
                                             <span class="oi oi-circle-x"></span>
                                         </a>
@@ -157,6 +158,9 @@
 =======
                                         <a onclick="return confirm('You are about to delete {{$user->name}}\nAre you sure?')" href="{{route('deleteUser', ['user' => $user->id])}}"><button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button></a>
 >>>>>>> 323dcc8... MAJ des lang
+=======
+                                        <a id="deleteLink" href="{{route('deleteUser', ['user' => $user->id])}}"><button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button></a>
+>>>>>>> af32d41... fix tranlate
                                     </div>
                                 </td>
                             @endif
