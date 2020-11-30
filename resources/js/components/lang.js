@@ -60,7 +60,18 @@ define([], function() {
 			"Consult": "Consulter",
 			"New notifications": "Nouvelles notifications",
 			"New notification": "Nouvelle notification",
-			"Seen": "Vu"
+			"Seen": "Vu",
+			/* Modif/delete users/companies */
+			"Add user" : "Ajouter un utilisateur",
+			"Add company" : "Ajouter une entreprise",
+			"Add" : "Ajouter",
+			"You are about to" : "Vous êtes sur le point de",
+			"Delete" : "Supprimer",
+			"Are you sure" : "Êtes-vous sûr",
+			"Modify" : "Modifier",
+			"Or" : "Ou",
+			"Modify or delete" : "Modifier ou supprimer",
+			"You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur"
 		},
 		"es-es": {
 			"Address": "Dirección",
@@ -114,7 +125,18 @@ define([], function() {
 			"Consult": "Consultar",
 			"New notifications": "Notificaciones nuevas",
 			"New notification": "Nueva notificación",
-			"Seen": "Visto"
+			"Seen": "Visto",
+			/* Modif/delete users/companies */
+			"Add user" : "Agregar usuario",
+			"Add company" : "Agregar empresa",
+			"Add" : "Agregar",
+			"You are about to" : "Estás a punto de",
+			"Delete" : "Eliminar",
+			"Are you sure" : "Estás seguro",
+			"Modify" : "Modificar",
+			"Or" : "O",
+			"Modify or delete" : "Modificar o eliminar",
+			"You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario"
 		},
 		"it-it": {
 			"Address": "Indirizzo",
@@ -168,7 +190,18 @@ define([], function() {
 			"Consult": "Consultare",
 			"New notifications": "nuova notifica",
 			"New notification": "nuove notifiche",
-			"Seen": "Vidi"
+			"Seen": "Vidi",
+			/* Modif/delete users/companies */
+			"Add user" : "Aggiungi utente",
+			"Add company" : "Aggiungi azienda",
+			"Add" : "Inserisci",
+			"You are about to" : "Stai per farlo",
+			"Delete" : "Elimina",
+			"Are you sure" : "Sei sicuro",
+			"Modify" : "Modificare",
+			"Or" : "O",
+			"Modify or delete" : "Modifica o elimina",
+			"You are about to permanently delete this user" : "Stai per eliminare definitivamente questo utente"
 		},
 		"de-de": {
 			"Address": "Adresse",
@@ -219,7 +252,18 @@ define([], function() {
 			"Consult": "Konsultieren",
 			"New notifications": "Neue Benachrichtigungen",
 			"New notification": "Neue Benachrichtigung",
-			"Seen": "Geseheno"
+			"Seen": "Geseheno",
+			/* Modif/delete users/companies */
+			"Add user" : "Benutzer hinzufügen",
+			"Add company" : "Firma hinzufügen",
+			"Add" : "Hinzufügen",
+			"You are about to" : "Du bist dabei",
+			"Delete" : "Löschen",
+			"Are you sure" : "Bist du sicher",
+			"Modify" : "Ändern",
+			"Or" : "Oder",
+			"Modify or delete" : "Ändern oder löschen",
+			"You are about to permanently delete this user" : "Sie sind dabei, diesen Benutzer dauerhaft zu löschen"
 		},
 		"nl-nl": {
 			"Address": "Adres",
@@ -270,7 +314,18 @@ define([], function() {
 			"Consult": "Raadplegen",
 			"New notifications": "Nieuwe notificaties",
 			"New notification": "Nieuwe melding",
-			"Seen": "Gezieno"
+			"Seen": "Gezieno",
+			/* Modif/delete users/companies */
+			"Add user" : "Voeg gebruiker toe",
+			"Add company" : "Bedrijf toevoegen",
+			"Add" : "Toevoegen",
+			"You are about to" : "Je staat op het punt om",
+			"Delete" : "Verwijderen",
+			"Are you sure" : "Weet je zeker dat",
+			"Modify" : "Aanpassen",
+			"Or" : "Of",
+			"Modify or delete" : "Wijzig of verwijder",
+			"You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen"
 		}
 	}
 	if (typeof locale === "undefined") {

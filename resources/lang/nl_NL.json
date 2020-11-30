@@ -218,6 +218,9 @@
 
 "A fresh verification link has been sent to your email address.": "Er is een nieuwe verificatielink naar je e-mailadres verstuurd.",
 "A new verification link has been sent to the email address you provided during registration.": "A new verification link has been sent to the email address you provided during registration.",
+"Add" : "Toevoegen",
+"Add company" : "Bedrijf toevoegen",
+"Add user" : "Voeg gebruiker toe",
 "All rights reserved.": "Alle rechten voorbehouden.",
 "Already registered?": "Already registered?",
 "Before proceeding, please check your email for a verification link.": "Om verder te gaan, check je e-mail voor een verificatielink.",
@@ -245,6 +248,7 @@
 "Name": "Naam",
 "Not Found": "Niet gevonden",
 "Oh no": "Oh nee",
+"Or" : "Of",
 "Page Expired": "Pagina niet meer geldig",
 "Page Not Found": "Pagina niet gevonden",
 "Password": "Wachtwoord",
