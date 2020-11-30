@@ -3,6 +3,11 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		'./components/notifs', "./dependencies/jquery.ajaxSubmit"],
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
+
+	$("#deleteLink").click(() => {
+		return confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")
+	});
+
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm(lang("Stop monitoring this module?"))) return ;
 		var csrf = $("input[name='_token']").first().val();
