@@ -169,7 +169,9 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
               var val = $(this).val();
               var count_before = table.page.info().recordsDisplay;
               // /!\ No escape security
-              if (val.length > 1) {
+              if (!val.length || val.length == 1 && !val[0].length) {
+                column.search('', true, false).draw();
+              } else { // /!\ No escape security
                 column.search(val, true, false).draw();
               }
               var count_after = table.page.info().recordsDisplay;
@@ -204,7 +206,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
                     });
                     $.ajaxSetup({ cache: false });
                   }
-              }, 0);
+              }, 1);
           });
         }); /* / Dropdown */
       } // initComplete
