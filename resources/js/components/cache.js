@@ -54,9 +54,9 @@ define(['jquery', '../bootstrap', 'bootstrap'], function($) {
             }
         });
 		// Create the event
-		var event = new CustomEvent("backonline", { detail: {request: "csrf", data: result }});
+		//var event = new CustomEvent("backonline", { detail: {request: "csrf", data: result }});
 		// Dispatch/Trigger/Fire the event
-		document.dispatchEvent(event);
+		//document.dispatchEvent(event);
     }).fail(function(r) {
     	var event = new CustomEvent("offline", { detail: {request: "csrf", data: r }});
 		document.dispatchEvent(event);
