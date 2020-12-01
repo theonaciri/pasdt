@@ -395,4 +395,14 @@ class ModuleController extends Controller
          $user = Auth::user();
          $user->deletePushSubscription($endpoint);
     }
+
+    public function toggleMailModule(Module $module, int $state) {
+        $this->getSaveAuthCompany();
+        if (!$this->isUserFromCompany($this->user, $module->company_id)) {
+            abort(403);
+        }
+        $module->send_mails = $state === 0 ? 0 : 1;
+        $module->save();
+        return response()->json($module->send_mails);
+    }
 }

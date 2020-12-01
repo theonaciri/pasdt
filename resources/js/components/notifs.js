@@ -1,6 +1,6 @@
 define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, lang) {
 	var firstcall = true;
-	if (window.location.pathname.indexOf("password")) return ;
+	if (window.location.pathname.indexOf("password") != -1) return ;
 	function getNotificationPermission() {
 	    if ("Notification" in window && Notification.permission === 'granted') {
 	        return localStorage.getItem('notification-permission');

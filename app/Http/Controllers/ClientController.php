@@ -49,7 +49,7 @@ class ClientController extends Controller
         if (empty($company)) {
             return view('consultation');
         }
-        $this->modules = Module::select('module_id', 'name', 'telit_ratePlan', 'telit_json', 'telit_status')
+        $this->modules = Module::select('send_mails', 'module_id', 'name', 'telit_ratePlan', 'telit_json', 'telit_status')
                                ->where('company_id', $id_company)
                                ->get();
         /*$this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();*/

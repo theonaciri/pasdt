@@ -13,7 +13,7 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="toggleMailStatus" {{ $user->receive_mails ? "checked" : "" }}>
                                 <label class="form-check-label" for="toggleMailStatus">
-                                    <span class="oi oi-envelope-closed"></span>&nbsp;@lang("Activate mails")
+                                    <span class="oi oi-envelope-closed"></span>&nbsp;@lang("Receive mails")
                                 </label>
                             </div>
 
@@ -168,15 +168,16 @@
                         <div class="col-md-6">
                             @lang("List of modules of your group")
                         </div>
-                        @if($user->su_admin)
                         <div class="col-md-6" style="text-align:right">
                             <button class="btn btn-primary"><span class="oi oi-map-marker"></span>&nbsp; Tout voir sur la carte</button>
                         </div>
-                        @endif
                     </div>
                 </div>
                 <div class="card-body">
                     <p>@lang("To add monitoring for a module, contact our team.")</p>
+                    <div class="col-12 alert alert-danger d-none" id="mail-module-error" role="alert">
+                        @lang("Your account is badly configured, contact the administrator.")
+                    </div>
                     <table class="adminTable">
                         <thead>
                             <tr>
@@ -196,7 +197,14 @@
                                 <td class="id">{{$module->module_id}}</td>
                                 <td class="name">{{$module->name}}</td>
                                 <td class="email">{{$module->telit_ratePlan}}</td>
-                                <td class="button">
+                                <td class="button flex-row">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input module-mail-btn" type="checkbox" id="module-mail-{{$loop->index}}" style="min-width: 1rem" {{ $module->send_mails === 1 ? "checked" : "" }}>
+                                        <label class="form-check-label" for="module-mail-{{$loop->index}}" style="min-width: fit-content">
+                                            <span class="oi oi-envelope-closed"></span>&nbsp;@lang("Activate mails")
+                                        </label>
+                                    </div>
+
                                     <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal">JSON</button>
                                     <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
                                 </td>
@@ -209,7 +217,6 @@
         </div>
     </div>
 </div>
-@if ($user->id == 18)
 <br>
 <div class="container">
     <div class="row justify-content-center">
@@ -250,7 +257,6 @@
     </div>
 </div>
 <br>
-@endif
 
 <div class="container">
     <div class="row justify-content-center">

@@ -99,12 +99,26 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		}
 	});
 
+	$('.module-mail-btn').on('click', function(e) {
+		var id = $(this).parent().parent().siblings(".id").html();
+		$.ajax({
+			url: "/module/" + id + "/toggle-mail/" + (e.target.checked ? "1" : "0"),
+			type: "PUT"
+		}).done(function(data) {
+			$('#mail-module-error').addClass('d-none');
+		}).fail(function() {
+	    	e.target.checked = !e.target.checked;
+			$('#mail-module-error').removeClass('d-none');
+		});
+	});
+
 	$('#toggleMailStatus')
 	.on('click', function toggleMailpermission(e) {
 		var input = e.target;
 		$('#mail-error').addClass('d-none');
 	    $.post('/user/mailnotifs/' + (input.checked ? 1 : 0))
 	    .done(function(e) {
+			$('#mail-error').addClass('d-none');
 	    }).fail(function(e) {
 	    	input.checked = !input.checked;
 			$('#mail-error').removeClass('d-none');

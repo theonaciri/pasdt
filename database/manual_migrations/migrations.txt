@@ -28,3 +28,6 @@ ALTER TABLE `notifications` ADD `resolved_at` DATETIME NOT NULL DEFAULT CURRENT_
 
 14/11/2020:
 ALTER TABLE `users` ADD `locale` VARCHAR(15) NOT NULL DEFAULT 'fr_FR' AFTER `remember_token`;
+
+01/12/2020:
+ALTER TABLE `modules` ADD `send_mails` BOOLEAN NOT NULL DEFAULT TRUE AFTER `module_id`;
