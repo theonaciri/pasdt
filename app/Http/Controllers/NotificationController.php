@@ -35,7 +35,7 @@ class NotificationController extends Controller
                  ->join("modules AS m", "m.module_id", "=", "n.module")
                  ->join("companies AS c", "c.id", "=", "m.company_id")
                  ->join("users AS u", "u.company_id", "=", "c.id")
-                 ->select("u.name AS name", "u.locale", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.resolved_at")
+                 ->select("u.name AS name", "u.locale", "u.receive_mails", "u.id AS user_id", "u.email AS email", "c.id AS company_id", "c.name AS company", "m.send_mails", "m.name AS module_name", "m.telit_locAdress AS address", "n.id AS id_notif", "n.type", "n.value", "n.occurences", "n.resolved_at")
                  ->where('n.id', '=', $notif->id)
                  ->get();
     }
@@ -86,7 +86,7 @@ class NotificationController extends Controller
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
         $is_adminf = false;
         $is_adminff = false;
-        if (config('app.debug') == true) {
+        if (true || config('app.debug') == true) {
             app()->setLocale("fr_FR");
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
@@ -98,6 +98,9 @@ class NotificationController extends Controller
             return ;
         }
         foreach ($usersinfo as $key => $info) {
+            if (!$info->send_mails) {
+                return ;
+            }
             Log::info('MAIL: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . $info->email . " with value " . $notif->value);
             if ($info->receive_mails == 1) {
                 try {
@@ -106,7 +109,7 @@ class NotificationController extends Controller
                     Log::info("MAIL: /!\ Catch email error: " . $e->getMessage());
                     if( count( Mail::failures() ) > 0 ) {
                         $failures[] = Mail::failures()[0];
-                        dd($failures);
+                        Log::info($failures);
                     }
                 }
             }

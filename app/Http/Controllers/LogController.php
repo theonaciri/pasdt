@@ -307,7 +307,7 @@ EOTSQL));
     }
 
     protected function checkForAnomalities(PasdtLog $newlog) {
-        if ($newlog !== '["HOUR"]' && $newlog !== '["DAY"]') {
+        if ($newlog['msg'] !== '["HOUR"]' && $newlog['msg'] !== '["DAY"]') {
             return ;
         }
         $lastemplog = PasdtLog::where('cardId', $newlog['cardId'])
@@ -354,7 +354,7 @@ EOTSQL));
                 } else {
                     $type = 'TEMP_HIGH';
                 }
-                NotificationController::resolveOngoingNotifications($ongoingalerts,$newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW"]);
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW"]);
                 NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
             }
             else if ($newlog['maxtemp'] <= config('pasdt.thresholds')['TEMP_LOW']) {
