@@ -106,10 +106,13 @@ class RegisterController extends Controller
         }
         event(new Registered($user = $this->create($request->all())));
 
+        
         //$this->guard()->login($user);
-
+        if (Auth::User()->su_admin === 1) {
+            $this->redirectTo = "su_admin";
+        }
         return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
+                        ? redirect($this->redirectTo) : redirect($this->redirectTo);
     }
 
     /**
@@ -121,10 +124,15 @@ class RegisterController extends Controller
     public function showRegistrationForm(Request $request)
     {
         $user = Auth::user();
-        if (!$user->su_admin) {
-            return view('consultation');
+        if ($user->is_client_company || $user->su_admin) {
+            if ($user->su_admin === 1) {
+                $companies = \App\Company::all();
+            }
+            else{
+                $companies = \App\Company::where("id", $user->company_id)->get();
+            }            
+            return view('auth.register', ['companies'=>$companies]);
         }
-        $companies = \App\Company::all();
-        return view('auth.register', ['companies'=>$companies]);
+        return redirect('consultation');
     }
 }

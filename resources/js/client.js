@@ -4,8 +4,24 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 
-	$(".deleteLink").click(() => {
-		return confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")
+	$(".deleteLink").click((e) => {
+		e.preventDefault();
+		if (confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")){
+			$.ajax({
+				url: $(this).attr("href")
+			})
+			.done((data) => {
+				$('#user-error').addClass('d-none');
+				$(this).parents('tr').remove();
+			}).fail((jqXHR, textStatus ) => {
+				$('#user-error').removeClass('d-none');
+				console.err(textStatus);
+				if (textStatus && textStatus.error && textStatus.error.length) {
+					$("#user-error > .error-msg").html(textStatus.error)
+				}
+			});
+		}
+
 	});
 
 	$('.revoqmodulebtn').click(function (e) {
