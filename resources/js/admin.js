@@ -156,15 +156,21 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 				var htmlcontent = '';
 				for (var i = 0; i < users.length; i++) {
 					htmlcontent +=
-						`<tr ${users[i].is_client_company ? 'class="highlight"' : ''}>
-            		<td class="name">${users[i].name}</td>
-					<td class="email">${users[i].email}</td>
-					<td>
-						<a title="${lang("Delete")}" class="deleteLink btn userdeletebtn" href="/user/delete/${users[i].id}">
-							<span class="oi oi-circle-x"></span>
-						</a>
-                    </td>
-				 <tr>`
+					`<tr ${users[i].is_client_company ? 'class="highlight"' : ''}>
+						<td class="name">${users[i].name}</td>
+						<td class="email">${users[i].email}</td>
+						<td class="button">
+							<div class="btn-group btn-vertical" role="group" aria-label="user buttons">
+								<a title="${lang("Modify")}" name="modify" class="btn btn-vertical btn-primary"
+								href="/client?company=${id}#user${users[i].id}">
+									<span class="oi oi-pencil"></span>
+								</a>
+								<a class="btn btn-danger deleteLink" title="${lang("Delete")}" href="/user/delete/${users[i].id}">
+									<span class="oi oi-circle-x"></span>
+								</a>
+							</div>
+						</td>
+					<tr>`
 
 				}
 				$mod.find('tbody').html(htmlcontent);
