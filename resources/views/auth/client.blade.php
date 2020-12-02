@@ -146,7 +146,7 @@
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label="user buttons">
                                         <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn modif-btn-user" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
-                                        <a class="btn btn-danger deleteLink" href="{{route('deleteUser', ['user' => $user->id])}}">
+                                        <a class="btn btn-danger deleteLink" href="{{route('deleteUser', ['usertoDelete' => $user->id])}}">
                                             <span class="oi oi-circle-x"></span>
                                         </a>
                                     </div>
