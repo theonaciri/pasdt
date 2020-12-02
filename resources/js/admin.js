@@ -79,7 +79,8 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 
 				}
 				$mod.find('tbody').html(htmlcontent);
-			})
+			});
+			$("#btnAddUser").attr("href", "/register?company=" + id);
 		});
 
 		$('.companymodulesbtn').click(function (e) {

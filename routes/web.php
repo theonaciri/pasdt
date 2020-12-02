@@ -24,7 +24,7 @@ Route::get('/consultation', 'HomeController@consultation')->name('consultation')
 /* USER */
 Route::get('/client', 'ClientController@index')->name('client');
 Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middleware('auth');
-Route::get('/user/delete/{user}', 'ClientController@deleteUser')->name('deleteUser')->middleware('auth');
+Route::get('/user/delete/{usertoDelete}', 'ClientController@deleteUser')->name('deleteUser')->middleware('auth');
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change')->middleware('auth');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middleware('auth');
 // if users.modify is change, need to change "$form.attr('action', '/users/modify/' + user_id.toString());" in client.js

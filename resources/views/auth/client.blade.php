@@ -114,6 +114,9 @@
             <div class="card">
                 <div class="card-header">@lang("List of users of your group") {{ $company->name }} </div>
                 <div class="card-body">
+                <div id="user-error" class="alert alert-danger d-none">
+                    <strong>Whoops!</strong> <span class="error-msg">@lang("Error")</span>
+                </div>
                     <table id="userTable" class="adminTable">
                         <thead>
                             <tr>
@@ -128,25 +131,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                            @if($user->is_client_company)
-                                <tr id="user{{$user->id}}" class="highlight">
-                            @else
-                                <tr id="user{{$user->id}}">
-                            @endif
+                        @foreach ($users as $user)
+                        @if($user->is_client_company)
+                            <tr id="user{{$user->id}}" class="highlight">
+                        @else
+                            <tr id="user{{$user->id}}">
+                        @endif
                                 <td class="id">{{$user->id}}</td>
                                 <td class="name">{{$user->name}}</td>
                                 <td class="email">{{$user->email}}</td>
                                 <td class="created_at">{{$user->created_at}}</td>
                                 <td class="updated_at">{{$user->updated_at}}</td>
-                                @if ($self->su_admin)
+                            @if ($self->su_admin)
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label="user buttons">
                                         <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn modif-btn-user" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
-                                        <a class="deleteLink" href="{{route('deleteUser', ['user' => $user->id])}}"><button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button></a>
+                                        <a class="btn btn-danger deleteLink" href="{{route('deleteUser', ['user' => $user->id])}}">
+                                            <span class="oi oi-circle-x"></span>
+                                        </a>
                                     </div>
                                 </td>
-                                @endif
+                            @endif
                             </tr>
                             @endforeach
                         </tbody>

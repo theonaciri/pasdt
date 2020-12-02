@@ -13,8 +13,12 @@
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">@lang("Organization")</label>
                             <div class="col-md-6">
+                            @if ($self->su_admin === 1)
                                 <select class="form-control" id="company" name="company">
-                                    @foreach ($companies as $company)
+                            @else
+                                <select class="form-control" id="company" name="company" disabled>
+                            @endif
+                                @foreach ($companies as $company)
                                     <option value="{{$company->id}}" {{ __($company->id == Auth::user()->company_id ?
                                         "selected" : "") }}>{{$company->name}}</option>
                                     @endforeach
