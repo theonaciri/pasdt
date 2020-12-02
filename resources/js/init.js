@@ -7,6 +7,8 @@ define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencie
 		$('table.dataTable').DataTable().fixedHeader.adjust();
 		localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	});
+	
+	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 
     $('#graphs-live-tab').on("click", function () {
    //  	var module_names = $('#module-name .selectpicker').val();

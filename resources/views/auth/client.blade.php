@@ -217,6 +217,7 @@
         </div>
     </div>
 </div>
+@if (false)
 <br>
 <div class="container">
     <div class="row justify-content-center">
@@ -256,6 +257,7 @@
         </div>
     </div>
 </div>
+@endif
 <br>
 
 <div class="container">

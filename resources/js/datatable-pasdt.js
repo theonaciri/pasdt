@@ -168,10 +168,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
             .on('change', function() {
               var val = $(this).val();
               var count_before = table.page.info().recordsDisplay;
-              // /!\ No escape security
-              if (!val.length || val.length == 1 && !val[0].length) {
-                column.search('', true, false).draw();
-              } else { // /!\ No escape security
+              if (val.length) {
                 column.search(val, true, false).draw();
               }
               var count_after = table.page.info().recordsDisplay;

@@ -1,5 +1,5 @@
-define(["jquery", 'moment', "./components/lang", "./dependencies/regressive-curve" /*, "anychart", "anychart-jquery"*/],
-function ($, moment, lang, regressiveCurve) {
+define(["jquery", 'moment', "./components/getURLParameter", "./components/lang", "./dependencies/regressive-curve" /*, "anychart", "anychart-jquery"*/],
+function ($, moment, getURLParameter, lang, regressiveCurve) {
 	window.chart = null;
 	var $mod_select = $('#graphModuleSelect');
 	var data = null;
@@ -8,7 +8,7 @@ function ($, moment, lang, regressiveCurve) {
 	var interval_var = null;
 	const days_before = 30;
 	const days_after = 30;
-	
+	var t = new URLSearchParams(location.search);
 	function init() {
 		if (chart != null) return; // only one init;
 
@@ -41,18 +41,22 @@ function ($, moment, lang, regressiveCurve) {
 
 	function setModuleSelect() {
 		if ($mod_select.val() !== null) return; // already initialized
-		var first_selected = false;
+		var pre_selected = getURLParameter("moduleid") || false;
+		var selected = "";
 
-		//disable empty module (in select list)
 		presynths.forEach(element => {
+			if (pre_selected != -1 && (pre_selected === false || pre_selected === element.module_id)) {
+				selected = " selected";
+			}
 			$mod_select.append('<option value="' + element.module_id + '"'
-				+ (!element.temp_created_at ?
-					' disabled' :
-					(!first_selected ? ' selected' : '')
-				)
+				+ (!element.temp_created_at ? //disable empty module (in select list)
+					' disabled' : selected)
 				+ '>'
 				+ element.module_id + ' - ' + element.name + "</option>");
-			first_selected = true;
+				if (selected.length) {
+					pre_selected = -1;
+					selected = "";
+				}
 		});
 
 		//enabled first (in select list)
@@ -60,7 +64,7 @@ function ($, moment, lang, regressiveCurve) {
 			$(item).appendTo($mod_select);
 		});
 
-		active_module = $mod_select.children('option:not([disabled]):first').val();
+		active_module = $mod_select.val();
 		$mod_select.on('change', function () {
 			active_module = $mod_select.val();
 			localStorage.setItem('graph-active-module', active_module);

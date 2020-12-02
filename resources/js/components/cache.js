@@ -1,8 +1,8 @@
 define(['jquery', '../bootstrap', 'bootstrap'], function($) {
     if (window.location.pathname.indexOf("password") != -1) return ;
+    /* CSRF is gotten in the notif.js file */
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
-	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 
     document.addEventListener("offline", function(e) {
     	console.error('OFFLINE', e);
@@ -17,7 +17,7 @@ define(['jquery', '../bootstrap', 'bootstrap'], function($) {
 			 	registration.unregister()
 			} })
 			setTimeout(function() {
-    			window.location.href = "/login";
+    			window.location.href = "/";
 			}, 1000)
     	}
     });
@@ -39,26 +39,5 @@ define(['jquery', '../bootstrap', 'bootstrap'], function($) {
     	setTimeout(function() {
     		$backonlineText.addClass('d-none');
     	}, 5000);
-    });
-
-	/* CSRF refresh for cached pages */
-	$.ajax({
-	    url: "/csrf",
-	    type: 'get',
-	    dataType: 'json'
-	}).done(function (result) {
-        $('meta[name="csrf-token"]').attr('content', result.token);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': result.token
-            }
-        });
-		// Create the event
-		//var event = new CustomEvent("backonline", { detail: {request: "csrf", data: result }});
-		// Dispatch/Trigger/Fire the event
-		//document.dispatchEvent(event);
-    }).fail(function(r) {
-    	var event = new CustomEvent("offline", { detail: {request: "csrf", data: r }});
-		document.dispatchEvent(event);
     });
 });
