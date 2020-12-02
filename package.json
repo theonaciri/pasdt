@@ -61,6 +61,7 @@
         "jszip": "^3.2.2",
         "pdfmake": "^0.1.59",
         "plotly.js-dist": "^1.49.5",
+        "url-search-params-polyfill": "^8.1.0",
         "webpack-jquery-ui": "^2.0.1"
     }
 }

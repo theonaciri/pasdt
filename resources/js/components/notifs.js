@@ -1,5 +1,6 @@
 define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, lang) {
 	var firstcall = true;
+	var admincomp = getURLParameter("company");
 	if (window.location.pathname.indexOf("password") != -1) return ;
 	function getNotificationPermission() {
 	    if ("Notification" in window && Notification.permission === 'granted') {
@@ -8,10 +9,21 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 	        return Notification.permission;
 	    }
 	}
+
+	function setCSRF(csrf) {
+		$('meta[name="csrf-token"]').attr('content', csrf);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrf
+            }
+        });
+	}
+
 	function getNotif() {
-		var admincomp = getURLParameter("company");
 		$.getJSON("/notifs/count_last" + (admincomp ? "?company=" + admincomp : ""))
 		.done(function(data) {
+			setCSRF(data.csrf);
+
 			n = +data.count;
 			$notifcounter = $('.notif-counter');
 			previouscounter = +$notifcounter.html();
@@ -58,6 +70,10 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 				}
 			}
 			firstcall = false;
+		})
+		.fail(function(r) {
+	    	var event = new CustomEvent("offline", { detail: {request: "csrf", data: r }});
+			document.dispatchEvent(event);
 		});
 	}
 	setInterval(getNotif, 5 * 60 * 1000);

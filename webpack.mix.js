@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const webpack = require('webpack');
+require('url-search-params-polyfill');
 
 /*
  |--------------------------------------------------------------------------
@@ -53,8 +54,13 @@ if (!mix.inProduction()) {
      .js('resources/js/extra-monitoring.js', 'public/js')
      .babel('public/js/extra-monitoring.js', 'public/js/extra-monitoring.es5.js')
      .sass('resources/sass/app.scss', 'public/css')
-     .js(['resources/js/dependencies/polyfills/find.js', 'resources/js/dependencies/polyfills/dispatch-event.js', 'resources/js/app.js'], 'public/js/app.es5.js')
+     .js(['resources/js/dependencies/polyfills/allpolyfills.js', 'resources/js/app.js'], 'public/js/app.es5.js')
      .babel('public/js/app.es5.js', 'public/js/app.es5.js')
+     /*.polyfill({
+      enabled: true,
+      useBuiltIns: "usage",
+      targets: {"firefox": "50", "ie": 11}
+   });*/
      
 }
 /*

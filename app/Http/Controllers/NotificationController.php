@@ -242,8 +242,9 @@ EOTNOTIF;
     public function APIgetNotifsCountAndLast(Request $request, $seen = '')
     {
         return response()->json(array(
-            "count"=> $this->getNotifsCount($request, $seen === "seen"),
-            "last" => $this->getNotifs($request, $seen === "seen", 1)
+            "csrf" => csrf_token(),
+            "count"=> $this->getNotifsCount($request, $seen === "seen")
+            /*"last" => $this->getNotifs($request, $seen === "seen", 1)*/
         ));
     }
 }
