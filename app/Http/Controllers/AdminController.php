@@ -79,22 +79,6 @@ class AdminController extends Controller
         ]);
     }
 
-    public function deleteUser(\App\User $usertoDelete) {
-        $user = Auth::user();
-        if ($user->company_id == 0) {
-            dd('dead');
-            return redirect()->route('consultation', []);
-        }
-        dd($usertoDelete->id);
-        dd($usertoDelete);
-        if ($user->is_client_company && $user->company_id == $usertoDelete->company_id) {
-            $usertoDelete->delete();
-        } else {
-            return redirect()->route('consultation', []);
-        }
-        return redirect()->route('admin', []);
-    }
-
     /**
     * Server-side filtering on users
     **/
