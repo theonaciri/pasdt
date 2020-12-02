@@ -38,14 +38,9 @@ mix.webpackConfig({
 
 if (!mix.inProduction()) {
   require('laravel-mix-bundle-analyzer');
-<<<<<<< HEAD
   mix.bundleAnalyzer();
   mix.js('resources/js/app.js', 'public/js')
   mix.js('resources/js/extra-monitoring.js', 'public/js')
-=======
-  //mix.bundleAnalyzer();
-  //mix.js('resources/js/app.js', 'public/js')
->>>>>>> fe96494... compat IE + css input client
      //.babel('public/js/app.js', 'public/js/app.es5.js')
      //.js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
      //.js('resources/js/checkout.js', 'public/js')

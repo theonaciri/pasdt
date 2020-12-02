@@ -14,7 +14,7 @@ require('./datatable-synthesis');
 require('./datatable-pasdt');
 require('./client');
 require('./admin');
-//require('./register');
+require('./register');
 
 //window.Vue = require('vue');
 

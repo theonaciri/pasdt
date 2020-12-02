@@ -147,12 +147,6 @@
         <script src="/js/anychart-bundle.js"></script>
     @else
         <script src="{{ asset('js/app.js') }}"></script>
-<<<<<<< HEAD
-=======
-        @if (Route::currentRouteName() == 'consultation' || Route::currentRouteName() == 'welcome')
-            <script src="/js/anychart-bundle.js" defer></script>
-        @endif
->>>>>>> fe96494... compat IE + css input client
     @endif
     <script>
         // Register service worker
