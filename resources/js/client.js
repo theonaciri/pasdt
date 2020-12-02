@@ -4,8 +4,6 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	$(".deleteLink").click((e) => {
 		e.preventDefault();
 		if (confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")){
@@ -23,15 +21,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				}
 			});
 		}
-
-=======
-	$("#deleteLink").click(() => {
-		return confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")
->>>>>>> af32d41... fix tranlate
 	});
-
-=======
->>>>>>> 622e31f... delete user.js modulé
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm(lang("Stop monitoring this module?"))) return ;
 		var csrf = $("input[name='_token']").first().val();
@@ -62,22 +52,15 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		const $elt = $(e.currentTarget);
 		const $elt_tr = $elt.parents().eq(2);
 		const user_id = $elt_tr.children("td.id").html();
-<<<<<<< HEAD
 		const $user_name = $elt_tr.children("td.name");
 		const $user_email = $elt_tr.children("td.email");
 		const $user_update = $elt_tr.children("td.updated_at");
-=======
-		const user_name = $elt_tr.children("td.name").html();
-		const user_email = $elt_tr.children("td.email").html();
-		console.log(user_id, user_name, user_email);
->>>>>>> 3c92c31... modify user
 		$('#edit-user-modal').ready(() => {
 			const $form = $('#modifyUserForm');
 			$form.attr('action', '/users/modify/' + user_id.toString());
 			const $inputs = $form.find('input');
 			//find input name and put last value
 			const $input_name = $.grep($inputs, function(e){ return e.id == "name"; });
-<<<<<<< HEAD
 			$input_name[0].value = $user_name.html();
 			//find input email and put last value
 			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
@@ -95,13 +78,6 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				}
 			});
 		});
-=======
-			$input_name[0].value = user_name;
-			//find input email and put last value
-			const $input_email = $.grep($inputs, function(e){ return e.id == "email"; });
-			$input_email[0].value = user_email;
-		})
->>>>>>> 3c92c31... modify user
 	});
 	
 	$('.commentbtn').on('click', function() {
@@ -244,7 +220,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
 			+ moment.duration(nowdate.diff(created)).humanize())
 			.prop('title', success ? lang("Solved the : ") + nowdate.format(format) : lang("Still ongoing"))
-			.toggleNotificationpermission('_fixTitle');
+			.tooltip('_fixTitle');
 		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize())
 				.prop('title', lang("First occurence the : ") + created.format(format))
 				.tooltip('_fixTitle');

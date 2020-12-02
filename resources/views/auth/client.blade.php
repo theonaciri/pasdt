@@ -113,66 +113,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">@lang("List of users of your group") {{ $company->name }} </div>
-<<<<<<< HEAD
-                <div class="card-body">
-                <div id="user-error" class="alert alert-danger d-none">
-                    <strong>Whoops!</strong> <span class="error-msg">@lang("Error")</span>
-                </div>
-                    <table id="userTable" class="adminTable">
-                        <thead>
-                            <tr>
-                                <th>@lang("ID")</th>
-                                <th>@lang("Name")</th>
-                                <th>@lang("Mail")</th>
-                                <th>@lang("Created the")</th>
-                                <th>@lang("Modified the")</th>
-                                @if ($self->su_admin)
-                                <th>@lang("Actions")</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($users as $user)
-                        @if($user->is_client_company)
-                            <tr id="user{{$user->id}}" class="highlight">
-                        @else
-                            <tr id="user{{$user->id}}">
-                        @endif
-                                <td class="id">{{$user->id}}</td>
-                                <td class="name">{{$user->name}}</td>
-                                <td class="email">{{$user->email}}</td>
-                                <td class="created_at">{{$user->created_at}}</td>
-                                <td class="updated_at">{{$user->updated_at}}</td>
-                            @if ($self->su_admin)
-                                <td class="button">
-                                    <div class="btn-group btn-vertical" role="group" aria-label="user buttons">
-                                        <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn modif-btn-user" data-toggle="modal" data-target="#edit-user-modal"><span class="oi oi-pencil"></span></button>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                                        <a class="btn btn-danger deleteLink" href="{{route('deleteUser', ['usertoDelete' => $user->id])}}">
-                                            <span class="oi oi-circle-x"></span>
-                                        </a>
-=======
-                                        <button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button>
->>>>>>> 3c92c31... modify user
-=======
-                                        <a onclick="return confirm('You are about to delete {{$user->name}}\nAre you sure?')" href="{{route('deleteUser', ['user' => $user->id])}}"><button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button></a>
->>>>>>> 323dcc8... MAJ des lang
-=======
-                                        <a id="deleteLink" href="{{route('deleteUser', ['user' => $user->id])}}"><button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-danger revoquserbtn"><span class="oi oi-circle-x"></span></button></a>
->>>>>>> af32d41... fix tranlate
-                                    </div>
-                                </td>
-                            @endif
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-=======
                 <x-list-users :users="$users"/>
->>>>>>> 622e31f... delete user.js modulé
             </div>
         </div>
     </div>
@@ -238,11 +179,7 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
 @if (false)
-=======
-@if ($user->id == 18)
->>>>>>> 6ef6355... restored cache
 <br>
 <div class="container">
     <div class="row justify-content-center">
@@ -396,7 +333,6 @@
                         <strong>{{ $message }}</strong>
                     </div>
                     <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->
-<<<<<<< HEAD
                     @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -408,19 +344,6 @@
                         </ul>
                     </div>
                     @endif
-=======
-                    @endif
-                    @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
->>>>>>> fe96494... compat IE + css input client
                     <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group">
