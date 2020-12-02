@@ -113,6 +113,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">@lang("List of users of your group") {{ $company->name }} </div>
+<<<<<<< HEAD
                 <div class="card-body">
                 <div id="user-error" class="alert alert-danger d-none">
                     <strong>Whoops!</strong> <span class="error-msg">@lang("Error")</span>
@@ -169,6 +170,9 @@
                         </tbody>
                     </table>
                 </div>
+=======
+                <x-list-users :users="$users"/>
+>>>>>>> 622e31f... delete user.js modulé
             </div>
         </div>
     </div>
