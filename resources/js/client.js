@@ -5,6 +5,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	var adminconfirmed = false;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	$(".deleteLink").click((e) => {
 		e.preventDefault();
 		if (confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")){
@@ -29,6 +30,8 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 >>>>>>> af32d41... fix tranlate
 	});
 
+=======
+>>>>>>> 622e31f... delete user.js modulé
 	$('.revoqmodulebtn').click(function (e) {
 		if (!confirm(lang("Stop monitoring this module?"))) return ;
 		var csrf = $("input[name='_token']").first().val();

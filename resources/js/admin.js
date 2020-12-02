@@ -1,5 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap"],
+=======
+define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap",
+		"./components/delete-user"],
+>>>>>>> 622e31f... delete user.js modulé
 	function ($, lang, flatten) {
 		if (window.location.pathname.indexOf("admin") < 0) return;
 		var company_modules = [];
@@ -142,6 +147,7 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 		$('.companybtn').click(function (e) {
 			var id = $(this).data('id');
 			var companyname = $(this).parent().siblings('.name').html();
+
 			$.getJSON("/company/" + id + "/users", function (users) {
 				$mod = $('#companyUsersModal');
 				$mod.modal("show");
@@ -154,7 +160,9 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
             		<td class="name">${users[i].name}</td>
 					<td class="email">${users[i].email}</td>
 					<td>
-                    	<a href="/client?company=` + id + `#user` + users[i].id + `"><button type="button" data-id="${users[i].id}" title='` + lang("Modify or delete") +`' name="delete" class="btn userdeletebtn"><span class="oi oi-pencil"></span> <span class="oi oi-circle-x"></span></button></a>
+						<a title="${lang("Delete")}" class="deleteLink btn userdeletebtn" href="/user/delete/${users[i].id}">
+							<span class="oi oi-circle-x"></span>
+						</a>
                     </td>
 				 <tr>`
 
