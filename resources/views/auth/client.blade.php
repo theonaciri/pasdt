@@ -278,7 +278,7 @@
                     @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
-                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
+                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")
                         <ul>
                             @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -289,7 +289,7 @@
                     <form id="localeform" action="{{  $su_applied ? route('user.change.locale', ['company' => $_company->id]) : route('user.change.locale') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group">
-                            <select class="custom-select" id="inputGroupSelect04" aria-label="@lang('Select the language')">
+                            <select class="custom-select" name="locale" id="inputGroupSelect04" aria-label="@lang('Select the language')">
                                 <optgroup label="{{ __('Fully supported languages') }}">
                                     @foreach ($official_locales as $key => $loc)
                                     <option value="{{$key}}" {{ $phplocale == $key ? "selected" : ''}}>{{$loc}}</option>
