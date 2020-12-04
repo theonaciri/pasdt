@@ -2,5 +2,4 @@
 
 @section('title', __('Page Expired'))
 @section('code', '419')
-@section('message', __("L'application vient de se mettre à jour, veuillez fermer tous vos onglets PASDT et relancer logs.pasdt.com"))
-<a class="btn btn-primary" url="/">@lang("logs.pasdt.com")</a>
+@section('message', __("L'application vient de se mettre à jour, veuillez relancer logs.pasdt.com"))
