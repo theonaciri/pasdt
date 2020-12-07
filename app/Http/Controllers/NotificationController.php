@@ -88,6 +88,9 @@ class NotificationController extends Controller
         $is_adminff = false;
         if (true || config('app.debug') == true) {
             app()->setLocale("fr_FR");
+            if (!count($usersinfo)) {
+                Log::info("empy userinfo for this notif");
+            }
             $info = $usersinfo[0];
             Log::info('MAIL_ADMIN: ' . $info->module_name . ' Sending ' . $info->type . ' notif #' . $info->id_notif . " to " . "theo.naciri@gmail.com" . " with value " . $notif->value);
             try {
@@ -177,10 +180,14 @@ class NotificationController extends Controller
         }
     }
 
-    public static function getNoLogCondition() {
+    public static function getNoLogCondition($set_date = false) {
+        $online_only = "AND module_id NOT IN (SELECT module FROM notifications WHERE type = 'NO_LOG' AND resolved = 0)";
+        if (!$set_date) {
+            return $online_only;
+        }
         return <<<EOTNOTIF
-                AND logs.created_at <= DATE_SUB(NOW(),INTERVAL 70 MINUTE) 
-                AND module_id NOT IN (SELECT module FROM notifications WHERE type = 'NO_LOG' AND resolved = 0)
+                AND logs.created_at <= DATE_SUB(NOW(), INTERVAL {config('pasdt.thresholds.NO_LOG.value')} MINUTE) 
+                {$online_only}
 EOTNOTIF;
     }
 

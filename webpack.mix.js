@@ -40,12 +40,12 @@ if (!mix.inProduction()) {
   require('laravel-mix-bundle-analyzer');
   mix.bundleAnalyzer();
   mix.js('resources/js/app.js', 'public/js')
-  mix.js('resources/js/extra-monitoring.js', 'public/js')
+  //mix.js('resources/js/extra-monitoring.js', 'public/js')
      //.babel('public/js/app.js', 'public/js/app.es5.js')
      //.js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
      //.js('resources/js/checkout.js', 'public/js')
      //.babel('public/js/checkout.js', 'public/js/checkout.es5.js')
-     //.sass('resources/sass/app.scss', 'public/css')
+     .sass('resources/sass/app.scss', 'public/css')
      //.extract(['pdfmake', 'pdfmake/build/vfs_fonts'])
   mix.browserSync('127.0.0.1:8000');
 } else {

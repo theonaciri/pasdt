@@ -2,19 +2,97 @@
 return [
 	"API_TOKEN" => env("API_TOKEN"),
 	"thresholds" => [
-		"BATTERY_LOW" => 11.8,
-		"BATTERY_CRIT_LOW" => 10.8,
-		"BATTERY_HIGH" => 14.8,
-		"BATTERY_CRIT_HIGH" => 15.2,
-		"TEMP_LOW" => 5,
-		"TEMP_CRIT_LOW" => -5,
-		"TEMP_HIGH" => 80,
-		"TEMP_CRIT_HIGH" => 90,
-		"TEMP_DECREASE" => -20,
-		"TEMP_INCREASE" => 20,
-		"NO_BATTERY" => "",
-		"NO_TEMP" => [785, -99],
-		"NO_LOG" => 3900 /* 1h05 */
+		"BATTERY_LOW" => [
+			"value" => 11.8,
+			"unit" => "V",
+			"desc" => "Mininimum battery voltage before triggering an alert",
+			"min" => 3,
+			"max" => 20
+		],
+		"BATTERY_CRIT_LOW" => [
+			"value" => 10.8,
+			"unit" => "V",
+			"desc" => "Mininimum battery voltage before CRITICAL triggering an alert",
+			"min" => 3,
+			"max" => 20
+		],
+		"BATTERY_HIGH" => [
+			"value" => 14.8,
+			"unit" => "V",
+			"desc" => "Maximum battery voltage before triggering an alert",
+			"min" => 3,
+			"max" => 20
+		],
+		"BATTERY_CRIT_HIGH" => [
+			"value" => 15.2,
+			"unit" => "V",
+			"desc" => "Maximum battery voltage before CRITICAL triggering an alert",
+			"min" => 3,
+			"max" => 20
+		],
+		"TEMP_LOW" => [
+			"value" => 5,
+			"unit" => "°C",
+			"desc" => "Minimum temperature before triggering an alert",
+			"min" => -98,
+			"max" => 999
+		],
+		"TEMP_CRIT_LOW" => [
+			"value" => -5,
+			"unit" => "°C",
+			"desc" => "Minimum temperature before CRITICAL triggering an alert",
+			"min" => -98,
+			"max" => 999
+		],
+		"TEMP_HIGH" => [
+			"value" => 80,
+			"unit" => "°C",
+			"desc" => "Maximum temperature before triggering an alert",
+			"min" => -98,
+			"max" => 999
+		],
+		"TEMP_CRIT_HIGH" => [
+			"value" => 90,
+			"unit" => "°C",
+			"desc" => "Maximum temperature before CRITICAL triggering an alert",
+			"min" => -98,
+			"max" => 999
+		],
+		"TEMP_DECREASE" => [
+			"value" => -20,
+			"unit" => "°C",
+			"desc" => "Maximum temperature decrease before triggering an alert",
+			"min" => -90,
+			"max" => -1
+		],
+		"TEMP_INCREASE" => [
+			"value" => 20,
+			"unit" => "°C",
+			"desc" => "Maximum temperature increase before triggering an alert",
+			"min" => 1,
+			"max" => 99
+		],
+		"NO_BATTERY" => [
+			"value" => [-99],
+			"unit" => "List",
+			"desc" => "List of incorrect battery values (separate with a comma)",
+			"min" => [],
+			"max" => []
+		],
+		"NO_TEMP" => [
+			"value" => [785, -99],
+			"unit" => "List",
+			"desc" => "List of incorrect temperature values (separate with a comma)",
+			"min" => [],
+			"max" => []
+		],
+		"NO_LOG" => [
+			"value" => 70, /* 1h05 */
+			"unit" => "minutes",
+			"desc" => "Minutes without receiving data before triggering an alert",
+			"min" => 2,
+			"max" => 43200 /* 1 month */ 
+		]
 		/*"TOO_MANY_LOGS" => 60,*/
 	],
 	"telit" => [

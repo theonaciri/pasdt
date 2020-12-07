@@ -306,17 +306,15 @@ class ModuleController extends Controller
     public function putModule(Request $request, Module $module) {
         $user = Auth::user();
         $module->name = $request->name;
-        if ($this->isUserClient($user, $module->company_id)) {
-            $module->update([
-                'name'=>$request->name,
-                'telit_json'=>$request->telit_json,
-                'telit_id'=>$request->telit_number,
-                'module_id'=>$request->pasdt_module_number
-            ]);
-        } else {
+        if (!$this->isUserClient($user, $module->company_id)) {
             abort(403);
         }
-
+        $module->update([
+            'name'=>$request->name,
+            'telit_json'=>$request->telit_json,
+            'telit_id'=>$request->telit_number,
+            'module_id'=>$request->pasdt_module_number
+        ]);
         return response()->json($module);
     }
 
@@ -328,12 +326,11 @@ class ModuleController extends Controller
 
     public function deleteModule(Module $module) {
         $user = Auth::user();
-        if ($this->isUserClient($user, $module->company_id)) {
-            $module->delete();
-            return response()->json($module);
-        } else {
+        if (!$this->isUserClient($user, $module->company_id)) {
             return abort(403);
         }
+        $module->delete();
+        return response()->json($module);
     }
 
     /**
@@ -384,6 +381,52 @@ class ModuleController extends Controller
             return response($module->telit_json);
         }
         return abort(403);
+    }
+    /**
+    * Get Module alerts
+    * Connexion web
+    */
+
+    public function getThresholds(Module $module) {
+        $user = Auth::user();
+        if ($this->isUserFromCompany($user, $module->company_id)) {
+            return response($module->thresholds);
+        }
+        return abort(403);
+    }
+
+    public function setThresholds(Module $module, Request $request) {
+        $this->getSaveAuthCompany();
+        if (!$this->isUserClient($this->user, $module->company_id)) {
+            return abort(403);
+        }
+        $post = $request->post();
+        $to_store = [];
+        foreach ($post as $key => $value) {
+            $t_key = config('pasdt.thresholds')[$key] ?? null;
+            if (!empty($t_key)) {
+                if ($t_key["unit"] === "V" && $t_key["value"] != floatval($value)) {
+                    $to_store[$key] = floatval($value);
+                } else if ($t_key["unit"] === "°C" && $t_key["value"] != intval($value)) {
+                    $to_store[$key] = intval($value);
+                } else if ($t_key["unit"] === "List") {
+                    $received_array = explode(",", $value);
+                    $to_store_array = [];
+                    if (is_array($received_array)) {
+                        foreach ($received_array as $_key => $_value) {
+                            $new_i = intval(trim($_value));
+                            if (!in_array($new_i, $to_store_array)) {
+                                $to_store_array[$_key] = $new_i;
+                            }
+                        }
+                        $to_store[$key] = $to_store_array;
+                    }
+                }
+            }
+        }
+        $module->thresholds = json_encode($to_store);
+        $module->save();
+        return response()->json(["ok" => $to_store]);
     }
 
     public function subscribeNotif(Module $module) {

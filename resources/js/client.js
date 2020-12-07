@@ -1,6 +1,6 @@
 define(['jquery', 'moment/moment', './components/getURLParameter',
 		"./components/syntaxHighlight", "./components/lang", "./components/moment-fr",
-		'./components/notifs', "./dependencies/jquery.ajaxSubmit"],
+		'./components/notifs', "./dependencies/jquery.ajaxSubmit", "bootstrap-switch-button"],
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 
@@ -109,7 +109,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 
 	/* json modal*/
 	$('#jsonModal').on('show.bs.modal', function (e) {
-  		var id = $(e.relatedTarget).parent().siblings(".id").html();
+  		var id = $(e.relatedTarget).parent().siblings(".id").data("real-id");
   		var $this = $(this);
   		$.getJSON("/module/" + id + "/json")
   		.done(function(telit_json) {
@@ -118,6 +118,55 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
   		.fail(function(e) {
   			$this.find('pre').html(lang("JSON data missing"));
   		});
+	});
+	/* module alerts modal*/
+	$('#modalModuleThresholds').on('show.bs.modal', function (e) {
+  		var id = $(e.relatedTarget).parent().siblings(".id").data("real-id");
+  		var $this = $(this);
+  		$body = $this.find('modal-body');
+  		$formloader = $this.find('.form-loader').removeAttr("hidden");
+  		$.getJSON("/module/" + id + "/thresholds")
+  		.done(function(thresholds_json) {
+  			$formloader.prop("hidden", true);
+  			Object.entries(thresholds_json).forEach(([key, val]) => {
+  				$("#" + key).val(val);
+			});
+  		})
+  		.fail(function(e) {
+	  		$formloader.prop("hidden", true);
+  			$body.html(lang("JSON data missing"));
+  		});
+  		$this.find('.modal-title > span')
+  			 .html($(e.relatedTarget).parent().siblings(".name").html());
+  		$this.find('form').attr('action', "/module/" + id + "/thresholds")
+  			 .find('input').each(function() {
+  				$input = $(this);
+  				$input.attr('name', $input.attr('id'))
+  					   .val($input.attr('placeholder'));
+  			 });
+	});
+
+	$("#moduleThresholdForm").ajaxSubmit({
+		data: function() {
+			return $(this).find(":input[value!='']").serialize();
+	    },
+		url: function() {
+	      return $(this).attr('action');
+	    },
+		before: function(e, a, c) {
+			$(this).find('input').each(function(i) {
+				$this = $(this);
+				if ($this.val() == "" || $this.val() == $this.attr("placeholder")) {
+					$this.attr("name", "");
+				} else {
+					$this.attr("name", $this.attr("id"));
+				}
+			});
+			return true;
+		},
+		success: function (e) {
+			$("#modalModuleThresholds").modal('hide');
+		}
 	});
 
 	/* textarea */

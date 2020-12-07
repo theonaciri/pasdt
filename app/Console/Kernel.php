@@ -35,18 +35,19 @@ class Kernel extends ConsoleKernel
         ->twiceDaily(8, 14)->environments(['production']);*/
         
         /* UPDATE TELIT */
-        $schedule->call('App\Http\Controllers\ModuleController@updateModules')->dailyAt('9:00');
+        // Outdated, see GetLastModulesTemp
+        // $schedule->call('App\Http\Controllers\ModuleController@updateModules')->dailyAt('9:00');
 
-        /* UPDATE NO LOG RECEIVED */
-        $notif_condition = NotificationController::getNoLogCondition();
-        Log::info("Starting schedule.");
-        $modules = LogController::getLastModulesTempArray("", $notif_condition);
-        foreach ($modules as $module) {
-            $schedule->call(function() use ($module) {
-                Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
-                NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
-            })->everyMinute(); //hourly
-        }
+        // /* UPDATE NO LOG RECEIVED */
+        // $notif_condition = NotificationController::getNoLogCondition();
+        // Log::info("Starting schedule.");
+        // $modules = LogController::getLastModulesTempArray("", $notif_condition);
+        // foreach ($modules as $module) {
+        //     $schedule->call(function() use ($module) {
+        //         Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
+        //         NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
+        //     })->everyMinute(); //hourly
+        // }
     }
 
     /**
