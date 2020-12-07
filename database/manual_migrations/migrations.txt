@@ -31,3 +31,6 @@ ALTER TABLE `users` ADD `locale` VARCHAR(15) NOT NULL DEFAULT 'fr_FR' AFTER `rem
 
 01/12/2020:
 ALTER TABLE `modules` ADD `send_mails` BOOLEAN NOT NULL DEFAULT TRUE AFTER `module_id`;
+
+06/12/2020:
+ALTER TABLE `modules` CHANGE `temp_triggers` `thresholds` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

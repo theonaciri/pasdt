@@ -31,6 +31,7 @@ class GetLastModulesTemp extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->no_log_timer = config("pasdt.thresholds.NO_LOG.value");
     }
 
     /**
@@ -40,14 +41,23 @@ class GetLastModulesTemp extends Command
      */
     public function handle()
     {
+        echo("Starting schedule.\n");
         /* if no log received last 1h10 minutes and if there's no NO_LOG notification unseen */
         $notif_condition = NotificationController::getNoLogCondition();
-        echo("Starting schedule.\n");
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {
-            echo("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
-            Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
-            NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
+            if (!empty($module->thresholds)) {
+                $thresholds = json_decode($module->thresholds);
+                if (is_array($thresholds) && is_int($thresholds['NO_LOG'])) {
+                    $this->no_log_timer = $thresholds['NO_LOG'];
+                }
+            }
+            $b = date('Y-m-d H:i:s', strtotime('-' . $this->no_log_timer . ' minutes'));
+            if ($module->temp_created_at < $b) {
+                echo("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
+                Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
+                NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
+            }
         }
     }
 }

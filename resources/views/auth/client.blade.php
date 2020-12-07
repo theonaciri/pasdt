@@ -93,9 +93,9 @@
                                 </td>
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label='@lang("Notification buttons")'>
-                                        <button type="button" title='@lang("Seen")' name="seen" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
-                                        <button type="button" title='@lang("See the related alerts")' name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
-                                        <button type="button" title='@lang("See the generated email")' name="see_gen_mail" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
+                                        <button type="button" title="@lang('Seen')" aria-label="@lang('Seen')" name="seen" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
+                                        <button type="button" title="@lang('See the related alerts')" aria-label="@lang('See the related alerts')" name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                        <button type="button" title="@lang('See the generated email')" aria-label="@lang('See the generated email')" name="see_gen_mail" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
                                     </div>
                                 </td>
                             </tr>
@@ -156,7 +156,7 @@
                             @else
                                 <tr>
                             @endif
-                                <td class="id">{{$module->module_id}}</td>
+                                <td class="id" data-real-id="{{$module->id}}">{{$module->module_id}}</td>
                                 <td class="name">{{$module->name}}</td>
                                 <td class="email">{{$module->telit_ratePlan}}</td>
                                 <td class="button flex-row">
@@ -167,6 +167,7 @@
                                         </label>
                                     </div>
 
+                                    <button type="button" title='@lang("Customize")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds">@lang("Customize")</button>
                                     <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal">JSON</button>
                                     <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
                                 </td>
@@ -434,10 +435,55 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="modalModuleThresholds" tabindex="-1" role="dialog" aria-labelledby="modalModuleThresholdsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form method="POST" action="/module/thresholds" id="moduleThresholdForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalModuleThresholdsLabel">@lang("Module thresholds") - <span></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    @csrf
+                    @foreach (config('pasdt.thresholds') as $key => $threshold)
+                    <div class="form-group col-sm-6 col-md-4 col-lg-3" data-toggle="tooltip" title="@lang($threshold['desc'])">
+                        <label for="{{ $key }}">{{ $key }}</label>
+                        <div class="input-group">
+                            @if ($threshold['unit'] === "°C" || $threshold['unit'] === "V")
+                            <input type="number" class="form-control" id="{{ $key }}" name="{{ $key }}" min="{{ $threshold['min'] }}" max="{{ $threshold['max'] }}" step="{{$threshold['unit'] === 'V' ? '0.1' : '1' }}" value="{{ $threshold['value'] }}" placeholder="{{ json_encode($threshold['value']) }}">
+                            @elseif ($threshold['unit'] === "seconds")
+                            <input type="number" class="form-control" id="{{ $key }}" name="{{ $key }}" min="{{ $threshold['min'] }}" max="{{ $threshold['max'] }}" step="1" value="{{ $threshold['value'] / 60 }}" placeholder="{{ $threshold['value'] / 60 }}">
+                            @else
+                            <input type="text" class="form-control" id="{{ $key }}" name="{{ $key }}" value="{{ trim(json_encode($threshold['value']), '[]') }}" placeholder="{{ trim(json_encode($threshold['value']), '[]') }}">
+                            @endif
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="{{ $key }}append">@lang($threshold["unit"])</span>
+                                <input type="checkbox" data-toggle="switchbutton"  id="{{ $key }}-Checkbox" checked />
+                          </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="form-message"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-loader">
+                        <img src="/images/loader.svg" height="37" width="37" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">@lang("Submit")</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-labelledby="modalComment" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="/notif//comment" id="commentform" method="post">
+            <form action="/notif/comment" id="commentform" method="post">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="commentTitle">@lang("Edit the comment")</h5>

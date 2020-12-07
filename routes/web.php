@@ -61,11 +61,13 @@ Route::get('/logs/TelitToOverspeed/{pasdt_str}', 'LogController@convertTelitToOv
 /* MODULE */
 Route::get('/modules', 'ModuleController@getAllModules')->name('modules.get.all')->middleware('auth');
 Route::post('/module', 'ModuleController@postModule')->name('module.post')->middleware('auth');
+Route::post('/module/{module}/thresholds', 'ModuleController@setThresholds')->name('module.thresholds.post')->middleware('auth');
+Route::get('/module/{module}/thresholds', 'ModuleController@getThresholds')->name('module.thresholds.get')->middleware('auth');
 Route::put('/module/{module}', 'ModuleController@putModule')->name('module.put')->middleware('auth');
 Route::delete('/module/{module}', 'ModuleController@deleteModule')->name('module.delete')->middleware('auth');
 Route::get('/module/{module}', 'ModuleController@getModule')->name('module.get')->middleware('auth');
+Route::get('/module/{module}/json', 'ModuleController@getModuleJson')->name('module.get.json')->middleware('auth');
 Route::get('/module/module_id/{module:module_id}', 'ModuleController@getModuleByModuleId')->name('module.getByModuleId')->middleware('auth');
-Route::get('/module/{module:module_id}/json', 'ModuleController@getModuleJson')->name('module.get.json')->middleware('auth');
 Route::get('/module', 'ModuleController@index')->name('module')->middleware('auth');
 Route::put('/module/{module:module_id}/toggle-mail/{state}', 'ModuleController@toggleMailModule')->name('toggleMailModule')->middleware('auth');
 
