@@ -12,12 +12,13 @@
 @import '~bootstrap-select/dist/css/bootstrap-select.min';
 @import '~datatables.net-responsive-bs4/css/responsive.bootstrap4.min';
 @import '~datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min';
-@import '~bootstrap-switch-button/css/bootstrap-switch-button.min';
+@import '~bootstrap4-toggle/css/bootstrap4-toggle.min.css';
 
 @import 'globals';
 
 @import 'btn-group-resp';
 
+@import 'client';
 @import 'pages';
 
 @import 'accessibility';

@@ -23,6 +23,7 @@ class GetLastModulesTemp extends Command
      */
     protected $description = 'Get last temperatures for each modules';
 
+    protected $default_no_log_timer;
     /**
      * Create a new command instance.
      *
@@ -31,7 +32,7 @@ class GetLastModulesTemp extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->no_log_timer = config("pasdt.thresholds.NO_LOG.value");
+        $this->default_no_log_timer = config("pasdt.thresholds.NO_LOG.value");
     }
 
     /**
@@ -46,17 +47,25 @@ class GetLastModulesTemp extends Command
         $notif_condition = NotificationController::getNoLogCondition();
         $modules = LogController::getLastModulesTempArray("", $notif_condition);
         foreach ($modules as $module) {
+            $no_log_timer = $this->default_no_log_timer;
             if (!empty($module->thresholds)) {
-                $thresholds = json_decode($module->thresholds);
-                if (is_array($thresholds) && is_int($thresholds['NO_LOG'])) {
-                    $this->no_log_timer = $thresholds['NO_LOG'];
+                $mod_thresholds = json_decode($module->thresholds, true);
+                if (is_array($mod_thresholds) && array_key_exists("NO_LOG", $mod_thresholds)) {
+                    $no_log_timer = $mod_thresholds["NO_LOG"];
+                }
+                if (is_null($no_log_timer)) {
+                    $msg = "No log from: " . $module->name . ":\t" . $module->temp_created_at . ". But user config prevents triggering an alarm.\n";
+                    echo($msg);
+                    Log::info($msg);
+                    continue ;
                 }
             }
-            $b = date('Y-m-d H:i:s', strtotime('-' . $this->no_log_timer . ' minutes'));
+            $b = date('Y-m-d H:i:s', strtotime('-' . $no_log_timer . ' minutes'));
             if ($module->temp_created_at < $b) {
-                echo("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
-                Log::info("No log from: " . $module->name . ":\t\t" . $module->temp_created_at . "\n");
-                NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at);
+                $msg = "No log from: " . $module->name . ":\t" . $module->temp_created_at . ".\n";
+                echo($msg);
+                Log::info($msg);
+                NotificationController::newNotif(array("id" => "", "cardId" => $module->module_id), "NO_LOG", $module->temp_created_at, $no_log_timer);
             }
         }
     }
