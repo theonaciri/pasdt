@@ -141,7 +141,8 @@ class NotificationController extends Controller
         }
     }
 
-    public static function newNotif($log, $type, $value) {
+    public static function newNotif($log, $type, $value, $threshold_active = true) {
+        if ($threshold_active === false) {return ; }
         $module_id = $log['cardId'] ?? "";
         if (!empty($module_id)) {
             $existing_not = Notification::where('module', '=', $module_id)

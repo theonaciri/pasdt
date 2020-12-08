@@ -1,6 +1,6 @@
 define(['jquery', 'moment/moment', './components/getURLParameter',
 		"./components/syntaxHighlight", "./components/lang", "./components/moment-fr",
-		'./components/notifs', "./dependencies/jquery.ajaxSubmit", "bootstrap-switch-button"],
+		'./components/notifs', "./dependencies/jquery.ajaxSubmit", "bootstrap4-toggle"],
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
 
@@ -109,7 +109,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 
 	/* json modal*/
 	$('#jsonModal').on('show.bs.modal', function (e) {
-  		var id = $(e.relatedTarget).parent().siblings(".id").data("real-id");
+  		var id = $(e.relatedTarget).parents("td").siblings(".id").data("real-id");
   		var $this = $(this);
   		$.getJSON("/module/" + id + "/json")
   		.done(function(telit_json) {
@@ -121,42 +121,52 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	});
 	/* module alerts modal*/
 	$('#modalModuleThresholds').on('show.bs.modal', function (e) {
-  		var id = $(e.relatedTarget).parent().siblings(".id").data("real-id");
+  		var id = $(e.relatedTarget).parents("td").siblings(".id").data("real-id");
   		var $this = $(this);
   		$body = $this.find('modal-body');
   		$formloader = $this.find('.form-loader').removeAttr("hidden");
   		$.getJSON("/module/" + id + "/thresholds")
   		.done(function(thresholds_json) {
-  			$formloader.prop("hidden", true);
   			Object.entries(thresholds_json).forEach(([key, val]) => {
-  				$("#" + key).val(val);
+  				if (val === null) {
+  					$("#" + key + "-disable").bootstrapToggle('off');
+  				} else {
+	  				$("#" + key).val(val);
+  				}
 			});
+  			$formloader.prop("hidden", true);
   		})
   		.fail(function(e) {
-	  		$formloader.prop("hidden", true);
   			$body.html(lang("JSON data missing"));
+	  		$formloader.prop("hidden", true);
   		});
   		$this.find('.modal-title > span')
-  			 .html($(e.relatedTarget).parent().siblings(".name").html());
+  			 .html($(e.relatedTarget).parents("td").siblings(".name").html());
   		$this.find('form').attr('action', "/module/" + id + "/thresholds")
   			 .find('input').each(function() {
   				$input = $(this);
   				$input.attr('name', $input.attr('id'))
   					   .val($input.attr('placeholder'));
   			 });
+  		$this.find('input[data-toggle="toggle"]').bootstrapToggle('on')
 	});
 
 	$("#moduleThresholdForm").ajaxSubmit({
 		data: function() {
-			return $(this).find(":input[value!='']").serialize();
+            /* unchecked inputs are disabled inputs */
+			var ret = $(this).find("input:not(:checked)").serialize();
+			$(this).find('input[type="checkbox"]:not(:checked)').each(function(e){
+				ret += (ret.length ? "&" : "") + this.id
+			});
+			return ret;
 	    },
 		url: function() {
 	      return $(this).attr('action');
 	    },
-		before: function(e, a, c) {
+		before: function() {
 			$(this).find('input').each(function(i) {
 				$this = $(this);
-				if ($this.val() == "" || $this.val() == $this.attr("placeholder")) {
+				if (($this.val() == "" && !$this[0].checked) || $this.val() == $this.attr("placeholder")) {
 					$this.attr("name", "");
 				} else {
 					$this.attr("name", $this.attr("id"));
@@ -166,9 +176,14 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		},
 		success: function (e) {
 			$("#modalModuleThresholds").modal('hide');
-		}
+		},
+		messageErrorClasses: "col-12 alert alert-danger"
 	});
 
+	$('input[data-toggle="toggle"]').change(function(e) {
+        /* unchecked inputs are disabled inputs */
+    	$("#" + this.id.substring(0, this.id.indexOf("-disable"))).prop("disabled", !this.checked);
+    })
 	/* textarea */
 	$("#comment").keyup(setTextAreaCounter);
 
@@ -200,7 +215,10 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	});
 
 	$('.module-mail-btn').on('click', function(e) {
-		var id = $(this).parent().parent().siblings(".id").html();
+		var $this = $(this);
+		var id = $this.parents("td").siblings(".id").html();
+		var modifbtn = $this.parent().siblings(".btn-group").children('.modifbtn')[0];
+		modifbtn.disabled = !e.target.checked;
 		$.ajax({
 			url: "/module/" + id + "/toggle-mail/" + (e.target.checked ? "1" : "0"),
 			type: "PUT"
@@ -209,6 +227,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		}).fail(function() {
 	    	e.target.checked = !e.target.checked;
 			$('#mail-module-error').removeClass('d-none');
+			modifbtn.disabled = !e.target.checked;
 		});
 	});
 

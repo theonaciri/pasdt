@@ -34,3 +34,4 @@ ALTER TABLE `modules` ADD `send_mails` BOOLEAN NOT NULL DEFAULT TRUE AFTER `modu
 
 06/12/2020:
 ALTER TABLE `modules` CHANGE `temp_triggers` `thresholds` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `modules` CHANGE `thresholds` `thresholds` VARCHAR(400) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

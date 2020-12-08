@@ -317,16 +317,20 @@ EOTSQL));
         NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog->updated_at, ["NO_LOG"]);
 
         $thresholds = config('pasdt.thresholds');
-        $mod_thresholds = json_decode($module->thresholds);
-        if (is_array($module->thresholds)) {
-            foreach ($module->thresholds as $key => $value) {
-                $thresholds[$key]["value"] = $value;
+        $mod_thresholds = json_decode($module->thresholds, true);
+        if (is_array($mod_thresholds)) {
+            foreach ($mod_thresholds as $key => $value) {
+                if (is_null($value)) {
+                   $thresholds[$key]["active"] = false;
+                } else {
+                    $thresholds[$key]["value"] = $value;
+                }
             }
         }
         /* BATTERY */
-        if (empty($newlog['vbat']) || in_array($newlog['vbat'], $thresholds['NO_BAT']['value'])) {
+        if (empty($newlog['vbat']) || in_array($newlog['vbat'], $thresholds['NO_BATTERY']['value'])) {
             $type = 'NO_BATTERY';
-            NotificationController::newNotif($newlog, $type, $newlog['vbat']);
+            NotificationController::newNotif($newlog, $type, $newlog['vbat'], $thresholds[$type]["active"] ?? true);
         } else {
             if ($newlog['vbat'] >= $thresholds['BATTERY_HIGH']['value']) {
                 if ($newlog['vbat'] >= $thresholds['BATTERY_CRIT_HIGH']['value']) {
@@ -335,7 +339,7 @@ EOTSQL));
                     $type = 'BATTERY_HIGH';
                 }
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_BATTERY", "BATTERY_LOW", "BATTERY_CRIT_LOW"]);
-                NotificationController::newNotif($newlog, $type, $newlog['vbat']);
+                NotificationController::newNotif($newlog, $type, $newlog['vbat'], $thresholds[$type]["active"] ?? true);
             }
             else if ($newlog['vbat'] <= $thresholds['BATTERY_LOW']['value']) {
                 if ($newlog['vbat'] <= $thresholds['BATTERY_CRIT_LOW']['value']) {
@@ -344,7 +348,7 @@ EOTSQL));
                     $type = 'BATTERY_LOW';
                 }
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_BATTERY", "BATTERY_HIGH", "BATTERY_CRIT_HIGH"]);
-                NotificationController::newNotif($newlog, $type, $newlog['vbat']);
+                NotificationController::newNotif($newlog, $type, $newlog['vbat'], $thresholds[$type]["active"] ?? true);
             } else {
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_BATTERY", "BATTERY_LOW", "BATTERY_CRIT_LOW", "BATTERY_HIGH", "BATTERY_CRIT_HIGH"]);
             }
@@ -353,7 +357,7 @@ EOTSQL));
         /* TEMP */
         if (empty($newlog['maxtemp']) || in_array($newlog['maxtemp'], $thresholds['NO_TEMP']['value'])) {
             $type = 'NO_TEMP';
-            NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+            NotificationController::newNotif($newlog, $type, $newlog['maxtemp'], $thresholds[$type]["active"] ?? true);
         } else {
             if ($newlog['maxtemp'] >= $thresholds['TEMP_HIGH']['value']) {
                 if ($newlog['maxtemp'] >= $thresholds['TEMP_CRIT_HIGH']['value']) {
@@ -362,7 +366,7 @@ EOTSQL));
                     $type = 'TEMP_HIGH';
                 }
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW"]);
-                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp'], $thresholds[$type]["active"] ?? true);
             }
             else if ($newlog['maxtemp'] <= $thresholds['TEMP_LOW']['value']) {
                 if ($newlog['maxtemp'] <= $thresholds['TEMP_CRIT_LOW']['value']) {
@@ -371,7 +375,7 @@ EOTSQL));
                     $type = 'TEMP_LOW';
                 }
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW"]);
-                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp'], $thresholds[$type]["active"] ?? true);
             } else {
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_LOW", "TEMP_CRIT_LOW", "TEMP_HIGH", "TEMP_CRIT_HIGH"]);
             }
@@ -380,17 +384,18 @@ EOTSQL));
             if (empty($lastemplog) || empty($lastemplog['maxtemp']) || empty($newlog['maxtemp']) || $newlog['maxtemp'] + $lastemplog['maxtemp'] == 0) {
                 $difftemp = 0;
             } else {
-                $difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100;
+                //$difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100;
+                $difftemp = $newlog['maxtemp'] - $lastemplog['maxtemp'];
             }
             if ($difftemp > $thresholds['TEMP_INCREASE']['value']) {
                 $type = 'TEMP_INCREASE';
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_DECREASE"]);
-                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp'], $thresholds[$type]["active"] ?? true);
             }
             else if ($difftemp < $thresholds['TEMP_DECREASE']['value']) {
                 $type = 'TEMP_DECREASE';
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["NO_TEMP", "TEMP_INCREASE"]);
-                NotificationController::newNotif($newlog, $type, $newlog['maxtemp']);
+                NotificationController::newNotif($newlog, $type, $newlog['maxtemp'], $thresholds[$type]["active"] ?? true);
             } else {
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["TEMP_INCREASE", "TEMP_DECREASE"]);
             }

@@ -166,9 +166,10 @@
                                             <span class="oi oi-envelope-closed"></span>&nbsp;@lang("Activate mails")
                                         </label>
                                     </div>
-
-                                    <button type="button" title='@lang("Customize")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds">@lang("Customize")</button>
-                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#jsonModal">JSON</button>
+                                    <div class="btn-group btn-vertical" role="group" aria-label='@lang("Module buttons")'>
+                                        <button type="button" title='@lang("Customize")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds" {{ $module->send_mails === 1 ? "" : 'disabled' }}><span class="oi oi-cog"></span></button>
+                                        <button type="button" title='JSON' name="json" class="btn btn-secondary" data-toggle="modal" data-target="#jsonModal"><span class="oi oi-code"></span></button>
+                                    </div>
                                     <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
                                 </td>
                             </tr>
@@ -436,7 +437,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalModuleThresholds" tabindex="-1" role="dialog" aria-labelledby="modalModuleThresholdsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form method="POST" action="/module/thresholds" id="moduleThresholdForm">
                 <div class="modal-header">
@@ -448,8 +449,8 @@
                 <div class="modal-body row">
                     @csrf
                     @foreach (config('pasdt.thresholds') as $key => $threshold)
-                    <div class="form-group col-sm-6 col-md-4 col-lg-3" data-toggle="tooltip" title="@lang($threshold['desc'])">
-                        <label for="{{ $key }}">{{ $key }}</label>
+                    <div class="form-group col-md-6 col-lg-4 col-xl-3" data-toggle="tooltip" title="@lang($threshold['desc'])">
+                        <label for="{{ $key }}">@lang($key)</label>
                         <div class="input-group">
                             @if ($threshold['unit'] === "°C" || $threshold['unit'] === "V")
                             <input type="number" class="form-control" id="{{ $key }}" name="{{ $key }}" min="{{ $threshold['min'] }}" max="{{ $threshold['max'] }}" step="{{$threshold['unit'] === 'V' ? '0.1' : '1' }}" value="{{ $threshold['value'] }}" placeholder="{{ json_encode($threshold['value']) }}">
@@ -458,10 +459,13 @@
                             @else
                             <input type="text" class="form-control" id="{{ $key }}" name="{{ $key }}" value="{{ trim(json_encode($threshold['value']), '[]') }}" placeholder="{{ trim(json_encode($threshold['value']), '[]') }}">
                             @endif
-                            <div class="input-group-append">
+                            <div class="input-group-append no-border-right">
                                 <span class="input-group-text" id="{{ $key }}append">@lang($threshold["unit"])</span>
-                                <input type="checkbox" data-toggle="switchbutton"  id="{{ $key }}-Checkbox" checked />
-                          </div>
+                            </div>
+                            <div class="no-border-left">
+                                <!-- name is disable because only disabled inputs are sent as true -->
+                                <input type="checkbox" id="{{ $key }}-disable" name="{{ $key }}-disable" checked data-toggle="toggle">
+                            </div>
                         </div>
                     </div>
                     @endforeach
@@ -471,7 +475,7 @@
                     <div class="form-loader">
                         <img src="/images/loader.svg" height="37" width="37" />
                     </div>
-                    <button type="submit" class="btn btn-primary">@lang("Submit")</button>
+                    <button type="submit" class="btn btn-primary">@lang("Save")</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
                 </div>
             </form>

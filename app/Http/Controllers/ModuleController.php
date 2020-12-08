@@ -403,30 +403,38 @@ class ModuleController extends Controller
         $post = $request->post();
         $to_store = [];
         foreach ($post as $key => $value) {
+            $exp = explode("-disable", $key);
+            $key = $exp[0];
             $t_key = config('pasdt.thresholds')[$key] ?? null;
-            if (!empty($t_key)) {
-                if ($t_key["unit"] === "V" && $t_key["value"] != floatval($value)) {
-                    $to_store[$key] = floatval($value);
-                } else if ($t_key["unit"] === "°C" && $t_key["value"] != intval($value)) {
-                    $to_store[$key] = intval($value);
-                } else if ($t_key["unit"] === "List") {
-                    $received_array = explode(",", $value);
-                    $to_store_array = [];
-                    if (is_array($received_array)) {
-                        foreach ($received_array as $_key => $_value) {
-                            $new_i = intval(trim($_value));
-                            if (!in_array($new_i, $to_store_array)) {
-                                $to_store_array[$_key] = $new_i;
-                            }
+            if (empty($t_key)) { continue; }
+            if (count($exp) === 2) {
+                $to_store[$exp[0]] = null; // disable
+            } else if ($t_key["unit"] === "V" && $t_key["value"] != floatval($value)) {
+                $to_store[$key] = floatval($value);
+            } else if ($t_key["unit"] === "°C" && $t_key["value"] != intval($value)) {
+                $to_store[$key] = intval($value);
+            } else if ($t_key["unit"] === "List") {
+                $received_array = explode(",", $value);
+                $to_store_array = [];
+                if (is_array($received_array)) {
+                    foreach ($received_array as $_key => $_value) {
+                        if (!strlen($_value)) { continue ; }
+                        $new_i = intval(trim($_value));
+                        if (!in_array($new_i, $to_store_array)) {
+                            $to_store_array[] = $new_i;
                         }
-                        $to_store[$key] = $to_store_array;
                     }
+                    $to_store[$key] = $to_store_array;
                 }
             }
         }
-        $module->thresholds = json_encode($to_store);
+        $str_threshold = json_encode($to_store);
+        if (strlen($str_threshold) > 400) {
+            return response()->json(["message" => __("Too many values")], 403);
+        } 
+        $module->thresholds = $str_threshold;
         $module->save();
-        return response()->json(["ok" => $to_store]);
+        return response($str_threshold);
     }
 
     public function subscribeNotif(Module $module) {
