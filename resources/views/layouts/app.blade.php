@@ -25,32 +25,50 @@
     @endif
     </style>
 </head>
-<body {{!empty($user) && $user->su_admin == 1 ? 'data-admin=true' : ''}}>
+<body {{$self->su_admin == 1 ? 'data-admin=true' : ''}}>
+    @if ($self->su_admin == 1)
     @if ($su_applied) 
     <div id="app" data-su_company="{{$_company->id}}">
+        @if ($self->company_id === $_company->id)
+        <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm">
+            <div class="container">
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url(Route::currentRouteName())}}" title="@lang('You are viewing your company only. Click here to go to a global view')">
+                    <span class="oi oi-globe"></span>
+                </a>&nbsp;
+                <a class="navbar-brand" href="{{ url('/consultation?company=' . $self->company->id) }}" title='{{ __("Back to Home") }}'>
+        @else
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
-                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('su_admin')}}" title='{{ ("You are taking control of another company. Click here to return to yours") }}' alt='@lang("You are taking control of another company. Click here to return to yours")'>
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('/consultation?company=' . $self->company_id) }}" title='{{ ("You are taking control of another company. Click here to return to yours") }}' alt='@lang("You are taking control of another company. Click here to return to yours")'>
                     <span class="oi oi-warning"></span>&nbsp;
                     <span class="oi oi-account-logout"></span>&nbsp;
                 </a>&nbsp;
-                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title='{{ ("You are taking control of another company. Click here to return to yours") }}' alt='@lang("You are taking control of another company. Click here to return to yours")'>
+                <a class="navbar-brand" href="{{ url('/consultation?company=' . $_company->id) }}" title='{{ __("Back to Home") }}'>
+        @endif
+    @else
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('/consultation?company=' . $_company->id) }}" title='@lang("You are viewing all companies at once. Click here to return to yours")'>
+                    <span class="oi oi-warning"></span>&nbsp;
+                    <span class="oi oi-fullscreen-exit"></span>&nbsp;
+                </a>&nbsp;
+                <a class="navbar-brand" href="{{ url('/consultation?company=' . $self->company->id) }}" title='{{ __("Back to Home") }}'>
+    @endif
     @else
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/consultation') }}" title='{{ __("Back to Home") }}'>
     @endif
-                    @if (!empty($_company))
-                        @if (!empty($_company->logo))
-                            <img src="images/companylogos/{{ $_company->logo }}" height="39" alt='{{ __("Back to Home") }}' />
-                        @endif
-                        
-                        @if ($_company->name )
-                            {{ $_company->name }}
-                        @else
-                            {{ config('app.name', 'PASDT') }}
-                        @endif
+                    @if (!empty($_company) && !empty($_company->logo))
+                        <img src="images/companylogos/{{ $_company->logo }}" height="39" alt='{{ __("Back to Home") }}' />
+                    @endif
+                    
+                    @if (!empty($_company) && $_company->name)
+                        {{ $_company->name }}
+                    @else
+                        {{ config('app.name', 'PASDT') }}
                     @endif
                 </a>
                 <span id="disconnected-header" class="d-none" data-toggle="tooltip" data-placement="bottom" title='@lang("The latest data received is displayed. Click this link to refresh the data.")'>

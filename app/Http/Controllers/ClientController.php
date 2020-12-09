@@ -33,44 +33,38 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        //if (Gate::allows('company-client')) {
-        //if (Auth::user()->is_client_company) {
-            // The current user can edit settings
-        if (empty($user) || empty($user->company_id) || $user->company_id == 0) {
-            return view('consultation');
-        }
-        $su_company = $request->company ?? NULL;
-        $id_company = $user->company_id;
-        if (!empty($user->su_admin) && $user->su_admin == 1 && !empty($su_company)) {
-          $id_company = $su_company;
-        }
-        $company = \App\Company::where('id', $id_company)->first();
-        if (empty($company)) {
-            return view('consultation');
-        }
+        $this->getSaveAuthCompany();
+        $company = \App\Company::where('id', $this->company == -1 ? $this->user->company_id : $this->company)->first();
         $this->modules = Module::select('id', 'send_mails', 'module_id', 'name', 'telit_ratePlan', 'telit_json', 'telit_status')
-                               ->where('company_id', $id_company)
-                               ->get();
-        /*$this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();*/
-        $this->users = User::where('id', '!=', auth()->id())
-                           ->where('company_id', $id_company)
-                           ->get();
+          ->when($this->company != -1, function($query) use ($company) {
+            $query->where("company_id", $company->id);
+          })->get();
+        $this->users = User::when($this->company != -1, function($query) use ($company) {
+            $query->where("company_id", $company->id);
+          })->get();
         $notifs = NotificationController::getNotifs($request);
+        /*$this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();*/
         foreach ($notifs as $key => $notif) {
-          $notif->created_at_date = date($user->locale === "en_US" ? "m/d/y " : "d/m/y ", strtotime($notif->created_at)) . __("at") . date(" H:i:s", strtotime($notif->created_at));
-          $notif->resolved_at_date = date($user->locale === "en_US" ? "m/d/y " : "d/m/y ", strtotime($notif->resolved_at)) . __("at") . date(" H:i:s", strtotime($notif->resolved_at));
+          $notif->created_at_date = $this->date_to_human($notif->created_at_date);
+          $notif->resolved_at_date = $this->date_to_human($notif->resolved_at_date);
+          if ($notif->type === "NO_LOG") {
+            $notif->value = $this->date_to_human($notif->value, __("The") . " ");
+          }
         }
         return view('auth/client', [
-          "user" => $user,
+          "user" => $this->user,
           "company" => $company,
           "modules" => $this->modules,
           "users" => $this->users,
           "notifs" => $notifs,
           "official_locales" => json_decode($this::OFFICIAL_LOCALES),
           "locales" => json_decode($this::LOCALES),
-          "phplocale" => $user->locale
+          "phplocale" => $this->user->locale
         ]);
+    }
+
+    protected function date_to_human($date, $pre = "") {
+      return $pre . date($this->user->locale === "en_US" ? "m/d/y " : "d/m/y ", strtotime($date)) . __("at") . date(" H:i:s", strtotime($date));
     }
 
     /**

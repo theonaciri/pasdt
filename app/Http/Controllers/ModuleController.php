@@ -354,19 +354,6 @@ class ModuleController extends Controller
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));
         }
-            return abort(403);
-    }
-
-    /**
-    * Get Module by module_id
-    * Connexion web
-    */
-
-    public function getModuleByModuleId(\App\Module $module) {
-        $user = Auth::user();
-        if ($this->isUserFromCompany($user, $module->company_id)) {
-            return response()->json(json_decode($module->telit_json));
-        }
         return abort(403);
     }
 

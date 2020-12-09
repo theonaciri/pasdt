@@ -6,27 +6,17 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
 		moment.updateLocale(locale.split("-")[0], moment_locale);
 	}
-	$(function() {
-		var $logs = $('#notifTable > tbody > tr');
-		$logs.each(function() {
-			var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("at") + "] HH:mm";
-			var $created = $(this).children('.created_at');
-			var created = moment($created.html());
-			var $resolved = $(this).children('.resolved_at');
-			var success = $(this).hasClass('success');
-			var $nologvalue = $(this).find('.nolog-value')
-			if ($nologvalue.length) {
-				$nologvalue.html(lang("The") + " " + moment($nologvalue.html()).format(format));
-			}
-			if (success) {
-				var nowdate = moment($resolved.html());
-			} else {
-				var nowdate = moment();
-			}
-			$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
-				+ moment.duration(nowdate.diff(created)).humanize());
-			$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize());
-		});
+	$('#notifTable > tbody > tr').each(function() {
+		var $this = $(this);
+		var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("at") + "] HH:mm";
+		var $created = $this.children('.created_at');
+		var created = moment($created.html());
+		var $resolved = $this.children('.resolved_at');
+		var success = $this.hasClass('success');
+		var nowdate = moment(success ? $resolved.html() : undefined);
+		$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
+			+ moment.duration(nowdate.diff(created)).humanize());
+		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize());
 	});
 	$(".deleteLink").click((e) => {
 		e.preventDefault();
@@ -247,7 +237,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 
 	$('.module-mail-btn').on('click', function(e) {
 		var $this = $(this);
-		var id = $this.parents("td").siblings(".id").html();
+		var id = $this.parents("td").siblings(".id").data("real-id");
 		var modifbtn = $this.parent().siblings(".btn-group").children('.modifbtn')[0];
 		modifbtn.disabled = !e.target.checked;
 		$.ajax({
