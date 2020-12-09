@@ -1,7 +1,23 @@
 {
-	"alarme": "alarm",
-	"declenchement": "trigger",
-	"defaut pression": "pressure fault",
-	"defaut gaz": "gas fault",
-	"Transformateur": "Transformer"
+"alarme": "alarm",
+"declenchement": "trigger",
+"defaut pression": "pressure fault",
+"defaut gaz": "gas fault",
+"Transformateur": "Transformer",
+
+"BATTERY_LOW": "Battery low",
+"BATTERY_HIGH": "Battery over voltage",
+"BATTERY_CRIT_LOW": "Battery CRITICALLY low",
+"BATTERY_CRIT_HIGH": "Battery CRITICALLY over voltage",
+"NO_BATTERY": "No battery",
+"BATTERY_DECREASE": "Battery voltage decrease",
+"BATTERY_INCREASE": "Battery voltage increase",
+"TEMP_DECREASE": "Temperature decrease",
+"TEMP_INCREASE": "Termperature increase",
+"TEMP_LOW": "Low temperature",
+"TEMP_HIGH": "High temperature",
+"TEMP_CRIT_LOW": "CRITICALLY low temperature",
+"TEMP_CRIT_HIGH": "CRITICALLY high temperature",
+"NO_TEMP": "No temperature",
+"NO_LOG": "Disconnected"
 }

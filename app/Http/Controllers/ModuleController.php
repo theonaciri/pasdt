@@ -398,7 +398,7 @@ class ModuleController extends Controller
     public function setThresholds(Module $module, Request $request) {
         $this->getSaveAuthCompany();
         if (!$this->isUserClient($this->user, $module->company_id)) {
-            return abort(403);
+            return response()->json(["message" => __("Authentication failed.")], 403);
         }
         $post = $request->post();
         $to_store = [];
@@ -428,14 +428,62 @@ class ModuleController extends Controller
                 }
             }
         }
+        $invalid = [];
+        $msg_error = $this->validateThresholds($to_store, $invalid);
+        if ($msg_error) {
+            return response()->json(["invalid"=> $invalid, "message" => $msg_error], 403);
+        }
         $str_threshold = json_encode($to_store);
-        if (strlen($str_threshold) > 400) {
-            return response()->json(["message" => __("Too many values")], 403);
+        if (strlen($str_threshold) > 400) { 
+            return response()->json(["invalid"=> ["NO_LOG", "NO_BATTERY", "NO_TEMP"], "message" => __("Too many values")], 403);
         } 
         $module->thresholds = $str_threshold;
         $module->save();
         return response($str_threshold);
     }
+
+    protected function validateThresholds(Array $to_store, Array &$invalid) {
+        $ret = "";
+        $types = ["BATTERY", "TEMP"];
+        for ($i = count($types) -1; $i >= 0; $i--) { 
+            $ret .= $this->validateSingleThreshold($to_store, $invalid, $types[$i] . "_LOW", ">", $types[$i] . "_CRIT_LOW")
+            . $this->validateSingleThreshold($to_store, $invalid, $types[$i] . "_HIGH", "<", $types[$i] . "_CRIT_HIGH")
+            . $this->validateSingleThreshold($to_store, $invalid, $types[$i] . "_CRIT_LOW", "<", $types[$i] . "_LOW")
+            . $this->validateSingleThreshold($to_store, $invalid, $types[$i] . "_CRIT_HIGH", ">", $types[$i] . "_HIGH")
+            . $this->validateSingleThreshold($to_store, $invalid, "NO_" . $types[$i])
+            . $this->validateSingleThreshold($to_store, $invalid, $types[$i] . "_DECREASE")
+            . $this->validateSingleThreshold($to_store, $invalid, $types[$i] . "_INCREASE");
+        }
+        $ret .= $this->validateSingleThreshold($to_store, $invalid, "NO_LOG");
+        return $ret;
+    }
+
+    protected function validateSingleThreshold(Array $to_store, Array &$invalid, string $key, $op = null, $compare = null) {
+        if (!isset($to_store[$key])) return "";
+        if (is_string($op) && is_string($compare)) {
+            $comp = $to_store[$compare] ?? config('pasdt.thresholds.' . $compare . '.value');
+            if ($op === ">" && $to_store[$key] <= $comp || $op === "<" && $to_store[$key] >= $comp) {
+                $invalid[] = $key;
+                return "'" . __($key) . "' " . __("cannot be " . ($op === ">" ? "inf" : "sup")  . "erior than ") . "'" . __($compare) . "'.<br>";
+            }
+        }
+        $err = "";
+        if ($to_store[$key] < config('pasdt.thresholds.' . $key . '.min')) {
+            $invalid[] = $key;
+            $err = "<";
+        }
+        if ($to_store[$key] > config('pasdt.thresholds.' . $key . '.max')) {
+            $invalid[] = $key;
+            $err = ">";
+        }
+        return !strlen($err) ? ""
+                : "'" . __($key) . "' " 
+                . __("cannot be " . ($err === ">" ? "sup" : "inf") . "erior than ")
+                . config('pasdt.thresholds.' . $key . '.m' . ($err === ">" ? "ax" : "in"))
+                . config('pasdt.thresholds.' . $key . '.unit' . ".<br>");
+    }
+
+
 
     public function subscribeNotif(Module $module) {
         $user = Auth::user();

@@ -6,6 +6,8 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	var theme = localStorage.getItem('graph-theme') || "darkBlue";
 	var active_module = localStorage.getItem('graph-active-module');
 	var interval_var = null;
+	var temp_high = 80;
+	var temp_xhigh = 90;
 	const days_before = 30;
 	const days_after = 30;
 	var t = new URLSearchParams(location.search);
@@ -14,12 +16,13 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 		setModuleSelect();
 		getTemps();
+		setModalTempThresholds();
 		// let estimated = getProjectedCurve(data);
 
 		//})
 	}
 	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
-	$('#themeSelect').on('change', function () {
+	$('#themeSelect').on('change', function (e) {
 		// recreate chart to reset theme
 		theme = this.value;
 		onDataReceive();
@@ -32,7 +35,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		$.getJSON("/logs/temp", { from: fromDate.toJSON(), modules: active_module })
 			.done(function (_data) {
 				data = _data;
-				$(document).ready(onDataReceive());
+				onDataReceive();
 			})
 			.fail(function (jqxhr, textStatus, error) { // TODO
 				console.error("Request Failed: " + error);
@@ -68,9 +71,19 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		$mod_select.on('change', function () {
 			active_module = $mod_select.val();
 			localStorage.setItem('graph-active-module', active_module);
+			setModalTempThresholds();
 			getTemps();
-			onDataReceive();
 		})
+	}
+
+	function setModalTempThresholds() {
+		var $modmodalbody = $("#moduleGraphColorModal .modal-body");
+		var mod = presynths.find(p => p.module_id === active_module); 
+		var json = JSON.parse(typeof mod.thresholds === "string" && mod.thresholds.length ? mod.thresholds : "{}");
+		temp_high = json.TEMP_HIGH ? json.TEMP_HIGH : $modmodalbody.data("high");
+		temp_xhigh = json.TEMP_CRIT_HIGH ? json.TEMP_CRIT_HIGH : $modmodalbody.data("xhigh");
+		$modmodalbody.find('.temp_high').html(temp_high);
+		$modmodalbody.find('.temp_xhigh').html(temp_xhigh);
 	}
 
 	function onDataReceive() {
@@ -135,8 +148,8 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 			if (this.x){
 				color = 'cyan';
-				if (this.value >= 60 && this.value < 75) color = '#ecef17';
-				else if (this.value > 75) color = '#ee4237';
+				if (this.value >= temp_high && this.value < temp_xhigh) color = '#ecef17';
+				else if (this.value > temp_xhigh) color = '#ee4237';
 				const d = new Date(this.x);
 				const last_date = new Date(data.temps[data.temps.length - 1].created_at);
 				// change the line style for estimated datas
@@ -157,8 +170,8 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 			// color the maximal value
 			//if (this.value == this.series.getStat('seriesMax')) return '#94353C';
 			// color elements depending on the argument
-			if (v < 60) color = '#2fa85a'; // 60
-			else if ((v >= 60) && (v < 75)) color = '#ecef17'; // 75
+			if (v < temp_high) color = '#2fa85a'; // 60
+			else if ((v >= temp_high) && (v < temp_xhigh)) color = '#ecef17'; // 75
 			return {
 				color: color,
 				angle: 90,
@@ -181,9 +194,10 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		});
 
 		tooltip.format(function () {
-			if (this.value){
-			var value = (this.value).toFixed(0);
-			return "Temp: " + value + "°C";}
+			if (this.value) {
+				var value = (this.value).toFixed(0);
+				return lang("temperature") + ": " + value + "°C";
+			}
 		});
 
 		// set Y axis label formatter

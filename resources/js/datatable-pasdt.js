@@ -198,7 +198,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
                   } else {
                     $.ajaxSetup({ cache: true });
                     $.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
-                    .done(function() {
+                    .always(function() {
                       select.selectpicker({actionsBox: true}).change();
                     });
                     $.ajaxSetup({ cache: false });

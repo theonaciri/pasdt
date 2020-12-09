@@ -72,6 +72,20 @@ return [
 			"min" => 1,
 			"max" => 99
 		],
+		"BATTERY_DECREASE" => [
+			"value" => -1,
+			"unit" => "V",
+			"desc" => "Maximum battery decrease compared to previous data before triggering an alert",
+			"min" => -90,
+			"max" => -1
+		],
+		"BATTERY_INCREASE" => [
+			"value" => 1,
+			"unit" => "V",
+			"desc" => "Maximum battery increase compared to previous data before triggering an alert",
+			"min" => 1,
+			"max" => 99
+		],
 		"NO_BATTERY" => [
 			"value" => [-99],
 			"unit" => "List",
