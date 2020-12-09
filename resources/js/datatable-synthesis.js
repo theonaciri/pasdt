@@ -125,7 +125,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 			        } else {
 				        $.ajaxSetup({ cache: true });
 						$.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
-							.done(function() {
+							.always(function() {
 							select.selectpicker({actionsBox: true});
 						});
 				         $.ajaxSetup({ cache: false });

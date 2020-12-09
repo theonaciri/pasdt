@@ -233,10 +233,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") (&lt;&nbsp;60&nbsp;°C)</p>
-                <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") (&lt;&nbsp;75&nbsp;°C)</p>
-                <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") (&gt;=&nbsp;75&nbsp;°C)</p>
+            <div class="modal-body" data-high="{{ config('pasdt.thresholds.TEMP_HIGH.value') }}" data-xhigh="{{ config('pasdt.thresholds.TEMP_CRIT_HIGH.value') }}">
+                <p><span class="dot" style="background-color:green"></span> @lang("Normal temperature") (&lt;&nbsp;<span class="temp_high">{{ config('pasdt.thresholds.TEMP_HIGH.value') }}</span>&nbsp;°C)</p>
+                <p><span class="dot" style="background-color:#ffda00"></span> @lang("High temperature") (&lt;&nbsp;<span class="temp_xhigh">{{ config('pasdt.thresholds.TEMP_CRIT_HIGH.value') }}</span>&nbsp;°C)</p>
+                <p><span class="dot" style="background-color:red"></span> @lang("Critically high temperature") (&gt;=&nbsp;<span class="temp_xhigh">{{ config('pasdt.thresholds.TEMP_CRIT_HIGH.value') }}</span>&nbsp;°C)</p>
                 <p><span class="dot" style="background-color:DodgerBlue"></span> @lang(":days last days average", ["days" => 30]) </p>
                 <p><span class="dot" style="background-color:cyan"></span> @lang("Projection :days days in the future", ["days" => 30]) </p>
             </div>

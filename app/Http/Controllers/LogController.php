@@ -218,7 +218,7 @@ class LogController extends Controller
 
     public static function getLastModulesAlertArray($company_condition) {
         return DB::select(DB::raw(<<<EOTSQL
-            SELECT name, module_id, msg, maxtemp, logs.created_at FROM logs
+            SELECT name, module_id, thresholds, msg, maxtemp, logs.created_at FROM logs
             LEFT JOIN modules ON modules.module_id = logs.cardId 
             WHERE logs.id IN (
             SELECT MAX(L.id) FROM logs L
@@ -381,7 +381,7 @@ EOTSQL));
             }
 
             /* DIFF TEMP */
-            if (empty($lastemplog) || empty($lastemplog['maxtemp']) || empty($newlog['maxtemp']) || $newlog['maxtemp'] + $lastemplog['maxtemp'] == 0) {
+            if (empty($lastemplog) || empty($lastemplog['maxtemp']) || empty($newlog['maxtemp'])) {
                 $difftemp = 0;
             } else {
                 //$difftemp = ($newlog['maxtemp'] - $lastemplog['maxtemp']) / (($newlog['maxtemp'] + $lastemplog['maxtemp']) / 2) * 100;
@@ -398,6 +398,25 @@ EOTSQL));
                 NotificationController::newNotif($newlog, $type, $newlog['maxtemp'], $thresholds[$type]["active"] ?? true);
             } else {
                 NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['maxtemp'], ["TEMP_INCREASE", "TEMP_DECREASE"]);
+            }
+
+            /* DIFF BATTERY */
+            if (empty($lastemplog) || empty($lastemplog['vbat']) || empty($newlog['vbat'])) {
+                $diffbat = 0;
+            } else {
+                $diffbat = $newlog['vbat'] - $lastemplog['vbat'];
+            }
+            if ($diffbat > $thresholds['BATTERY_INCREASE']['value']) {
+                $type = 'BATTERY_INCREASE';
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_TEMP", "BATTERY_DECREASE"]);
+                NotificationController::newNotif($newlog, $type, $newlog['vbat'], $thresholds[$type]["active"] ?? true);
+            }
+            else if ($diffbat < $thresholds['BATTERY_DECREASE']['value']) {
+                $type = 'BATTERY_DECREASE';
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["NO_TEMP", "BATTERY_INCREASE"]);
+                NotificationController::newNotif($newlog, $type, $newlog['vbat'], $thresholds[$type]["active"] ?? true);
+            } else {
+                NotificationController::resolveOngoingNotifications($ongoingalerts, $newlog['vbat'], ["TEMP_INCREASE", "BATTERY_DECREASE"]);
             }
         }
     }

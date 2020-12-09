@@ -54,14 +54,14 @@
                             @foreach ($notifs as $notif)
                             @if ($notif->resolved)
                                 <tr class="success" data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
-                            @elseif (strpos($notif->type, 'CRIT') > -1 || strpos($notif->type, 'NO_LOG') > -1)
+                            @elseif (strpos($notif->type, 'CRIT') !== FALSE || strpos($notif->type, 'NO_LOG') !== FALSE)
                                 <tr class="highlight" data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @else
                                 <tr data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @endif
                                 <td class="name">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
-                            @if(strpos($notif->type, 'TEMP') > -1)
+                            @if(strpos($notif->type, 'TEMP') !== FALSE)
                                 <td class="value">
                                     <span class="moment-now d-none">
                                         <span class="oi oi-fire"></span>
@@ -69,7 +69,7 @@
                                     </span>
                                     {{$notif->value}}&nbsp;°C
                                 </td>
-                            @elseif(strpos($notif->type, 'NO_LOG') > -1)
+                            @elseif(strpos($notif->type, 'NO_LOG') !== FALSE)
                                 <td class="value">
                                     @lang("Last log"):
                                     <span class="nolog-value">{{$notif->value}}</span>
@@ -131,7 +131,7 @@
                             @lang("List of modules of your group")
                         </div>
                         <div class="col-md-6" style="text-align:right">
-                            <button class="btn btn-primary"><span class="oi oi-map-marker"></span>&nbsp; Tout voir sur la carte</button>
+                            <button class="btn btn-primary" disabled><span class="oi oi-map-marker"></span>&nbsp; @lang("See all modules on the map")</button>
                         </div>
                     </div>
                 </div>
@@ -152,9 +152,9 @@
                         <tbody>
                             @foreach ($modules as $module)
                             @if($module->telit_status == "active")
-                                <tr class="highlight">
+                                <tr class="highlight" data-module_id="{{$notif->module_id}}">
                             @else
-                                <tr>
+                                <tr data-module_id="{{$notif->module_id}}">
                             @endif
                                 <td class="id" data-real-id="{{$module->id}}">{{$module->module_id}}</td>
                                 <td class="name">{{$module->name}}</td>
@@ -168,6 +168,7 @@
                                     </div>
                                     <div class="btn-group btn-vertical" role="group" aria-label='@lang("Module buttons")'>
                                         <button type="button" title='@lang("Customize")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds" {{ $module->send_mails === 1 ? "" : 'disabled' }}><span class="oi oi-cog"></span></button>
+                                        <button type="button" title="@lang('See the related alerts')" aria-label="@lang('See the related alerts')" name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
                                         <button type="button" title='JSON' name="json" class="btn btn-secondary" data-toggle="modal" data-target="#jsonModal"><span class="oi oi-code"></span></button>
                                     </div>
                                     <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->

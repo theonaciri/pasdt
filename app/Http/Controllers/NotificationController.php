@@ -86,7 +86,7 @@ class NotificationController extends Controller
         $usersinfo = NotificationController::getUsersInfoFromNotif($notif);
         $is_adminf = false;
         $is_adminff = false;
-        if (true || config('app.debug') == true) {
+        if (config('app.debug') == true) {
             app()->setLocale("fr_FR");
             if (!count($usersinfo)) {
                 Log::info("empy userinfo for this notif");

@@ -31,7 +31,6 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 			type: "PUT",
 			data: {"_token": csrf}
 		}).done(function(e) {
-			console.log(e);
 			$self.parent().parent().remove();
 		});
 	});
@@ -126,7 +125,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
   		$body = $this.find('modal-body');
   		$formloader = $this.find('.form-loader').removeAttr("hidden");
   		$.getJSON("/module/" + id + "/thresholds")
-  		.done(function(thresholds_json) {
+  		 .done(function(thresholds_json) {
   			Object.entries(thresholds_json).forEach(([key, val]) => {
   				if (val === null) {
   					$("#" + key + "-disable").bootstrapToggle('off');
@@ -146,8 +145,10 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
   			 .find('input').each(function() {
   				$input = $(this);
   				$input.attr('name', $input.attr('id'))
-  					   .val($input.attr('placeholder'));
+  					   .val($input.attr('placeholder'))
+  					   .removeClass('is-invalid');
   			 });
+  		$this.find('.form-message').addClass('d-none');
   		$this.find('input[data-toggle="toggle"]').bootstrapToggle('on')
 	});
 
@@ -177,7 +178,13 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		success: function (e) {
 			$("#modalModuleThresholds").modal('hide');
 		},
-		messageErrorClasses: "col-12 alert alert-danger"
+		error: function(res, err) {
+			$('#moduleThresholdForm .form-message').html(res.message);
+		},
+		messageErrorClasses: "col-12 alert alert-danger",
+		showInvalid: function(input) {
+			$(input).addClass('is-invalid');
+		}
 	});
 
 	$('input[data-toggle="toggle"]').change(function(e) {
@@ -294,8 +301,8 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				.tooltip('_fixTitle');
 	});
 
-	$('#notifTable .view-notif').on('click', function (e) {
-		var id = $(this).parent().parent().parent().data('module_id');
+	$('.view-notif').on('click', function (e) {
+		var id = $(this).parents("tr").data('module_id');
 		var company = getURLParameter("company");
 		localStorage.setItem('opened-tab', 'home-tab');
 		window.location = "/consultation?moduleid=" + encodeURI(id)
