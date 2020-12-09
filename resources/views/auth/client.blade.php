@@ -61,7 +61,7 @@
                                 <tr data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @endif
 
-                                <td class="name">{{$notif->name}}</td>
+                                <td class="name id" data-real-id="{{$notif->id_module}}">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
 
                             @if(strpos($notif->type, 'TEMP') !== FALSE)
@@ -100,6 +100,7 @@
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label='@lang("Notification buttons")'>
                                         <button type="button" title="@lang('Seen')" aria-label="@lang('Seen')" name="seen" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
+                                        <button type="button" title='@lang("Customize")' name="modify" class="btn btn-secondary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds" {{ $notif->send_mails === 1 ? "" : 'disabled' }}><span class="oi oi-cog"></span></button>
                                         <button type="button" title="@lang('See the related alerts')" aria-label="@lang('See the related alerts')" name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
                                         <button type="button" title="@lang('See the generated email')" aria-label="@lang('See the generated email')" name="see_gen_mail" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
                                     </div>
@@ -301,12 +302,12 @@
                             <select class="custom-select" name="locale" id="inputGroupSelect04" aria-label="@lang('Select the language')">
                                 <optgroup label="{{ __('Fully supported languages') }}">
                                     @foreach ($official_locales as $key => $loc)
-                                    <option value="{{$key}}" {{ $phplocale == $key ? "selected" : ''}}>{{$loc}}</option>
+                                    <option value="{{$key}}" {{ $phplocale == $key ? 'selected' : ''}}>{{$loc}}</option>
                                     @endforeach
                                 </optgroup>
                                 <optgroup label="{{ __('Supported languages') }}">
                                     @foreach ($locales as $key => $loc)
-                                    <option value="{{$key}}" {{ $phplocale == $key ? "selected" : ''}}>{{$loc}}</option>
+                                    <option value="{{$key}}" {{ $phplocale == $key ? 'selected' : ''}}>{{$loc}}</option>
                                     @endforeach
                                 </optgroup>
                             </select>

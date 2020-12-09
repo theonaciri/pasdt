@@ -218,7 +218,7 @@ class LogController extends Controller
 
     public static function getLastModulesAlertArray($company_condition) {
         return DB::select(DB::raw(<<<EOTSQL
-            SELECT name, module_id, thresholds, msg, maxtemp, logs.created_at FROM logs
+            SELECT modules.id, name, module_id, thresholds, msg, maxtemp, logs.created_at FROM logs
             LEFT JOIN modules ON modules.module_id = logs.cardId 
             WHERE logs.id IN (
             SELECT MAX(L.id) FROM logs L

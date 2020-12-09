@@ -23,7 +23,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		if (c) {
 			_data.company = c;
 		}
-		if (data_draw === 1 && typeof presynths != 'undefined' && typeof presynths != null) {
+		if (false && data_draw === 1 && typeof presynths != 'undefined' && typeof presynths != null) {
 	    	$logsDateSync.html(moment(lastsynthonline || server_time * 1000).calendar());
 			callback({data:presynths});
 			return ;
@@ -246,7 +246,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 				},
 				{
 					"data": "action", render: function(data, type, row) {
-						return '<button class="btn btn-secondary openModuleModal">+</button>';
+						return '<button data-id="' + row.id + '" class="btn btn-secondary openModuleModal" title="+"><span class="oi oi-plus"></span></button>';
 					},
 					"defaultContent": "<i>" + lang("Not set") + "</i>"
 				}
@@ -312,10 +312,12 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 
 	function dataTablesEvents() {
 		$('#synthesis-table').on('click', '.openModuleModal', function(e) {
+			e.preventDefault();
 			var $modmodal = $('#moduleModal');
 			var data = table.row( $(this).parents('tr') ).data();
-			if (data && data.module_id) {
-		        $.getJSON("/module/module_id/"+data.module_id, function(module_data) {
+			var id = $(this).data('id');
+			if (typeof id !== "undefined") {
+		        $.getJSON("/module/"+id, function(module_data) {
 					active_module = module_data;
 					/*
 						var table = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
