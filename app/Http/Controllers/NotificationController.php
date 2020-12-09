@@ -175,7 +175,9 @@ class NotificationController extends Controller
                 $alert->resolved = 1;
                 $alert->resolved_at = DB::raw("NOW()");
                 $alert->seen = 0;
-                $alert->value = $value;
+                if ($alert->type === "NO_LOG") {
+                    $alert->value = $value;
+                }
                 $alert->save();
             }
         }
