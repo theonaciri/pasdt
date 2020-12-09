@@ -57,6 +57,10 @@ class ClientController extends Controller
                            ->where('company_id', $id_company)
                            ->get();
         $notifs = NotificationController::getNotifs($request);
+        foreach ($notifs as $key => $notif) {
+          $notif->created_at_date = date($user->locale === "en_US" ? "m/d/y " : "d/m/y ", strtotime($notif->created_at)) . __("at") . date(" H:i:s", strtotime($notif->created_at));
+          $notif->resolved_at_date = date($user->locale === "en_US" ? "m/d/y " : "d/m/y ", strtotime($notif->resolved_at)) . __("at") . date(" H:i:s", strtotime($notif->resolved_at));
+        }
         return view('auth/client', [
           "user" => $user,
           "company" => $company,
