@@ -467,7 +467,7 @@ class ModuleController extends Controller
                 return "'" . __($key) . "' " . __("cannot be " . ($op === ">" ? "inf" : "sup")  . "erior than ") . "'" . __($compare) . "'.<br>";
             }
         }
-        if (strpos($key, "NO_") === false) { return ""; }
+        if (strpos($key, "NO_") === true) { return ""; }
         $err = "";
         if ($to_store[$key] < config('pasdt.thresholds.' . $key . '.min')) {
             $invalid[] = $key;
