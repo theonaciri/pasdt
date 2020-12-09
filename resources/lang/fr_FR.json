@@ -255,6 +255,10 @@
 "These data are accessible in the Telit portal.<br>Connections -> eye icon on the left -> 'Actions' on the top right -> View JSON.": "Ces données sont accessibles dans le portail Telit.<br>Connections -> icone œil à gauche -> 'Actions' en haut à droite -> View JSON.",
 "User list": "Liste d'utilisateurs",
 "Users": "Utilisateurs",
+"You are viewing your company only. Click here to go to a global view": "Vous consultez le contenu de votre entreprise. Cliquez ici pour un aperçu global",
+"You are taking control of another company. Click here to return to yours": "Vous prenez le contrôle d'une autre entreprise. Cliquez ici pour retourner à la votre",
+"You are viewing all companies at once. Click here to return to yours": "Vous avez un contrôle global sur toutes les entreprises. Cliquez ici pour revenir à la votre",
+
 
 "========= Messages =========": "========= Messages =========",
 
