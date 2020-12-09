@@ -39,7 +39,7 @@
         @else
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
-                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('/consultation?company=' . $self->company_id) }}" title='{{ ("You are taking control of another company. Click here to return to yours") }}' alt='@lang("You are taking control of another company. Click here to return to yours")'>
+                <a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" href="{{ url('/consultation?company=' . $self->company_id) }}" title='{{ ("You are taking control of another company. Click here to return to yours") }}'>
                     <span class="oi oi-warning"></span>&nbsp;
                     <span class="oi oi-account-logout"></span>&nbsp;
                 </a>&nbsp;
