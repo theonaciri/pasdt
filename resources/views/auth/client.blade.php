@@ -52,6 +52,7 @@
                         </thead>
                         <tbody>
                             @foreach ($notifs as $notif)
+
                             @if ($notif->resolved)
                                 <tr class="success" data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @elseif (strpos($notif->type, 'CRIT') !== FALSE || strpos($notif->type, 'NO_LOG') !== FALSE)
@@ -59,8 +60,10 @@
                             @else
                                 <tr data-id="{{$notif->id}}" data-module_id="{{$notif->module_id}}">
                             @endif
+
                                 <td class="name">{{$notif->name}}</td>
                                 <td class="type">{{$notif->type}}</td>
+
                             @if(strpos($notif->type, 'TEMP') !== FALSE)
                                 <td class="value">
                                     <span class="moment-now d-none">
@@ -77,19 +80,22 @@
                             @else
                                 <td class="value">{{$notif->value}}&nbsp;V</td>
                             @endif
+
                                 <td class="comment">
                                     <span class="comment-text">{{$notif->comment}}</span>
                                     <span class="oi oi-pencil"></span>
                                 </td>
                                 <td class="occurences">{{$notif->occurences}}</td>
-                                <td class="created_at" data-toggle="tooltip" data-placement="top" title='@lang("First occurence the") {{$notif->created_at}}'>{{$notif->created_at}}</td>
-                                <td class="resolved_at" data-toggle="tooltip" data-placement="top" title="{{$notif->resolved_at}}">{{$notif->resolved_at}}</td>
+                                <td class="created_at" data-toggle="tooltip" data-placement="top" title='@lang("First occurence the") {{$notif->created_at_date}}'>{{$notif->created_at}}</td>
+                                <td class="resolved_at" data-toggle="tooltip" data-placement="top" title="{{ __($notif->resolved ? 'Solved since the' : 'Ongoing since the') . ' ' . $notif->resolved_at_date }}">{{$notif->resolved_at}}</td>
                                 <td class="resolved">
+
                                 @if (!empty($notif->resolved) && $notif->resolved == 1)
                                     <span class="oi oi-circle-check" data-toggle="tooltip" data-placement="top" title='@lang("Solved since the") {{$notif->resolved_at}}'></span>
                                 @else
                                     <span class="oi oi-warning" data-toggle="tooltip" data-placement="top" title='@lang("Ongoing since the") {{$notif->created_at}}'></span>
                                 @endif
+
                                 </td>
                                 <td class="button">
                                     <div class="btn-group btn-vertical" role="group" aria-label='@lang("Notification buttons")'>

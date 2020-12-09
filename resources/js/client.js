@@ -3,7 +3,31 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		'./components/notifs', "./dependencies/jquery.ajaxSubmit", "bootstrap4-toggle"],
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
 	var adminconfirmed = false;
-
+	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
+		moment.updateLocale(locale.split("-")[0], moment_locale);
+	}
+	$(function() {
+		var $logs = $('#notifTable > tbody > tr');
+		$logs.each(function() {
+			var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("at") + "] HH:mm";
+			var $created = $(this).children('.created_at');
+			var created = moment($created.html());
+			var $resolved = $(this).children('.resolved_at');
+			var success = $(this).hasClass('success');
+			var $nologvalue = $(this).find('.nolog-value')
+			if ($nologvalue.length) {
+				$nologvalue.html(lang("The") + " " + moment($nologvalue.html()).format(format));
+			}
+			if (success) {
+				var nowdate = moment($resolved.html());
+			} else {
+				var nowdate = moment();
+			}
+			$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
+				+ moment.duration(nowdate.diff(created)).humanize());
+			$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize());
+		});
+	});
 	$(".deleteLink").click((e) => {
 		e.preventDefault();
 		if (confirm(lang(`You are about to permanently delete this user`) + "\n" + lang(`Are you sure`) + "?")){
@@ -271,35 +295,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	        });
 	    }
 	});
-	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
-		moment.updateLocale(locale.split("-")[0], moment_locale);
-	}
-	
-	var $logs = $('#notifTable > tbody > tr');
-	
-	$logs.each(function() {
-		var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("at") + "] HH:mm";
-		var $created = $(this).children('.created_at');
-		var created = moment($created.html());
-		var $resolved = $(this).children('.resolved_at');
-		var success = $(this).hasClass('success');
-		var $nologvalue = $(this).find('.nolog-value')
-		if ($nologvalue.length) {
-			$nologvalue.html(lang("The") + " " + moment($nologvalue.html()).format(format));
-		}
-		if (success) {
-			var nowdate = moment($resolved.html());
-		} else {
-			var nowdate = moment();
-		}
-		$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
-			+ moment.duration(nowdate.diff(created)).humanize())
-			.prop('title', success ? lang("Solved the : ") + nowdate.format(format) : lang("Still ongoing"))
-			.tooltip('_fixTitle');
-		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize())
-				.prop('title', lang("First occurence the : ") + created.format(format))
-				.tooltip('_fixTitle');
-	});
+
 
 	$('.view-notif').on('click', function (e) {
 		var id = $(this).parents("tr").data('module_id');
@@ -315,5 +311,5 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		        registration.unregister()
 		    } })
 		}
-	})
+	});
 });
