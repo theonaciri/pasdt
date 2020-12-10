@@ -349,7 +349,7 @@ class ModuleController extends Controller
     * Connexion web
     */
 
-    public function getModule(\App\Module $module) {
+    public function getModule(Module $module) {
         $user = Auth::user();
         if ($this->isUserFromCompany($user, $module->company_id)) {
             return response()->json(json_decode($module->telit_json));

@@ -188,7 +188,6 @@ class LogController extends Controller
     public function getSynthesisData(Request $request, bool $tojson = true) {
         $company = $this->getSaveAuthCompany();
         $company_condition = $company > 0 ? "AND company_id = $company" : "";
-
         // raw last alerts without temps for all modules
         $alerts_array = $this::getLastModulesAlertArray($company_condition);
         // raw last temps for all modules
@@ -219,13 +218,14 @@ class LogController extends Controller
     public static function getLastModulesAlertArray($company_condition) {
         return DB::select(DB::raw(<<<EOTSQL
             SELECT modules.id, name, module_id, thresholds, msg, maxtemp, logs.created_at FROM logs
-            LEFT JOIN modules ON modules.module_id = logs.cardId 
+            LEFT JOIN modules ON modules.module_id = logs.cardId
             WHERE logs.id IN (
             SELECT MAX(L.id) FROM logs L
             LEFT JOIN modules ON modules.module_id = L.cardId
             WHERE msg != '["DAY"]' AND msg != '["ACK"]' AND msg != '["HOUR"]'
                 $company_condition
             GROUP BY modules.module_id)
+            $company_condition
 EOTSQL));
     }
 
@@ -241,6 +241,7 @@ EOTSQL));
                     $company_condition
                     GROUP BY modules.module_id)
                 $notif_condition
+                $company_condition
 EOTSQL));
     }
 
