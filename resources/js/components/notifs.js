@@ -57,11 +57,13 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 					}]
 				};
 				var types = "";
-				for (var i = 0; i < data.last.length; i++) {
-					types += (i != 0 ? ", " : "") + data.last[i].type;
-				}
+				if (data.last) {
+					for (var i = 0; i < data.last.length; i++) {
+						types += (i != 0 ? ", " : "") + data.last[i].type;
+					}
 
-				var not_title = "PASDT: " + (data.last.length > 1 ? "Alerts " : "Alert ") + types;
+					var not_title = "PASDT: " + (data.last.length > 1 ? "Alerts " : "Alert ") + types;
+				}
 
 				if (getNotificationPermission() === 'granted') {
 					navigator.serviceWorker.ready.then(function(registration) {
