@@ -159,9 +159,9 @@
                         <tbody>
                             @foreach ($modules as $module)
                             @if($module->telit_status == "active")
-                                <tr class="highlight" data-module_id="{{$notif->module_id}}">
+                                <tr class="highlight" data-module_id="{{$module->module_id}}">
                             @else
-                                <tr data-module_id="{{$notif->module_id}}">
+                                <tr data-module_id="{{$module->module_id}}">
                             @endif
                                 <td class="id" data-real-id="{{$module->id}}">{{$module->module_id}}</td>
                                 <td class="name">{{$module->name}}</td>
