@@ -62,7 +62,7 @@
                             @endif
 
                                 <td class="name id" data-real-id="{{$notif->id_module}}">{{$notif->name}}</td>
-                                <td class="type">{{$notif->type}}</td>
+                                <td class="type">{{$notif->type_text}}</td>
 
                             @if(strpos($notif->type, 'TEMP') !== FALSE)
                                 <td class="value">

@@ -7,7 +7,7 @@
 @lang("the portal has detected that it has not received any data from your module since") __{{ $i->diff }}__, @lang("the") __{{ $i->value_date . " " . __("at") . " " . $i->value_time }}__.
 
 @else
-@lang($i->crit ? "your module triggered the following __CRITICAL__ alert:" : "your module triggered the following alert:") __{{$i->type}}__
+@lang($i->crit ? "your module triggered the following __CRITICAL__ alert:" : "your module triggered the following alert:") __{{ __($i->type) }}__
 @lang("with the value of") 
 __{{$i->value}}__
 @if (strpos($i->type, "TEMP") !== false)

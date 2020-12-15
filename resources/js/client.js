@@ -2,6 +2,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		"./components/syntaxHighlight", "./components/lang", "./components/moment-fr",
 		'./components/notifs', "./dependencies/jquery.ajaxSubmit", "bootstrap4-toggle"],
 	function($, moment, getURLParameter, syntaxHighlight, lang) {
+	if (location.pathname !== "/client") return ;
 	var adminconfirmed = false;
 	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
 		moment.updateLocale(locale.split("-")[0], moment_locale);

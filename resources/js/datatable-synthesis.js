@@ -13,9 +13,6 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 	const aggressive_cache = true;
 	var data_draw = 0;
 
-	var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
-	$('#' + opened_tab).click();
-
 	function getData(_data, callback, settings) {
 		data_draw++;
 		var lastsynthonline = sessionStorage.getItem("lastsynthonline");
