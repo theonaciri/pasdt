@@ -384,7 +384,7 @@ class ModuleController extends Controller
 
     public function setThresholds(Module $module, Request $request) {
         $this->getSaveAuthCompany();
-        if ($this->company === -1 || $this->company === $module->company_id)) {
+        if ($this->company === -1 || $this->company === $module->company_id) {
             return response()->json(["message" => __("Authentication failed.")], 403);
         }
         $post = $request->post();
