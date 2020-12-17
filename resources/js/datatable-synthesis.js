@@ -346,6 +346,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 			if (data && data.module_id && !$(e.target).is(".openModuleModal") && !$(e.target).is(".dtr-control")) {
 				$('#home-tab').click();
 				$('#module-name select').val([data.name]).change();
+				e.preventDefault();
 			}
 		} );
 
