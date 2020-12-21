@@ -143,36 +143,25 @@ class LogController extends Controller
 
     public function getTempData(Request $request) {
         $company = $this->getSaveAuthCompany();
-        $modules = Module::
-            select('company_id', 'name', 'module_id')
-            ->when($company != -1, function($query) use ($company) {
-                $query->where('company_id', $company);
-            })
-            ->orderBy('module_id', 'ASC')
-            ->get()->toArray();
-        $modules_list = array_column($modules, 'module_id');
-
         $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-12 days'));
         $to = date("Y-m-d 23:59:59");
-        // check dates ?
+        // TODO: check dates ?
         $temps = DB::table('logs')
-                    ->select('cardId', 'maxtemp', 'created_at')
+                    ->select('maxtemp AS t', 'created_at AS d')
                     ->whereDate('created_at', '>', $from)
                     ->whereDate('created_at', '<=', $to)
                     //->whereBetween('created_at', [$from, $to])
-                    ->whereIn('cardId', $modules_list)
                     ->whereNotNull('maxtemp')
                     ->when(!empty($request->input('modules')), function($query) use ($request){
                         $query->where('cardId', $request->input('modules'));
                     })
+                    /* TODO: check module error array values */
                     ->where('maxtemp', '!=', '-99')
                     ->where('maxtemp', '!=', '785')
                     ->orderBy('created_at', 'ASC')
                     ->get();
         $res = [
             'temps'  => $temps,
-            'modules'=> $modules,
-            'modules_list'=> $modules_list,
             'to'     => $to,
             'from'   => $from
         ];
