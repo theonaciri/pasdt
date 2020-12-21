@@ -18,8 +18,8 @@ define(['moment'], function (moment) {
 		for (let index = tabResult.length-1; index > tabResult.length - last_data.length; index--) {
 			let average = (Math.round((coeff.a * tared_data[index + last_data.length - tabResult.length].x + coeff.b) * 100) / 100);
 			tabResult[index] = ({
-				created_at: tabResult[index].created_at,
-				maxtemp: tabResult[index].maxtemp,
+				d: tabResult[index].d,
+				t: tabResult[index].t,
 				average: average
 			})
 		}
@@ -45,13 +45,13 @@ define(['moment'], function (moment) {
 			calculatedTemps;
 
 			let dateTime = new Date();
-			const last_date = new Date(last_data[last_data.length - 1].created_at);
+			const last_date = new Date(last_data[last_data.length - 1].d);
 			dateTime.setTime(last_date.getTime() + offset * 1000) // "*1000" convert in milliseconds
 			let transformedDate = moment(dateTime).format("YYYY-MM-DD HH:mm:ss");
 
 			estimated_data.push({
 				average: calculatedTemps,
-				created_at: transformedDate
+				d: transformedDate
 			})
 		}
 		
@@ -61,24 +61,24 @@ define(['moment'], function (moment) {
 
 	function getTaredDate(last_data){
 		
-		const start_date = new Date(last_data[0].created_at);
+		const start_date = new Date(last_data[0].d);
 		const tare = start_date.getTime();
 
 		let result = [];
 		let calculated_date;
 	
 		for (let index = 0; index < last_data.length; index++) {
-			calculated_date = ((new Date(last_data[index].created_at)).getTime() - tare) / 1000; // "/1000" convert in second
+			calculated_date = ((new Date(last_data[index].d)).getTime() - tare) / 1000; // "/1000" convert in second
 			result[index] = {
 				x : calculated_date,
-				y : last_data[index].maxtemp
+				y : last_data[index].t
 			}
 		}
 		return result;
 	}
 
 	function getValuesOfLastDays(data, days_before){
-		const stopdate = moment(data[data.length-1].created_at).subtract(days_before, "days").format("YYYY-MM-DD");
+		const stopdate = moment(data[data.length-1].d).subtract(days_before, "days").format("YYYY-MM-DD");
 		let last_data = [];
 		let i = data.length - 1;
 		let current_date;
@@ -86,7 +86,7 @@ define(['moment'], function (moment) {
 		do
 		{
 			last_data.unshift(data[i]);
-			current_date = moment(data[i].created_at).format("YYYY-MM-DD");
+			current_date = moment(data[i].d).format("YYYY-MM-DD");
 			i--;
 		}while(current_date > stopdate && i > 0)
 
@@ -94,8 +94,8 @@ define(['moment'], function (moment) {
 	}
 
 	function getUnitOfTime(data, days) {
-		let first_date = new Date(data[0].created_at);
-		let last_date = new Date(data[data.length - 1].created_at);
+		let first_date = new Date(data[0].d);
+		let last_date = new Date(data[data.length - 1].d);
 		// let start_date, end_date = new Date();
 
 		let unit_of_time = 0;
@@ -171,7 +171,7 @@ define(['moment'], function (moment) {
 	function getAverage(data) {
 		let sum = 0;
 		for (let i = 0, len = data.length; i < len; i++) {
-			sum += data[i].maxtemp;
+			sum += data[i].t;
 		}
 		average = (Math.round((sum / data.length) * 100) / 100); // à proteger avec un try - catch
 		return average;
