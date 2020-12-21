@@ -1,14 +1,16 @@
-define([], function() {
+define(["../lang/fr-fr.js"], function() {
+	// default language is french
+	// other languages are included in app.blade.php
 	if (typeof locale === "undefined") {
-		var locale = document.documentElement.getAttribute('lang');
+		locale = document.documentElement.getAttribute('lang');
 		if (typeof locale === "undefined" || !locale.length) {
-			var locale = "fr-fr";
+			locale = "fr-fr";
 		}
 	}
 	return function(text) {
-		if (typeof locales[locale] === 'undefined' || typeof locales[locale][text] === "undefined") {
+		if (typeof locales === 'undefined' || typeof locales[text] === "undefined") {
 			return text;
 		}
-		return locales[locale][text];
+		return locales[text];
 	}
 });

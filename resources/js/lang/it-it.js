@@ -1,9 +1,10 @@
-{
+var locales = {
 "== Generic ==": "== Generic ==",
 "Address": "Indirizzo",
 "All": "Tutti",
 "at": "a",
 "Assoluzione": "Acquittement",
+"Average": "Media",
 "Copy": "Copia",
 "During": "Durante",
 "Evolution of temperatures": "Evoluzione della temperatura",

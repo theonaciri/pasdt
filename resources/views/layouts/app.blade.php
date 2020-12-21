@@ -146,26 +146,27 @@
             @yield('content')
         </main>
     </div>
-    @if ($locale && $locale !== "en-us" && $locale !== "fr-fr")
+    <!-- Scripts -->
+@if ($locale && $locale !== "fr-fr")
+    <script src="{{ '/json/locales/js/' . $locale . '.js'}}"></script>
+    @if ($locale !== "en-us")
+    <!-- <link rel="preload" href="{{ '/json/locales/datatables/' . $locale . '.json' }}" as="fetch"> -->
     <script src="{{ '/json/locales/anychart/' . $locale . '.js'}}"></script>
     <script src="{{ '/json/locales/moment/' . $locale . '.js'}}"></script>
     @endif
-    <script>
-        var locale = "{{ $locale ?? 'en-us'}}";
-    </script>
-    <!-- Scripts -->
+@endif
     <!-- <script src="/js/require.js"></script>-->
-    @if (Route::currentRouteName() == 'checkout')
-        <script src="https://js.stripe.com/v3/"></script>
-        <!--  <link rel="stylesheet" href="StripeElements.css"> -->
-        <!--<script src="{{ asset('js/checkout.js') }}" defer></script>-->
-    @elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
-        {{-- is IE 11 or below --}}
-        <script src="{{ asset('js/app.es5.js') }}"></script>
-        <script src="/js/anychart-bundle.js"></script>
-    @else
-        <script src="{{ asset('js/app.js') }}"></script>
-    @endif
+@if (Route::currentRouteName() == 'checkout')
+    <script src="https://js.stripe.com/v3/"></script>
+    <!--  <link rel="stylesheet" href="StripeElements.css"> -->
+    <!--<script src="{{ asset('js/checkout.js') }}" defer></script>-->
+@elseif (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false))
+    {{-- is IE 11 or below --}}
+    <script src="{{ asset('js/app.es5.js') }}"></script>
+    <script src="/js/anychart-bundle.js"></script>
+@else
+    <script src="{{ asset('js/app.js') }}"></script>
+@endif
     <script>
         // Register service worker
         if ('serviceWorker' in navigator) {

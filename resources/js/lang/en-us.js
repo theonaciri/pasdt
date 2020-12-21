@@ -1,4 +1,4 @@
-{
+var locales = {
 "alarme": "alarm",
 "declenchement": "trigger",
 "defaut pression": "pressure fault",

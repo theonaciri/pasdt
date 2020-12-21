@@ -1,8 +1,9 @@
-{
+var locales = {
 "== Generic ==": "== Generic ==",
 "Address": "Adres",
 "All": "Alle",
 "at": "Bij",
+"Average": "Gemiddelde",
 "Copy": "Kopiëren",
 "During": "Gedurende",
 "Evolution of temperatures": "Evolutie van temperaturen",

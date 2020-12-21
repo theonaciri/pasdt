@@ -1,4 +1,5 @@
-{
+if (typeof locales === "undefined") {
+var locales = {
 "== Generic ==": "== Générique ==",
 "Acquittal": "Acquittement",
 "Address": "Adresse",
@@ -69,4 +70,5 @@
 "Or" : "Ou",
 "Modify or delete" : "Modifier ou supprimer",
 "You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur"
+}
 }

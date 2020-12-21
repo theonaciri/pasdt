@@ -56,7 +56,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 	}
 
 	function _initTable() {
-		if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
+		if (locale != "en-us" && typeof moment_locale !== "undefined") {
 			moment.updateLocale(locale.split("-")[0], moment_locale);
 		}
 		var now = moment();
