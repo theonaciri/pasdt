@@ -113,7 +113,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		chart = anychart.stock();
 		chart.animation(true);
 		chart.crosshair(true);
-		chart.title("Evolution des températures");
+		chart.title(lang("Evolution of temperatures"));
 
 		// create the plot
 		var plot = chart.plot(0);
@@ -293,5 +293,5 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	}
 	*/
 
-	return { init: init, "a": "ok" };
+	return { init: init };
 });

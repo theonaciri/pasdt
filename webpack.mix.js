@@ -47,6 +47,7 @@ if (!mix.inProduction()) {
      //.babel('public/js/checkout.js', 'public/js/checkout.es5.js')
      .sass('resources/sass/app.scss', 'public/css')
      //.extract(['pdfmake', 'pdfmake/build/vfs_fonts'])
+     .copy("resources/js/lang/*.js", "public/json/locales/js/")
   mix.browserSync('127.0.0.1:8000');
 } else {
   //require('laravel-mix-polyfill');
@@ -56,6 +57,7 @@ if (!mix.inProduction()) {
      .sass('resources/sass/app.scss', 'public/css')
      .js(['resources/js/dependencies/polyfills/allpolyfills.js', 'resources/js/app.js'], 'public/js/app.es5.js')
      .babel('public/js/app.es5.js', 'public/js/app.es5.js')
+     .copy("resources/js/lang/*.js", "public/json/locales/js/")
      /*.polyfill({
       enabled: true,
       useBuiltIns: "usage",
