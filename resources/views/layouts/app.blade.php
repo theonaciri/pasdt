@@ -25,8 +25,8 @@
     @endif
     </style>
 </head>
-<body {{$self->su_admin == 1 ? 'data-admin=true' : ''}}>
-    @if ($self->su_admin == 1)
+<body {{!empty($self) && $self->su_admin == 1 ? 'data-admin=true' : ''}}>
+    @if (!empty($self) && $self->su_admin == 1)
     @if ($su_applied) 
     <div id="app" data-su_company="{{$_company->id}}">
         @if ($self->company_id === $_company->id)
