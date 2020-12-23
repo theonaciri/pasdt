@@ -20,7 +20,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		if (c) {
 			_data.company = c;
 		}
-		if (false && data_draw === 1 && typeof presynths != 'undefined' && typeof presynths != null) {
+		if (data_draw === 1 && typeof presynths != 'undefined' && typeof presynths != null) {
 	    	$logsDateSync.html(moment(lastsynthonline || server_time * 1000).calendar());
 			callback({data:presynths});
 			return ;

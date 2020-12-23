@@ -60,7 +60,7 @@
                                     <td>{{$s->created_at ?? ""}}</td>
                                     <td>{{$s->maxtemp ?? ""}}</td>
                                     <td>{{$s->temp_created_at ?? ""}}</td>
-                                    <td><button class="btn btn-secondary openModuleModal">+</button></td>
+                                    <td><button class="btn btn-secondary openModuleModal"><span class="oi oi-plus"></span></button></td>
                                 </tr>
                                 @break($loop->index === 9)
                             @endforeach

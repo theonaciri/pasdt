@@ -1,4 +1,6 @@
-define(["jquery", 'moment', "./components/getURLParameter", "./components/lang", "./dependencies/regressive-curve" /*, "anychart", "anychart-jquery"*/],
+define(["jquery", 'moment', "./components/getURLParameter",
+		"./components/lang", "./dependencies/regressive-curve", "./components/strcap"
+		/* anychart is added dynamically "anychart", "anychart-jquery"*/],
 function ($, moment, getURLParameter, lang, regressiveCurve) {
 	window.chart = null;
 	var $mod_select = $('#graphModuleSelect');
@@ -122,11 +124,10 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 			.xGrid(true)
 			.xMinorGrid(true)
 			.legend().titleFormat(function () {
-				return lang("The") + " " + new Date(this.value).toLocaleDateString(locale, date_options);
+				return lang("The") + " " + new Date(this.value || this.hoveredDate).toLocaleDateString(locale, date_options);
 			})
 			.itemsFormat(function () {
-				if (this.seriesName !== "Provisional")
-					return this.seriesName + ": " + (this.value ? this.value : "--") + "°C";
+				return this.seriesName + ": " + (this.value ? this.value : "--") + "°C";
 			});
 		//plot.xAxis().labels().format(function() {return new Date(this.value).toLocaleDateString("fr-FR", date_options)});
 
@@ -188,15 +189,15 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 		var tooltipchart = chart.tooltip();
 		tooltipchart.titleFormat(function () {
-			var date = new Date(this.x);
+			var date = new Date(this.x || this.hoveredDate || this.rawHoveredDate);
 			var transformedDate = date.toLocaleDateString(locale, date_options);
-			return "Le " + transformedDate;
+			return lang("The") + " " + transformedDate;
 		});
 
 		tooltip.format(function () {
 			if (this.value) {
 				var value = (this.value).toFixed(0);
-				return lang("temperature") + ": " + value + "°C";
+				return lang("temperature").capitalize() + ": " + value + "°C";
 			}
 		});
 

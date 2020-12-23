@@ -1,5 +1,5 @@
-if (typeof locales === "undefined") {
-var locales = {
+if (typeof window.locales === "undefined") {
+window.locales = {
 "== Generic ==": "== Générique ==",
 "Acquittal": "Acquittement",
 "Address": "Adresse",

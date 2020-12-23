@@ -101,7 +101,7 @@ return [
 			"max" => []
 		],
 		"NO_LOG" => [
-			"value" => 70, /* 1h05 */
+			"value" => 80, /* 1h20 */
 			"unit" => "minutes",
 			"desc" => "Minutes without receiving data before triggering an alert",
 			"min" => 2,

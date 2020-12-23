@@ -12,13 +12,14 @@ const filesToCache = [
   'manifest.webmanifest',
   'js/app.js',
   'js/anychart-bundle.js',
+  'js/extra-monitoring.js',
   'images/logo-192.png'
 ];
 
 var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client', '/register', '/module/'];
 var whitelist = ['fonts/open-iconic', 'images/', 'json/locales/'];
 
-const staticCacheName = 'pages-cache-v29.0';
+const staticCacheName = 'pages-cache-v29.5';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];
