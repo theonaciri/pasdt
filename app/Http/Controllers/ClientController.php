@@ -46,7 +46,7 @@ class ClientController extends Controller
         /*$this->subscriptions = \App\Subscription::where('user_id', $user->id)->get();*/
         foreach ($notifs as $key => $notif) {
           $notif->created_at_date = $this->date_to_human($notif->created_at_date);
-          $notif->resolved_at_date = $this->date_to_human($notif->resolved_at_date);
+          $notif->resolved_at_date = $this->date_to_human($notif->resolved_at);
           if ($notif->type === "NO_LOG") {
             $notif->value = $this->date_to_human($notif->value, __("The") . " ");
           }

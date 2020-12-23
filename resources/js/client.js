@@ -231,6 +231,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 					var value = +$counter.html() -1;
 					$counter.html(value != 0 ? value : '');
 				}
+				$(this).tooltip('dispose');
 				$tr.remove();
 			});
 		}
@@ -294,6 +295,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		localStorage.setItem('opened-tab', 'home-tab');
 		window.location = "/consultation?moduleid=" + encodeURI(id)
 		+ (typeof company != 'undefined' ? "&company=" + company : "");
+		/*+ "&ano=true";*/
 	});
 	$('#localeform').on("submit", function() {
 		if ('serviceWorker' in navigator) {

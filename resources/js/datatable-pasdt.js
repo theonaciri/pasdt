@@ -11,7 +11,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
   var $reload_btn = $('#home .force-refresh-button');
   window.logtable = table;
   var onlytemp = false; //localStorage.getItem('notemp') === "true";
-  var noday = false; //localStorage.getItem('noday') === "true";
+  var noday = !!getURLParameter("ano");
   const aggressive_cache = true;
 
   function createCalendar() {
