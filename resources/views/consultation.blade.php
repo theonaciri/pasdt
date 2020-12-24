@@ -180,7 +180,22 @@
                         <div class="col col-md-9">
                             <div class="form-group">
                                 <label for="graphModuleSelect">@lang("Module")</label>
-                                <select class="form-control" id="graphModuleSelect"></select>
+                                <select class="form-control" id="graphModuleSelect">
+                                @foreach ($synth as $s)
+                                    @if (!empty($s->id) && !empty($s->temp_created_at))
+                                    <option value="{{$s->id}}" {{ request()->get('moduleid') === $s->module_id ? 'selected' : ''}}>
+                                        [{{$s->module_id}}] {{$s->name}}
+                                    </option>
+                                    @endif
+                                @endforeach
+                                @foreach ($synth as $s)
+                                    @if (!empty($s->id) && empty($s->temp_created_at))
+                                    <option value="{{$s->id}}" disabled>
+                                        [{{$s->module_id}}] {{$s->name}}
+                                    </option>
+                                    @endif
+                                @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -293,10 +308,6 @@
     </div>
 </div>
 <script>
-    @if (isset($time))
-    var server_time = {!!$time!!};
-    @endif
-
     var prelogs, presynths = null;
     @if (isset($logs))
         var prelogs = null || {!!json_encode($logs)!!};

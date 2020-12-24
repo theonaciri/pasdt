@@ -137,6 +137,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	$('#modalModuleThresholds').on('show.bs.modal', function (e) {
   		var id = $(e.relatedTarget).parents("td").siblings(".id").data("real-id");
   		var $this = $(this);
+  		$("#moduleThresholdForm").attr("data-id", id);
   		$body = $this.find('modal-body');
   		$formloader = $this.find('.form-loader').removeAttr("hidden");
   		$.getJSON("/module/" + id + "/thresholds")
@@ -191,6 +192,13 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 			return true;
 		},
 		success: function (e) {
+			var lookout_id = $(this).data("id");
+			var presynths = JSON.parse(sessionStorage.getItem("presynths")) || presynths || [];
+			var mod_index = presynths.findIndex(p => p.id === lookout_id);
+			if (mod_index != -1) {
+				presynths[mod_index].thresholds = JSON.stringify(e);
+			    sessionStorage.setItem("presynths", JSON.stringify(presynths));
+			}
 			$("#modalModuleThresholds").modal('hide');
 		},
 		error: function(res, err) {
@@ -229,6 +237,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 				if (!$tr.hasClass('success')) {
 					var $counter = $('.notif-counter');
 					var value = +$counter.html() -1;
+					sessionStorage.setItem("notif-counter", value);
 					$counter.html(value != 0 ? value : '');
 				}
 				$(this).tooltip('dispose');

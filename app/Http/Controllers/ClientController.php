@@ -38,7 +38,7 @@ class ClientController extends Controller
         $this->modules = Module::select('id', 'send_mails', 'module_id', 'name', 'telit_ratePlan', 'telit_json', 'telit_status')
           ->when($this->company != -1, function($query) use ($company) {
             $query->where("company_id", $company->id);
-          })->get();
+          })->orderBy('module_id', 'DESC')->get();
         $this->users = User::when($this->company != -1, function($query) use ($company) {
             $query->where("company_id", $company->id);
           })->get();

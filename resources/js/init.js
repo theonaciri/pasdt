@@ -38,6 +38,11 @@ function($, cookie, graph_annotated, moment) {
         }
         document.getElementById('logout-form').submit();
 	});
+	$("#admin-nav-btn").on("click", function(event) {
+		event.preventDefault();
+		sessionStorage.clear();
+		location.href = this.href;
+	});
 	$(function() {
 		if (location.pathname === "/consultation" || location.pathname === "/") {
 			var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';

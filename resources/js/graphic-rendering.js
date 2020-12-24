@@ -6,22 +6,20 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	var $mod_select = $('#graphModuleSelect');
 	var data = null;
 	var theme = localStorage.getItem('graph-theme') || "darkBlue";
-	var active_module = localStorage.getItem('graph-active-module');
+	var active_module_id;
 	var interval_var = null;
 	var temp_high = 80;
 	var temp_xhigh = 90;
 	const days_before = 30;
 	const days_after = 30;
 	var t = new URLSearchParams(location.search);
+
 	function init() {
 		if (chart != null) return; // only one init;
 
 		setModuleSelect();
 		getTemps();
 		setModalTempThresholds();
-		// let estimated = getProjectedCurve(data);
-
-		//})
 	}
 	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
 	$('#themeSelect').on('change', function (e) {
@@ -32,9 +30,8 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	});
 
 	function getTemps() {
-		const fromDate = new Date("2018-04-15");
-
-		$.getJSON("/logs/temp", { from: fromDate.toJSON(), modules: active_module })
+		//const fromDate = new Date("2018-04-15");
+		$.getJSON("/logs/temp/" + active_module_id/*, { from: fromDate.toJSON(), modules: active_module }*/)
 			.done(function (_data) {
 				data = _data;
 				onDataReceive();
@@ -45,34 +42,9 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	}
 
 	function setModuleSelect() {
-		if ($mod_select.val() !== null) return; // already initialized
-		var pre_selected = getURLParameter("moduleid") || false;
-		var selected = "";
-
-		presynths.forEach(element => {
-			if (pre_selected != -1 && (pre_selected === false || pre_selected === element.module_id)) {
-				selected = " selected";
-			}
-			$mod_select.append('<option value="' + element.module_id + '"'
-				+ (!element.temp_created_at ? //disable empty module (in select list)
-					' disabled' : selected)
-				+ '>'
-				+ element.module_id + ' - ' + element.name + "</option>");
-				if (selected.length) {
-					pre_selected = -1;
-					selected = "";
-				}
-		});
-
-		//enabled first (in select list)
-		$mod_select.children('option:disabled').each((index, item) => {
-			$(item).appendTo($mod_select);
-		});
-
-		active_module = $mod_select.val();
+		active_module_id = +$mod_select.val();
 		$mod_select.on('change', function () {
-			active_module = $mod_select.val();
-			localStorage.setItem('graph-active-module', active_module);
+			active_module_id = +$mod_select.val();
 			setModalTempThresholds();
 			getTemps();
 		})
@@ -80,7 +52,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 	function setModalTempThresholds() {
 		var $modmodalbody = $("#moduleGraphColorModal .modal-body");
-		var mod = presynths.find(p => p.module_id === active_module); 
+		var mod = presynths.find(p => p.id === active_module_id); 
 		var json = JSON.parse(typeof mod.thresholds === "string" && mod.thresholds.length ? mod.thresholds : "{}");
 		temp_high = json.TEMP_HIGH ? json.TEMP_HIGH : $modmodalbody.data("high");
 		temp_xhigh = json.TEMP_CRIT_HIGH ? json.TEMP_CRIT_HIGH : $modmodalbody.data("xhigh");
@@ -139,7 +111,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		).name(lang("Average")).stroke(colorForAverage);
 
 		var series = plot.spline(mapping)
-			.name(getModuleFromId(active_module).name)
+			.name(getModuleFromId(active_module_id).name)
 			.stroke(strokeColorsFct);
 		series.hovered().markers(true);
 
@@ -280,7 +252,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 	// access labels
 
 	function getModuleFromId(module_id) {
-		return presynths.find(function (o) { return o.module_id == module_id; })
+		return presynths.find(function (o) { return o.id == module_id; })
 	}
 	/*
 	function getMaxDateOfDataSet(dataset) {
