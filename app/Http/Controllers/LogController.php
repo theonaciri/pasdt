@@ -141,29 +141,26 @@ class LogController extends Controller
     }
 
 
-    public function getTempData(Request $request) {
+    public function getModuleTempData(Module $module) {
         $company = $this->getSaveAuthCompany();
-        $from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-12 days'));
-        $to = date("Y-m-d 23:59:59");
+        if ($company !== -1 && $company != $module->company_id) return abort(403);
+        $thresholds = json_decode($module->thresholds);
         // TODO: check dates ?
+        //$from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-12 days'));
+        //$to = date("Y-m-d 23:59:59");
         $temps = DB::table('logs')
-                    ->select('maxtemp AS t', 'created_at AS d')
-                    ->whereDate('created_at', '>', $from)
-                    ->whereDate('created_at', '<=', $to)
-                    //->whereBetween('created_at', [$from, $to])
-                    ->whereNotNull('maxtemp')
-                    ->when(!empty($request->input('modules')), function($query) use ($request){
-                        $query->where('cardId', $request->input('modules'));
-                    })
-                    /* TODO: check module error array values */
-                    ->where('maxtemp', '!=', '-99')
-                    ->where('maxtemp', '!=', '785')
-                    ->orderBy('created_at', 'ASC')
-                    ->get();
+            ->select('maxtemp AS t', 'created_at AS d')
+            //->whereDate('created_at', '>', $from)
+            //->whereDate('created_at', '<=', $to)
+            //->whereBetween('created_at', [$from, $to])
+            ->where('cardId', $module->module_id)
+            ->whereRaw('maxtemp <> ""')
+            ->whereNotNull('maxtemp')
+            ->whereNotIn('maxtemp', $thresholds->NO_TEMP ?? config('pasdt.thresholds.NO_TEMP.value'))
+            ->orderBy('created_at', 'ASC')
+            ->get();
         $res = [
-            'temps'  => $temps,
-            'to'     => $to,
-            'from'   => $from
+            'temps'  => $temps
         ];
         return response()->json($res);
 
@@ -183,6 +180,7 @@ class LogController extends Controller
         $lastemps_array = $this::getLastModulesTempArray($company_condition, "");
 
         //$res = array_merge($alerts_array, $lastemps_array);
+        // /!\ TODO: double foreach is bad perf
         foreach ($lastemps_array as $key => $temp) {
             foreach ($alerts_array as $_key => $alert) {
                 if ($alert->module_id == $temp->module_id) { // temps with alerts
@@ -215,6 +213,7 @@ class LogController extends Controller
                 $company_condition
             GROUP BY modules.module_id)
             $company_condition
+            ORDER BY module_id DESC
 EOTSQL));
     }
 
@@ -231,6 +230,7 @@ EOTSQL));
                     GROUP BY modules.module_id)
                 $notif_condition
                 $company_condition
+            ORDER BY module_id DESC
 EOTSQL));
     }
 

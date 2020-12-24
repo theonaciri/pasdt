@@ -221,7 +221,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
     $reload_btn.css("opacity", "0").attr('disabled', true);
     setTimeout(function() {
       $reload_btn.css("opacity", "1").attr('disabled', false);
-    }, 60000);
+    }, 30000);
   }
 
   function autoReload() {

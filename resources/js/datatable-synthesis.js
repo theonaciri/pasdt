@@ -6,10 +6,10 @@ define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/b
 		'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
 function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch, getURLParameter, lang) {
 	if (location.pathname !== "/consultation" && location.pathname !== "/") return ;
-	var table;
+	var $table = $('#synthesis-table');
+	var table; // Datatable
 	var $logsDateSync = $('#synth-date-sync');
  	var $reload_btn = $('#synthesis .force-refresh-button');
-	window.synthtable = table;
 	const aggressive_cache = true;
 	var data_draw = 0;
 
@@ -42,11 +42,8 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
   			var event = new CustomEvent("online", { detail: {request: "synth", data: data }});
 			document.dispatchEvent(event);
 
-			if (!_data.company) {
-				data.draw = 1;
-		        sessionStorage.setItem("presynths", JSON.stringify(data));
-		        sessionStorage.setItem("lastsynthonline", received_date.toJSON());
-			}
+	        sessionStorage.setItem("presynths", JSON.stringify(data));
+	        sessionStorage.setItem("lastsynthonline", received_date.toJSON());
 			hideReloadBtn();
 	    }).fail(function(data) {
 	      	$('#synthesis-table_processing').hide("fast");
@@ -62,7 +59,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		var now = moment();
 		/* Setup - add a text input to each footer cell */
 
-		table = $('#synthesis-table').DataTable({
+		table = $table.DataTable({
 	    	processing: true,
 			dom: 'Blfrtip',
 			lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, lang("All")]],
@@ -101,7 +98,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 					.on('change', function() {
 						var val = $(this).val();
 						if (typeof table === "undefined") {
-							table = $('#synthesis-table').DataTable();
+							table = $table.DataTable();
 						}
 						var count_before = table.page.info().recordsDisplay;
 						if (!val.length || val.length == 1 && !val[0].length) {
@@ -280,7 +277,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		$reload_btn.css("opacity", "0").attr('disabled', true);
 		setTimeout(function() {
 			$reload_btn.css("opacity", "1").attr('disabled', false);
-		}, 60000);
+		}, 30000);
 	}
 
 	function autoReload() {
@@ -308,7 +305,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 	dataTablesEvents();
 
 	function dataTablesEvents() {
-		$('#synthesis-table').on('click', '.openModuleModal', function(e) {
+		$table.on('click', '.openModuleModal', function(e) {
 			e.preventDefault();
 			var $modmodal = $('#moduleModal');
 			var data = table.row( $(this).parents('tr') ).data();
@@ -341,7 +338,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 		        })
 		    }
 		});
-		$('#synthesis-table').on('click', 'tr', function (e) {
+		$table.on('click', 'tr', function (e) {
 			var data = table.row( this ).data();
 			if (data && data.module_id && !$(e.target).is(".openModuleModal") && !$(e.target).is(".dtr-control")) {
 				$('#home-tab').click();

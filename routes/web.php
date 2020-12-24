@@ -19,8 +19,7 @@ Route::group(['middleware' => ['locale']], function() {
 });
 
 Route::get('/', 'HomeController@index')->name('welcome');
-Route::get('/consultation', 'HomeController@consultation')->name('consultation')->middleware('auth');
-
+Route::redirect('/consultation', '/there');
 /* USER */
 Route::get('/client', 'ClientController@index')->name('client');
 Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middleware('auth');
@@ -53,7 +52,7 @@ Route::delete('/company/{company}', 'CompanyController@deleteCompany')->name('co
 /* LOGS */
 Route::get('/logs', 'LogController@getAllData')->name('log.get.all')->middleware('auth');
 Route::get('/logs/get', 'LogController@getData')->name('log.get')->middleware('auth');
-Route::get('/logs/temp', 'LogController@getTempData')->name('log.get.temp')->middleware('auth');
+Route::get('/logs/temp/{module}', 'LogController@getModuleTempData')->name('log.get.module.temp')->middleware('auth');
 Route::get('/logs/synth', 'LogController@getSynthesisData')->name('log.get.synth')->middleware('auth');
 Route::get('/logs/OverspeedToTelit/{pasdt_str}', 'LogController@convertOverspeedToTelit')->name('log.convert.over.to.telit')->middleware('auth');
 Route::get('/logs/TelitToOverspeed/{pasdt_str}', 'LogController@convertTelitToOverspeed')->name('log.convert.telit.to.over')->middleware('auth');

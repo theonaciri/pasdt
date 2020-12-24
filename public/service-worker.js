@@ -19,7 +19,7 @@ const filesToCache = [
 var blacklist = ['/csrf', '/logs/', '/notifs', '/su_admin', '/client', '/register', '/module/'];
 var whitelist = ['fonts/open-iconic', 'images/', 'json/locales/'];
 
-const staticCacheName = 'pages-cache-v29.5';
+const staticCacheName = 'pages-cache-v29.6';
 
 function stripQueryStringAndHashFromPath(url) {
   return url.split("?")[0].split("#")[0];

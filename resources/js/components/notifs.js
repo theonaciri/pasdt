@@ -1,7 +1,8 @@
 define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, lang) {
+	if (window.location.pathname.indexOf("password") != -1) return ;
 	var firstcall = true;
 	var admincomp = getURLParameter("company");
-	if (window.location.pathname.indexOf("password") != -1) return ;
+
 	function getNotificationPermission() {
 	    if ("Notification" in window && Notification.permission === 'granted') {
 	        return localStorage.getItem('notification-permission');
@@ -20,6 +21,8 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 	}
 
 	function getNotif() {
+		var notif_counter = +(sessionStorage.getItem("notif-counter") || '0');
+    	var lastonline = sessionStorage.getItem("lastnotif") || server_time * 1000;
 		$.getJSON("/notifs/count_last" + (admincomp ? "?company=" + admincomp : ""))
 		.done(function(data) {
 			setCSRF(data.csrf);

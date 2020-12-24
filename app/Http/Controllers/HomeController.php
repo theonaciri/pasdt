@@ -23,8 +23,8 @@ class HomeController extends Controller
         $log = new LogController;
         return view('consultation', [
             "logs" => $log->getData($req, false),
-            "synth" => $log->getSynthesisData($req, false),
-            "time" => time()]);
+            "synth" => $log->getSynthesisData($req, false)
+        ]);
     }
 
     /**
@@ -34,11 +34,7 @@ class HomeController extends Controller
      */
     public function consultation(Request $req)
     {
-        $log = new LogController;
-        return view('consultation', [
-            "logs" => $log->getData($req, false),
-            "synth" => $log->getSynthesisData($req, false),
-            "time" => time()]);
+        return $this->index($req);
     }
 
     /**
