@@ -1,10 +1,13 @@
-define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake', 'pdfmake/build/vfs_fonts.js',*/
-		/*'flat',*/ './components/datatable-fr', './components/color-event-assoc', './components/getURLParameter',
-		"./components/lang", "./components/strcap",  "./components/moment-fr",
-		'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 
-		'Buttons/js/buttons.flash', */'./widgets/dateinterval.plugin.js', 'datatables.net-responsive',
-		'datatables.net-fixedheader-bs4', 'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js'],
-function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch, getURLParameter, lang) {
+define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake','pdfmake/build/vfs_fonts.js'*/
+		/*'flat',*/ './components/datatable-fr', './components/color-event-assoc',
+		'./components/getURLParameter', "./components/lang", './components/autoreloadapi',
+		"./components/strcap",  "./components/moment-fr", 'Buttons/js/buttons.bootstrap4',
+		'Buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 'Buttons/js/buttons.flash', */
+		'./widgets/dateinterval.plugin.js', 'datatables.net-responsive',
+		'datatables.net-fixedheader-bs4', 'bootstrap-select',
+		'bootstrap-select/js/i18n/defaults-fr_FR.js'],
+function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr, arrayToSearch,
+		getURLParameter, lang, autoReload) {
 	if (location.pathname !== "/consultation" && location.pathname !== "/") return ;
 	var $table = $('#synthesis-table');
 	var table; // Datatable
@@ -15,7 +18,7 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 
 	function getData(_data, callback, settings) {
 		data_draw++;
-		var lastsynthonline = sessionStorage.getItem("lastsynthonline");
+		var lastsynthonline = sessionStorage.getItem("synth_tiùe");
 		var c = getURLParameter('company');
 		if (c) {
 			_data.company = c;
@@ -42,9 +45,9 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
   			var event = new CustomEvent("online", { detail: {request: "synth", data: data }});
 			document.dispatchEvent(event);
 
-	        sessionStorage.setItem("presynths", JSON.stringify(data));
-	        sessionStorage.setItem("lastsynthonline", received_date.toJSON());
-			hideReloadBtn();
+	        sessionStorage.setItem("synth", JSON.stringify(data));
+	        sessionStorage.setItem("synth_time", received_date.toJSON());
+      		$("#synth-refresh-btn").attr("disabled", true);
 	    }).fail(function(data) {
 	      	$('#synthesis-table_processing').hide("fast");
   			var event = new CustomEvent("offline", { detail: {request: "synth", data: data }});
@@ -93,7 +96,9 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 				/* Dropdown */
 				this.api().columns([0]).every(function() {
 					var column = this;
-					var select = $('<select class="selectpicker form-control" data-live-search="true" multiple><option value=""></option></select>')
+					var select = $('<select class="selectpicker form-control"'
+								+ 'data-live-search="true" multiple><option value="">'
+								+ '</option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function() {
 						var val = $(this).val();
@@ -121,7 +126,8 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 			        	select.selectpicker({actionsBox: true});
 			        } else {
 				        $.ajaxSetup({ cache: true });
-						$.getScript('/json/locales/bootstrap-select/defaults-' + locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
+						$.getScript('/json/locales/bootstrap-select/defaults-'
+							+ locale.split('-')[0] + '_' + locale.split('-')[1].toUpperCase() + '.js')
 							.always(function() {
 							select.selectpicker({actionsBox: true});
 						});
@@ -134,7 +140,9 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 					return;
 				}
 				if (typeof data.msg != 'undefined' && data.msg != null) {
-					var foundValue = arrayToSearch.filter(function(obj) { return data.msg.toLowerCase().indexOf(obj.name.toLowerCase()) > 0});
+					var foundValue = arrayToSearch.filter(function(obj) {
+						return data.msg.toLowerCase().indexOf(obj.name.toLowerCase()) > 0
+					});
 					if (foundValue.length) {
 						$(row).addClass(foundValue[foundValue.length -1].class);
 					}
@@ -176,7 +184,9 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 					"defaultContent": "<i>" + lang("No module name") + "</i>",
 					render: function ( data, type, row ) {
 						if (type === 'sort' || type === 'filter') {
-							return typeof row.name == 'string' && typeof row.module_id == 'string' ? row.module_id + ' - ' + row.name : '--';
+							return typeof row.name == 'string' && typeof row.module_id == 'string' ?
+								row.module_id + ' - ' + row.name
+								: '--';
 						}
 						return typeof row.name == 'string' ? row.name : '--';
 					},
@@ -265,42 +275,14 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 				}
 			});
 		});
-		autoReload();
-	} /* initTable */
-
-	$reload_btn.on('click', function() {
-		table.ajax.reload(null, false);
-		hideReloadBtn();
-	});
-
-	function hideReloadBtn() {
-		$reload_btn.css("opacity", "0").attr('disabled', true);
-		setTimeout(function() {
-			$reload_btn.css("opacity", "1").attr('disabled', false);
-		}, 30000);
-	}
-
-	function autoReload() {
-		document.addEventListener("backonline", function(e) {
-			table.ajax.reload( null, false );
-		});
-		var seconds_offline = moment().diff(moment(sessionStorage.getItem("lastsynthonline") || server_time * 1000), "seconds");
-
-		if (seconds_offline >= 60) {
-	    	$reload_btn.css("opacity", "1").attr('disabled', false);
-	    } else {
-	    	setTimeout(function() {
-	    		$reload_btn.css("opacity", "1").attr('disabled', false);
-	    	}, Math.min(60 - seconds_offline) * 1000);
-	    }
-
-		setTimeout(function() { // Lancer au plus tard dans 5 mins.
-			table.ajax.reload( null, false );
-			setInterval( function () { // Boucle reload de 5min
+		
+		autoReload.init({
+			name: "synth",
+			cb: function() {
 				table.ajax.reload( null, false );
-			}, 5 * 60000 );
-		}, Math.max(5 * 60 - seconds_offline, 0) * 1000);
-	}
+			}
+		});
+	} /* initTable */
 
 	dataTablesEvents();
 

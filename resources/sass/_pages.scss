@@ -168,9 +168,11 @@ table input, table select {
     margin-left: -4px;
   }
 }
-#app .force-refresh-button {
+.api-refresh-btn {
   transition: opacity .5s;
-  opacity: 0;
+  &:disabled {
+    opacity: 0;
+  }
 }
 
 .dataTables_filter {  

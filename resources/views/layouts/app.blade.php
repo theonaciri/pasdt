@@ -155,6 +155,9 @@
     @endif
 @endif
     <!-- <script src="/js/require.js"></script>-->
+    <script>
+        var server_time = {!!time()!!};
+    </script>
 @if (Route::currentRouteName() == 'checkout')
     <script src="https://js.stripe.com/v3/"></script>
     <!--  <link rel="stylesheet" href="StripeElements.css"> -->
@@ -167,7 +170,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
 @endif
     <script>
-        var server_time = {!!time()!!};
         // Register service worker
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
