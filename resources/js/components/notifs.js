@@ -1,7 +1,9 @@
-define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, lang) {
+define(['jquery', './getURLParameter', './lang', './autoreloadapi', 'moment'],
+function($, getURLParameter, lang, autoReload, moment) {
 	if (window.location.pathname.indexOf("password") != -1) return ;
 	var firstcall = true;
 	var admincomp = getURLParameter("company");
+	var $notifcounter = $('.notif-counter');
 
 	function getNotificationPermission() {
 	    if ("Notification" in window && Notification.permission === 'granted') {
@@ -21,16 +23,16 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 	}
 
 	function getNotif() {
-		var notif_counter = +(sessionStorage.getItem("notif-counter") || '0');
-    	var lastonline = sessionStorage.getItem("lastnotif") || server_time * 1000;
 		$.getJSON("/notifs/count_last" + (admincomp ? "?company=" + admincomp : ""))
-		.done(function(data) {
+		.done(function(data, a, e) {
 			setCSRF(data.csrf);
-
 			n = +data.count;
-			$notifcounter = $('.notif-counter');
 			previouscounter = +$notifcounter.html();
 			$notifcounter.html(n != 0 ? n : '');
+			var _date = e.getResponseHeader('date');
+			var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
+			sessionStorage.setItem("notif-counter", n);
+			sessionStorage.setItem("notif-counter_time", received_date.toJSON());
 			if (!firstcall && n > previouscounter) {
 				var text = n - previouscounter > 1 ? lang("New notification") : lang("New notifications")
 				$notifcounter.attr('title', text);
@@ -64,7 +66,6 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 					for (var i = 0; i < data.last.length; i++) {
 						types += (i != 0 ? ", " : "") + data.last[i].type;
 					}
-
 					var not_title = "PASDT: " + (data.last.length > 1 ? "Alerts " : "Alert ") + types;
 				}
 
@@ -81,6 +82,13 @@ define(['jquery', './getURLParameter', './lang'], function($, getURLParameter, l
 			document.dispatchEvent(event);
 		});
 	}
-	setInterval(getNotif, 5 * 60 * 1000);
-	getNotif();
+	var counter = sessionStorage.getItem("notif-counter") || '';
+	$notifcounter.html(counter != "0" ? counter : "");
+	if (!counter.length) {
+		getNotif();
+	}
+	autoReload.init({
+		name: "notif-counter",
+		cb: getNotif
+	});
 });

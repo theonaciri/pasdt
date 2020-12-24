@@ -1,14 +1,14 @@
 define(['jquery', 
   './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
-  './components/getURLParameter', "./components/lang", 'datatables.net-bs4',  "./components/moment-fr",
+  './components/getURLParameter', "./components/lang", './components/autoreloadapi',
+  'datatables.net-bs4',  "./components/moment-fr",
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',
   'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
-function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
+function($, datatablefr, arrayToSearch, moment, getURLParameter, lang, autoReload) {
   if (location.pathname !== "/consultation" && location.pathname !== "/") return ;
   var table, graphdata, active_module, cal_interval;
   var $logsDateSync = $('#logs-date-sync');
-  var $reload_btn = $('#home .force-refresh-button');
   window.logtable = table;
   var onlytemp = false; //localStorage.getItem('notemp') === "true";
   var noday = !!getURLParameter("ano");
@@ -80,7 +80,7 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
   }
 
   function getData(_data, callback, settings) {
-    var lastonline = sessionStorage.getItem("lastonline");
+    var lastonline = sessionStorage.getItem("logs_time");
     if (_data.draw === 1 && prelogs != null && typeof prelogs === "object"
         && _data.search.value == "" && !_data.columns.find(e => e.search.value != "")
         && _data.start == 0) {
@@ -107,10 +107,10 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
       document.dispatchEvent(event);
       if (!_data.company && _data.search.value == "" && !_data.columns.find(e => e.search.value != "") && _data.start == 0) {
         data.draw = 1;
-        sessionStorage.setItem("prelogs", JSON.stringify(data));
-        sessionStorage.setItem("lastonline", received_date.toJSON());
+        sessionStorage.setItem("logs", JSON.stringify(data));
+        sessionStorage.setItem("logs_time", received_date.toJSON());
       }
-      hideReloadBtn();
+      $("#logs-refresh-btn").attr("disabled", true);
     }).fail(function(data) {
       $('#main-table_processing').hide("fast");
       var event = new CustomEvent("offline", { detail: {request: "logs", data: data }});
@@ -209,42 +209,13 @@ function($, datatablefr, arrayToSearch, moment, getURLParameter, lang) {
       } // initComplete
     }); // table
     $.ajaxSetup({ cache: false });
-    autoReload();
-  }
-
-  $reload_btn.on('click', function() {
-    table.ajax.reload(null, false);
-    hideReloadBtn();
-  })
-
-  function hideReloadBtn() {
-    $reload_btn.css("opacity", "0").attr('disabled', true);
-    setTimeout(function() {
-      $reload_btn.css("opacity", "1").attr('disabled', false);
-    }, 30000);
-  }
-
-  function autoReload() {
-    document.addEventListener("backonline", function(e) {
-      table.ajax.reload( null, false );
-    });
-    var seconds_offline = moment().diff(moment(sessionStorage.getItem("lastonline") || server_time * 1000), "seconds");
     
-    if (seconds_offline >= 60) {
-      $reload_btn.css("opacity", "1").attr('disabled', false);
-    } else {
-      setTimeout(function() {
-        $reload_btn.css("opacity", "1").attr('disabled', false);
-      }, Math.min(60 - seconds_offline) * 1000);
-    }
-
-    setTimeout(function() { // Lancer au plus tard dans 5 mins.
-      table.ajax.reload( null, false );
-      setInterval( function () { // Boucle reload de 5min
+    autoReload.init({
+      name: "logs",
+      cb: function() {
         table.ajax.reload( null, false );
-      }, 5 * 60000 );
-    }, Math.max(5 * 60 - seconds_offline, 0) * 1000);
+      }
+    });
   }
-
   initTable();
 });
