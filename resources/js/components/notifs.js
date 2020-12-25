@@ -12,20 +12,9 @@ function($, getURLParameter, lang, autoReload, moment) {
 	        return Notification.permission;
 	    }
 	}
-
-	function setCSRF(csrf) {
-		$('meta[name="csrf-token"]').attr('content', csrf);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': csrf
-            }
-        });
-	}
-
 	function getNotif() {
 		$.getJSON("/notifs/count_last" + (admincomp ? "?company=" + admincomp : ""))
 		.done(function(data, a, e) {
-			//setCSRF(data.csrf);
 			n = +data.count;
 			previouscounter = +$notifcounter.html();
 			$notifcounter.html(n != 0 ? n : '');

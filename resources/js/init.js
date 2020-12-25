@@ -8,7 +8,7 @@ function($, graph_annotated, moment) {
 		$('table.dataTable').DataTable().fixedHeader.adjust();
 		localStorage.setItem('opened-tab', e.target.getAttribute('id'));
 	});
-    $('#graphs-live-tab').on("click", function () {
+    $('#graphs-live-tab').one("click", function () {
 		$.ajaxSetup({cache: true});
 
   		$.getScript("/js/anychart-bundle.js")
@@ -48,5 +48,16 @@ function($, graph_annotated, moment) {
 			var opened_tab = localStorage.getItem('opened-tab') || 'synthesis-tab';
 			$('#' + opened_tab).click();
 		}	
-	})
+	});
+	
+	function setCSRF(csrf) {
+		//$('meta[name="csrf-token"]').attr('content', csrf);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrf
+            }
+        });
+	}
+	setCSRF($('meta[name="csrf-token"]').attr("content"));
+
 });

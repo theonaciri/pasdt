@@ -205,6 +205,11 @@
 
                     <div id="anychart" style="width: 640px; height: 480px;"></div>
                     <br>
+                    <p>
+                        @lang("This table is refreshed every 5 minutes.")
+                        <br>
+                        @lang("Last refresh")&nbsp;:&nbsp;<span id="synth-date-sync"></span>.
+                    </p>
                     <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#moduleGraphColorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
                     <button id="temps-refresh-btn" class="btn btn-outline-info api-refresh-btn" disabled>
                         <span class="oi oi-loop-circular"></span>&nbsp;&nbsp;@lang("Force refresh")
