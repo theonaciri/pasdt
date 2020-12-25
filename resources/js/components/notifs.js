@@ -25,7 +25,7 @@ function($, getURLParameter, lang, autoReload, moment) {
 	function getNotif() {
 		$.getJSON("/notifs/count_last" + (admincomp ? "?company=" + admincomp : ""))
 		.done(function(data, a, e) {
-			setCSRF(data.csrf);
+			//setCSRF(data.csrf);
 			n = +data.count;
 			previouscounter = +$notifcounter.html();
 			$notifcounter.html(n != 0 ? n : '');
