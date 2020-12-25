@@ -1,6 +1,6 @@
 define(['jquery', '../bootstrap', 'bootstrap'], function($) {
     if (window.location.pathname.indexOf("password") != -1) return ;
-    /* CSRF is gotten in the notif.js file */
+    /* CSRF is now gotten in the notif.js file */
 	var $disconnectedText = $('#disconnected-header');
 	var $backonlineText = $('#backonline-header');
 
