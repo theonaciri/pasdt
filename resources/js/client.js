@@ -72,7 +72,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		$('#edit-user-modal').ready(() => {
 			const $form = $('#modifyUserForm');
 			$form.attr('action', '/users/modify/' + user_id.toString());
-			const $inputs = $form.find('input');
+			const $inputs = $form.find("input:not([type='hidden'])");
 			//find input name and put last value
 			const $input_name = $.grep($inputs, function(e){ return e.id == "name"; });
 			$input_name[0].value = $user_name.html();
@@ -158,7 +158,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
   		$this.find('.modal-title > span')
   			 .html($(e.relatedTarget).parents("td").siblings(".name").html());
   		$this.find('form').attr('action', "/module/" + id + "/thresholds")
-  			 .find('input').each(function() {
+  			 .find("input:not([type='hidden'])").each(function() {
   				$input = $(this);
   				$input.attr('name', $input.attr('id'))
   					   .val($input.attr('placeholder'))
@@ -171,8 +171,8 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	$("#moduleThresholdForm").ajaxSubmit({
 		data: function() {
             /* unchecked inputs are disabled inputs */
-			var ret = $(this).find("input:not(:checked)").serialize();
-			$(this).find('input[type="checkbox"]:not(:checked)').each(function(e){
+			var ret = $(this).find("input:not(:checked):not([type='hidden'])").serialize();
+			$(this).find('input[type="checkbox"]:not(:checked):not([type="hidden"])').each(function(e){
 				ret += (ret.length ? "&" : "") + this.id
 			});
 			return ret;
@@ -181,7 +181,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	      return $(this).attr('action');
 	    },
 		before: function() {
-			$(this).find('input').each(function(i) {
+			$(this).find('input:not([type="hidden"])').each(function(i) {
 				$this = $(this);
 				if (($this.val() == "" && !$this[0].checked) || $this.val() == $this.attr("placeholder")) {
 					$this.attr("name", "");
