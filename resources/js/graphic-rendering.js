@@ -1,7 +1,7 @@
-define(["jquery", 'moment', "./components/getURLParameter",
+define(["jquery", 'moment', "./components/getURLParameter", "./components/autorefreshapi",
 		"./components/lang", "./dependencies/regressive-curve", "./components/strcap"
 		/* anychart is added dynamically "anychart", "anychart-jquery"*/],
-function ($, moment, getURLParameter, lang, regressiveCurve) {
+function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	window.chart = null;
 	var $mod_select = $('#graphModuleSelect');
 	var data = null;
@@ -16,10 +16,14 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 	function init() {
 		if (chart != null) return; // only one init;
-
 		setModuleSelect();
-		getTemps();
-		setModalTempThresholds();
+		autoReload.init({
+			name: "temps",
+			cb: function() {
+				getTemps();
+			}
+		});
+		getLocalTemps();
 	}
 	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
 	$('#themeSelect').on('change', function (e) {
@@ -29,23 +33,38 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		localStorage.setItem('graph-theme', this.value);
 	});
 
+	function getLocalTemps() {
+		var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
+		setModalTempThresholds();
+		if (cached_temps.hasOwnProperty(active_module_id)) {
+			data = cached_temps[active_module_id];
+			onDataReceive(true);
+		} else {
+			getTemps();
+		}
+	}
 	function getTemps() {
 		//const fromDate = new Date("2018-04-15");
 		$.getJSON("/logs/temp/" + active_module_id/*, { from: fromDate.toJSON(), modules: active_module }*/)
-			.done(function (_data) {
-				data = _data;
-				onDataReceive();
-			})
-			.fail(function (jqxhr, textStatus, error) { // TODO
-				console.error("Request Failed: " + error);
-			});
+		.done(function (_data, a, e) {
+			data = _data.temps;
+			onDataReceive();
+			var _date = e.getResponseHeader('date');
+      		var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
+		    var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
+		    cached_temps[active_module_id] = data;
+		    sessionStorage.setItem("temps", JSON.stringify(cached_temps));
+		    sessionStorage.setItem("temps_time", received_date.toJSON());
+		})
+		.fail(function (jqxhr, textStatus, error) { // TODO
+			console.error("Request Failed: " + error);
+		});
 	}
 
 	function setModuleSelect() {
 		active_module_id = +$mod_select.val();
 		$mod_select.on('change', function () {
 			active_module_id = +$mod_select.val();
-			setModalTempThresholds();
 			getTemps();
 		})
 	}
@@ -60,7 +79,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		$modmodalbody.find('.temp_xhigh').html(temp_xhigh);
 	}
 
-	function onDataReceive() {
+	function onDataReceive(cached = false) {
 		$('#anychart').css("width", (window.innerWidth - 30) + "px").css('height', (window.innerHeight - 300) + "px")
 		if (chart != null) chart.dispose();
 		// set theme
@@ -75,10 +94,11 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		var dataTable = anychart.data.table('d');
 
 		// get regressiveCurve
-		const tempsWithAverage = regressiveCurve(data.temps, days_before, days_after);
+		data = cached ?
+			data : regressiveCurve(data, days_before, days_after);
 
 		// add data
-		dataTable.addData(tempsWithAverage);
+		dataTable.addData(data);
 
 		// map data
 		var mapping = dataTable.mapAs({ value: "t", x: "d" });
@@ -105,7 +125,7 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 
 		var average = plot.spline(
 			dataTable.mapAs({
-				value: "average",
+				value: "a",
 				x : "d"
 			})
 		).name(lang("Average")).stroke(colorForAverage);
@@ -114,46 +134,6 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 			.name(getModuleFromId(active_module_id).name)
 			.stroke(strokeColorsFct);
 		series.hovered().markers(true);
-
-		function colorForAverage() {
-			let color = 'DodgerBlue';
-			let dash = 'solid';
-
-			if (this.x){
-				color = 'cyan';
-				if (this.value >= temp_high && this.value < temp_xhigh) color = '#ecef17';
-				else if (this.value > temp_xhigh) color = '#ee4237';
-				const d = new Date(this.x);
-				const last_date = new Date(data.temps[data.temps.length - 1].d);
-				// change the line style for estimated datas
-				if (d > last_date) {
-					color = color;
-					dash = '5 5';
-				}
-			}
-			return {
-				color: color,
-				dash: dash
-			}
-		}
-
-		function strokeColorsFct() {
-			var v = this.value;
-			var color = '#2fa85a';
-			// color the maximal value
-			//if (this.value == this.series.getStat('seriesMax')) return '#94353C';
-			// color elements depending on the argument
-			if (v >= temp_xhigh) color = '#ee4237'; // 75
-			else if ((v >= temp_high) && (v < temp_xhigh)) color = '#ecef17'; // 75
-			return {
-				color: color,
-				angle: 90,
-				//keys: ['#2fa85a', '#ecef17', '#ee4237'],
-				thickness: 3
-			};
-			// get the default otherwise
-			// return this.sourceColor;
-		}
 
 		// adjust tooltips
 		var tooltip = series.tooltip();
@@ -184,8 +164,8 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		});
 
 		//Preset zoom option
-		const last_date = moment(data.temps[data.temps.length-1].d).format("YYYY-MM-DD");
-		const start_date = moment(last_date).subtract(days_before, "days").format("YYYY-MM-DD");
+		const last_date = moment(data[data.length-1].d).format("YYYY-MM-DD");
+		const start_date = moment(last_date).subtract(days_before + days_after, "days").format("YYYY-MM-DD");
 		const end_date = moment(last_date).add(days_after, 'days').format("YYYY-MM-DD");
 		chart.selectRange(start_date, end_date);
 
@@ -215,6 +195,46 @@ function ($, moment, getURLParameter, lang, regressiveCurve) {
 		chart.draw();
 
 		//startStream(mapping, dataTable, filtered_data);
+	}
+
+	function colorForAverage() {
+		let color = 'DodgerBlue';
+		let dash = 'solid';
+
+		if (this.x){
+			color = 'cyan';
+			if (this.value >= temp_high && this.value < temp_xhigh) color = '#ecef17';
+			else if (this.value > temp_xhigh) color = '#ee4237';
+			const d = new Date(this.x);
+			const last_date = new Date(data[data.length - 1].d);
+			// change the line style for estimated datas
+			if (d > last_date) {
+				color = color;
+				dash = '5 5';
+			}
+		}
+		return {
+			color: color,
+			dash: dash
+		}
+	}
+
+	function strokeColorsFct() {
+		var v = this.value;
+		var color = '#2fa85a';
+		// color the maximal value
+		//if (this.value == this.series.getStat('seriesMax')) return '#94353C';
+		// color elements depending on the argument
+		if (v >= temp_xhigh) color = '#ee4237'; // 75
+		else if ((v >= temp_high) && (v < temp_xhigh)) color = '#ecef17'; // 75
+		return {
+			color: color,
+			angle: 90,
+			//keys: ['#2fa85a', '#ecef17', '#ee4237'],
+			thickness: 3
+		};
+		// get the default otherwise
+		// return this.sourceColor;
 	}
 	/*
 	function startStream(mapping, dataTable, filtered_data) {

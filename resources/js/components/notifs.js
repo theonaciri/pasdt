@@ -1,4 +1,4 @@
-define(['jquery', './getURLParameter', './lang', './autoreloadapi', 'moment'],
+define(['jquery', './getURLParameter', './lang', './autorefreshapi', 'moment'],
 function($, getURLParameter, lang, autoReload, moment) {
 	if (window.location.pathname.indexOf("password") != -1) return ;
 	var firstcall = true;
