@@ -206,6 +206,9 @@
                     <div id="anychart" style="width: 640px; height: 480px;"></div>
                     <br>
                     <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#moduleGraphColorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
+                    <button id="temps-refresh-btn" class="btn btn-outline-info api-refresh-btn" disabled>
+                        <span class="oi oi-loop-circular"></span>&nbsp;&nbsp;@lang("Force refresh")
+                    </button>
                 </div> <!-- graph-live tab -->
             </div> <!-- Tab content -->
         </div>

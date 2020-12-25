@@ -1,6 +1,6 @@
-define(['jquery', 'js-cookie', './graphic-rendering', 'moment', /*'./dependencies/moment-fr.js',*/
+define(['jquery', './graphic-rendering', 'moment', /*'./dependencies/moment-fr.js',*/
 	'./components/cache', './components/notifs', './bootstrap', 'bootstrap'],
-function($, cookie, graph_annotated, moment) {
+function($, graph_annotated, moment) {
 	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		// e.target // newly activated tab

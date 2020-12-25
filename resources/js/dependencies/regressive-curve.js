@@ -6,26 +6,21 @@ define(['moment'], function (moment) {
 	 * days = number (of projected days wanted)
 	 */
 	return function getRegressiveCurve(data, days_before, days_after) {
-		let tabResult = data;
-
 		const last_data = getValuesOfLastDays(data, days_before);
-
 		const tared_data = getTaredDate(last_data);
-
 		const coeff = regLin(tared_data);
 		
 		//calculate average for existing datas
-		for (let index = tabResult.length-1; index > tabResult.length - last_data.length; index--) {
-			let average = (Math.round((coeff.a * tared_data[index + last_data.length - tabResult.length].x + coeff.b) * 100) / 100);
-			tabResult[index] = ({
-				d: tabResult[index].d,
-				t: tabResult[index].t,
-				average: average
+		for (let index = data.length-1; index > data.length - last_data.length; index--) {
+			let average = (Math.round((coeff.a * tared_data[index + last_data.length - data.length].x + coeff.b) * 100) / 100);
+			data[index] = ({
+				d: data[index].d,
+				t: data[index].t,
+				a: average
 			})
 		}
 		
-		const unit_of_time = getUnitOfTime(last_data, days_after)/1000;
-
+		const unit_of_time = getUnitOfTime(last_data, days_after) / 1000;
 		const number_of_values_projected = getNumberOfValuesProjected(unit_of_time, days_after);
 		
 		//calculate average for projected datas
@@ -50,13 +45,13 @@ define(['moment'], function (moment) {
 			let transformedDate = moment(dateTime).format("YYYY-MM-DD HH:mm:ss");
 
 			estimated_data.push({
-				average: calculatedTemps,
+				a: calculatedTemps,
 				d: transformedDate
 			})
 		}
 		
-		tabResult = tabResult.concat(estimated_data);
-		return tabResult;
+		data = data.concat(estimated_data);
+		return data;
 	}
 
 	function getTaredDate(last_data){

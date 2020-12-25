@@ -159,10 +159,7 @@ class LogController extends Controller
             ->whereNotIn('maxtemp', $thresholds->NO_TEMP ?? config('pasdt.thresholds.NO_TEMP.value'))
             ->orderBy('created_at', 'ASC')
             ->get();
-        $res = [
-            'temps'  => $temps
-        ];
-        return response()->json($res);
+        return response()->json(["temps" => $temps]);
 
     }
 

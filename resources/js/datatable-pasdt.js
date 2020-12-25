@@ -1,6 +1,6 @@
 define(['jquery', 
   './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
-  './components/getURLParameter', "./components/lang", './components/autoreloadapi',
+  './components/getURLParameter', "./components/lang", './components/autorefreshapi',
   'datatables.net-bs4',  "./components/moment-fr",
   'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',
