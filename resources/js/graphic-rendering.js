@@ -1,30 +1,34 @@
 define(["jquery", 'moment', "./components/getURLParameter", "./components/autorefreshapi",
-		"./components/lang", "./dependencies/regressive-curve", "./components/strcap"
+		"./components/lang", "./dependencies/regressive-curve", "./components/strcap", "./components/moment-fr"
 		/* anychart is added dynamically "anychart", "anychart-jquery"*/],
 function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	window.chart = null;
 	var $mod_select = $('#graphModuleSelect');
+  	var $tempsDateSync = $('#temps-date-sync');
 	var data = null;
 	var theme = localStorage.getItem('graph-theme') || "darkBlue";
 	var active_module_id;
 	var interval_var = null;
 	var temp_high = 80;
 	var temp_xhigh = 90;
-	const days_before = 30;
+	const days_before = 30;	var t = new URLSearchParams(location.search);
+
+	/* init last update date */
+
 	const days_after = 30;
-	var t = new URLSearchParams(location.search);
+	if (locale != "en-us" && typeof moment_locale !== "undefined") {
+		moment.updateLocale(locale.split("-")[0], moment_locale);
+	}
+    var lastonline = sessionStorage.getItem("logs_time");
+    $tempsDateSync.html(moment(lastonline || server_time * 1000).calendar());
 
 	function init() {
 		if (chart != null) return; // only one init;
 		setModuleSelect();
-		autoReload.init({
-			name: "temps",
-			cb: function() {
-				getTemps();
-			}
-		});
+		autoReload.init({ name: "temps", cb: getTemps });
 		getLocalTemps();
 	}
+
 	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
 	$('#themeSelect').on('change', function (e) {
 		// recreate chart to reset theme
@@ -43,6 +47,7 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 			getTemps();
 		}
 	}
+
 	function getTemps() {
 		//const fromDate = new Date("2018-04-15");
 		$.getJSON("/logs/temp/" + active_module_id/*, { from: fromDate.toJSON(), modules: active_module }*/)
@@ -51,6 +56,7 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 			onDataReceive();
 			var _date = e.getResponseHeader('date');
       		var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
+      		$tempsDateSync.html(received_date.calendar());
 		    var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
 		    cached_temps[active_module_id] = data;
 		    sessionStorage.setItem("temps", JSON.stringify(cached_temps));
