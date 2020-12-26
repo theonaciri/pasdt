@@ -1,5 +1,4 @@
 define(["jquery", "moment"], function($, moment) {
-
 	function autorefresh(options) {
 		var opt = {
 			url: null,
