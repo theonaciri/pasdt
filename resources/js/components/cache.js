@@ -1,4 +1,4 @@
-define(['jquery', '../bootstrap', 'bootstrap'], function($) {
+define(['jquery'], function($) {
     if (window.location.pathname.indexOf("password") != -1) return ;
     /* CSRF is now gotten in the notif.js file */
 	var $disconnectedText = $('#disconnected-header');
