@@ -193,12 +193,15 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		},
 		success: function (e) {
 			var lookout_id = $(this).data("id");
-			var presynths = JSON.parse(sessionStorage.getItem("presynths")) || presynths || [];
+			var presynths = JSON.parse(sessionStorage.getItem("synth")) || presynths || [];
 			var mod_index = presynths.findIndex(p => p.id === lookout_id);
 			if (mod_index != -1) {
 				presynths[mod_index].thresholds = JSON.stringify(e);
-			    sessionStorage.setItem("presynths", JSON.stringify(presynths));
+			    sessionStorage.setItem("synths", JSON.stringify(presynths));
 			}
+			var pretemps = JSON.parse(sessionStorage.getItem("temps")) || {};
+			delete pretemps[lookout_id];
+			sessionStorage.setItem("synths", JSON.stringify(pretemps));
 			$("#modalModuleThresholds").modal('hide');
 		},
 		error: function(res, err) {
@@ -223,10 +226,11 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	}
 	$('.vubtn').click(function() {
 		var su_company = $('#app').data('su_company');
+		var $this = $(this);
 		if (typeof su_company == 'undefined' || adminconfirmed || (!adminconfirmed
 			&& confirm(lang("Stop monitoring this module?")))) {
 			adminconfirmed = true;
-			var $tr = $(this).parent().parent().parent();
+			var $tr = $this.parent().parent().parent();
 			var id = $tr.data('id');
 			var csrf = $("input[name='_token']").first().val();
 			$.ajax({
@@ -240,7 +244,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 					sessionStorage.setItem("notif-counter", value);
 					$counter.html(value != 0 ? value : '');
 				}
-				$(this).tooltip('dispose');
+				$this.tooltip('dispose');
 				$tr.remove();
 			});
 		}
