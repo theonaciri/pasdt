@@ -1,6 +1,6 @@
-define(['jquery', './bootstrap', 'bootstrap', 
-	'./components/cache', './components/notifs', './graphic-rendering'],
-function($, graph_annotated) {
+define(['jquery', './graphic-rendering', './bootstrap', 'bootstrap', 
+	'./components/cache', './components/notifs'],
+function($, graphic_rendering) {
 	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		// e.target // newly activated tab
@@ -13,7 +13,7 @@ function($, graph_annotated) {
 
   		$.getScript("/js/anychart-bundle.js")
   		.done(function() {
-     		graph_annotated.init();
+     		graphic_rendering.init();
   		});
 		
 		var cssLink = $("<link>");

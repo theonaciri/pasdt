@@ -25,6 +25,7 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	function init() {
 		if (chart != null) return; // only one init;
 		setModuleSelect();
+		setModalTempThresholds();
 		autoReload.init({ name: "temps", cb: getTemps });
 		getLocalTemps();
 	}
@@ -39,7 +40,6 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 
 	function getLocalTemps() {
 		var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
-		setModalTempThresholds();
 		if (cached_temps.hasOwnProperty(active_module_id)) {
 			data = cached_temps[active_module_id];
 			onDataReceive(true);
@@ -71,6 +71,7 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 		active_module_id = +$mod_select.val();
 		$mod_select.on('change', function () {
 			active_module_id = +$mod_select.val();
+			setModalTempThresholds();
 			getTemps();
 		})
 	}

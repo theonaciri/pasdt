@@ -197,11 +197,11 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 			var mod_index = presynths.findIndex(p => p.id === lookout_id);
 			if (mod_index != -1) {
 				presynths[mod_index].thresholds = JSON.stringify(e);
-			    sessionStorage.setItem("synths", JSON.stringify(presynths));
+			    sessionStorage.setItem("synth", JSON.stringify(presynths));
 			}
-			var pretemps = JSON.parse(sessionStorage.getItem("temps")) || {};
+			/*var pretemps = JSON.parse(sessionStorage.getItem("temps")) || {};
 			delete pretemps[lookout_id];
-			sessionStorage.setItem("synths", JSON.stringify(pretemps));
+			sessionStorage.setItem("synths", JSON.stringify(pretemps));*/
 			$("#modalModuleThresholds").modal('hide');
 		},
 		error: function(res, err) {
