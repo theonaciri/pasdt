@@ -321,14 +321,14 @@
         var prelogs = null || {!!json_encode($logs)!!};
     @endif
     try {
-        var prelogs = JSON.parse(sessionStorage.getItem("prelogs")) || prelogs;
+        var prelogs = JSON.parse(sessionStorage.getItem("logs")) || prelogs;
     } catch (e) {}
 
     @if (isset($synth))
         var presynths = {!!json_encode($synth, JSON_HEX_QUOT|JSON_HEX_APOS)!!};
     @endif
     try {
-        var presynths = JSON.parse(sessionStorage.getItem("presynths")) || presynths;
+        var presynths = JSON.parse(sessionStorage.getItem("synth")) || presynths;
     } catch (e) {}
 </script>
 @endsection
