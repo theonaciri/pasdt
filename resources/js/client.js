@@ -301,15 +301,6 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	    }
 	});
 
-
-	$('.view-notif').on('click', function (e) {
-		var id = $(this).parents("tr").data('module_id');
-		var company = getURLParameter("company");
-		localStorage.setItem('opened-tab', 'home-tab');
-		window.location = "/consultation?moduleid=" + encodeURI(id)
-		+ (typeof company != 'undefined' ? "&company=" + company : "");
-		/*+ "&ano=true";*/
-	});
 	$('#localeform').on("submit", function() {
 		if ('serviceWorker' in navigator) {
 		    navigator.serviceWorker.getRegistrations().then(function(registrations) {

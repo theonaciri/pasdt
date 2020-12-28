@@ -101,7 +101,7 @@
                                     <div class="btn-group btn-vertical" role="group" aria-label='@lang("Notification buttons")'>
                                         <button type="button" title="@lang('Seen')" aria-label="@lang('Seen')" name="seen" class="btn btn-primary vubtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-eye"></span></button>
                                         <button type="button" title='@lang("Customize")' name="modify" class="btn btn-secondary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds" {{ $notif->send_mails === 1 ? "" : 'disabled' }}><span class="oi oi-cog"></span></button>
-                                        <button type="button" title="@lang('See the related logs')" aria-label="@lang('See the related logs')" name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                        <a href="{{'/?moduleid=' . $notif->module_id . (request()->has('company') ? '&company=' . request()->get('company') : '')}}" title="@lang('See the related alerts')" aria-label="@lang('See the related alerts')" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></a>
                                         <button type="button" title="@lang('See the generated email')" aria-label="@lang('See the generated email')" name="see_gen_mail" class="btn btn-secondary rendermailbtn" data-toggle="tooltip" data-placement="top"><span class="oi oi-envelope-closed"></span></button>
                                     </div>
                                 </td>
@@ -175,7 +175,7 @@
                                     </div>
                                     <div class="btn-group btn-vertical" role="group" aria-label='@lang("Module buttons")'>
                                         <button type="button" title='@lang("Customize")' name="modify" class="btn btn-primary modifbtn" data-toggle="modal" data-target="#modalModuleThresholds" {{ $module->send_mails === 1 ? "" : 'disabled' }}><span class="oi oi-cog"></span></button>
-                                        <button type="button" title="@lang('See the related alerts')" aria-label="@lang('See the related alerts')" name="see_related_alerts" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></button>
+                                        <a href="{{'/?moduleid=' . $module->module_id . (request()->has('company') ? '&company=' . request()->get('company') : '')}}" title="@lang('See the related alerts')" aria-label="@lang('See the related alerts')" class="btn btn-secondary view-notif" data-toggle="tooltip" data-placement="top"><span class="oi oi-spreadsheet"></span></a>
                                         <button type="button" title='JSON' name="json" class="btn btn-secondary" data-toggle="modal" data-target="#jsonModal"><span class="oi oi-code"></span></button>
                                     </div>
                                     <!--<button type="button" title='@lang("Revoke")' name="revoke" class="btn btn-primary revoqmodulebtn" data-id="{{$module->id}}" data-company="{{$_company->id}}">X</button>-->
