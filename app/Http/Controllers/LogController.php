@@ -180,7 +180,7 @@ class LogController extends Controller
         // /!\ TODO: double foreach is bad perf
         foreach ($lastemps_array as $key => $temp) {
             foreach ($alerts_array as $_key => $alert) {
-                if ($alert->module_id == $temp->module_id) { // temps with alerts
+                if ($alert->id == $temp->id) { // temps with alerts
                     $alert->maxtemp = $temp->maxtemp;
                     $alert->temp_created_at = $temp->temp_created_at;
                     break;
@@ -201,7 +201,7 @@ class LogController extends Controller
 
     public static function getLastModulesAlertArray($company_condition) {
         return DB::select(DB::raw(<<<EOTSQL
-            SELECT modules.id, name, module_id, thresholds, msg, maxtemp, logs.created_at FROM logs
+            SELECT name, modules.id, module_id, thresholds, msg, maxtemp, logs.created_at FROM logs
             LEFT JOIN modules ON modules.module_id = logs.cardId
             WHERE logs.id IN (
             SELECT MAX(L.id) FROM logs L
@@ -216,7 +216,7 @@ EOTSQL));
 
     public static function getLastModulesTempArray($company_condition, $notif_condition) {
         return DB::select(DB::raw(<<<EOTSQL
-            SELECT name, module_id, thresholds, msg, maxtemp, logs.created_at AS temp_created_at FROM logs
+            SELECT name, modules.id, module_id, thresholds, msg, maxtemp, logs.created_at AS temp_created_at FROM logs
             LEFT JOIN modules ON modules.module_id = logs.cardId
             WHERE maxtemp IS NOT NULL
                 AND maxtemp < 785 AND maxtemp > -99

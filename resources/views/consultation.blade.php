@@ -179,6 +179,7 @@
                         </div>
                         <div class="col col-md-9">
                             <div class="form-group">
+                                {{-- As of now, it is not actualized after synth api call --}}
                                 <label for="graphModuleSelect">@lang("Module")</label>
                                 <select class="form-control" id="graphModuleSelect">
                                 @foreach ($synth as $s)

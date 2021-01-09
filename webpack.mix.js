@@ -58,6 +58,7 @@ if (!mix.inProduction()) {
      .js(['resources/js/dependencies/polyfills/allpolyfills.js', 'resources/js/app.js'], 'public/js/app.es5.js')
      .babel('public/js/app.es5.js', 'public/js/app.es5.js')
      .copy("resources/js/lang/*.js", "public/json/locales/js/")
+     .js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
      /*.polyfill({
       enabled: true,
       useBuiltIns: "usage",
