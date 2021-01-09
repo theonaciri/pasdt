@@ -1,5 +1,6 @@
 define(["jquery", "moment"], function($, moment) {
 	function autorefresh(options) {
+		// units in seconds
 		var opt = {
 			url: null,
 			type: "GET",
@@ -7,7 +8,7 @@ define(["jquery", "moment"], function($, moment) {
 			timeout: 10,
 			name: "online",
 			refresh_time: 5 * 60,
-			refresh_btn_time: 30,
+			refresh_btn_time: 10,
 			cb: console.log,
 			cb_err: console.error,
 			cb_on_back_online: $.noop,

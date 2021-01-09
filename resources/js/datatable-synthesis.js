@@ -12,8 +12,6 @@ function(datatables, datatables_bs, moment, /*pdfmake, pdfFonts, */ datatablefr,
 	var $table = $('#synthesis-table');
 	var table; // Datatable
 	var $logsDateSync = $('#synth-date-sync');
- 	var $reload_btn = $('#synthesis .force-refresh-button');
-	const aggressive_cache = true;
 	var data_draw = 0;
 
 	function getData(_data, callback, settings) {
