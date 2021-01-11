@@ -39,8 +39,9 @@ mix.webpackConfig({
 if (!mix.inProduction()) {
   require('laravel-mix-bundle-analyzer');
   mix.bundleAnalyzer();
-  mix.js('resources/js/app.js', 'public/js')
-  //mix.js('resources/js/extra-monitoring.js', 'public/js')
+  mix.js('resources/js/public_blog.js', 'public/js')
+     .js('resources/js/app.js', 'public/js')
+     //mix.js('resources/js/extra-monitoring.js', 'public/js')
      //.babel('public/js/app.js', 'public/js/app.es5.js')
      //.js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
      //.js('resources/js/checkout.js', 'public/js')
@@ -59,6 +60,8 @@ if (!mix.inProduction()) {
      .babel('public/js/app.es5.js', 'public/js/app.es5.js')
      .copy("resources/js/lang/*.js", "public/json/locales/js/")
      .js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
+     .js('resources/js/public_blog.js', 'public/js')
+     .babel('public/js/public_blog.es5.js', 'public/js/public_blog.es5.js')
      /*.polyfill({
       enabled: true,
       useBuiltIns: "usage",

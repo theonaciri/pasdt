@@ -1,6 +1,6 @@
 if (typeof window.locales === "undefined") {
 window.locales = {
-"== Generic ==": "== Générique ==",
+// "== Generic ==": "== Générique ==",
 "Acquittal": "Acquittement",
 "Address": "Adresse",
 "All": "Tous",
@@ -23,7 +23,7 @@ window.locales = {
 "Still ongoing": "Toujours en cours",
 "Stop monitoring this module?": "Retirer la surveillance de ce module ?",
 
-"== Alerts ==": "== Alerts ==",
+// "== Alerts ==": "== Alerts ==",
 "Acquittal": "Acquittement",
 "alarme": "alarme",
 "declenchement": "déclenchement",
@@ -34,7 +34,7 @@ window.locales = {
 "temperature": 
 "température",
 
-"== Admin ==": "== Admin ==",
+// "== Admin ==": "== Admin ==",
 "Delete the account of ": "Supprimer le compte de ",
 "Delete the company ": "Supprimer le groupe ",
 "Details": "Détails",
@@ -50,7 +50,7 @@ window.locales = {
 "Unlink the module": "Dissocier le module",
 "Value": "Valeur",
 
-"== Notifications": "== Notifications ==",
+// "== Notifications": "== Notifications ==",
 "Alert": "Alerte",
 "Alerts": "Alertes",
 "An action on your part may be needed.": "Une action de votre part est peut-être nécessaire.",
@@ -59,7 +59,7 @@ window.locales = {
 "New notification": "Nouvelle notification",
 "Seen": "Vu",
 
-"== Modif/delete users/companies": "== Modif/delete users/companies ==",
+// "== Modif/delete users/companies": "== Modif/delete users/companies ==",
 "Add user" : "Ajouter un utilisateur",
 "Add company" : "Ajouter une entreprise",
 "Add" : "Ajouter",
