@@ -20,12 +20,20 @@ Route::group(['middleware' => ['locale']], function() {
 
 Route::get('/', 'HomeController@index')->name('welcome');
 Route::redirect('/consultation', '/');
+
 /* USER */
 Route::get('/client', 'ClientController@index')->name('client');
-Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middleware('auth');
 Route::get('/user/delete/{usertoDelete}', 'ClientController@deleteUser')->name('deleteUser')->middleware('auth');
 Route::get('/password/change', 'Auth\ChangePasswordController@index')->name('password_change')->middleware('auth');
 Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middleware('auth');
+
+/* ADMIN */
+
+Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middleware('auth');
+Route::get('/admin/blogarticles', 'AdminController@adminBlogArticles')->name('admin_blogarticles')->middleware('auth');
+Route::get('/blogarticle/{blog_article}', 'AdminController@getBlogArticle')->name('blog_article.get')->middleware('auth');
+Route::post('/admin/blogarticle', 'AdminController@postBlogArticle')->name('blogarticle')->middleware('auth');
+
 // if users.modify is change, need to change "$form.attr('action', '/users/modify/' + user_id.toString());" in client.js
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify')->middleware('auth');
 Route::post('/user/mailnotifs/{activation}', 'ClientController@toggleMailNotifs')->name('user.toggle.mail.notifs')->middleware('auth');

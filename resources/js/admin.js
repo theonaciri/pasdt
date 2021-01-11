@@ -1,5 +1,5 @@
 define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit", "./bootstrap",
-		"./components/delete-user"],
+		"./components/delete-user", "./blogarticles"],
 	function ($, lang, flatten) {
 		if (window.location.pathname.indexOf("admin") < 0) return;
 		var company_modules = [];
@@ -266,4 +266,4 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 			}
 		});
 
-	});	
+});
