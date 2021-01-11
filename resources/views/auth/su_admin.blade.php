@@ -4,6 +4,9 @@
 <a href="/consultation" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
     <span class="oi oi-arrow-left"></span> @lang("Back to general analysis")
 </a>
+<a href="/admin/blogarticles" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
+    <span class="oi oi-star"></span> @lang("Go to What's New")
+</a>
 <br>
 <br>
 <div class="container">

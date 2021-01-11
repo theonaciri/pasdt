@@ -61,7 +61,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}" title='{{ __("Back to Home") }}'>
 @endif
                     @if (!empty($_company) && !empty($_company->logo))
-                        <img src="images/companylogos/{{ $_company->logo }}" height="39" alt='{{ __("Back to Home") }}' />
+                        <img src="/images/companylogos/{{ $_company->logo }}" height="39" alt='{{ __("Back to Home") }}' />
                     @endif
                     
                     @if (!empty($_company) && $_company->name)

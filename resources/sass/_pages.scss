@@ -383,3 +383,15 @@ tr.success {
     }
   }
 }
+
+.card-header.row {
+  margin: 0;
+}
+
+#editcontent {
+  min-height: 400px;
+}
+
+#articleReadModal .modal-footer {
+  justify-content: space-between;
+}
