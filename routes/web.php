@@ -30,9 +30,12 @@ Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middlew
 /* ADMIN */
 
 Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middleware('auth');
-Route::get('/admin/blogarticles', 'AdminController@adminBlogArticles')->name('admin_blogarticles')->middleware('auth');
-Route::get('/blogarticle/{blog_article}', 'AdminController@getBlogArticle')->name('blog_article.get')->middleware('auth');
-Route::post('/admin/blogarticle', 'AdminController@postBlogArticle')->name('blogarticle')->middleware('auth');
+
+/* BLOG ARTICLES */
+Route::get('/admin/blogarticles', 'BlogController@adminBlogArticles')->name('admin_blogarticles')->middleware('auth');
+Route::get('/blogarticle/{blog_article}', 'BlogController@getBlogArticle')->name('blog_article.get'); // public
+Route::get('/blog', 'BlogController@index')->name('blog'); // public
+Route::post('/admin/blogarticle', 'BlogController@postBlogArticle')->name('blogarticle')->middleware('auth');
 
 // if users.modify is change, need to change "$form.attr('action', '/users/modify/' + user_id.toString());" in client.js
 Route::post('/users/modify/{user}', 'ClientController@modifUser')->name('users.modify')->middleware('auth');

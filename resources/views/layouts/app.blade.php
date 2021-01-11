@@ -98,6 +98,11 @@
                                 <a class="nav-link" href="{{ route('login') }}">@lang('Login')</a>
                             </li>
                         @else
+                            @if (Route::has('blog'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('blog') }}">@lang("Blog")</a>
+                                </li>
+                            @endif
                             @if (Route::has('register') && Auth::user()->su_admin)
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">@lang("New access")</a>
