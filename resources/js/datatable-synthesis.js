@@ -1,8 +1,8 @@
 define(['datatables.net', 'datatables.net-bs4', "moment",/*'pdfmake','pdfmake/build/vfs_fonts.js'*/
 		/*'flat',*/ './components/datatable-fr', './components/color-event-assoc',
 		'./components/getURLParameter', "./components/lang", './components/autorefreshapi',
-		"./components/strcap",  "./components/moment-fr", 'Buttons/js/buttons.bootstrap4',
-		'Buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 'Buttons/js/buttons.flash', */
+		"./components/strcap",  "./components/moment-fr", 'datatables.net-buttons-bs4',
+		'datatables.net-buttons/js/buttons.html5', /*'Buttons/js/buttons.print', 'Buttons/js/buttons.flash', */
 		'./widgets/dateinterval.plugin.js', 'datatables.net-responsive',
 		'datatables.net-fixedheader-bs4', 'bootstrap-select',
 		'bootstrap-select/js/i18n/defaults-fr_FR.js'],

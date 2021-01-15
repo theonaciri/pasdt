@@ -34,14 +34,14 @@
             <div class="container">
                 <a class="btn btn-primary" id="admin-nav-btn" data-toggle="tooltip" data-placement="bottom" href="{{ url(Route::currentRouteName())}}" title="@lang('You are viewing your company only. Click here to go to a global view')">
                     <span class="oi oi-globe"></span>
-                </a>&nbsp;
+                </a>
                 <a class="navbar-brand" href="{{ url('/?company=' . $self->company->id) }}" title='{{ __("Back to Home") }}'>
         @else
         <nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm">
             <div class="container">
                 <a class="btn btn-primary" id="admin-nav-btn" data-toggle="tooltip" data-placement="bottom" href="{{ url('/?company=' . $self->company_id) }}" title='{{ ("You are taking control of another company. Click here to return to yours") }}'>
                     <span class="oi oi-account-logout"></span>&nbsp;
-                </a>&nbsp;
+                </a>
                 <a class="navbar-brand" href="{{ url('/?company=' . $_company->id) }}" title='{{ __("Back to Home") }}'>
         @endif
     @else
@@ -51,7 +51,7 @@
                 <a class="btn btn-primary" id="admin-nav-btn" data-toggle="tooltip" data-placement="bottom" href="{{ url('/?company=' . $_company->id) }}" title='@lang("You are viewing all companies at once. Click here to return to yours")'>
                     <span class="oi oi-warning"></span>&nbsp;
                     <span class="oi oi-fullscreen-exit"></span>&nbsp;
-                </a>&nbsp;
+                </a>
                 <a class="navbar-brand admin-nav-btn" href="{{ url('/?company=' . $self->company->id) }}" title='{{ __("Back to Home") }}'>
     @endif
 @else
