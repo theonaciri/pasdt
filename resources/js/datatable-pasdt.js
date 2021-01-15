@@ -2,7 +2,7 @@ define(['jquery',
   './components/datatable-fr', './components/color-event-assoc', 'moment/moment',
   './components/getURLParameter', "./components/lang", './components/autorefreshapi',
   'datatables.net-bs4',  "./components/moment-fr",
-  'Buttons/js/buttons.bootstrap4', 'Buttons/js/buttons.html5',
+  'datatables.net-buttons-bs4', 'datatables.net-buttons/js/buttons.html5',
   'bootstrap-select', 'bootstrap-select/js/i18n/defaults-fr_FR.js',
   'datatables.net-responsive', 'datatables.net-fixedheader-bs4'],
 function($, datatablefr, arrayToSearch, moment, getURLParameter, lang, autoReload) {
