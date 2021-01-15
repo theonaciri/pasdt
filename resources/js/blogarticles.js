@@ -22,7 +22,7 @@ define(["jquery", "./components/lang", "moment"], function($, lang, moment) {
                         [{ 'script': 'super' }, { 'script': 'sub' }],
                         ['blockquote', 'code-block' ],
                         [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
-                        [ {'direction': 'rtl'}, { 'align': [] }],
+                        [{'direction': 'rtl'}, { 'align': [] }],
                         [ 'link', 'image', 'video' ],
                         [ 'clean' ]
                     ]
