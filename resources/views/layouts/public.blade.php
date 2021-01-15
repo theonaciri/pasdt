@@ -94,24 +94,22 @@
 </head>
 
 <body class="page mode-home">
-    <div class="flex-center position-ref full-height">
+    <div class="flex-center position-ref">
         <div class="content container">
-            <div class="logo-client">
-            </div>
-            <div class="title m-b-md">
-                @lang("Blog") PASDT
-            </div>
-
-            <main class="py-4">
-                @yield('content')
-            </main>
-
             <div class="links m-t-md">
                 <a href="https://pasdt.com">
                     <img src="images/logo-pasdt.png">
                 </a>
             </div>
+            <div class="title m-b-md">
+                @lang("Blog")
+            </div>
+
+            <main class="py-4">
+                @yield('content')
+            </main>
         </div>
     </div>
+    <script src="/js/public_blog.js"></script>
 </body>
 </html>

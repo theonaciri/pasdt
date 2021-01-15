@@ -10,56 +10,56 @@
 <br>
 <br>
 <div class="container">
-            <div class="card">
-                <div class="card-header row align-items-end">
-                    <div class="col text-left">@lang("What's new ?")</div>
-                    <div class="col text-right">
-                        <button type="button" class="btn btn-light" title='@lang("Add")' id="addArticle" name="addArticle" data-toggle="modal" data-target="#editArticleModal">
-                            <span class="oi oi-plus"></span>&nbsp;@lang("Add")
-                        </button>
-                    </div>
+        <div class="card">
+            <div class="card-header row align-items-end">
+                <div class="col text-left">@lang("What's new ?")</div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-light" title='@lang("Add")' id="addArticle" name="addArticle" data-toggle="modal" data-target="#editArticleModal">
+                        <span class="oi oi-plus"></span>&nbsp;@lang("Add")
+                    </button>
                 </div>
-                <div class="card-body">
-                    <table id="adminTable" class="table stripe">
-                        <thead>
-                            <tr>
-                                <th scope="col">@lang("Type")</th>
-                                <th scope="col">@lang("Title")</th>
-                                <th scope="col">@lang("Desc")</th>
-                                <th scope="col">@lang("Likes")</th>
-                                <th scope="col">@lang("Date created")</th>
-                                <th scope="col">@lang("Date modified")</th>
-                                <th scope="col">@lang("Written by")</th>
-                                <th scope="col">@lang("Actions")</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($blogarticles as $article)
-                            @if($self->name && $self->name == $article->name)
-                            <tr class="highlight">
-                            @else
-                            <tr data-id="{{$article->id}}">
-                            @endif
-                                <td>{{$article->type}}</td>
-                                <td>{{$article->title}}</td>
-                                <td>{{$article->text}}</td>
-                                <td>{{$article->likes}}</td>
-                                <td>{{$article->created_at}}</td>
-                                <td>{{$article->updated_at}}</td>
-                                <td>{{$article->name}}</td>
-                                <td>
-                                    <button type="button" data-id="{{$article->id}}" title='@lang("Modify")' name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#company-modules-modal"><span class="oi oi-box"></span></button>
-                                    <button type="button" data-id="{{$article->id}}" title='@lang("Read")' name="read" class="btn btn-primary articlereadbtn" data-toggle="modal" data-target="#articleReadModal"><span class="oi oi-eye"></span></button>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <small class="form-text text-muted">@lang("Clicking on a name in the table allows you to see the company's logs. Clicking on a logo or a color allows you to modify its values.")</small>
-                </div>
+            </div>
+            <div class="card-body">
+                <table id="adminTable" class="table stripe">
+                    <thead>
+                        <tr>
+                            <th scope="col">@lang("Type")</th>
+                            <th scope="col">@lang("Title")</th>
+                            <th scope="col">@lang("Desc")</th>
+                            <th scope="col">@lang("Likes")</th>
+                            <th scope="col">@lang("Date created")</th>
+                            <th scope="col">@lang("Date modified")</th>
+                            <th scope="col">@lang("Written by")</th>
+                            <th scope="col">@lang("Actions")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($blogarticles as $article)
+                        @if($self->name && $self->name == $article->name)
+                        <tr class="highlight">
+                        @else
+                        <tr data-id="{{$article->id}}">
+                        @endif
+                            <td>{{$article->type}}</td>
+                            <td>{{$article->title}}</td>
+                            <td>{{$article->text}}</td>
+                            <td>{{$article->likes}}</td>
+                            <td>{{$article->created_at}}</td>
+                            <td>{{$article->updated_at}}</td>
+                            <td>{{$article->name}}</td>
+                            <td>
+                                <button type="button" data-id="{{$article->id}}" title='@lang("Modify")' name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#company-modules-modal"><span class="oi oi-box"></span></button>
+                                <button type="button" data-id="{{$article->id}}" title='@lang("Read")' name="read" class="btn btn-primary articlereadbtn" data-toggle="modal" data-target="#articleReadModal"><span class="oi oi-eye"></span></button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                <small class="form-text text-muted">@lang("Clicking on a name in the table allows you to see the company's logs. Clicking on a logo or a color allows you to modify its values.")</small>
             </div>
         </div>
     </div>
+</div>
 
 
 <!-- Modal edit article -->
@@ -87,6 +87,10 @@
                             <option value="MINOR_UPDATE">@lang("MINOR_UPDATE")</option>
                             <option value="TUTORIAL">@lang("TUTORIAL")</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="article_tags">@lang("Tags")</label>
+                        <input type="text" class="form-control" id="article_tags" name="article_tags" maxlength="128" aria-describedby="article_tags" placeholder="@lang('Tags')">
                     </div>
                     <div class="form-group">
                         <label for="article_title">@lang("Title")</label>
