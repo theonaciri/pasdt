@@ -2,6 +2,7 @@ define(["jquery", "./components/lang", "moment", "./components/article-filters",
     if (window.location.pathname.indexOf("blog") < 1) return ;
     var editor;
     var $readModal = $('#articleReadModal');
+    var $editModal = $('#editArticleModal');
     if (locale != "en-us" && typeof moment_locale !== "undefined") {
         moment.updateLocale(locale.split("-")[0], moment_locale);
     }
@@ -43,7 +44,7 @@ define(["jquery", "./components/lang", "moment", "./components/article-filters",
         $("#article_text").val(editor.getText());
     });
     $readModal.on('show.bs.modal', function(e) {
-        $.getJSON("/blogarticle/" + $(e.relatedTarget).data("id"))
+        getArticleHTML($(e.relatedTarget).data("id"))
         .done(function(content) {
             $readModal.find('.modal-title').html(content.title);
             $readModal.find('.footer-content').html('<span class="oi oi-pencil"></span>&nbsp;' + lang("by") + " <b>" + content.author + "</b> "
@@ -52,15 +53,34 @@ define(["jquery", "./components/lang", "moment", "./components/article-filters",
         }).fail(function(content) {
             $readModal.find('.modal-body').html(content.error ? content.error : lang("Article failed to load."));
         })
-
     });
+
     $('#articleReadModal').on('hidden.bs.modal', function(e) {
         $readModal.find('.modal-body').html('<div class="form-loader"><img src="/images/loader.svg"></div>');
         $readModal.find('.modal-title').html(lang('Loading...'));
         $readModal.find('.footer-content').html("");
     });
 
+    $editModal.on('show.bs.modal', function(e) {
+        var $btn = $(e.relatedTarget);
+        var $tr = $td.parents('tr');
+        getArticleHTML($td.data("id"))
+        .done(function(content) {
+            $("#article_author").html($tr.children('.name').html());
+            $("#article_title").val($tr.children('.title').html());
+            $("#article_type").html($tr.children('.type').html());
+            $("#article_tags").html($tr.children('.tags').html());
+            $("#editcontent").val(content);
+        }).fail(function(content) {
+            $editModal.find('.modal-body').html(content.error ? content.error : lang("Article failed to load."));
+        });
+    });
+
     $(".last-created-article").each(function(i, e) {
         e.innerHTML = moment(e.innerHTML).calendar();
     })
+
+    function getArticleHTML(id) {
+        return $.getJSON("/blogarticle/" + id)
+    }
 });
