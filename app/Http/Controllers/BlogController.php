@@ -20,7 +20,7 @@ class BlogController extends Controller {
     public function index() {
         $whatsnew = DB::table("blog_articles")
                         ->leftJoin('users', 'users.id', '=', 'blog_articles.author')
-                        ->select("blog_articles.type", "blog_articles.id", "blog_articles.title", "blog_articles.likes", "blog_articles.created_at",
+                        ->select("blog_articles.type", "blog_articles.id", "tags", "blog_articles.title", "blog_articles.likes", "blog_articles.created_at",
                         "blog_articles.updated_at", DB::raw("SUBSTRING(blog_articles.text,1, 32) as text"), "users.name", "users.email")->get();
         return view('public_blog', [
             "blogarticles"=>$whatsnew
@@ -71,6 +71,7 @@ class BlogController extends Controller {
         $blogarticle = new BlogArticle;
         $blogarticle->title = $request->input('article_title', "");
         $blogarticle->type = $request->input('article_type', "ARTICLE");
+        $blogarticle->tags = $request->input('article_tags', "");
         $blogarticle->content = $request->input('article_content', "");
         $blogarticle->text = $request->input('article_text', "");
         $blogarticle->author = $this->user->id;

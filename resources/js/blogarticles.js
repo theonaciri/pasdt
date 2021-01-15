@@ -1,6 +1,14 @@
-define(["jquery", "./components/lang", "moment"], function($, lang, moment) {
+define(["jquery", "./components/lang", "moment", "./components/article-filters", "./components/moment-fr", "bootstrap"], function($, lang, moment, filters) {
+    if (window.location.pathname.indexOf("blog") < 1) return ;
     var editor;
     var $readModal = $('#articleReadModal');
+    if (locale != "en-us" && typeof moment_locale !== "undefined") {
+        moment.updateLocale(locale.split("-")[0], moment_locale);
+    }
+
+
+    filters.init({list: '.list-services'});
+
     $("#addArticle").one('click', function() {
         /*var ie = '';
         if (window.document.documentMode) {
@@ -51,4 +59,8 @@ define(["jquery", "./components/lang", "moment"], function($, lang, moment) {
         $readModal.find('.modal-title').html(lang('Loading...'));
         $readModal.find('.footer-content').html("");
     });
+
+    $(".last-created-article").each(function(i, e) {
+        e.innerHTML = moment(e.innerHTML).calendar();
+    })
 });
