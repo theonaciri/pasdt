@@ -33,7 +33,7 @@
                             <th scope="col">@lang("Actions")</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
                     @foreach ($blogarticles as $article)
                         @if($self->name && $self->name == $article->name)
                         <tr class="highlight">
@@ -48,7 +48,7 @@
                             <td>{{$article->updated_at}}</td>
                             <td>{{$article->name}}</td>
                             <td>
-                                <button type="button" data-id="{{$article->id}}" title='@lang("Modify")' name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#company-modules-modal"><span class="oi oi-box"></span></button>
+                                <button type="button" data-id="{{$article->id}}" title='@lang("Modify")' name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#editArticleModal"><span class="oi oi-pencil"></span></button>
                                 <button type="button" data-id="{{$article->id}}" title='@lang("Read")' name="read" class="btn btn-primary articlereadbtn" data-toggle="modal" data-target="#articleReadModal"><span class="oi oi-eye"></span></button>
                             </td>
                         </tr>
@@ -76,7 +76,7 @@
                 <form id="editArticle" action="{{ route('blogarticle') }}" method="post">
                     @csrf
                     <div class="form-group">
-                        <label for="author">@lang("Author")&nbsp;&nbsp; <b>{{$self->name}}</b></label>
+                        <label for="author">@lang("Author")&nbsp;&nbsp; <b id="article_author">{{$self->name}}</b></label>
                     </div>
                     <div class="form-group">
                         <label for="article_type">@lang("Type")</label>
