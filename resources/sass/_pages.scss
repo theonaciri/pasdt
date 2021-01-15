@@ -398,3 +398,22 @@ tr.success {
 #articleReadModal .modal-footer {
   justify-content: space-between;
 }
+/* BLOG */
+.card-img-overlay {
+  cursor: pointer;
+  font-size: 120%;
+  color: white;
+  text-shadow:1px 1px 6px black;
+}
+
+.card-img-top {
+  filter: brightness(.67);
+}
+
+.list-services li {
+  list-style: none;
+}
+
+.list-services .card {
+  padding: 0;
+}
