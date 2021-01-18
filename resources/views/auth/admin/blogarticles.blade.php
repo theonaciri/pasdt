@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="/consultation" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
+<a href="{{ route('welcome') }}" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
     <span class="oi oi-arrow-left"></span> @lang("Back to general analysis")
 </a>
-<a href="/admin" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
+<a href="{{ route('su_admin') }}" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
     <span class="oi oi-arrow-circle-left"></span> @lang("Back to admin")
 </a>
 <br>
@@ -27,7 +27,7 @@
                             <th scope="col">@lang("Title")</th>
                             <th scope="col">@lang("Desc")</th>
                             <th scope="col">@lang("Likes")</th>
-                            <th scope="col">@lang("Date created")</th>
+                            <th scope="col">@lang("Date")</th>
                             <th scope="col">@lang("Date modified")</th>
                             <th scope="col">@lang("Written by")</th>
                             <th scope="col">@lang("Actions")</th>
@@ -36,7 +36,7 @@
                     <tbody> 
                     @foreach ($blogarticles as $article)
                         <tr data-id="{{$article->id}}">
-                            <td class="type">{{$article->type}}</td>
+                            <td class="type">@lang($article->type)</td>
                             <td class="title">{{$article->title}}</td>
                             <td class="text">{{$article->text}}</td>
                             <td class="likes">{{$article->likes}}</td>
