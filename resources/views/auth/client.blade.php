@@ -380,7 +380,7 @@
                     @if($self->is_client_company)
                         @if ($message = Session::get('colorsuccess'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <button type="button" class="close" data-dismiss="alert"><span class="oi oi-x"></span></button>
                             <strong>{{ $message }}</strong>
                         </div>
                         <!-- <img src="images/companylogos/{{ Session::get('image') }}"> -->

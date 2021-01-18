@@ -36,8 +36,8 @@ if (!mix.inProduction()) {
      //.babel('public/js/checkout.js', 'public/js/checkout.es5.js')
      //.extract(['pdfmake', 'pdfmake/build/vfs_fonts'])
     //.copy("resources/js/lang/*.js", "public/json/locales/js/")
-    //.browserSync('127.0.0.1:8000')
-    .bundleAnalyzer({"default-sizes": "stat"});
+    .browserSync('127.0.0.1:8000')
+    //.bundleAnalyzer({"default-sizes": "stat"});
 } else {
   //require('laravel-mix-polyfill');
   mix.webpackConfig({mode: 'production'})
