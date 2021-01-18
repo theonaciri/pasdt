@@ -32,7 +32,7 @@ Route::get('/users/get', 'AdminController@getUsers')->name('users.get')->middlew
 Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middleware('auth');
 
 /* BLOG ARTICLES */
-Route::get('/admin/blogarticles', 'BlogController@adminBlogArticles')->name('admin_blogarticles')->middleware('auth');
+Route::get('/admin/blogarticles', 'BlogController@adminBlogArticles')->name('blogarticles.admin')->middleware('auth');
 Route::get('/blogarticle/{blog_article}', 'BlogController@getBlogArticle')->name('blog_article.get'); // public
 Route::get('/blog', 'BlogController@index')->name('blog'); // public
 Route::post('/admin/blogarticle', 'BlogController@postBlogArticle')->name('postblogarticle')->middleware('auth');

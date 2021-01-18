@@ -50,7 +50,7 @@ window.locales = {
 "Unlink the module": "Dissocier le module",
 "Value": "Valeur",
 
-// "== Notifications": "== Notifications ==",
+// "== Notifications ==": "== Notifications ==",
 "Alert": "Alerte",
 "Alerts": "Alertes",
 "An action on your part may be needed.": "Une action de votre part est peut-être nécessaire.",
@@ -59,7 +59,7 @@ window.locales = {
 "New notification": "Nouvelle notification",
 "Seen": "Vu",
 
-// "== Modif/delete users/companies": "== Modif/delete users/companies ==",
+// "== Modif/delete users/companies ==": "== Modif/delete users/companies ==",
 "Add user" : "Ajouter un utilisateur",
 "Add company" : "Ajouter une entreprise",
 "Add" : "Ajouter",
@@ -69,6 +69,9 @@ window.locales = {
 "Modify" : "Modifier",
 "Or" : "Ou",
 "Modify or delete" : "Modifier ou supprimer",
-"You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur"
+"You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur",
+
+// "== Blog ==": "== Blog =="
+"by": "par",
 }
 }
