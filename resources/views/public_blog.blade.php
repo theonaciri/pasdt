@@ -1,23 +1,22 @@
 @extends('layouts.public')
 
 @section('content')
-
-@if (!empty($self))
-<a href="/consultation" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
+<div>
+<a href="{{ route('welcome') }}" class="btn btn-secondary">
     <span class="oi oi-arrow-left"></span> @lang("Back to general analysis")
 </a>
-@if ($self->su_admin === 1)
-<a href="/su_admin" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
-    <span class="oi oi-arrow-circle-left"></span> @lang("Back to admin")
+@if (!empty($self) && $self->su_admin === 1)
+<a href="{{ route('blogarticles.admin') }}" class="btn btn-secondary">
+    <span class="oi oi-star"></span> @lang("Articles editor")
 </a>
 @endif
 <br/>
 <br/>
-@endif
+</div>
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <p class="chapo">Retrouvez les ressources PASDT ici. Articles de blog, communications, corrections, ajouts de fonctionnalité.</p>
+            <p class="chapo">@lang("Retrouvez les ressources PASDT ici. Articles de blog, communications, corrections, ajouts de fonctionnalité.")</p>
             <form class="filters-buttons">
                 <input type="checkbox" name="filter" id="tous-btn" checked="">
                 <label for="tous-btn" id="filt"><span>Tous</span></label>
@@ -40,13 +39,13 @@
             
             <ul class="row list-services">
                 @foreach ($blogarticles as $article)
-                <li class="col-sm-6" id="article-{{ $article->id }}" data-groups="[&quot;{{$article->type}}&quot;]">
+                <li class="col-sm-6" data-id="{{ $article->id }}" id="article-{{ $article->id }}" data-groups="[&quot;{{$article->type}}&quot;]">
                     <div class="card">
                         <img class="card-img-top" src="{{ asset('images/blog/article.jpg') }}" alt="Card image cap">
                         <div class="card-img-overlay"  data-id="{{$article->id}}" data-toggle="modal" data-target="#articleReadModal">
                             <p style="float: left; text-align: left">
-                                <span class="oi oi-heart"></span>&nbsp;{{ $article->likes}}
-                                <br>
+                                <!--<span class="oi oi-heart"></span>&nbsp;{{ $article->likes}}
+                                <br> -->
                                 <span class="last-created-article">{{ $article->created_at }}</span>
                                 <br>
                                 @lang("by") {{ $article->name }}

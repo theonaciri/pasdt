@@ -5,7 +5,7 @@
     <span class="oi oi-arrow-left"></span> @lang("Back to general analysis")
 </a>
 <a href="/admin/blogarticles" class="btn btn-secondary" style="margin-left: 1rem; margin-top: 1rem">
-    <span class="oi oi-star"></span> @lang("Go to What's New")
+    <span class="oi oi-star"></span> @lang("Articles editor")
 </a>
 <br>
 <br>

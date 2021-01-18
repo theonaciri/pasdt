@@ -16,7 +16,7 @@ function($, lang, moment, filters) {
     filters.init({list: '.list-services'});
 
     $readModal.on('show.bs.modal', function(e) {
-        getArticleHTML($(e.relatedTarget).parents("tr").data("id"))
+        getArticleHTML($(e.relatedTarget).parents("tr").data("id") || $(e.relatedTarget).parents("li").data("id"))
         .done(function(content) {
             $readModal.find('.modal-title').html(content.title);
             $readModal.find('.footer-content').html('<span class="oi oi-pencil"></span>&nbsp;' + lang("by") + " <b>" + content.author + "</b> "
