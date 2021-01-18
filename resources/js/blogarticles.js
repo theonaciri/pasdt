@@ -1,50 +1,22 @@
-define(["jquery", "./components/lang", "moment", "./components/article-filters", "./components/moment-fr", "bootstrap"], function($, lang, moment, filters) {
+define(["jquery", "./components/lang", "moment/moment",
+"./components/article-filters", "./bootstrap", "bootstrap",
+"./dependencies/jquery.ajaxSubmit", "./components/moment-fr"],
+function($, lang, moment, filters) {
     if (window.location.pathname.indexOf("blog") < 1) return ;
     var editor;
     var $readModal = $('#articleReadModal');
     var $editModal = $('#editArticleModal');
+    var modal_initialized = false;
     if (locale != "en-us" && typeof moment_locale !== "undefined") {
         moment.updateLocale(locale.split("-")[0], moment_locale);
     }
+    var quillcontent = "";
 
 
     filters.init({list: '.list-services'});
 
-    $("#addArticle").one('click', function() {
-        /*var ie = '';
-        if (window.document.documentMode) {
-            ie = '.es5'; // detect IE browser
-        } */
-        //$.ajaxSetup({ cache: true });
-        //require('/js/quill' + ie + '.js').done(createTextEditor);
-        //$.ajaxSetup({ cache: false });
-        import(/* webpackChunkName: "quill" */ 'quill').then(module => {
-            const Quill = module.default;
-            
-            editor = new Quill('#editcontent', {
-                theme: 'snow',
-                modules: {
-                    'toolbar': [
-                        [/*{ 'font': fonts }, */{ 'size': [] }],
-                        [ 'bold', 'italic', 'underline', 'strike' ],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'script': 'super' }, { 'script': 'sub' }],
-                        ['blockquote', 'code-block' ],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
-                        [{'direction': 'rtl'}, { 'align': [] }],
-                        [ 'link', 'image', 'video' ],
-                        [ 'clean' ]
-                    ]
-                }
-            });
-        });
-    });
-    $('#editArticle').on("submit", function() {
-        $("#article_content").val(editor.root.innerHTML);
-        $("#article_text").val(editor.getText());
-    });
     $readModal.on('show.bs.modal', function(e) {
-        getArticleHTML($(e.relatedTarget).data("id"))
+        getArticleHTML($(e.relatedTarget).parents("tr").data("id"))
         .done(function(content) {
             $readModal.find('.modal-title').html(content.title);
             $readModal.find('.footer-content').html('<span class="oi oi-pencil"></span>&nbsp;' + lang("by") + " <b>" + content.author + "</b> "
@@ -55,6 +27,15 @@ define(["jquery", "./components/lang", "moment", "./components/article-filters",
         })
     });
 
+    $(".articledeletebtn").on('click', function(e) {
+        if (!confirm("Supprimer définitivement l'article ?")) return ;
+        $.ajax({
+            url: '/admin/blogarticle/' + $(e.currentTarget).data('id'),
+            type: 'DELETE'
+        }).done(function() {
+            $(e.currentTarget).parents('tr').remove();
+        }).fail(console.error);
+    });
     $('#articleReadModal').on('hidden.bs.modal', function(e) {
         $readModal.find('.modal-body').html('<div class="form-loader"><img src="/images/loader.svg"></div>');
         $readModal.find('.modal-title').html(lang('Loading...'));
@@ -62,25 +43,119 @@ define(["jquery", "./components/lang", "moment", "./components/article-filters",
     });
 
     $editModal.on('show.bs.modal', function(e) {
-        var $btn = $(e.relatedTarget);
+        console.warn('clicked');
+        if (!modal_initialized) {
+                modal_initialized = true;
+            /*var ie = '';
+            if (window.document.documentMode) {
+                ie = '.es5'; // detect IE browser
+            } */
+            //$.ajaxSetup({ cache: true });
+            //require('/js/quill' + ie + '.js').done(createTextEditor);
+            //$.ajaxSetup({ cache: false });
+            import(/* webpackChunkName: "quill" */ 'quill').then(module => {
+                const Quill = module.default;
+                
+                editor = new Quill('#editcontent', {
+                    theme: 'snow',
+                    modules: {
+                        'toolbar': [
+                            [/*{ 'font': fonts }, */{ 'size': [] }],
+                            [ 'bold', 'italic', 'underline', 'strike' ],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'script': 'super' }, { 'script': 'sub' }],
+                            ['blockquote', 'code-block' ],
+                            [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                            [{'direction': 'rtl'}, { 'align': [] }],
+                            [ 'link', 'image', 'video' ],
+                            [ 'clean' ]
+                        ]
+                    }
+                });
+                if (typeof quillcontent != 'undefined' && quillcontent.length) {
+                    editor.container.firstChild.innerHTML = quillcontent;
+                }
+            });
+        }
+        var $td = $(e.relatedTarget);
         var $tr = $td.parents('tr');
-        getArticleHTML($td.data("id"))
+        if (!$tr.length || !$tr.data("id")) return initEditModal();
+        getArticleHTML($tr.data("id"))
         .done(function(content) {
+            $("#article_id").val($tr.data('id'));
             $("#article_author").html($tr.children('.name').html());
             $("#article_title").val($tr.children('.title').html());
-            $("#article_type").html($tr.children('.type').html());
-            $("#article_tags").html($tr.children('.tags').html());
-            $("#editcontent").val(content);
+            $("#article_type").val($tr.children('.type').html());
+            $("#article_tags").val($tr.children('.tags').html());
+            if (typeof editor != 'undefined') {
+                editor.container.firstChild.innerHTML = content.content;
+                quillcontent = "";
+            } else {
+                quillcontent = content;
+            }
         }).fail(function(content) {
             $editModal.find('.modal-body').html(content.error ? content.error : lang("Article failed to load."));
         });
     });
 
-    $(".last-created-article").each(function(i, e) {
+    function initEditModal() {
+        $("#article_id, #article_title, #article_type, #article_tags").val("");
+        $("#article_author").html($('#navbarDropdown').text().trim());
+        if (typeof editor != 'undefined') {
+            editor.container.firstChild.innerHTML = "";
+            quillcontent = "";
+        } else {
+            quillcontent = "";
+        }
+    }
+
+    $(".last-created-article, .created_at, .updated_at").each(function(i, e) {
         e.innerHTML = moment(e.innerHTML).calendar();
     })
 
     function getArticleHTML(id) {
         return $.getJSON("/blogarticle/" + id)
     }
+
+    $("#editArticle").ajaxSubmit({
+        before: function(e) {
+            $("#article_content").val(editor.root.innerHTML);
+            $("#article_text").val(editor.getText());
+        },
+        url: function() {
+            var id = $("#article_id").val();
+            return "/admin/blogarticle" + (id.length ? "/" + id : "");
+        },
+        success: function (e, a, x) {
+            $('#addModule input, #addModule textarea').val('');
+            $('#selectLinkModule').append(`<option value="${e.id}">${e.name}</option>`);
+            $("#unlinkedLogTable").find('tr[data-id="' + e.telit_id + '"]').remove();
+            var $tr = $('tr[data-id="' + e.id + '"');
+            if ($tr.length) {
+                $tr.find('.title').html(e.title);
+                $tr.find('.type').html(e.type);
+                $tr.find('.text').html(e.text);
+                $tr.find('.updated_at').html(moment(e.updated_at).calendar());
+            } else {
+                $("#adminTable").append(`
+                <tr data-id="${e.id}">
+                    <td class="type">${e.type}</td>
+                    <td class="title">${e.title}</td>
+                    <td class="text">${e.text}</td>
+                    <td class="likes">${e.likes || 0}</td>
+                    <td class="created_at">${moment(e.created_at).calendar()}</td>
+                    <td class="updated_at">${moment(e.updated_at).calendar()}</td>
+                    <td class="name">${$('#navbarDropdown').text().trim()}</td>
+                    <td>
+                        <div class="btn-group btn-vertical">
+                            <button type="button" title="Modifier" name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#editArticleModal"><span class="oi oi-pencil"></span></button>
+                            <button type="button" title="Read" name="read" class="btn btn-primary articlereadbtn" data-toggle="modal" data-target="#articleReadModal"><span class="oi oi-eye"></span></button>
+                            <button type="button" title='@lang("Delete")' name="delete" class="btn btn-danger articledeletebtn"><span class="oi oi-x"></span></button>
+                        </div>
+                    </td>
+                </tr>`);
+            }
+            $editModal.modal('hide');
+        }
+    });
 });

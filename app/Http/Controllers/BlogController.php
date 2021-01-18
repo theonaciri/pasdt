@@ -67,16 +67,50 @@ class BlogController extends Controller {
             'title' => 'required',
             'content' => 'required'
         ]);*/
-        $this->getSaveAuthCompany();        
+        $this->getSaveAuthCompany();
+        if ($this->user->su_admin !== 1) return abort(403);
         $blogarticle = new BlogArticle;
         $blogarticle->title = $request->input('article_title', "");
         $blogarticle->type = $request->input('article_type', "ARTICLE");
-        $blogarticle->tags = $request->input('article_tags', "");
+        if (strlen($request->input('article_tags', ""))) {
+            $blogarticle->tags = $request->input('article_tags', "");
+        }
         $blogarticle->content = $request->input('article_content', "");
         $blogarticle->text = $request->input('article_text', "");
         $blogarticle->author = $this->user->id;
         $blogarticle->locale = $this->user->locale;
         $blogarticle->save();
         return response()->json($blogarticle);
+    }
+
+    public function putBlogArticle(Request $request, BlogArticle $blogarticle) {
+        $this->middleware('auth');
+        /*request()->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);*/
+        $this->getSaveAuthCompany();    
+        if ($this->user->su_admin !== 1) return abort(403);
+        $blogarticle->title = $request->input('article_title', "");
+        $blogarticle->type = $request->input('article_type', "ARTICLE");
+        if (strlen($request->input('article_tags', ""))) {
+            $blogarticle->tags = $request->input('article_tags', "");
+        }
+        $blogarticle->content = $request->input('article_content', "");
+        $blogarticle->text = $request->input('article_text', "");
+        $blogarticle->save();
+        return response()->json($blogarticle);
+    }
+
+    public function deleteBlogArticle(BlogArticle $blogarticle) {
+        $this->middleware('auth');
+        /*request()->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);*/
+        $this->getSaveAuthCompany();    
+        if ($this->user->su_admin !== 1) return abort(403);
+        $blogarticle->delete();
+        return response()->json(Array("ok"=>"ok"));
     }
 }

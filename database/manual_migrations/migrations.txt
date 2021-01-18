@@ -35,3 +35,20 @@ ALTER TABLE `modules` ADD `send_mails` BOOLEAN NOT NULL DEFAULT TRUE AFTER `modu
 06/12/2020:
 ALTER TABLE `modules` CHANGE `temp_triggers` `thresholds` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 ALTER TABLE `modules` CHANGE `thresholds` `thresholds` VARCHAR(400) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+18/01/2021
+
+CREATE TABLE `blog_articles` (
+  `id` int(11) NOT NULL,
+  `type` enum('MINOR_UPDATE','MAJOR_UPADTE','ARTICLE','BUGFIX','TUTORIAL') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ARTICLE',
+  `title` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longblob NOT NULL,
+  `text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `locale` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'fr_FR',
+  `likes` int(11) NOT NULL DEFAULT 0,
+  `deleted_at` datetime DEFAULT NULL,
+  `tags` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
