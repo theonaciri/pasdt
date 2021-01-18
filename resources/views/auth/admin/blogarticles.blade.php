@@ -35,21 +35,20 @@
                     </thead>
                     <tbody> 
                     @foreach ($blogarticles as $article)
-                        @if($self->name && $self->name == $article->name)
-                        <tr class="highlight">
-                        @else
                         <tr data-id="{{$article->id}}">
-                        @endif
-                            <td>{{$article->type}}</td>
-                            <td>{{$article->title}}</td>
-                            <td>{{$article->text}}</td>
-                            <td>{{$article->likes}}</td>
-                            <td>{{$article->created_at}}</td>
-                            <td>{{$article->updated_at}}</td>
-                            <td>{{$article->name}}</td>
+                            <td class="type">{{$article->type}}</td>
+                            <td class="title">{{$article->title}}</td>
+                            <td class="text">{{$article->text}}</td>
+                            <td class="likes">{{$article->likes}}</td>
+                            <td class="created_at">{{$article->created_at}}</td>
+                            <td class="updated_at">{{$article->updated_at}}</td>
+                            <td class="name">{{$article->name}}</td>
                             <td>
-                                <button type="button" data-id="{{$article->id}}" title='@lang("Modify")' name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#editArticleModal"><span class="oi oi-pencil"></span></button>
-                                <button type="button" data-id="{{$article->id}}" title='@lang("Read")' name="read" class="btn btn-primary articlereadbtn" data-toggle="modal" data-target="#articleReadModal"><span class="oi oi-eye"></span></button>
+                                <div class="btn-group btn-vertical">
+                                    <button type="button" title='@lang("Read")' name="read" class="btn btn-primary articlereadbtn" data-toggle="modal" data-target="#articleReadModal"><span class="oi oi-eye"></span></button>
+                                    <button type="button" title='@lang("Modify")' name="modify" class="btn btn-primary articlemodifybtn" data-toggle="modal" data-target="#editArticleModal"><span class="oi oi-pencil"></span></button>
+                                    <button type="button" title='@lang("Delete")' name="delete" class="btn btn-danger articledeletebtn"><span class="oi oi-x"></span></button>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -66,14 +65,14 @@
 <div class="modal fade" id="editArticleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalEditLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="articleModalEditLabel">@lang("Modify an article")</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editArticle" action="{{ route('blogarticle') }}" method="post">
+            <form id="editArticle" action="{{ route('postblogarticle') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="articleModalEditLabel">@lang("Modify an article")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
                     @csrf
                     <div class="form-group">
                         <label for="author">@lang("Author")&nbsp;&nbsp; <b id="article_author">{{$self->name}}</b></label>
@@ -83,7 +82,7 @@
                         <select class="form-control" name="article_type" id="article_type">
                             <option value="ARTICLE">@lang("ARTICLE")</option>
                             <option value="BUGFIX">@lang("BUGFIX")</option>
-                            <option value="MAJOR_UPADTE">@lang("MAJOR_UPADTE")</option>
+                            <option value="MAJOR_UPDATE">@lang("MAJOR_UPDATE")</option>
                             <option value="MINOR_UPDATE">@lang("MINOR_UPDATE")</option>
                             <option value="TUTORIAL">@lang("TUTORIAL")</option>
                         </select>
@@ -102,17 +101,18 @@
                         </div>
                         <input type="hidden" id="article_content" name="article_content" />
                         <input type="hidden" id="article_text" name="article_text" />
+                        <input type="hidden" id="article_id" name="article_id" />
                     </div>
-                    <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;@lang("Save article")</button>
                     <div class="form-loader" hidden>
                         <img src="/images/loader.svg">
                     </div>
                     <div class="form-message"></div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;@lang("Save article")</button>    
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
