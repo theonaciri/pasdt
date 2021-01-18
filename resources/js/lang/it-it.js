@@ -74,4 +74,7 @@ var locales = {
 "Module" : "Modulo",
 "has been disconnected" : "è stato disconnesso",
 "has been reconnected" : "è stato ricollegato",
+
+// "== Blog ==": "== Blog =="
+"by": "da",
 }
