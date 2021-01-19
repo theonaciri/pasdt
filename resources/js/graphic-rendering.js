@@ -103,7 +103,7 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 		$mod_select.on('change', function () {
 			active_module_id = +$mod_select.val();
 			setModalTempThresholds();
-			getTemps();
+			getLocalTemps();
 		})
 	}
 
