@@ -21,7 +21,8 @@ class BlogController extends Controller {
         $whatsnew = DB::table("blog_articles")
                         ->leftJoin('users', 'users.id', '=', 'blog_articles.author')
                         ->select("blog_articles.type", "blog_articles.id", "tags", "blog_articles.title", "blog_articles.likes", "blog_articles.created_at",
-                        "blog_articles.updated_at", DB::raw("SUBSTRING(blog_articles.text,1, 32) as text"), "users.name", "users.email")->get();
+                        "blog_articles.updated_at", DB::raw("SUBSTRING(blog_articles.text,1, 32) as text"), "users.name", "users.email")
+                        ->orderBy('created_at', 'DESC')->get();
         return view('public_blog', [
             "blogarticles"=>$whatsnew
         ]);
