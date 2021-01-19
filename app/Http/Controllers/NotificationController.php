@@ -217,6 +217,27 @@ EOTNOTIF;
         return $notifs;
     }
 
+    /**
+     * Get notifs for one module
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+
+    public static function getNotifsFor(Request $request, $module_id) {
+        $id_company = NotificationController::getAuthCompany(false);
+        if ($id_company === -1) {
+            $id_company = "%%";
+        }
+        $notifs = Notification::select('id', 'comment', 'type', 'log', 'value', 'occurences', 'resolved', 'created_at', 'resolved_at')
+            ->where('module', $module_id)
+            ->orderBy('notifications.resolved_at', 'DESC')
+            ->get();
+        for ($i=0; $i < count($notifs); $i++) { 
+            $notifs[$i]->type_text = __($notifs[$i]->type);
+        }
+        return $notifs;
+    }
+
     public static function getNotifsCount(Request $request, int $seen = 0) {
         $id_company = NotificationController::getAuthCompany(false);
         if ($id_company === -1) {
@@ -235,6 +256,16 @@ EOTNOTIF;
     public function APIgetNotifs(Request $request, $seen = '')
     {
         return response()->json($this->getNotifs($request, $seen === "seen", 100));
+    }
+
+    /**
+     * Get notif content for one module
+     *
+     * @return JSON
+     */
+    public function APIgetNotifsFor(Request $request, $module_id)
+    {
+        return response()->json($this->getNotifsFor($request, $module_id));
     }
 
     /**

@@ -11,11 +11,13 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	var interval_var = null;
 	var temp_high = 80;
 	var temp_xhigh = 90;
-	const days_before = 30;	var t = new URLSearchParams(location.search);
+	const days_before = 30;
+	const days_after = 30;
+	let disconnectedEvent = [];
+	let connectedEvent = [];
+	var t = new URLSearchParams(location.search);
 
 	/* init last update date */
-
-	const days_after = 30;
 	if (locale != "en-us" && typeof moment_locale !== "undefined") {
 		moment.updateLocale(locale.split("-")[0], moment_locale);
 	}
@@ -41,7 +43,9 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	function getLocalTemps() {
 		var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
 		if (cached_temps.hasOwnProperty(active_module_id)) {
+			console.log('cached')
 			data = cached_temps[active_module_id];
+			getEvents();
 			onDataReceive(true);
 		} else {
 			getTemps();
@@ -50,10 +54,11 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 
 	function getTemps() {
 		//const fromDate = new Date("2018-04-15");
-		$.getJSON("/logs/temp/" + active_module_id/*, { from: fromDate.toJSON(), modules: active_module }*/)
+		$.getJSON("/logs/temp/" + active_module_id) /*, { from: fromDate.toJSON(), modules: active_module }*/
 		.done(function (_data, a, e) {
 			data = _data.temps;
-			onDataReceive();
+			getEvents();
+			//onDataReceive()	
 			var _date = e.getResponseHeader('date');
       		var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
       		$tempsDateSync.html(received_date.calendar());
@@ -61,6 +66,32 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 		    cached_temps[active_module_id] = data;
 		    sessionStorage.setItem("temps", JSON.stringify(cached_temps));
 		    sessionStorage.setItem("temps_time", received_date.toJSON());
+		})
+		.fail(function (jqxhr, textStatus, error) { // TODO
+			console.error("Request Failed: " + error);
+		});
+	}
+
+	function getEvents() {
+		const mod = presynths.find(p => p.id === active_module_id);
+		const module_id = mod.module_id;
+		connectedEvent = [];
+		disconnectedEvent = [];
+		$.getJSON('/notifsFor/' + module_id)
+		.done(function(datas) {
+			datas.forEach(data => {
+				disconnectedEvent.push({
+					date: data.value.split(' ')[0],
+					description: 'Module ' + mod.name + ' has been disconnected'
+				})
+				if(data.resolved_at){
+					connectedEvent.push({
+						date: data.resolved_at.split(' ')[0],
+						description: 'Module ' + mod.name + ' has been reconnected'
+					})
+				}
+			})
+			onDataReceive()
 		})
 		.fail(function (jqxhr, textStatus, error) { // TODO
 			console.error("Request Failed: " + error);
@@ -87,6 +118,7 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	}
 
 	function onDataReceive(cached = false) {
+		console.log('disconnected', disconnectedEvent, 'reco', connectedEvent)
 		$('#anychart').css("width", (window.innerWidth - 30) + "px").css('height', (window.innerHeight - 300) + "px")
 		if (chart != null) chart.dispose();
 		// set theme
@@ -115,6 +147,9 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 		chart.animation(true);
 		chart.crosshair(true);
 		chart.title(lang("Evolution of temperatures"));
+		
+		// Linear scale (to fix missing point)
+		chart.xScale('scatter');
 
 		// create the plot
 		var plot = chart.plot(0);
@@ -129,6 +164,15 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 				return this.seriesName + ": " + (this.value ? this.value : "--") + "°C";
 			});
 		//plot.xAxis().labels().format(function() {return new Date(this.value).toLocaleDateString("fr-FR", date_options)});
+
+		// Add event marker on the chart
+		const eventMarkers = plot.eventMarkers();
+
+		eventMarkers.group(0, disconnectedEvent);
+		eventMarkers.group(0).format("🔗").fill('red');
+
+		eventMarkers.group(1, connectedEvent);
+		eventMarkers.group(1).format("🔗").fill('green');
 
 		var average = plot.spline(
 			dataTable.mapAs({

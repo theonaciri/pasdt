@@ -35,6 +35,7 @@ Route::post('/user/change_locale', 'ClientController@changeLocale')->name('user.
 Route::get('/notifs/count/{seen?}', 'NotificationController@APIgetNotifsCount')->name('notifs.get_notifs_count')->middleware('auth');
 Route::get('/notifs/count_last/{seen?}', 'NotificationController@APIgetNotifsCountAndLast')->name('notifs.get_notifs_count_and_last')->middleware('auth');
 Route::get('/notifs/{seen?}', 'NotificationController@APIgetNotifs')->name('notifs.get_notifs')->middleware('auth');
+Route::get('/notifsFor/{module_id}', 'NotificationController@APIgetNotifsFor')->name('notifs.get_notifs_for')->middleware('auth');
 Route::get('/notif/{notif}/renderMail', 'NotificationController@renderMail')->name('notifs.render_mail')->middleware('auth');
 Route::post('/notif/{notif}/acknowledge', 'NotificationController@acknowledgeNotif')->name('notif.acknowledge')->middleware('auth');
 Route::post('/notif/{notif}/comment', 'NotificationController@postComment')->name('notif.comment')->middleware('auth');
