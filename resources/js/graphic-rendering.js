@@ -61,7 +61,6 @@ define([
         } else if (!cached_events.hasOwnProperty(active_module_id)) {
             getEvents();
         } else {
-            console.log("cached");
             data = cached_temps[active_module_id];
             setEventGroups(cached_events[active_module_id]);
             onDataReceive(true);
@@ -126,14 +125,13 @@ define([
         events.forEach(event => {
             if (event.type === "NO_LOG") {
                 disconnectedEvent.push({
-                    date: event.value.replace(' ', 'T'),//split(" ")[0],
-                    description: "Module " + mod.name + " has been disconnected"
+                    date: event.value.replace(" ", "T"),
+                    description: lang("Module") + " " + mod.name + " " + lang("has been disconnected")
                 });
                 if (event.resolved_at) {
                     connectedEvent.push({
-                        date: event.resolved_at.replace(' ', 'T'),//split(" ")[0],
-                        description:
-                            "Module " + mod.name + " has been reconnected"
+                        date: event.resolved_at.replace(" ", "T"),
+                        description: lang("Module") + " " + mod.name + " " + lang("has been reconnected")
                     });
                 }
             }
@@ -168,7 +166,6 @@ define([
     }
 
     function onDataReceive(cached = false) {
-        console.log("disconnected", disconnectedEvent, "reco", connectedEvent);
         $("#anychart")
             .css("width", window.innerWidth - 30 + "px")
             .css("height", window.innerHeight - 300 + "px");
@@ -189,11 +186,6 @@ define([
         // create a table
         var dataTable = anychart.data.table("d");
 
-        // add regressiveCurve to datas
-        // data = cached ?
-        // 	data : regressiveCurve(data, days_before, days_after);
-        // data = regressiveCurve(data, days_before, days_after);
-
         // add data
         dataTable.addData(data);
 
@@ -207,14 +199,17 @@ define([
         chart.title(lang("Evolution of temperatures"));
 
         // Linear scale (to fix missing point)
-        chart.xScale("scatter");
+		chart.xScale("scatter")
+		// Limit number of ticks to prevent overload default
+		chart.xScale().ticks([{minor: 'day', major: 'year'}]);
+		
 
         // create the plot
         var plot = chart.plot(0);
         // set grid settings
         plot.yGrid(true)
             .xGrid(true)
-            .xMinorGrid(true)
+			.xMinorGrid(true)
             .legend()
             .titleFormat(function() {
                 return (
@@ -237,15 +232,16 @@ define([
         //plot.xAxis().labels().format(function() {return new Date(this.value).toLocaleDateString("fr-FR", date_options)});
 
         // Add event marker on the chart
-        const eventMarkers = plot.eventMarkers();
-        eventMarkers
-            .group(0, disconnectedEvent)
-            .format("🔗")
-            .fill("red");
-        eventMarkers
-            .group(1, connectedEvent)
-            .format("🔗")
-            .fill("green");
+		const eventMarkers = plot.eventMarkers();
+		
+        eventMarkers.group(0, disconnectedEvent).format("🔗").fill("red");
+		eventMarkers.group(0).hovered().fill("#ffa1a1").stroke("red", 2);
+
+        eventMarkers.group(1, connectedEvent).format("🔗").fill("green");
+		eventMarkers.group(1).hovered().fill("#d1ead9").stroke("green", 2);
+		
+		// Formating date for events informations
+		eventMarkers.tooltip().titleFormat("{%date} {%date}{dateTimeFormat:y} " + lang('at') + " {%date}{dateTimeFormat:H'h'm}");
 
         var average = plot
             .spline(

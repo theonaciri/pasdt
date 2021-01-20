@@ -67,5 +67,10 @@ var locales = {
 "Modify" : "Modificar",
 "Or" : "O",
 "Modify or delete" : "Modificar o eliminar",
-"You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario"
+"You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario",
+
+"== Graphique/events markers": "== Graphique/Marcadores de eventos ==",
+"Module" : "Módulo",
+"has been disconnected" : "ha sido desconectado",
+"has been reconnected" : "ha sido reconectado",
 }
