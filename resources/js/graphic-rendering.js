@@ -21,7 +21,8 @@ define([
     const days_before = 30;
     const days_after = 30;
     let disconnectedEvent = [];
-    let connectedEvent = [];
+	let connectedEvent = [];
+	let noLogIntervals = [];
     var t = new URLSearchParams(location.search);
 
     /* init last update date */
@@ -121,19 +122,25 @@ define([
     function setEventGroups(events) {
         const mod = presynths.find(p => p.id === active_module_id);
         connectedEvent = [];
-        disconnectedEvent = [];
+		disconnectedEvent = [];
+		noLogIntervals = [];
         events.forEach(event => {
             if (event.type === "NO_LOG") {
+				const start = event.value.replace(" ", "T");
+				let noLogInterval = {start: new Date(start)}
                 disconnectedEvent.push({
-                    date: event.value.replace(" ", "T"),
+                    date: start,
                     description: lang("Module") + " " + mod.name + " " + lang("has been disconnected")
                 });
                 if (event.resolved_at) {
+					const end = event.resolved_at.replace(" ", "T");
+					noLogInterval = {...noLogInterval, end: new Date(end)}
                     connectedEvent.push({
-                        date: event.resolved_at.replace(" ", "T"),
+                        date: end,
                         description: lang("Module") + " " + mod.name + " " + lang("has been reconnected")
                     });
-                }
+				}
+				noLogIntervals.push(noLogInterval);
             }
         });
     }
@@ -350,14 +357,22 @@ define([
     }
 
     function strokeColorsFct() {
-        var v = this.value;
+		var v = this.value;
+		const d = new Date(this.x);
         var color = "#2fa85a";
         // color the maximal value
-        //if (this.value == this.series.getStat('seriesMax')) return '#94353C';
+		//if (this.value == this.series.getStat('seriesMax')) return '#94353C';
+		
         // color elements depending on the argument
         if (v >= temp_xhigh) color = "#ee4237";
         // 75
-        else if (v >= temp_high && v < temp_xhigh) color = "#ecef17"; // 75
+		else if (v >= temp_high && v < temp_xhigh) color = "#ecef17"; // 75
+		
+		noLogIntervals.forEach(interval => {
+			if(d > interval.start && d < interval.end)
+				color = "0";
+		})
+
         return {
             color: color,
             angle: 90,
