@@ -1,293 +1,377 @@
-define(["jquery", 'moment', "./components/getURLParameter", "./components/autorefreshapi",
-		"./components/lang", "./dependencies/regressive-curve", "./components/strcap", "./components/moment-fr"
-		/* anychart is added dynamically "anychart", "anychart-jquery"*/],
-function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
-	window.chart = null;
-	var $mod_select = $('#graphModuleSelect');
-  	var $tempsDateSync = $('#temps-date-sync');
-	var data = null;
-	var theme = localStorage.getItem('graph-theme') || "darkBlue";
-	var active_module_id;
-	var interval_var = null;
-	var temp_high = 80;
-	var temp_xhigh = 90;
-	const days_before = 30;
-	const days_after = 30;
-	let disconnectedEvent = [];
-	let connectedEvent = [];
-	var t = new URLSearchParams(location.search);
+define([
+    "jquery",
+    "moment",
+    "./components/getURLParameter",
+    "./components/autorefreshapi",
+    "./components/lang",
+    "./dependencies/regressive-curve",
+    "./components/strcap",
+    "./components/moment-fr"
+    /* anychart is added dynamically "anychart", "anychart-jquery"*/
+], function($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
+    window.chart = null;
+    var $mod_select = $("#graphModuleSelect");
+    var $tempsDateSync = $("#temps-date-sync");
+    var data = null;
+    var theme = localStorage.getItem("graph-theme") || "darkBlue";
+    var active_module_id;
+    var interval_var = null;
+    var temp_high = 80;
+    var temp_xhigh = 90;
+    const days_before = 30;
+    const days_after = 30;
+    let disconnectedEvent = [];
+    let connectedEvent = [];
+    var t = new URLSearchParams(location.search);
 
-	/* init last update date */
-	if (locale != "en-us" && typeof moment_locale !== "undefined") {
-		moment.updateLocale(locale.split("-")[0], moment_locale);
-	}
+    /* init last update date */
+    if (locale != "en-us" && typeof moment_locale !== "undefined") {
+        moment.updateLocale(locale.split("-")[0], moment_locale);
+    }
     var lastonline = sessionStorage.getItem("logs_time");
     $tempsDateSync.html(moment(lastonline || server_time * 1000).calendar());
 
-	function init() {
-		if (chart != null) return; // only one init;
-		setModuleSelect();
-		setModalTempThresholds();
-		autoReload.init({ name: "temps", cb: getTemps });
-		getLocalTemps();
-	}
+    function init() {
+        if (chart != null) return; // only one init;
+        setModuleSelect();
+        setModalTempThresholds();
+        autoReload.init({ name: "temps", cb: getTemps });
+        getLocalTemps();
+    }
 
-	$('#themeSelect option[value="' + theme + '"]').attr('selected', 'selected');
-	$('#themeSelect').on('change', function (e) {
-		// recreate chart to reset theme
-		theme = this.value;
-		onDataReceive();
-		localStorage.setItem('graph-theme', this.value);
-	});
+    $('#themeSelect option[value="' + theme + '"]').attr(
+        "selected",
+        "selected"
+    );
+    $("#themeSelect").on("change", function(e) {
+        // recreate chart to reset theme
+        theme = this.value;
+        onDataReceive();
+        localStorage.setItem("graph-theme", this.value);
+    });
 
-	function getLocalTemps() {
-		var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
-		if (cached_temps.hasOwnProperty(active_module_id)) {
-			console.log('cached')
-			data = cached_temps[active_module_id];
-			getEvents();
-			onDataReceive(true);
-		} else {
-			getTemps();
-		}
-	}
+    function getLocalTemps() {
+        var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
+        var cached_events = JSON.parse(
+            sessionStorage.getItem("events") || "{}"
+        );
 
-	function getTemps() {
-		//const fromDate = new Date("2018-04-15");
-		$.getJSON("/logs/temp/" + active_module_id) /*, { from: fromDate.toJSON(), modules: active_module }*/
-		.done(function (_data, a, e) {
-			data = _data.temps;
-			getEvents();
-			//onDataReceive()	
-			var _date = e.getResponseHeader('date');
-      		var received_date = moment(_date.slice(_date.lastIndexOf(',') + 1));
-      		$tempsDateSync.html(received_date.calendar());
-		    var cached_temps = JSON.parse(sessionStorage.getItem("temps") || "{}");
-		    cached_temps[active_module_id] = data;
-		    sessionStorage.setItem("temps", JSON.stringify(cached_temps));
-		    sessionStorage.setItem("temps_time", received_date.toJSON());
-		})
-		.fail(function (jqxhr, textStatus, error) { // TODO
-			console.error("Request Failed: " + error);
-		});
-	}
+        if (!cached_temps.hasOwnProperty(active_module_id)) {
+            getTemps();
+        } else if (!cached_events.hasOwnProperty(active_module_id)) {
+            getEvents();
+        } else {
+            console.log("cached");
+            data = cached_temps[active_module_id];
+            setEventGroups(cached_events[active_module_id]);
+            onDataReceive(true);
+        }
+    }
 
-	function getEvents() {
-		const mod = presynths.find(p => p.id === active_module_id);
-		const module_id = mod.module_id;
-		connectedEvent = [];
-		disconnectedEvent = [];
-		$.getJSON('/notifsFor/' + module_id)
-		.done(function(datas) {
-			datas.forEach(data => {
-				disconnectedEvent.push({
-					date: data.value.split(' ')[0],
-					description: 'Module ' + mod.name + ' has been disconnected'
-				})
-				if(data.resolved_at){
-					connectedEvent.push({
-						date: data.resolved_at.split(' ')[0],
-						description: 'Module ' + mod.name + ' has been reconnected'
-					})
-				}
-			})
-			onDataReceive()
-		})
-		.fail(function (jqxhr, textStatus, error) { // TODO
-			console.error("Request Failed: " + error);
-		});
-	}
+    function getTemps() {
+        //const fromDate = new Date("2018-04-15");
+        $.getJSON(
+            "/logs/temp/" + active_module_id
+        ) /*, { from: fromDate.toJSON(), modules: active_module }*/
+            .done(function(_data, a, e) {
+                data = _data.temps;
+                // add regressiveCurve to datas
+                data = regressiveCurve(data, days_before, days_after);
 
-	function setModuleSelect() {
-		active_module_id = +$mod_select.val();
-		$mod_select.on('change', function () {
-			active_module_id = +$mod_select.val();
-			setModalTempThresholds();
-			getLocalTemps();
-		})
-	}
+                getEvents();
 
-	function setModalTempThresholds() {
-		var $modmodalbody = $("#moduleGraphColorModal .modal-body");
-		var mod = presynths.find(p => p.id === active_module_id); 
-		var json = JSON.parse(typeof mod.thresholds === "string" && mod.thresholds.length ? mod.thresholds : "{}");
-		temp_high = json.TEMP_HIGH ? json.TEMP_HIGH : $modmodalbody.data("high");
-		temp_xhigh = json.TEMP_CRIT_HIGH ? json.TEMP_CRIT_HIGH : $modmodalbody.data("xhigh");
-		$modmodalbody.find('.temp_high').html(temp_high);
-		$modmodalbody.find('.temp_xhigh').html(temp_xhigh);
-	}
+                var _date = e.getResponseHeader("date");
+                var received_date = moment(
+                    _date.slice(_date.lastIndexOf(",") + 1)
+                );
+                $tempsDateSync.html(received_date.calendar());
 
-	function onDataReceive(cached = false) {
-		console.log('disconnected', disconnectedEvent, 'reco', connectedEvent)
-		$('#anychart').css("width", (window.innerWidth - 30) + "px").css('height', (window.innerHeight - 300) + "px")
-		if (chart != null) chart.dispose();
-		// set theme
-		anychart.theme(theme);
-		anychart.format.inputLocale('fr-fr');
-		anychart.format.outputLocale(locale);
-		anychart.format.outputDateTimeFormat('dd MMM');
+                //memorize data in cache
+                var cached_temps = JSON.parse(
+                    sessionStorage.getItem("temps") || "{}"
+                );
+                cached_temps[active_module_id] = data;
+                sessionStorage.setItem("temps", JSON.stringify(cached_temps));
+                sessionStorage.setItem("temps_time", received_date.toJSON());
+            })
+            .fail(function(jqxhr, textStatus, error) {
+                // TODO
+                console.error("Request Failed: " + error);
+            });
+    }
 
-		var date_options = { month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" };
+    function getEvents() {
+        const mod = presynths.find(p => p.id === active_module_id);
+        const module_id = mod.module_id;
+        $.getJSON("/notifsFor/" + module_id)
+            .done(function(events) {
+                setEventGroups(events);
+                onDataReceive();
+                var cached_events = JSON.parse(
+                    sessionStorage.getItem("events") || "{}"
+                );
+                cached_events[active_module_id] = events;
+                sessionStorage.setItem("events", JSON.stringify(cached_events));
+            })
+            .fail(function(jqxhr, textStatus, error) {
+                // TODO
+                console.error("Request Failed: " + error);
+            });
+    }
 
-		// create a table
-		var dataTable = anychart.data.table('d');
+    function setEventGroups(events) {
+        const mod = presynths.find(p => p.id === active_module_id);
+        connectedEvent = [];
+        disconnectedEvent = [];
+        events.forEach(event => {
+            if (event.type === "NO_LOG") {
+                disconnectedEvent.push({
+                    date: event.value.replace(' ', 'T'),//split(" ")[0],
+                    description: "Module " + mod.name + " has been disconnected"
+                });
+                if (event.resolved_at) {
+                    connectedEvent.push({
+                        date: event.resolved_at.replace(' ', 'T'),//split(" ")[0],
+                        description:
+                            "Module " + mod.name + " has been reconnected"
+                    });
+                }
+            }
+        });
+    }
 
-		// get regressiveCurve
-		data = cached ?
-			data : regressiveCurve(data, days_before, days_after);
+    function setModuleSelect() {
+        active_module_id = +$mod_select.val();
+        $mod_select.on("change", function() {
+            active_module_id = +$mod_select.val();
+            setModalTempThresholds();
+            getLocalTemps();
+        });
+    }
 
-		// add data
-		dataTable.addData(data);
+    function setModalTempThresholds() {
+        var $modmodalbody = $("#moduleGraphColorModal .modal-body");
+        var mod = presynths.find(p => p.id === active_module_id);
+        var json = JSON.parse(
+            typeof mod.thresholds === "string" && mod.thresholds.length
+                ? mod.thresholds
+                : "{}"
+        );
+        temp_high = json.TEMP_HIGH
+            ? json.TEMP_HIGH
+            : $modmodalbody.data("high");
+        temp_xhigh = json.TEMP_CRIT_HIGH
+            ? json.TEMP_CRIT_HIGH
+            : $modmodalbody.data("xhigh");
+        $modmodalbody.find(".temp_high").html(temp_high);
+        $modmodalbody.find(".temp_xhigh").html(temp_xhigh);
+    }
 
-		// map data
-		var mapping = dataTable.mapAs({ value: "t", x: "d" });
+    function onDataReceive(cached = false) {
+        console.log("disconnected", disconnectedEvent, "reco", connectedEvent);
+        $("#anychart")
+            .css("width", window.innerWidth - 30 + "px")
+            .css("height", window.innerHeight - 300 + "px");
+        if (chart != null) chart.dispose();
+        // set theme
+        anychart.theme(theme);
+        anychart.format.inputLocale("fr-fr");
+        anychart.format.outputLocale(locale);
+        anychart.format.outputDateTimeFormat("dd MMM");
 
-		// create a stock chart
-		chart = anychart.stock();
-		chart.animation(true);
-		chart.crosshair(true);
-		chart.title(lang("Evolution of temperatures"));
-		
-		// Linear scale (to fix missing point)
-		chart.xScale('scatter');
+        var date_options = {
+            month: "numeric",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric"
+        };
 
-		// create the plot
-		var plot = chart.plot(0);
-		// set grid settings
-		plot.yGrid(true)
-			.xGrid(true)
-			.xMinorGrid(true)
-			.legend().titleFormat(function () {
-				return lang("The") + " " + new Date(this.value || this.hoveredDate).toLocaleDateString(locale, date_options);
-			})
-			.itemsFormat(function () {
-				return this.seriesName + ": " + (this.value ? this.value : "--") + "°C";
-			});
-		//plot.xAxis().labels().format(function() {return new Date(this.value).toLocaleDateString("fr-FR", date_options)});
+        // create a table
+        var dataTable = anychart.data.table("d");
 
-		// Add event marker on the chart
-		const eventMarkers = plot.eventMarkers();
+        // add regressiveCurve to datas
+        // data = cached ?
+        // 	data : regressiveCurve(data, days_before, days_after);
+        // data = regressiveCurve(data, days_before, days_after);
 
-		eventMarkers.group(0, disconnectedEvent);
-		eventMarkers.group(0).format("🔗").fill('red');
+        // add data
+        dataTable.addData(data);
 
-		eventMarkers.group(1, connectedEvent);
-		eventMarkers.group(1).format("🔗").fill('green');
+        // map data
+        var mapping = dataTable.mapAs({ value: "t", x: "d" });
 
-		var average = plot.spline(
-			dataTable.mapAs({
-				value: "a",
-				x : "d"
-			})
-		).name(lang("Average")).stroke(colorForAverage);
+        // create a stock chart
+        chart = anychart.stock();
+        chart.animation(true);
+        chart.crosshair(true);
+        chart.title(lang("Evolution of temperatures"));
 
-		var series = plot.spline(mapping)
-			.name(getModuleFromId(active_module_id).name)
-			.stroke(strokeColorsFct);
-		series.hovered().markers(true);
+        // Linear scale (to fix missing point)
+        chart.xScale("scatter");
 
-		// adjust tooltips
-		var tooltip = series.tooltip();
+        // create the plot
+        var plot = chart.plot(0);
+        // set grid settings
+        plot.yGrid(true)
+            .xGrid(true)
+            .xMinorGrid(true)
+            .legend()
+            .titleFormat(function() {
+                return (
+                    lang("The") +
+                    " " +
+                    new Date(this.value || this.hoveredDate).toLocaleDateString(
+                        locale,
+                        date_options
+                    )
+                );
+            })
+            .itemsFormat(function() {
+                return (
+                    this.seriesName +
+                    ": " +
+                    (this.value ? this.value : "--") +
+                    "°C"
+                );
+            });
+        //plot.xAxis().labels().format(function() {return new Date(this.value).toLocaleDateString("fr-FR", date_options)});
 
+        // Add event marker on the chart
+        const eventMarkers = plot.eventMarkers();
+        eventMarkers
+            .group(0, disconnectedEvent)
+            .format("🔗")
+            .fill("red");
+        eventMarkers
+            .group(1, connectedEvent)
+            .format("🔗")
+            .fill("green");
 
-		var tooltipchart = chart.tooltip();
-		tooltipchart.titleFormat(function () {
-			var date = new Date(this.x || this.hoveredDate || this.rawHoveredDate);
-			var transformedDate = date.toLocaleDateString(locale, date_options);
-			return lang("The") + " " + transformedDate;
-		});
+        var average = plot
+            .spline(
+                dataTable.mapAs({
+                    value: "a",
+                    x: "d"
+                })
+            )
+            .name(lang("Average"))
+            .stroke(colorForAverage);
 
-		tooltip.format(function () {
-			if (this.value) {
-				var value = (this.value).toFixed(0);
-				return lang("temperature").capitalize() + ": " + value + "°C";
-			}
-		});
+        var series = plot
+            .spline(mapping)
+            .name(getModuleFromId(active_module_id).name)
+            .stroke(strokeColorsFct);
+        series.hovered().markers(true);
 
-		// set Y axis label formatter
-		//chart.yScale().minimum(getMinTempOfDataSet(filtered_data) -5);
-		//chart.yScale().maximum(getMaxTempOfDataSet(filtered_data) +5);
+        // adjust tooltips
+        var tooltip = series.tooltip();
 
-		// minimap
-		var series_minimap = chart.scroller().spline(mapping);
-		series_minimap.tooltip().format(function () {
-			return date.toLocaleDateString(locale, date_options);
-		});
+        var tooltipchart = chart.tooltip();
+        tooltipchart.titleFormat(function() {
+            var date = new Date(
+                this.x || this.hoveredDate || this.rawHoveredDate
+            );
+            var transformedDate = date.toLocaleDateString(locale, date_options);
+            return lang("The") + " " + transformedDate;
+        });
 
-		//Preset zoom option
-		const last_date = moment(data[data.length-1].d).format("YYYY-MM-DD");
-		const start_date = moment(last_date).subtract(days_before + days_after, "days").format("YYYY-MM-DD");
-		const end_date = moment(last_date).add(days_after, 'days').format("YYYY-MM-DD");
-		chart.selectRange(start_date, end_date);
+        tooltip.format(function() {
+            if (this.value) {
+                var value = this.value.toFixed(0);
+                return lang("temperature").capitalize() + ": " + value + "°C";
+            }
+        });
 
-		// create range picker
-		// var rangePicker = anychart.ui.rangePicker();
-		// // init range picker
-		// rangePicker.render(chart);
+        // set Y axis label formatter
+        //chart.yScale().minimum(getMinTempOfDataSet(filtered_data) -5);
+        //chart.yScale().maximum(getMaxTempOfDataSet(filtered_data) +5);
 
-		// // create range selector
-		// var rangeSelector = anychart.ui.rangeSelector();
-		// // init range selector
-		// rangeSelector.render(chart);
-		// chart.xAxis().labels().format(function () {
-		// 	return new Date(this.value).toLocaleDateString("fr-FR", date_options);
-		// });
-		// chart.yAxis().labels().format(function () {
-		// 	return this.value + '°C';
-		// });
+        // minimap
+        var series_minimap = chart.scroller().spline(mapping);
+        series_minimap.tooltip().format(function() {
+            return date.toLocaleDateString(locale, date_options);
+        });
 
-		// turn on X Scroller
-		// chart.xScroller(true);
-		// // turn on Y Scroller
-		// chart.yScroller(true);
+        //Preset zoom option
+        const last_date = moment(data[data.length - 1].d).format("YYYY-MM-DD");
+        const start_date = moment(last_date)
+            .subtract(days_before + days_after, "days")
+            .format("YYYY-MM-DD");
+        const end_date = moment(last_date)
+            .add(days_after, "days")
+            .format("YYYY-MM-DD");
+        chart.selectRange(start_date, end_date);
 
-		// // set container and draw chart
-		chart.container("anychart");
-		chart.draw();
+        // create range picker
+        // var rangePicker = anychart.ui.rangePicker();
+        // // init range picker
+        // rangePicker.render(chart);
 
-		//startStream(mapping, dataTable, filtered_data);
-	}
+        // // create range selector
+        // var rangeSelector = anychart.ui.rangeSelector();
+        // // init range selector
+        // rangeSelector.render(chart);
+        // chart.xAxis().labels().format(function () {
+        // 	return new Date(this.value).toLocaleDateString("fr-FR", date_options);
+        // });
+        // chart.yAxis().labels().format(function () {
+        // 	return this.value + '°C';
+        // });
 
-	function colorForAverage() {
-		let color = 'DodgerBlue';
-		let dash = 'solid';
+        // turn on X Scroller
+        // chart.xScroller(true);
+        // // turn on Y Scroller
+        // chart.yScroller(true);
 
-		if (this.x){
-			color = 'cyan';
-			if (this.value >= temp_high && this.value < temp_xhigh) color = '#ecef17';
-			else if (this.value > temp_xhigh) color = '#ee4237';
-			const d = new Date(this.x);
-			const last_date = new Date(data[data.length - 1].d);
-			// change the line style for estimated datas
-			if (d > last_date) {
-				color = color;
-				dash = '5 5';
-			}
-		}
-		return {
-			color: color,
-			dash: dash
-		}
-	}
+        // // set container and draw chart
+        chart.container("anychart");
+        chart.draw();
 
-	function strokeColorsFct() {
-		var v = this.value;
-		var color = '#2fa85a';
-		// color the maximal value
-		//if (this.value == this.series.getStat('seriesMax')) return '#94353C';
-		// color elements depending on the argument
-		if (v >= temp_xhigh) color = '#ee4237'; // 75
-		else if ((v >= temp_high) && (v < temp_xhigh)) color = '#ecef17'; // 75
-		return {
-			color: color,
-			angle: 90,
-			//keys: ['#2fa85a', '#ecef17', '#ee4237'],
-			thickness: 3
-		};
-		// get the default otherwise
-		// return this.sourceColor;
-	}
-	/*
+        //startStream(mapping, dataTable, filtered_data);
+    }
+
+    function colorForAverage() {
+        let color = "DodgerBlue";
+        let dash = "solid";
+
+        if (this.x) {
+            color = "cyan";
+            if (this.value >= temp_high && this.value < temp_xhigh)
+                color = "#ecef17";
+            else if (this.value > temp_xhigh) color = "#ee4237";
+            const d = new Date(this.x);
+            const last_date = new Date(data[data.length - 1].d);
+            // change the line style for estimated datas
+            if (d > last_date) {
+                color = color;
+                dash = "5 5";
+            }
+        }
+        return {
+            color: color,
+            dash: dash
+        };
+    }
+
+    function strokeColorsFct() {
+        var v = this.value;
+        var color = "#2fa85a";
+        // color the maximal value
+        //if (this.value == this.series.getStat('seriesMax')) return '#94353C';
+        // color elements depending on the argument
+        if (v >= temp_xhigh) color = "#ee4237";
+        // 75
+        else if (v >= temp_high && v < temp_xhigh) color = "#ecef17"; // 75
+        return {
+            color: color,
+            angle: 90,
+            //keys: ['#2fa85a', '#ecef17', '#ee4237'],
+            thickness: 3
+        };
+        // get the default otherwise
+        // return this.sourceColor;
+    }
+    /*
 	function startStream(mapping, dataTable, filtered_data) {
 		  // set interval of data stream
 		clearInterval(interval_var);
@@ -306,26 +390,25 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	  };
 	
 	*/
-	/************************************/
+    /************************************/
 
-	// set X axis labels formatter
-	// create custom Date Time scale
-	// var dateTimeScale = anychart.scales.dateTime();
-	// var dateTimeTicks = dateTimeScale.ticks();
-	// dateTimeTicks.interval(0, 6);
-	// // apply Date Time scale
-	// chart.xScale(dateTimeScale);
+    // set X axis labels formatter
+    // create custom Date Time scale
+    // var dateTimeScale = anychart.scales.dateTime();
+    // var dateTimeTicks = dateTimeScale.ticks();
+    // dateTimeTicks.interval(0, 6);
+    // // apply Date Time scale
+    // chart.xScale(dateTimeScale);
 
+    //minimap
+    // access labels
 
-
-
-	//minimap
-	// access labels
-
-	function getModuleFromId(module_id) {
-		return presynths.find(function (o) { return o.id == module_id; })
-	}
-	/*
+    function getModuleFromId(module_id) {
+        return presynths.find(function(o) {
+            return o.id == module_id;
+        });
+    }
+    /*
 	function getMaxDateOfDataSet(dataset) {
 		return Math.max.apply(Math, dataset.map(function(o) { return o.date; }))
 	}
@@ -337,5 +420,5 @@ function ($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
 	}
 	*/
 
-	return { init: init };
+    return { init: init };
 });
