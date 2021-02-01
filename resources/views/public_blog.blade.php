@@ -39,7 +39,7 @@
             
             <ul class="row list-services">
                 @foreach ($blogarticles as $article)
-                <li class="col-sm-6" data-id="{{ $article->id }}" id="article-{{ $article->id }}" data-groups="[&quot;{{$article->type}}&quot;]">
+                <li class="col-sm-6 col-md-4" data-id="{{ $article->id }}" id="article-{{ $article->id }}" data-groups="[&quot;{{$article->type}}&quot;]">
                     <div class="card">
                         <img class="card-img-top" src="{{ asset('images/blog/article.jpg') }}" alt="Card image cap">
                         <div class="card-img-overlay"  data-id="{{$article->id}}" data-toggle="modal" data-target="#articleReadModal">

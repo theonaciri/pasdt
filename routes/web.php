@@ -19,7 +19,7 @@ Route::group(['middleware' => ['locale']], function() {
 });
 
 Route::get('/', 'HomeController@index')->name('welcome');
-Route::redirect('/consultation', '/');
+Route::redirect('/consultation', '/')->name('consultation');
 
 /* USER */
 Route::get('/client', 'ClientController@index')->name('client');
