@@ -1,0 +1,53 @@
+
+/* BLOG */
+.card-header.row {
+    margin: 0;
+}
+
+#editcontent {
+    min-height: 350px;
+}
+
+#articleReadModal .modal-footer {
+    justify-content: space-between;
+}
+.card-img-overlay {
+    cursor: pointer;
+    font-size: 120%;
+    color: white;
+    text-shadow:1px 1px 6px black;
+}
+
+.card-img-top {
+    filter: brightness(.67);
+}
+
+.list-services li {
+    list-style: none;
+}
+
+.list-services .card {
+    padding: 0;
+}
+
+iframe.ql-video {
+    width: 100%;
+    height: 50vh;
+}
+
+#articleReadModal p {
+    line-height: 32px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 21px;
+    font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif;
+    &:not(.ql-align-center):not(.ql-align-justify) {
+        max-width: 680px;
+    }
+    &.ql-align-justify img {
+        max-width: 100%;
+        margin-left: auto;
+        display: block;
+        margin-right: auto;
+    }
+}
