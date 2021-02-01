@@ -44,6 +44,7 @@ CREATE TABLE `blog_articles` (
   `title` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longblob NOT NULL,
   `text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cover_img` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `locale` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'fr_FR',
   `likes` int(11) NOT NULL DEFAULT 0,
   `deleted_at` datetime DEFAULT NULL,

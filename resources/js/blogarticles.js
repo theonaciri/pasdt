@@ -30,7 +30,7 @@ function($, lang, moment, filters) {
     $(".articledeletebtn").on('click', function(e) {
         if (!confirm("Supprimer définitivement l'article ?")) return ;
         $.ajax({
-            url: '/admin/blogarticle/' + $(e.currentTarget).data('id'),
+            url: '/admin/blogarticle/' + $(e.currentTarget).parents('tr').data('id'),
             type: 'DELETE'
         }).done(function() {
             $(e.currentTarget).parents('tr').remove();

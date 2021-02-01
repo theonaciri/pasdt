@@ -103,6 +103,9 @@ class BlogController extends Controller {
         return response()->json($blogarticle);
     }
 
+    public function saveCoverImg(BlogArticle $blogarticle) {
+        public_path("blog/".$blogarticle->cover_img);
+    }
     public function deleteBlogArticle(BlogArticle $blogarticle) {
         $this->middleware('auth');
         /*request()->validate([
@@ -111,6 +114,9 @@ class BlogController extends Controller {
         ]);*/
         $this->getSaveAuthCompany();    
         if ($this->user->su_admin !== 1) return abort(403);
+        if (file_exists(public_path("blog/" . $blogarticle->cover_img))) {
+            unlink(public_path("blog/" . $blogarticle->cover_img));
+        }
         $blogarticle->delete();
         return response()->json(Array("ok"=>"ok"));
     }
