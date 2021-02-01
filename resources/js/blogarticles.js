@@ -141,7 +141,7 @@ function($, lang, moment, filters) {
                 <tr data-id="${e.id}">
                     <td class="type">${e.type}</td>
                     <td class="title">${e.title}</td>
-                    <td class="text">${e.text}</td>
+                    <td class="text">${e.text.substring(0, 32)}</td>
                     <td class="likes">${e.likes || 0}</td>
                     <td class="created_at">${moment(e.created_at).calendar()}</td>
                     <td class="updated_at">${moment(e.updated_at).calendar()}</td>

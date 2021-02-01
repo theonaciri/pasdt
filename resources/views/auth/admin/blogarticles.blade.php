@@ -74,6 +74,7 @@
                 </div>
                 <div class="modal-body">
                     @csrf
+                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#articleImgUploadModal">@lang("Change cover image")</button>
                     <div class="form-group">
                         <label for="author">@lang("Author")&nbsp;&nbsp; <b id="article_author">{{$self->name}}</b></label>
                     </div>
@@ -129,6 +130,46 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="form-loader">
+                    <img src="/images/loader.svg">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="footer-content"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal upload image -->
+<div class="modal fade" id="articleImgUploadModal" tabindex="-1" role="dialog" aria-labelledby="articleImgUploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="articleImgUploadModalLabel">@lang("Loading...")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>@lang("Actual logo")</h3>
+
+                <img src="images/companylogos/" height="39" alt="article cover image">
+                <br>
+                <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="compnay-logo-input" aria-describedby="inputGroupFile">
+                            <label class="custom-file-label" for="compnay-logo-input">@lang("Choose file")</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="button" id="inputGroupFile">@lang("Change cover image")</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="form-loader">
                     <img src="/images/loader.svg">
                 </div>

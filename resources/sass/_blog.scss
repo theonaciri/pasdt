@@ -41,13 +41,20 @@ iframe.ql-video {
     margin-right: auto;
     font-size: 21px;
     font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif;
-    &:not(.ql-align-center):not(.ql-align-justify) {
+    &:not(.ql-align-center) {
         max-width: 680px;
     }
-    &.ql-align-justify img {
+    &.ql-align-center img {
         max-width: 100%;
         margin-left: auto;
         display: block;
         margin-right: auto;
+    }
+}
+
+.list-services li > div {
+    transition: transform .1s ease-in-out;
+    &:hover {
+        transform: scale(1.05);
     }
 }
