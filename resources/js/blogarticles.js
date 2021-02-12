@@ -30,7 +30,7 @@ function($, lang, moment, filters) {
     });
 
     $imgModal.on('show.bs.modal', function(e) {
-        $("#img-preview").html('<img src="images/blog/' + $(e.relatedTarget).data("id") + '" height="39" alt="article cover image">');
+        $("#img-preview").html('<img src="/images/blog/' + ($(e.relatedTarget).data("cover_img") ? $(e.relatedTarget).data("cover_img") : "article.jpg") + '" height="39" alt="article cover image">');
         $imgModal.find('form').attr('action', '/admin/blogarticle/' + $(e.relatedTarget).data("id") + '/image-upload');
     });
 
@@ -94,7 +94,8 @@ function($, lang, moment, filters) {
             $("#article_title").val($tr.children('.title').html());
             $("#article_type").val($tr.children('.type').html());
             $("#article_tags").val($tr.children('.tags').html());
-            $('#article_cover_img').data('cover-img', content.cover_img || "/images/blog/article.jpg").data('id', content.id);
+            $('#article_cover_img').data('cover_img', content.cover_img || "/images/blog/article.jpg").data('id', content.id);
+            debugger;
 
             if (typeof editor != 'undefined') {
                 editor.container.firstChild.innerHTML = content.content;
