@@ -9,6 +9,14 @@
 </a>
 <br>
 <br>
+@if ($message = Session::get('success-logo'))
+<div class="container">
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
+</div>
+@endif
 <div class="container">
         <div class="card">
             <div class="card-header row align-items-end">
@@ -74,7 +82,7 @@
                 </div>
                 <div class="modal-body">
                     @csrf
-                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#articleImgUploadModal">@lang("Change cover image")</button>
+                    <button id="article_cover_img" class="btn btn-primary float-right" data-toggle="modal" data-target="#articleImgUploadModal">@lang("Change cover image")</button>
                     <div class="form-group">
                         <label for="author">@lang("Author")&nbsp;&nbsp; <b id="article_author">{{$self->name}}</b></label>
                     </div>
@@ -148,31 +156,30 @@
     <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="articleImgUploadModalLabel">@lang("Loading...")</h5>
+                <h5 class="modal-title" id="articleImgUploadModalLabel">@lang("Change cover image")</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <h3>@lang("Actual logo")</h3>
-
-                <img src="images/companylogos/" height="39" alt="article cover image">
+                <div id="img-preview"></div>
                 <br>
-                <form action="{{  $su_applied ? route('image.upload.post', ['company' => $_company->id]) : route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
+                <form action="/admin/blogarticle/undefined/image-upload" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="input-group">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="compnay-logo-input" aria-describedby="inputGroupFile">
+                        <div class="custom-file form-group">
+                            <input type="file" class="custom-file-input form-control-file" id="image" name="image" aria-describedby="image">
                             <label class="custom-file-label" for="compnay-logo-input">@lang("Choose file")</label>
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-success" type="button" id="inputGroupFile">@lang("Change cover image")</button>
+                            <button class="btn btn-success" type="submit" id="upload_cover_img">@lang("Change cover image")</button>
                         </div>
                     </div>
                 </form>
-                <div class="form-loader">
+                {{-- <div class="form-loader">
                     <img src="/images/loader.svg">
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer">
                 <span class="footer-content"></span>
