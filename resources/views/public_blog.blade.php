@@ -41,7 +41,7 @@
                 @foreach ($blogarticles as $article)
                 <li class="col-sm-6 col-md-4" data-id="{{ $article->id }}" id="article-{{ $article->id }}" data-groups="[&quot;{{$article->type}}&quot;]">
                     <div class="card">
-                        <img class="card-img-top" src="{{ asset('images/blog/' . ($article->cover_img ? $article->id : 'article') . '.jpg') }}" alt="Card image cap">
+                        <img class="card-img-top" height="296" src="{{ asset('/images/blog/' . ($article->cover_img ? $article->cover_img : 'article.jpg')) }}" alt="Card image cap">
                         <div class="card-img-overlay"  data-id="{{$article->id}}" data-toggle="modal" data-target="#articleReadModal">
                             <p style="float: left; text-align: left">
                                 <!--<span class="oi oi-heart"></span>&nbsp;{{ $article->likes}}
