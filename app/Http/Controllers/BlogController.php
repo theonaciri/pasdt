@@ -40,7 +40,7 @@ class BlogController extends Controller {
         }
         $whatsnew = DB::table("blog_articles")
                         ->leftJoin('users', 'users.id', '=', 'blog_articles.author')
-                        ->select("blog_articles.type", "blog_articles.id", "blog_articles.title", "blog_articles.likes", "blog_articles.created_at",
+                        ->select("blog_articles.type", "cover_img", "blog_articles.id", "blog_articles.title", "blog_articles.likes", "blog_articles.created_at",
                         "blog_articles.updated_at", DB::raw("SUBSTRING(blog_articles.text,1, 32) as text"), "users.name", "users.email")->get();
         return view('auth/admin/blogarticles', [
             "blogarticles"=>$whatsnew
