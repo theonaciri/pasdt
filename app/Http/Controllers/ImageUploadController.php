@@ -59,15 +59,14 @@ class ImageUploadController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imageName = time().'.'.request()->image->getClientOriginalExtension();
+        //$imageName = time().'.'.request()->image->getClientOriginalExtension();
+        $imageName = $blogarticle->id.'.'.request()->image->getClientOriginalExtension();
         request()->image->move(public_path('images/blog'), $imageName);
 
-        $company = \App\Company::where('id', $this->getCompany(Auth::user()))->first();
-        $company->logo = $imageName;
-        $company->save();
+        $blogarticle->cover_img = $imageName;
+        $blogarticle->save();
 
         return back()
-            ->with('success-logo', __("Your image have been saved."))
-            ->with('image',$imageName)
-            ->with('company', $company);
+            ->with('success-logo', __("Your image have been saved."));
+    }
 }

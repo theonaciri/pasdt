@@ -337,7 +337,7 @@
                     <br>
                     <br>
                 @if($self->is_client_company)
-                    @if ($message = Session::get('success'))
+                    @if ($message = Session::get('success-logo'))
                     <div class="alert alert-success alert-block">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>{{ $message }}</strong>

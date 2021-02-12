@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <p class="chapo">@lang("Retrouvez les ressources PASDT ici. Articles de blog, communications, corrections, ajouts de fonctionnalité.")</p>
+            <p class="chapo">@lang("Find PASDT content here. Blog articles, communication, corrections, new features, tutorials.")</p>
             <form class="filters-buttons">
                 <input type="checkbox" name="filter" id="tous-btn" checked="">
                 <label for="tous-btn" id="filt"><span>Tous</span></label>
@@ -41,7 +41,7 @@
                 @foreach ($blogarticles as $article)
                 <li class="col-sm-6 col-md-4" data-id="{{ $article->id }}" id="article-{{ $article->id }}" data-groups="[&quot;{{$article->type}}&quot;]">
                     <div class="card">
-                        <img class="card-img-top" src="{{ asset('images/blog/article.jpg') }}" alt="Card image cap">
+                        <img class="card-img-top" src="{{ asset('images/blog/' . ($article->cover_img ? $article->id : 'article') . '.jpg') }}" alt="Card image cap">
                         <div class="card-img-overlay"  data-id="{{$article->id}}" data-toggle="modal" data-target="#articleReadModal">
                             <p style="float: left; text-align: left">
                                 <!--<span class="oi oi-heart"></span>&nbsp;{{ $article->likes}}
