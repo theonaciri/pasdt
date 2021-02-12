@@ -6,6 +6,8 @@ function($, lang, moment, filters) {
     var editor;
     var $readModal = $('#articleReadModal');
     var $editModal = $('#editArticleModal');
+    var $imgModal = $("#articleImgUploadModal");
+
     var modal_initialized = false;
     if (locale != "en-us" && typeof moment_locale !== "undefined") {
         moment.updateLocale(locale.split("-")[0], moment_locale);
@@ -25,6 +27,11 @@ function($, lang, moment, filters) {
         }).fail(function(content) {
             $readModal.find('.modal-body').html(content.error ? content.error : lang("Article failed to load."));
         })
+    });
+
+    $imgModal.on('show.bs.modal', function(e) {
+        $("#img-preview").html('<img src="images/blog/' + $(e.relatedTarget).data("id") + '" height="39" alt="article cover image">');
+        $imgModal.find('form').attr('action', '/admin/blogarticle/' + $(e.relatedTarget).data("id") + '/image-upload');
     });
 
     $(".articledeletebtn").on('click', function(e) {
@@ -87,6 +94,8 @@ function($, lang, moment, filters) {
             $("#article_title").val($tr.children('.title').html());
             $("#article_type").val($tr.children('.type').html());
             $("#article_tags").val($tr.children('.tags').html());
+            $('#article_cover_img').data('cover-img', content.cover_img || "/images/blog/article.jpg").data('id', content.id);
+
             if (typeof editor != 'undefined') {
                 editor.container.firstChild.innerHTML = content.content;
                 quillcontent = "";
