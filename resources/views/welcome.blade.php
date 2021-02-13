@@ -68,7 +68,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/consultation') }}">Accueil</a>
+                        <a href="{{ url('/') }}">Accueil</a>
 
                         @if (Route::has('register') && Auth::user()->su_admin)
                             <a href="{{ route('register') }}">Créer un nouvel accès</a>

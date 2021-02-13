@@ -26,18 +26,20 @@ class ImageUploadController extends Controller
     
     public function imageUploadPost()
     {
-        if (!Auth::user()->company_id || !Auth::user()->is_client_company) {
+        $this->middleware('auth');
+        $this->getSaveAuthCompany();  
+        if (!$this->user->company_id || !$this->user->is_client_company) {
             return view('consultation');
         }
 
         request()->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
         $imageName = time().'.'.request()->image->getClientOriginalExtension();
         request()->image->move(public_path('images/companylogos'), $imageName);
-
-        $company = \App\Company::where('id', $this->getCompany(Auth::user()))->first();
+        $company = $this->company === -1 || $this->company == $user->company_id ?
+            $this->user->company :
+            \App\Company::where('id', $this->user->company)->first();
         $company->logo = $imageName;
         $company->save();
 

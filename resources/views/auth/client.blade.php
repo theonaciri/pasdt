@@ -346,7 +346,7 @@
                     @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
-                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")}}
+                        <strong>Whoops!</strong> @lang("There has been some problem with your image.")
                         <ul>
                             @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -358,11 +358,11 @@
                         @csrf
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="compnay-logo-input" aria-describedby="inputGroupFileAddon04">
+                                <input type="file" class="custom-file-input" name="image" id="compnay-logo-input" aria-describedby="inputGroupFileAddon04">
                                 <label class="custom-file-label" for="compnay-logo-input">@lang("Choose file")</label>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-success" type="button" id="inputGroupFileAddon04">@lang("Update the logo")</button>
+                                <button class="btn btn-success" type="submit" id="inputGroupFileAddon04">@lang("Update the logo")</button>
                             </div>
                         </div>
                     </form>

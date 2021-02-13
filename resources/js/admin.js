@@ -10,7 +10,6 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 			$('#createCompany').ajaxSubmit({
 				success: function (company) {
 					$('#createCompanyModal').modal('hide');
-					console.log(company);
 					let htmlcontent = '';
 					htmlcontent += '<tr class="highlight" data-id="' + company.id.toString() + '"><td class="logo" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="' + lang("Modify the logo") + ' ' + lang("of") + ' ' + company.name + '">';
 					if (company.logo) {
@@ -56,7 +55,7 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 			location.href = "/client?company=" + $(this).parent().data('id') + "#customize-client";
 		});
 		$('#adminTable td.name').click(function () {
-			location.href = "/consultation?company=" + $(this).parent().data('id');
+			location.href = "/?company=" + $(this).parent().data('id');
 		});
 
 		$('.companybtn').click(function (e) {
@@ -67,7 +66,6 @@ define(["jquery", "./components/lang", "flat", "./dependencies/jquery.ajaxSubmit
 				$mod = $('#companyUsersModal');
 				$mod.modal("show");
 				$mod.find('.modal-title > span').html(companyname);
-				console.log(users)
 				var htmlcontent = '';
 				for (var i = 0; i < users.length; i++) {
 					htmlcontent +=
