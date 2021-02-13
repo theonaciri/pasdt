@@ -95,7 +95,6 @@ function($, lang, moment, filters) {
             $("#article_type").val($tr.children('.type').html());
             $("#article_tags").val($tr.children('.tags').html());
             $('#article_cover_img').data('cover_img', content.cover_img || "/images/blog/article.jpg").data('id', content.id);
-            debugger;
 
             if (typeof editor != 'undefined') {
                 editor.container.firstChild.innerHTML = content.content;
