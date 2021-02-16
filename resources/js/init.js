@@ -1,5 +1,5 @@
 define(['jquery', './graphic-rendering', './bootstrap', 'bootstrap', 
-	'./components/cache', './components/notifs'],
+	'./components/cache', './components/notifs', './components/help'],
 function($, graphic_rendering) {
 	$('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
