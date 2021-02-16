@@ -83,6 +83,9 @@
                             @lang("Last refresh")&nbsp;:&nbsp;<span id="synth-date-sync"></span>.
                         </p>
                         <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#colorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
+                        <button class="btn btn-outline-info" data-toggle="modal" data-target="#videoModal" data-start="7" data-end="26">
+                            <span class="oi oi-question-mark"></span>&nbsp;&nbsp;@lang("Help")
+                        </button>
                         <button id="synth-refresh-btn" class="btn btn-outline-info api-refresh-btn" disabled>
                             <span class="oi oi-loop-circular"></span>&nbsp;&nbsp;@lang("Force refresh")
                         </button>
@@ -161,6 +164,9 @@
                             <br>
                             @lang("Last refresh")&nbsp;:&nbsp;<span id="logs-date-sync"></span>.
                         </p>
+                        <button class="btn btn-outline-info" data-toggle="modal" data-target="#videoModal" data-start="26" data-end="94">
+                            <span class="oi oi-question-mark"></span>&nbsp;&nbsp;@lang("Help")
+                        </button>
                         <button id="logs-refresh-btn" class="btn btn-outline-info api-refresh-btn" disabled>
                             <span class="oi oi-loop-circular"></span>&nbsp;&nbsp;@lang("Force refresh")
                         </button>
@@ -211,7 +217,12 @@
                         <br>
                         @lang("Last refresh")&nbsp;:&nbsp;<span id="temps-date-sync"></span>.
                     </p>
-                    <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#moduleGraphColorModal"><span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")</button>
+                    <button class="btn btn-outline-info color-modal-button" data-toggle="modal" data-target="#moduleGraphColorModal">
+                        <span class="oi oi-info"></span>&nbsp;&nbsp;@lang("Color code")
+                    </button>
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#videoModal" data-start="95" data-end="155">
+                        <span class="oi oi-question-mark"></span>&nbsp;&nbsp;@lang("Help")
+                    </button>
                     <button id="temps-refresh-btn" class="btn btn-outline-info api-refresh-btn" disabled>
                         <span class="oi oi-loop-circular"></span>&nbsp;&nbsp;@lang("Force refresh")
                     </button>
@@ -316,6 +327,8 @@
         </div>
     </div>
 </div>
+
+<x-modal-video/>
 <script>
     var prelogs, presynths = null;
     @if (isset($logs))

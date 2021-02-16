@@ -410,7 +410,13 @@
     </div>
 </div>
 
+
+<button class="btn btn-outline-info" data-toggle="modal" data-target="#videoModal" data-start="167" data-end="305">
+    <span class="oi oi-question-mark"></span>&nbsp;&nbsp;@lang("Help")
+</button>
+
 <!-- Modal -->
+<x-modal-video/>
 <div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="ModalJSONLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
