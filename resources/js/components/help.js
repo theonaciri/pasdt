@@ -7,7 +7,6 @@ define(["jquery"], function($) {
             + ($btn_origin.data('start') || '0') + "&end=" + ($btn_origin.data('end') || '382'));
     });
     $videoModal.on('hide.bs.modal', function(e) {
-        var $btn_origin = $(e.relatedTarget);
         $videoModal.find('iframe').attr('src', "");
     });
 })

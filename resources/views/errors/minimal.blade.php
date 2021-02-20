@@ -64,8 +64,6 @@
                 position: relative;
                 flex: 1 1 auto;
                 cursor: pointer;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
             }
         </style>
 
@@ -89,6 +87,31 @@
             </div>
             <br><br>
             <a class="btn btn-primary" href="/">@lang("Back to ") logs.pasdt.com</a>
+
+            <a id="no-service-worker" onClick="revokeServiceWorker(false)" class="btn btn-secondary">
+                @lang("Vider le cache")
+            </a>
+            <a id="no-service-worker" onClick="revokeServiceWorker(true)" class="btn btn-secondary">
+                @lang("Ne plus utiliser le cache")
+            </a>
         </div>
     </body>
+    <script>
+        
+        function revokeServiceWorker(save_choice) {
+            if (save_choice) {
+                localStorage.setItem('allow-service-worker', 'NO');
+            } else {
+                localStorage.removeItem('allow-service-worker');
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for (let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+            };
+            location.href = '/';
+        }
+    </script>
 </html>
