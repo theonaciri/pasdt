@@ -10,6 +10,10 @@ $screen-xxl: 1600px !default;
   color: rgba(0,0,0,.67);
 }
 
+.hide {
+  display: none;
+}
+
 @media screen and (max-width: 335px) { 
   .hide-xxs {
     display: none;

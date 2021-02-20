@@ -150,6 +150,9 @@
             @yield('content')
         </main>
     </div>
+    <button id="restore-service-worker" class="btn btn-primary hide" onClick="onClickAllowServiceWorker()">
+        @lang("Restaurer le cache")
+    </button>
     <!-- Scripts -->
 @if ($locale && $locale !== "fr-fr")
     <script src="{{ '/json/locales/js/' . $locale . '.js'}}"></script>
@@ -175,15 +178,36 @@
     <script src="{{ asset('js/app.js') }}"></script>
 @endif
     <script>
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => {
-                  /*console.log('Service worker registered.', reg);*/
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+        if (localStorage.getItem('allow-service-worker') === "NO") {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        } else {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then((reg) => {
+                    /*console.log('Service worker registered.', reg);*/
                 });
-          });
+            });
         }
+        if (localStorage.getItem('allow-service-worker') === "NO") { // Only no if ES5
+            document.getElementById("restore-service-worker").classList.remove("hide");
+        }
+        function onClickAllowServiceWorker() {
+            localStorage.removeItem('allow-service-worker');
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for (let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+            }
+            location.reload()
+        }
+    }
     </script>
 </body>
 
