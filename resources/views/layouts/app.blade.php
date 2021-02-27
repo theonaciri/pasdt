@@ -18,11 +18,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     
     <style>
-    @if(!empty($_company->colors))
-        body {
-            background-color: {{ $_company->colors }} 
-        }
-    @endif
+        @if (!empty($_company->colors))
+            body {
+                background-color: {{ $_company->colors }} 
+            }
+        @endif
     </style>
 </head>
 <body {{!empty($self) && $self->su_admin == 1 ? 'data-admin=true' : ''}}>
@@ -151,7 +151,7 @@
         </main>
     </div>
     <button id="restore-service-worker" class="btn btn-primary hide" onClick="onClickAllowServiceWorker()">
-        @lang("Restaurer le cache")
+        <i class="oi oi-wrench"></i>&nbsp;@lang("Restaurer le cache")
     </button>
     <!-- Scripts -->
 @if ($locale && $locale !== "fr-fr")

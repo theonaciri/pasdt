@@ -190,6 +190,7 @@
     </div>
 </div>
 @if (false)
+
 <br>
 <div class="container">
     <div class="row justify-content-center">
@@ -230,8 +231,8 @@
     </div>
 </div>
 @endif
-<br>
 
+<br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -323,7 +324,6 @@
 </div>
 <br>
 
-
 <div class="container" id="customize-client">
     <div class="row justify-content-center">
         <!-- IMG UPLOAD -->
@@ -398,9 +398,10 @@
                         <form action="{{ $su_applied ? route('company.colors.post', ['company' => $_company->id]) : route('company.colors.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="input-group mb-3">
-                                <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}" placeholder="@lang('Modify the colors')" aria-label="@lang('Modify the colors')">
+                                <input type="color" name="colors" id="colors" class="form-control" value="{{ strlen($company->colors) ? $company->colors : '#f8fafc'}}" aria-label="@lang('Modify the colors')">
                                 <div class="input-group-append">
                                     <button class="btn btn-success" type="submit">@lang("Modify the colors")</button>
+                                </div>
                             </div>
                         </form>
                     @endif
@@ -409,12 +410,40 @@
         </div>
     </div>
 </div>
-
-
-<button class="btn btn-outline-info" data-toggle="modal" data-target="#videoModal" data-start="167" data-end="305">
-    <span class="oi oi-question-mark"></span>&nbsp;&nbsp;@lang("Help")
-</button>
-
+<br>
+<div class="container" id="browser-cache-settings">
+    <div class="row align-self-start">
+        <!-- WEB APPLICATION -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">@lang("Votre utilisation de l'application web")</div>
+                <div class="card-body">
+                    <div id="if-cached">
+                        <button id="empty-cache" class="btn btn-secondary">
+                            <i class="oi oi-delete"></i>&nbsp;@lang("Vider le cache")
+                        </button>
+                        <button id="no-service-worker" class="btn btn-secondary">
+                            <i class="oi oi-ban"></i>&nbsp;@lang("Ne plus utiliser le cache")
+                        </button>
+                    </div>
+                    <div id="if-not-cached" class="d-none">
+                        <button id="restore-service-worker" class="btn btn-primary hide" onClick="onClickAllowServiceWorker()">
+                            <i class="oi oi-wrench"></i>&nbsp;@lang("Restaurer le cache")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="">
+        <button class="btn btn-outline-info" data-toggle="modal" data-target="#videoModal" data-start="167" data-end="305">
+            <span class="oi oi-question-mark"></span>&nbsp;&nbsp;@lang("Help")
+        </button>
+    </div>
+</div>
 <!-- Modal -->
 <x-modal-video/>
 <div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="ModalJSONLabel" aria-hidden="true">
@@ -487,7 +516,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-loader">
-                        <img src="/images/loader.svg" height="37" width="37" />
+                        <img src="/images/loader.svg" alt="@lang('Loading...')" height="37" width="37" />
                     </div>
                     <button type="submit" class="btn btn-primary">@lang("Save")</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang("Close")</button>
@@ -512,7 +541,7 @@
                 <div class="container">
                     <br>
                     <div class="form-group">
-                        <label for="textarea-comment">{{__("Comment on the alert")}}</label>
+                        <label for="comment">{{__("Comment on the alert")}}</label>
                         <textarea class="form-control" name="comment" id="comment" rows="2" maxlength="255"></textarea>
                         <span id="count"></span>
                     </div>
@@ -522,7 +551,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-loader" hidden>
-                        <img src="/images/loader.svg" height="37" width="37">
+                        <img src="/images/loader.svg" alt="@lang('Loading')" height="37" width="37">
                     </div>
                     <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span>&nbsp;@lang("Enregistrer le commentaire")</button>
                 </div>

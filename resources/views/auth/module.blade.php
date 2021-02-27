@@ -258,7 +258,7 @@
 		                    <!--<input type="hidden" name="company_id" id="company_id" val="" />-->
 		                    <button type="submit" class="btn btn-primary"><span class="oi oi-plus"></span> Ajouter le module</button>
 		                    <div class="form-loader" hidden>
-		                        <img src="/images/loader.svg">
+		                        <img src="/images/loader.svg" alt="@lang('Loading')" height="37" width="37">
 		                    </div>
 		                    <div class="form-message"></div>
 		                </form>
@@ -328,7 +328,7 @@
                 <input type="hidden" name="company_id" id="editcompany_id" val="" />
                 <button type="submit" class="btn btn-primary"><span class="oi oi-pencil"></span> Éditer le module</button>
                 <div class="form-loader" hidden>
-                    <img src="/images/loader.svg">
+                    <img src="/images/loader.svg" alt="@lang('Loading')" height="37" width="37">
                 </div>
                 <div class="form-message"></div>
             </form>

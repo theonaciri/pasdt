@@ -7,6 +7,15 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 	if (typeof locale != "undefined" && locale != "en-us" && typeof moment_locale !== "undefined") {
 		moment.updateLocale(locale.split("-")[0], moment_locale);
 	}
+	if ('serviceWorker' in navigator) {
+        if (localStorage.getItem('allow-service-worker') === "NO") {
+			$('#if-not-cached').removeClass('d-none');
+			$('#if-cached').addClass('d-none');
+		}
+	} else {
+		$('#browser-cache-settings').addClass('d-none');
+	}
+
 	$('#notifTable > tbody > tr').each(function() {
 		var $this = $(this);
 		var format = (locale === "en-us" ? "MM/DD/YY" : "DD/MM/YY") + " [" + lang("at") + "] HH:mm";
@@ -53,7 +62,8 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		var $tr = $(this).parent().parent().parent();
 		var id = $tr.data('id');
 		var $modalrendermail = $('#modalRenderMail');
-		$modalrendermail.find('.bodymail').html('<div class="container"><div class="row"><div class="col-4 mx-auto text-center"><img src="/images/loader.svg" height="100"></div><div></div>');
+		$modalrendermail.find('.bodymail').html('<div class="container"><div class="row"><div class="col-4 mx-auto text-center">'
+			+ '<img src="/images/loader.svg" alt="' + lang('Loading...') + ' height="100" width="100"></div><div></div>');
 		$.get("/notif/" + id + "/renderMail")
 			.done(function(mailhtml) {
 				$modalrendermail.find('.bodymail').html(mailhtml);
@@ -309,4 +319,24 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		    } })
 		}
 	});
+
+	$('#empty-cache').on('click', function() {revokeServiceWorker(false)});
+	$('#no-service-worker').on('click', function() {revokeServiceWorker(true)});
+	function revokeServiceWorker(save_choice) {
+		if (save_choice) {
+			localStorage.setItem('allow-service-worker', 'NO');
+		} else {
+			localStorage.removeItem('allow-service-worker');
+		}
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.getRegistrations().then(function(registrations) {
+				for (let registration of registrations) {
+					registration.unregister();
+				}
+			});
+		};
+		setTimeout(function() {
+			location.href = '/';
+		}, 500)
+	}
 });
