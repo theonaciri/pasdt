@@ -1,5 +1,6 @@
 const filesToCache = [
   '/',
+  //'/404',
   // 'consultation',
     //'login',
     //'su_admin',

@@ -14,6 +14,10 @@ $screen-xxl: 1600px !default;
   display: none;
 }
 
+#restore-service-worker {
+  margin: 0 0 1rem 2rem;
+}
+
 @media screen and (max-width: 335px) { 
   .hide-xxs {
     display: none;

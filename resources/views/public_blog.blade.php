@@ -82,7 +82,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-loader">
-                    <img src="/images/loader.svg">
+                    <img src="/images/loader.svg" alt="@lang('Loading...')" height="37" width="37" />
                 </div>
             </div>
             <div class="modal-footer">

@@ -88,7 +88,7 @@
             <br><br>
             <a class="btn btn-primary" href="/">@lang("Back to ") logs.pasdt.com</a>
 
-            <a id="no-service-worker" onClick="revokeServiceWorker(false)" class="btn btn-secondary">
+            <a id="empty-cache" onClick="revokeServiceWorker(false)" class="btn btn-secondary">
                 @lang("Vider le cache")
             </a>
             <a id="no-service-worker" onClick="revokeServiceWorker(true)" class="btn btn-secondary">
@@ -97,7 +97,6 @@
         </div>
     </body>
     <script>
-        
         function revokeServiceWorker(save_choice) {
             if (save_choice) {
                 localStorage.setItem('allow-service-worker', 'NO');
@@ -111,7 +110,9 @@
                     }
                 });
             };
-            location.href = '/';
+            setTimeout(function() {
+                location.href = '/';
+            }, 500)
         }
     </script>
 </html>

@@ -44,7 +44,7 @@ function($, lang, moment, filters) {
         }).fail(console.error);
     });
     $('#articleReadModal').on('hidden.bs.modal', function(e) {
-        $readModal.find('.modal-body').html('<div class="form-loader"><img src="/images/loader.svg"></div>');
+        $readModal.find('.modal-body').html('<div class="form-loader"><img src="/images/loader.svg" alt="' + lang('Loading...') + '")>/div>');
         $readModal.find('.modal-title').html(lang('Loading...'));
         $readModal.find('.footer-content').html("");
     });
