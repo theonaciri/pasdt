@@ -70,6 +70,7 @@ var locales = {
 "You are about to permanently delete this user" : "Está a punto de eliminar permanentemente a este usuario",
 
 "== Graphique/events markers": "== Graphique/Marcadores de eventos ==",
+"after": "después de ",
 "Module" : "Módulo",
 "has been disconnected" : "ha sido desconectado",
 "has been reconnected" : "ha sido reconectado",

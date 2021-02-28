@@ -67,6 +67,7 @@ var locales = {
 "You are about to permanently delete this user" : "Je staat op het punt deze gebruiker definitief te verwijderen",
 
 "== Graphique/events markers": "== Grafische / evenementmarkeringen ==",
+"after": "na",
 "Module" : "Module",
 "has been disconnected" : "is verbroken",
 "has been reconnected" : "is opnieuw verbonden",

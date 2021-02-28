@@ -15,7 +15,7 @@ define(['jquery', 'moment/moment', './components/getURLParameter',
 		var $resolved = $this.children('.resolved_at');
 		var success = $this.hasClass('success');
 		var nowdate = moment(success ? $resolved.html() : undefined);
-		$resolved.html((success ? lang("During") + " " : lang("Since") + " ")
+		$resolved.html((success ? lang("During") : lang("Since")) + " "
 			+ moment.duration(nowdate.diff(created)).humanize());
 		$created.html(created.calendar({sameElse: "[" + lang("The") + "] " + format}).capitalize());
 	});
