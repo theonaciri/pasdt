@@ -7,7 +7,7 @@ define([
     "./dependencies/regressive-curve",
     "./components/strcap",
     "./components/moment-fr"
-    /* anychart is added dynamically "anychart", "anychart-jquery"*/
+    /* anychart is added dynamically by init.js in anychart-bundle.js */
 ], function($, moment, getURLParameter, autoReload, lang, regressiveCurve) {
     window.chart = null;
     var $mod_select = $("#graphModuleSelect");

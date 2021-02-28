@@ -34,7 +34,7 @@ Route::get('/su_admin', 'AdminController@su_admin')->name('su_admin')->middlewar
 /* BLOG ARTICLES */
 Route::get('/admin/blogarticles', 'BlogController@adminBlogArticles')->name('blogarticles.admin')->middleware('auth');
 Route::get('/blogarticle/{blog_article}', 'BlogController@getBlogArticle')->name('blog_article.get'); // public
-Route::get('/blog', 'BlogController@index')->name('blog'); // public
+//Route::get('/blog', 'BlogController@index')->name('blog'); // public
 Route::post('/admin/blogarticle', 'BlogController@postBlogArticle')->name('postblogarticle')->middleware('auth');
 Route::post('/admin/blogarticle/{blogarticle}', 'BlogController@putBlogArticle')->name('putblogarticle')->middleware('auth');
 Route::delete('/admin/blogarticle/{blogarticle}', 'BlogController@deleteBlogArticle')->name('deleteblogarticle')->middleware('auth');
