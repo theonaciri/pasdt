@@ -29,7 +29,7 @@ if (!mix.inProduction()) {
     .sass('resources/sass/app.scss', 'public/css')
     .js('resources/js/public_blog.js', 'public/js')
     .js('resources/js/app.js', 'public/js')
-     //mix.js('resources/js/extra-monitoring.js', 'public/js')
+    .js('resources/js/extra-monitoring.js', 'public/js')
      //.babel('public/js/app.js', 'public/js/app.es5.js')
      //.js('resources/js/dependencies/anychart-bundle.js', 'public/js/anychart-bundle.js')
      //.js('resources/js/checkout.js', 'public/js')

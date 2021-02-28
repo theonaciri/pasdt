@@ -210,7 +210,7 @@ define([
         // Linear scale (to fix missing point)
 		chart.xScale("scatter")
 		// Limit number of ticks to prevent overload default
-		chart.xScale().ticks([{minor: 'day', major: 'year'}]);
+		chart.xScale().ticks([{minor: 'day', major: 'month'}]);
 		
 
         // create the plot
