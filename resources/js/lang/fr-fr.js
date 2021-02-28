@@ -72,6 +72,7 @@ window.locales = {
 "You are about to permanently delete this user" : "Vous êtes sur le point de supprimer définitivement cet utilisateur",
 
 "== Graphique/events markers": "== Graphique/marqueurs evenement ==",
+"after": "après",
 "Module" : "Module",
 "has been disconnected" : "a été déconnecté",
 "has been reconnected" : "a été reconnecté",

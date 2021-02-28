@@ -126,18 +126,20 @@ define([
 		noLogIntervals = [];
         events.forEach(event => {
             if (event.type === "NO_LOG") {
-				const start = event.value.replace(" ", "T");
-				let noLogInterval = {start: new Date(start)}
+				const start = event.created_at.replace(" ", "T");
+                let noLogInterval = {start: new Date(start)};
+                let time_text = " "  + lang("after") + " "
+                + moment.duration(moment(event.resolved ? event.resolved_at : undefined).diff(event.created_at)).humanize();
                 disconnectedEvent.push({
                     date: start,
                     description: lang("Module") + " " + mod.name + " " + lang("has been disconnected")
                 });
-                if (event.resolved_at) {
+                if (event.resolved) {
 					const end = event.resolved_at.replace(" ", "T");
 					noLogInterval = {...noLogInterval, end: new Date(end)}
                     connectedEvent.push({
                         date: end,
-                        description: lang("Module") + " " + mod.name + " " + lang("has been reconnected")
+                        description: lang("Module") + " " + mod.name + " " + lang("has been reconnected") + time_text
                     });
 				}
 				noLogIntervals.push(noLogInterval);
