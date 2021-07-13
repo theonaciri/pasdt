@@ -1,3 +1,3 @@
-***REMOVED***
+#!/usr/bin/env bash
 
-***REMOVED***
+cd /homez.112/cfmhtacoep/www/pasdt && php artisan schedule:run >> /dev/null 2>&1

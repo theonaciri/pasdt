@@ -5,7 +5,7 @@ define(['moment'], function (moment) {
 	 * data = [{value : number, x : date()}]
 	 * days = number (of projected days wanted)
 	 */
-	return function getRegressiveCurve(data, days_before, days_after) {
+	return function getRegressiveCurve(data, days_before, days_after, is_dry) {
 		const last_data = getValuesOfLastDays(data, days_before);
 		const tared_data = getTaredDate(last_data);
 		const coeff = regLin(tared_data);
@@ -13,11 +13,22 @@ define(['moment'], function (moment) {
 		//calculate average for existing datas
 		for (let index = data.length-1; index > data.length - last_data.length; index--) {
 			let average = (Math.round((coeff.a * tared_data[index + last_data.length - data.length].x + coeff.b) * 100) / 100);
-			data[index] = ({
-				d: data[index].d,
-				t: data[index].t,
-				a: average
-			})
+			if (is_dry) {
+				data[index] = ({
+					d: data[index].d,
+					t: data[index].t,
+					t1: data[index].t1,
+					t2: data[index].t2,
+					t3: data[index].t3,
+					a: average
+				})
+			} else {
+				data[index] = ({
+					d: data[index].d,
+					t: data[index].t,
+					a: average
+				})
+			}
 		}
 		
 		const unit_of_time = getUnitOfTime(last_data, days_after) / 1000;

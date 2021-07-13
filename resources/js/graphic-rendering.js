@@ -13,6 +13,7 @@ define([
     var $mod_select = $("#graphModuleSelect");
     var $tempsDateSync = $("#temps-date-sync");
     var data = null;
+    var is_dry = false;
     var theme = localStorage.getItem("graph-theme") || "darkBlue";
     var active_module_id;
     var interval_var = null;
@@ -23,6 +24,8 @@ define([
     let disconnectedEvent = [];
 	let connectedEvent = [];
 	let noLogIntervals = [];
+    var ttt = [[], [], []];
+
     var t = new URLSearchParams(location.search);
 
     /* init last update date */
@@ -69,14 +72,27 @@ define([
     }
 
     function getTemps() {
+        ttt = [[], [], []];
         //const fromDate = new Date("2018-04-15");
         $.getJSON(
             "/logs/temp/" + active_module_id
         ) /*, { from: fromDate.toJSON(), modules: active_module }*/
             .done(function(_data, a, e) {
                 data = _data.temps;
+                is_dry = _data.dry;
+                if (is_dry) {
+                    for (let i = 0; i < data.length; i++) {
+                        var _ttt = JSON.parse(data[i].msg);
+                        data[i].t 
+                        data[i].t1 = _ttt[1];
+                        data[i].t2 = _ttt[2];
+                        data[i].t3 = _ttt[3];
+                    }
+                    console.log(data);
+                }
+                
                 // add regressiveCurve to datas
-                data = regressiveCurve(data, days_before, days_after);
+                data = regressiveCurve(data, days_before, days_after, is_dry);
 
                 getEvents();
 
@@ -85,14 +101,13 @@ define([
                     _date.slice(_date.lastIndexOf(",") + 1)
                 );
                 $tempsDateSync.html(received_date.calendar());
-
+                sessionStorage.setItem("temps_time", received_date.toJSON());
                 //memorize data in cache
                 var cached_temps = JSON.parse(
                     sessionStorage.getItem("temps") || "{}"
                 );
                 cached_temps[active_module_id] = data;
                 sessionStorage.setItem("temps", JSON.stringify(cached_temps));
-                sessionStorage.setItem("temps_time", received_date.toJSON());
             })
             .fail(function(jqxhr, textStatus, error) {
                 // TODO
@@ -262,14 +277,61 @@ define([
             .name(lang("Average"))
             .stroke(colorForAverage);
 
-        var series = plot
+            var series = plot
             .spline(mapping)
             .name(getModuleFromId(active_module_id).name)
             .stroke(strokeColorsFct);
         series.hovered().markers(true);
 
+        if (is_dry) {
+            
+        var t1 = plot
+        .spline(
+            dataTable.mapAs({
+                value: "t1",
+                x: "d"
+            })
+        )
+        .name(lang("t1"))
+        .stroke(strokeColorsFct);
+
+        var series = plot
+        .spline(mapping)
+        .name(getModuleFromId(active_module_id).name)
+        .stroke(strokeColorsFct);
+        var t2 = plot
+        .spline(
+            dataTable.mapAs({
+                value: "t2",
+                x: "d"
+            })
+        )
+        .name(lang("t2"))
+        .stroke(strokeColorsFct);
+
+        var series = plot
+        .spline(mapping)
+        .name(getModuleFromId(active_module_id).name)
+        .stroke(strokeColorsFct);
+        var t3 = plot
+        .spline(
+            dataTable.mapAs({
+                value: "t3",
+                x: "d"
+            })
+        )
+        .name(lang("t3"))
+        .stroke(strokeColorsFct);
+
+        var series = plot
+        .spline(mapping)
+        .name(getModuleFromId(active_module_id).name)
+        .stroke(strokeColorsFct);
+    series.hovered().markers(true);
+        }
         // adjust tooltips
         var tooltip = series.tooltip();
+
 
         var tooltipchart = chart.tooltip();
         tooltipchart.titleFormat(function() {
@@ -282,7 +344,11 @@ define([
 
         tooltip.format(function() {
             if (this.value) {
-                var value = this.value.toFixed(0);
+                try {
+                    var value = this.value.toFixed(0);
+                } catch (e) {
+                    var value = "--";
+                }
                 return lang("temperature").capitalize() + ": " + value + "°C";
             }
         });
