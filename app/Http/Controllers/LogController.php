@@ -42,9 +42,14 @@ class LogController extends Controller
             }],
             ['db'=>'modules.name',  'dt'=>1],
             ['db'=>'msg',           'dt'=>2, 'formatter'=> function($value, $model) {
+                if (strpos($model->msg, '["DRY"') > -1) $value = '["HOUR DRY"]';
                 return $this->filterMsg($value);
             }],
             ['db'=>'maxtemp',       'dt'=>3, 'formatter'=> function($value, $model) {
+                if (strpos($model->msg, '["DRY"') > -1) {
+                    $dry_array = json_decode($model->msg);
+                    return intval($dry_array[1]) . ', ' . intval($dry_array[2]) . ', ' . intval($dry_array[3]) . '°C';
+                }
                 $t = intval($value);
                 return $t != null && $t < 785 && $t > -99 ? $value . "°C" : "";
             }],
@@ -148,18 +153,31 @@ class LogController extends Controller
         // TODO: check dates ?
         //$from = !empty($request->input('from')) ? date("Y-m-d H:i:s", strtotime($request->input('from'))) : date("Y-m-d 00:00:00", strtotime('-12 days'));
         //$to = date("Y-m-d 23:59:59");
-        $temps = DB::table('logs')
-            ->select('maxtemp AS t', 'created_at AS d')
-            //->whereDate('created_at', '>', $from)
-            //->whereDate('created_at', '<=', $to)
-            //->whereBetween('created_at', [$from, $to])
-            ->where('cardId', $module->module_id)
-            ->whereRaw('maxtemp <> ""')
-            ->whereNotNull('maxtemp')
-            ->whereNotIn('maxtemp', $thresholds->NO_TEMP ?? config('pasdt.thresholds.NO_TEMP.value'))
-            ->orderBy('created_at', 'ASC')
-            ->get();
-        return response()->json(["temps" => $temps]);
+        if ($module->telit_custom4 === "DRY") {
+            $temps = DB::table('logs')
+                ->select('msg', 'maxtemp as t', 'created_at AS d')
+                //->whereDate('created_at', '>', $from)
+                //->whereDate('created_at', '<=', $to)
+                //->whereBetween('created_at', [$from, $to])
+                ->where('msg', 'like', '["DRY"%')
+                ->where('cardId', $module->module_id)
+                ->whereNotIn('maxtemp', $thresholds->NO_TEMP ?? config('pasdt.thresholds.NO_TEMP.value'))
+                ->orderBy('created_at', 'ASC')
+                ->get();
+        } else {
+            $temps = DB::table('logs')
+                ->select('maxtemp AS t', 'created_at AS d')
+                //->whereDate('created_at', '>', $from)
+                //->whereDate('created_at', '<=', $to)
+                //->whereBetween('created_at', [$from, $to])
+                ->where('cardId', $module->module_id)
+                ->whereRaw('maxtemp <> ""')
+                ->whereNotNull('maxtemp')
+                ->whereNotIn('maxtemp', $thresholds->NO_TEMP ?? config('pasdt.thresholds.NO_TEMP.value'))
+                ->orderBy('created_at', 'ASC')
+                ->get();
+        }
+        return response()->json(["temps" => $temps, "dry" => $module->telit_custom4 === "DRY"]);
 
     }
 
